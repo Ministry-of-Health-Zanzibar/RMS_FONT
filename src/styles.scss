@@ -1,0 +1,18 @@
+@import "../projects/components/styles/fonts/default";
+@import "../projects/components/styles/themes/default";
+
+.visibilityData{
+  color: rgb(41, 126, 33);
+}
+.edit_squareData{
+  color: rgb(50, 98, 161);
+}
+.deleteData{
+  color: rgb(192, 33, 27);
+}
+
+.full-screen-modal .mat-dialog-container {
+  padding: 1em;
+  width: 100%;
+  height: 100%;
+}

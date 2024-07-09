@@ -1,0 +1,7 @@
+:host {
+  flex: none;
+
+  &:not([class*="h-"]) {
+    height: var(--emr-panel-header-height);
+  }
+}

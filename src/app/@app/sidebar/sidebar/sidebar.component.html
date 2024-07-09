@@ -1,0 +1,60 @@
+<div class="inner">
+  <div class="header h-30">
+    <div class="container flex justify-center items-center">
+      <img src="../../../../assets/img/smz.png" width="180" alt="smz">
+    </div>
+
+    <!-- <a routerLink="/" class="font-bold text-lg px-7 logo">VACCINATION SYSTEM</a>
+     <div class="p-4">
+       <img src="../../../../assets/img/smz.png" alt="" class="h-10">
+     </div> -->
+  </div>
+  <h4 class="text-left text-lg font-bold text-center">VACCINATION SYSTEM</h4>
+
+  <emr-h-divider class="mb-4 mt-6"></emr-h-divider>
+
+  <div class="body">
+    <emr-navigation #navigation [activeKey]="activeLinkId" class="navigation">
+      @for (navItem of navItems; track navItem) {
+        @switch (navItem.type) {
+          @case ('heading') {
+            <emr-navigation-heading>{{ navItem.name }}</emr-navigation-heading>
+          }
+          @case ('group') {
+            <emr-navigation-group>
+              <emr-navigation-group-toggle [for]="navItem.id">
+                @if (navItem.icon) {
+                  <mat-icon emrNavigationItemIcon class="font-icon">{{ navItem.icon }}</mat-icon>
+                }
+                {{ navItem.name }}
+                <mat-icon emrNavigationGroupToggleIcon class="font-icon">arrow_drop_down</mat-icon>
+              </emr-navigation-group-toggle>
+              <emr-navigation-group-menu [key]="navItem.id">
+                @for (childItem of navItem.children | orderBy:'name'; track childItem) {
+                  <a emr-navigation-item [routerLink]="childItem.link" [key]="childItem.link">
+                    {{ childItem.name }}
+                  </a>
+                }
+              </emr-navigation-group-menu>
+            </emr-navigation-group>
+          }
+          @default {
+            <a emr-navigation-item [routerLink]="navItem.link" [key]="navItem.link">
+              @if (navItem.icon) {
+                <mat-icon emrNavigationItemIcon class="font-icon">{{ navItem.icon }}</mat-icon>
+              }
+              {{ navItem.name }}
+            </a>
+          }
+        }
+      }
+    </emr-navigation>
+  </div>
+  <div class="footer p-7">
+    <!--  <app-sidebar-go-to-premium></app-sidebar-go-to-premium>-->
+    <!--  <app-sidebar-upgrade-to-pro></app-sidebar-upgrade-to-pro>-->
+    <!--  <app-sidebar-upgrade-now></app-sidebar-upgrade-now>-->
+<!--    <app-used-space></app-used-space>-->
+    <app-sidebar-toolbar></app-sidebar-toolbar>
+  </div>
+</div>

@@ -1,0 +1,87 @@
+<div class="p-10 space-y-8" *ngIf="permission.parmissionMatched(['User Management'])">
+  <div class="flex items-center justify-between">
+    <h1 class="text-lg font-bold">Role Permission</h1>
+  </div>
+  <div class="w-full">
+    <div class="relative h-full rounded-lg border group dark:border-inverse p-4">
+      <div class="font-semibold pb-2.5 border-b-2 border-b-secondary-400">View Role With Permission</div>
+
+      <emr-panel-header class="px-10 h-16">
+        <div class="h-full flex items-center justify-between flex-wrap md:flex-nowrap">
+          <div class="flex items-center gap-7">
+            <div class="text-lg font-bold">
+              <div class="size-9 rounded-full border bg-surface flex flex items-center justify-center" (click)="renew()" matTooltip="Refresh">
+                <mat-icon class="font-icon visibilityData">refresh</mat-icon>
+              </div>
+            </div>
+            <emr-v-divider></emr-v-divider>
+            <input type="text" placeholder="Search..." class="border-b h-10 w-96 text-sm bg-transparent dark:border-b-inverse outline-0 focus-within:border-neutral-950" matInput (keyup)="applyFilter($event)" #input>
+          </div>
+          <div>
+            <button mat-flat-button (click)="handleAddAction()" *ngIf="permission.parmissionMatched(['Create Role'])">
+              <mat-icon class="font-icon">add</mat-icon>Add Role
+            </button>
+          </div>
+        </div>
+      </emr-panel-header>
+
+      <div class="border dark:border-inverse rounded-lg overflow-hidden mt-4">
+        <!-- Add the wrapper div for the table -->
+        <div class="overflow-x-auto">
+          <table mat-table [dataSource]="dataSource" class="not-prose w-full">
+            <!-- Position Column -->
+            <ng-container matColumnDef="id">
+              <th mat-header-cell *matHeaderCellDef class="text-neutral-500 dark:text-neutral-400"> No. </th>
+              <td mat-cell *matCellDef="let element, let i = index"> {{i + 1}} </td>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef class="text-neutral-500 dark:text-neutral-400"> Name </th>
+              <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+            </ng-container>
+
+            <!-- Created_at Columns (assuming they are different for demonstration) -->
+            <ng-container matColumnDef="created_at">
+              <th mat-header-cell *matHeaderCellDef class="text-neutral-500 dark:text-neutral-400"> Created_at </th>
+              <td mat-cell *matCellDef="let element"> {{element.created_at}} </td>
+            </ng-container>
+
+            <!-- Action Column -->
+            <ng-container matColumnDef="action">
+              <th mat-header-cell *matHeaderCellDef class="text-neutral-500 dark:text-neutral-400"> Action </th>
+              <td mat-cell *matCellDef="let element">
+                <emr-segmented theme="simple" class="-mx-2">
+                  <emr-segmented-button value="visibilityData">
+                    <span class="size-9 rounded-full border bg-surface flex items-center justify-center" (click)="displayRoles(element)" matTooltip="View">
+                      <mat-icon class="font-icon visibilityData">visibility</mat-icon>
+                    </span>
+                  </emr-segmented-button>
+                  <emr-segmented-button value="edit_squareData">
+                    <span class="size-9 rounded-full border bg-surface flex items-center justify-center" (click)="editRolesPermission(element)" *ngIf="permission.parmissionMatched(['Update Role'])" matTooltip="Edit">
+                      <mat-icon class="font-icon edit_squareData">edit_square</mat-icon>
+                    </span>
+                  </emr-segmented-button>
+                  <emr-segmented-button value="deleteData">
+                    <span class="size-9 rounded-full border bg-surface flex items-center justify-center" (click)="deleteRoles(element)" *ngIf="permission.parmissionMatched(['Delete Role'])" matTooltip="Delete">
+                      <mat-icon class="font-icon deleteData">delete</mat-icon>
+                    </span>
+                  </emr-segmented-button>
+                </emr-segmented>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+            <!-- Row shown when there is no matching data. -->
+            <tr class="mat-row" *matNoDataRow>
+              <td class="mat-cell tablefoter" colspan="4">No data matching the filter " {{input.value}} "</td>
+            </tr>
+          </table>
+        </div>
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of role with permission" class="pt-3"></mat-paginator>
+      </div>
+    </div>
+  </div>
+</div>

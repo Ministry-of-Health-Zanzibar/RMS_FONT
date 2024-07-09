@@ -1,0 +1,239 @@
+@use '@angular/material' as mat;
+
+:root {
+  @include mat.all-component-themes($m3-light-theme);
+  @include mat.system-level-colors($m3-light-theme);
+  @include mat.system-level-typography($m3-light-theme);
+
+  --emr-neutral: #{mat.get-theme-color($m3-light-theme, neutral, 60)};
+  --emr-neutral-0: #{mat.get-theme-color($m3-light-theme, neutral, 100)};
+  --emr-neutral-50: #{mat.get-theme-color($m3-light-theme, neutral, 99)};
+  --emr-neutral-100: #{mat.get-theme-color($m3-light-theme, neutral, 98)};
+  --emr-neutral-200: #{mat.get-theme-color($m3-light-theme, neutral, 95)};
+  --emr-neutral-300: #{mat.get-theme-color($m3-light-theme, neutral, 90)};
+  --emr-neutral-400: #{mat.get-theme-color($m3-light-theme, neutral, 80)};
+  --emr-neutral-450: #{mat.get-theme-color($m3-light-theme, neutral, 70)};
+  --emr-neutral-500: #{mat.get-theme-color($m3-light-theme, neutral, 60)};
+  --emr-neutral-600: #{mat.get-theme-color($m3-light-theme, neutral, 50)};
+  --emr-neutral-650: #{mat.get-theme-color($m3-light-theme, neutral, 40)};
+  --emr-neutral-700: #{mat.get-theme-color($m3-light-theme, neutral, 35)};
+  --emr-neutral-800: #{mat.get-theme-color($m3-light-theme, neutral, 30)};
+  --emr-neutral-900: #{mat.get-theme-color($m3-light-theme, neutral, 25)};
+  --emr-neutral-950: #{mat.get-theme-color($m3-light-theme, neutral, 20)};
+  --emr-neutral-1000: #{mat.get-theme-color($m3-light-theme, neutral, 10)};
+
+  --emr-neutral-variant: #{mat.get-theme-color($m3-light-theme, neutral-variant, 60)};
+  --emr-neutral-variant-0: #{mat.get-theme-color($m3-light-theme, neutral-variant, 100)};
+  --emr-neutral-variant-50: #{mat.get-theme-color($m3-light-theme, neutral-variant, 99)};
+  --emr-neutral-variant-100: #{mat.get-theme-color($m3-light-theme, neutral-variant, 98)};
+  --emr-neutral-variant-200: #{mat.get-theme-color($m3-light-theme, neutral-variant, 95)};
+  --emr-neutral-variant-300: #{mat.get-theme-color($m3-light-theme, neutral-variant, 90)};
+  --emr-neutral-variant-400: #{mat.get-theme-color($m3-light-theme, neutral-variant, 80)};
+  --emr-neutral-variant-450: #{mat.get-theme-color($m3-light-theme, neutral-variant, 70)};
+  --emr-neutral-variant-500: #{mat.get-theme-color($m3-light-theme, neutral-variant, 60)};
+  --emr-neutral-variant-600: #{mat.get-theme-color($m3-light-theme, neutral-variant, 50)};
+  --emr-neutral-variant-650: #{mat.get-theme-color($m3-light-theme, neutral-variant, 40)};
+  --emr-neutral-variant-700: #{mat.get-theme-color($m3-light-theme, neutral-variant, 35)};
+  --emr-neutral-variant-800: #{mat.get-theme-color($m3-light-theme, neutral-variant, 30)};
+  --emr-neutral-variant-900: #{mat.get-theme-color($m3-light-theme, neutral-variant, 25)};
+  --emr-neutral-variant-950: #{mat.get-theme-color($m3-light-theme, neutral-variant, 20)};
+  --emr-neutral-variant-1000: #{mat.get-theme-color($m3-light-theme, neutral-variant, 10)};
+
+  // primary color
+  --emr-primary-0: #{mat.get-theme-color($m3-light-theme, primary, 100)};
+  --emr-primary-50: #{mat.get-theme-color($m3-light-theme, primary, 99)};
+  --emr-primary-100: #{mat.get-theme-color($m3-light-theme, primary, 98)};
+  --emr-primary-200: #{mat.get-theme-color($m3-light-theme, primary, 95)};
+  --emr-primary-300: #{mat.get-theme-color($m3-light-theme, primary, 90)};
+  --emr-primary-400: #{mat.get-theme-color($m3-light-theme, primary, 80)};
+  --emr-primary-450: #{mat.get-theme-color($m3-light-theme, primary, 70)};
+  --emr-primary-500: #{mat.get-theme-color($m3-light-theme, primary, 60)};
+  --emr-primary-600: #{mat.get-theme-color($m3-light-theme, primary, 50)};
+  --emr-primary-650: #{mat.get-theme-color($m3-light-theme, primary, 40)};
+  --emr-primary-700: #{mat.get-theme-color($m3-light-theme, primary, 35)};
+  --emr-primary-800: #{mat.get-theme-color($m3-light-theme, primary, 30)};
+  --emr-primary-900: #{mat.get-theme-color($m3-light-theme, primary, 25)};
+  --emr-primary-950: #{mat.get-theme-color($m3-light-theme, primary, 20)};
+  --emr-primary-1000: #{mat.get-theme-color($m3-light-theme, primary, 10)};
+
+  --emr-secondary-0: #{mat.get-theme-color($m3-light-theme, secondary, 100)};
+  --emr-secondary-50: #{mat.get-theme-color($m3-light-theme, secondary, 99)};
+  --emr-secondary-100: #{mat.get-theme-color($m3-light-theme, secondary, 98)};
+  --emr-secondary-200: #{mat.get-theme-color($m3-light-theme, secondary, 95)};
+  --emr-secondary-300: #{mat.get-theme-color($m3-light-theme, secondary, 90)};
+  --emr-secondary-400: #{mat.get-theme-color($m3-light-theme, secondary, 80)};
+  --emr-secondary-450: #{mat.get-theme-color($m3-light-theme, secondary, 70)};
+  --emr-secondary-500: #{mat.get-theme-color($m3-light-theme, secondary, 60)};
+  --emr-secondary-600: #{mat.get-theme-color($m3-light-theme, secondary, 50)};
+  --emr-secondary-650: #{mat.get-theme-color($m3-light-theme, secondary, 40)};
+  --emr-secondary-700: #{mat.get-theme-color($m3-light-theme, secondary, 35)};
+  --emr-secondary-800: #{mat.get-theme-color($m3-light-theme, secondary, 30)};
+  --emr-secondary-900: #{mat.get-theme-color($m3-light-theme, secondary, 25)};
+  --emr-secondary-950: #{mat.get-theme-color($m3-light-theme, secondary, 20)};
+  --emr-secondary-1000: #{mat.get-theme-color($m3-light-theme, secondary, 10)};
+
+  // tertiary color
+  --emr-tertiary-0: #{mat.get-theme-color($m3-light-theme, tertiary, 100)};
+  --emr-tertiary-50: #{mat.get-theme-color($m3-light-theme, tertiary, 99)};
+  --emr-tertiary-100: #{mat.get-theme-color($m3-light-theme, tertiary, 98)};
+  --emr-tertiary-200: #{mat.get-theme-color($m3-light-theme, tertiary, 95)};
+  --emr-tertiary-300: #{mat.get-theme-color($m3-light-theme, tertiary, 90)};
+  --emr-tertiary-400: #{mat.get-theme-color($m3-light-theme, tertiary, 80)};
+  --emr-tertiary-450: #{mat.get-theme-color($m3-light-theme, tertiary, 70)};
+  --emr-tertiary-500: #{mat.get-theme-color($m3-light-theme, tertiary, 60)};
+  --emr-tertiary-600: #{mat.get-theme-color($m3-light-theme, tertiary, 50)};
+  --emr-tertiary-650: #{mat.get-theme-color($m3-light-theme, tertiary, 40)};
+  --emr-tertiary-700: #{mat.get-theme-color($m3-light-theme, tertiary, 35)};
+  --emr-tertiary-800: #{mat.get-theme-color($m3-light-theme, tertiary, 30)};
+  --emr-tertiary-900: #{mat.get-theme-color($m3-light-theme, tertiary, 25)};
+  --emr-tertiary-950: #{mat.get-theme-color($m3-light-theme, tertiary, 20)};
+  --emr-tertiary-1000: #{mat.get-theme-color($m3-light-theme, tertiary, 10)};
+
+  --emr-error-0: #{mat.get-theme-color($m3-light-theme, error, 100)};
+  --emr-error-50: #{mat.get-theme-color($m3-light-theme, error, 99)};
+  --emr-error-100: #{mat.get-theme-color($m3-light-theme, error, 98)};
+  --emr-error-200: #{mat.get-theme-color($m3-light-theme, error, 95)};
+  --emr-error-300: #{mat.get-theme-color($m3-light-theme, error, 90)};
+  --emr-error-400: #{mat.get-theme-color($m3-light-theme, error, 80)};
+  --emr-error-450: #{mat.get-theme-color($m3-light-theme, error, 70)};
+  --emr-error-500: #{mat.get-theme-color($m3-light-theme, error, 60)};
+  --emr-error-600: #{mat.get-theme-color($m3-light-theme, error, 50)};
+  --emr-error-650: #{mat.get-theme-color($m3-light-theme, error, 40)};
+  --emr-error-700: #{mat.get-theme-color($m3-light-theme, error, 35)};
+  --emr-error-800: #{mat.get-theme-color($m3-light-theme, error, 30)};
+  --emr-error-900: #{mat.get-theme-color($m3-light-theme, error, 25)};
+  --emr-error-950: #{mat.get-theme-color($m3-light-theme, error, 20)};
+  --emr-error-1000: #{mat.get-theme-color($m3-light-theme, error, 10)};
+
+  --emr-background: #fff;
+  --emr-on-background: #{mat.get-theme-color($m3-light-theme, neutral, 20)};
+  --emr-inverse: #{mat.get-theme-color($m3-light-theme, neutral, 50)};
+
+  --mat-table-background-color: var(--emr-background);
+  --mat-table-row-item-outline-color: theme('borderColor.DEFAULT');
+  --mat-paginator-container-background-color: none;
+
+  --emr-transition-transform: transform .15s linear;
+  --mdc-protected-button-container-height: 2.375rem;
+  --mat-menu-item-label-text-size: theme('fontSize.tiny');
+  --mat-option-label-text-size: theme('fontSize.tiny');
+}
+
+html {
+  background: var(--emr-background);
+  color: var(--emr-on-background);
+}
+
+html.dark {
+  @include mat.all-component-colors($m3-dark-theme);
+  @include mat.system-level-colors($m3-dark-theme);
+  @include mat.system-level-typography($m3-dark-theme);
+
+  --emr-neutral-0: #{mat.get-theme-color($m3-dark-theme, neutral, 100)};
+  --emr-neutral-50: #{mat.get-theme-color($m3-dark-theme, neutral, 99)};
+  --emr-neutral-100: #{mat.get-theme-color($m3-dark-theme, neutral, 98)};
+  --emr-neutral-200: #{mat.get-theme-color($m3-dark-theme, neutral, 95)};
+  --emr-neutral-300: #{mat.get-theme-color($m3-dark-theme, neutral, 90)};
+  --emr-neutral-400: #{mat.get-theme-color($m3-dark-theme, neutral, 80)};
+  --emr-neutral-450: #{mat.get-theme-color($m3-dark-theme, neutral, 70)};
+  --emr-neutral-500: #{mat.get-theme-color($m3-dark-theme, neutral, 60)};
+  --emr-neutral-600: #{mat.get-theme-color($m3-dark-theme, neutral, 50)};
+  --emr-neutral-650: #{mat.get-theme-color($m3-dark-theme, neutral, 40)};
+  --emr-neutral-700: #{mat.get-theme-color($m3-dark-theme, neutral, 35)};
+  --emr-neutral-800: #{mat.get-theme-color($m3-dark-theme, neutral, 30)};
+  --emr-neutral-900: #{mat.get-theme-color($m3-dark-theme, neutral, 25)};
+  --emr-neutral-950: #{mat.get-theme-color($m3-dark-theme, neutral, 20)};
+  --emr-neutral-1000: #{mat.get-theme-color($m3-dark-theme, neutral, 10)};
+
+  --emr-neutral-variant-0: #{mat.get-theme-color($m3-dark-theme, neutral-variant, 100)};
+  --emr-neutral-variant-50: #{mat.get-theme-color($m3-dark-theme, neutral-variant, 99)};
+  --emr-neutral-variant-100: #{mat.get-theme-color($m3-dark-theme, neutral-variant, 98)};
+  --emr-neutral-variant-200: #{mat.get-theme-color($m3-dark-theme, neutral-variant, 95)};
+  --emr-neutral-variant-300: #{mat.get-theme-color($m3-dark-theme, neutral-variant, 90)};
+  --emr-neutral-variant-400: #{mat.get-theme-color($m3-dark-theme, neutral-variant, 80)};
+  --emr-neutral-variant-450: #{mat.get-theme-color($m3-dark-theme, neutral-variant, 70)};
+  --emr-neutral-variant-500: #{mat.get-theme-color($m3-dark-theme, neutral-variant, 60)};
+  --emr-neutral-variant-600: #{mat.get-theme-color($m3-dark-theme, neutral-variant, 50)};
+  --emr-neutral-variant-650: #{mat.get-theme-color($m3-dark-theme, neutral-variant, 40)};
+  --emr-neutral-variant-700: #{mat.get-theme-color($m3-dark-theme, neutral-variant, 35)};
+  --emr-neutral-variant-800: #{mat.get-theme-color($m3-dark-theme, neutral-variant, 30)};
+  --emr-neutral-variant-900: #{mat.get-theme-color($m3-dark-theme, neutral-variant, 25)};
+  --emr-neutral-variant-950: #{mat.get-theme-color($m3-dark-theme, neutral-variant, 20)};
+  --emr-neutral-variant-1000: #{mat.get-theme-color($m3-dark-theme, neutral-variant, 10)};
+
+  // primary color
+  --emr-primary-0: #{mat.get-theme-color($m3-dark-theme, primary, 100)};
+  --emr-primary-50: #{mat.get-theme-color($m3-dark-theme, primary, 99)};
+  --emr-primary-100: #{mat.get-theme-color($m3-dark-theme, primary, 98)};
+  --emr-primary-200: #{mat.get-theme-color($m3-dark-theme, primary, 95)};
+  --emr-primary-300: #{mat.get-theme-color($m3-dark-theme, primary, 90)};
+  --emr-primary-400: #{mat.get-theme-color($m3-dark-theme, primary, 80)};
+  --emr-primary-450: #{mat.get-theme-color($m3-dark-theme, primary, 70)};
+  --emr-primary-500: #{mat.get-theme-color($m3-dark-theme, primary, 60)};
+  --emr-primary-600: #{mat.get-theme-color($m3-dark-theme, primary, 50)};
+  --emr-primary-650: #{mat.get-theme-color($m3-dark-theme, primary, 40)};
+  --emr-primary-700: #{mat.get-theme-color($m3-dark-theme, primary, 35)};
+  --emr-primary-800: #{mat.get-theme-color($m3-dark-theme, primary, 30)};
+  --emr-primary-900: #{mat.get-theme-color($m3-dark-theme, primary, 25)};
+  --emr-primary-950: #{mat.get-theme-color($m3-dark-theme, primary, 20)};
+  --emr-primary-1000: #{mat.get-theme-color($m3-dark-theme, primary, 10)};
+
+  --emr-secondary-0: #{mat.get-theme-color($m3-dark-theme, secondary, 100)};
+  --emr-secondary-50: #{mat.get-theme-color($m3-dark-theme, secondary, 99)};
+  --emr-secondary-100: #{mat.get-theme-color($m3-dark-theme, secondary, 98)};
+  --emr-secondary-200: #{mat.get-theme-color($m3-dark-theme, secondary, 95)};
+  --emr-secondary-300: #{mat.get-theme-color($m3-dark-theme, secondary, 90)};
+  --emr-secondary-400: #{mat.get-theme-color($m3-dark-theme, secondary, 80)};
+  --emr-secondary-450: #{mat.get-theme-color($m3-dark-theme, secondary, 70)};
+  --emr-secondary-500: #{mat.get-theme-color($m3-dark-theme, secondary, 60)};
+  --emr-secondary-600: #{mat.get-theme-color($m3-dark-theme, secondary, 50)};
+  --emr-secondary-650: #{mat.get-theme-color($m3-dark-theme, secondary, 40)};
+  --emr-secondary-700: #{mat.get-theme-color($m3-dark-theme, secondary, 35)};
+  --emr-secondary-800: #{mat.get-theme-color($m3-dark-theme, secondary, 30)};
+  --emr-secondary-900: #{mat.get-theme-color($m3-dark-theme, secondary, 25)};
+  --emr-secondary-950: #{mat.get-theme-color($m3-dark-theme, secondary, 20)};
+  --emr-secondary-1000: #{mat.get-theme-color($m3-dark-theme, secondary, 10)};
+
+  // tertiary color
+  --emr-tertiary-0: #{mat.get-theme-color($m3-dark-theme, tertiary, 100)};
+  --emr-tertiary-50: #{mat.get-theme-color($m3-dark-theme, tertiary, 99)};
+  --emr-tertiary-100: #{mat.get-theme-color($m3-dark-theme, tertiary, 98)};
+  --emr-tertiary-200: #{mat.get-theme-color($m3-dark-theme, tertiary, 95)};
+  --emr-tertiary-300: #{mat.get-theme-color($m3-dark-theme, tertiary, 90)};
+  --emr-tertiary-400: #{mat.get-theme-color($m3-dark-theme, tertiary, 80)};
+  --emr-tertiary-450: #{mat.get-theme-color($m3-dark-theme, tertiary, 70)};
+  --emr-tertiary-500: #{mat.get-theme-color($m3-dark-theme, tertiary, 60)};
+  --emr-tertiary-600: #{mat.get-theme-color($m3-dark-theme, tertiary, 50)};
+  --emr-tertiary-650: #{mat.get-theme-color($m3-dark-theme, tertiary, 40)};
+  --emr-tertiary-700: #{mat.get-theme-color($m3-dark-theme, tertiary, 35)};
+  --emr-tertiary-800: #{mat.get-theme-color($m3-dark-theme, tertiary, 30)};
+  --emr-tertiary-900: #{mat.get-theme-color($m3-dark-theme, tertiary, 25)};
+  --emr-tertiary-950: #{mat.get-theme-color($m3-dark-theme, tertiary, 20)};
+  --emr-tertiary-1000: #{mat.get-theme-color($m3-dark-theme, tertiary, 10)};
+
+  --emr-error-0: #{mat.get-theme-color($m3-dark-theme, error, 100)};
+  --emr-error-50: #{mat.get-theme-color($m3-dark-theme, error, 99)};
+  --emr-error-100: #{mat.get-theme-color($m3-dark-theme, error, 98)};
+  --emr-error-200: #{mat.get-theme-color($m3-dark-theme, error, 95)};
+  --emr-error-300: #{mat.get-theme-color($m3-dark-theme, error, 90)};
+  --emr-error-400: #{mat.get-theme-color($m3-dark-theme, error, 80)};
+  --emr-error-450: #{mat.get-theme-color($m3-dark-theme, error, 70)};
+  --emr-error-500: #{mat.get-theme-color($m3-dark-theme, error, 60)};
+  --emr-error-600: #{mat.get-theme-color($m3-dark-theme, error, 50)};
+  --emr-error-650: #{mat.get-theme-color($m3-dark-theme, error, 40)};
+  --emr-error-700: #{mat.get-theme-color($m3-dark-theme, error, 35)};
+  --emr-error-800: #{mat.get-theme-color($m3-dark-theme, error, 30)};
+  --emr-error-900: #{mat.get-theme-color($m3-dark-theme, error, 25)};
+  --emr-error-950: #{mat.get-theme-color($m3-dark-theme, error, 20)};
+  --emr-error-1000: #{mat.get-theme-color($m3-dark-theme, error, 10)};
+
+  --emr-background: #{mat.get-theme-color($m3-dark-theme, neutral, 20)};
+  --emr-on-background: #fff;
+  --emr-inverse: #{mat.get-theme-color($m3-dark-theme, neutral, 50)};
+
+  --mat-table-background-color: var(--emr-background);
+  --mat-table-row-item-outline-color: theme('colors.inverse');
+  --mat-paginator-container-background-color: none;
+
+  --emr-warn: theme('colors.red.500');
+}

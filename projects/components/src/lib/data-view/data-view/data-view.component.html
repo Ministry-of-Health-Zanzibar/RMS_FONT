@@ -1,0 +1,64 @@
+<mat-table #table [dataSource]="dataSource()" matSort [matSortDisabled]="!withSorting()"
+           (matSortChange)="sortChange($event)" class="table">
+  @if (withSelection()) {
+    <ng-container matColumnDef="selection">
+      <mat-header-cell *matHeaderCellDef>
+        @if (loadingCellRenderers || loading()) {
+          <emr-skeleton-block class="size-6"></emr-skeleton-block>
+        } @else {
+          <mat-checkbox (change)="$event ? toggleAllRows() : null"
+                        [checked]="selection.hasValue() && isAllSelected()"
+                        [indeterminate]="selection.hasValue() && !isAllSelected()">
+          </mat-checkbox>
+        }
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        @if (loadingCellRenderers || loading()) {
+          <emr-skeleton-block class="size-6 max-w-full"></emr-skeleton-block>
+        } @else {
+          <mat-checkbox (click)="$event.stopPropagation()"
+                        (change)="rowSelectionToggle($event, row)"
+                        [checked]="selection.isSelected(row)">
+          </mat-checkbox>
+        }
+      </mat-cell>
+    </ng-container>
+  }
+
+  @for (columnDef of columnDefs(); track columnDef) {
+    @if (columnDef.visible) {
+      <ng-container [matColumnDef]="columnDef.dataField">
+        <mat-header-cell *matHeaderCellDef mat-sort-header class="header-cell"
+                         [style.--emr-data-view-cell-width]="columnDef.width">
+          <div class="overflow-hidden w-full">
+            @if (loadingCellRenderers || loading()) {
+              <emr-skeleton-line class="w-24 max-w-full"></emr-skeleton-line>
+            } @else {
+              {{ columnDef.name }}
+            }
+          </div>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element" class="cell"
+                  [style.--emr-data-view-cell-width]="columnDef.width">
+          <div class="overflow-hidden w-full">
+            @if (loadingCellRenderers || loading()) {
+              <emr-skeleton-line></emr-skeleton-line>
+            } @else {
+              @if (columnDef.dataRenderer && hasCellRenderer(columnDef.dataRenderer)) {
+                <ng-container [ngComponentOutlet]="getCellRenderer(columnDef.dataRenderer)"
+                              [ngComponentOutletInputs]="{ element, columnDef, fieldData: element[columnDef.dataField] }"
+                              [ngComponentOutletInjector]="injector"/>
+              } @else {
+                {{ element[columnDef.dataField] }}
+              }
+            }
+          </div>
+        </mat-cell>
+      </ng-container>
+    }
+  }
+
+  <mat-header-row *matHeaderRowDef="displayedColumns(); sticky: stickyHeader()"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns()"
+           [class.is-selected]="selection.isSelected(row)"></mat-row>
+</mat-table>
