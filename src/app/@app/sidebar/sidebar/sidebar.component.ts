@@ -90,7 +90,7 @@ export class SidebarComponent {
           type: 'link',
           name: 'Manage Roles',
           link: '/pages/users/role-permission',
-          permission: 'View Role',
+          permission: 'User Management',
 
         },
         {
@@ -113,26 +113,26 @@ export class SidebarComponent {
           type: 'link',
           name: 'View Country',
           link: '/pages/config/country',
-          permission: 'View Country',
+          permission: 'Setup Management',
 
         },
         {
           type: 'link',
           name: 'Location',
           link: '/pages/config/location',
-          permission: 'View Location',
+          permission: 'Setup Management',
         },
         {
           type: 'link',
           name: 'Employer',
           link: '/pages/config/employer',
-          permission: 'View Employer',
+          permission: 'Setup Management',
         },
         {
           type: 'link',
           name: 'Work Station',
           link: '/pages/config/work-station',
-          permission: 'View Workstation',
+          permission: 'Setup Management',
         },
         {
           type: 'link',
