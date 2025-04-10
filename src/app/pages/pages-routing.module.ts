@@ -30,6 +30,11 @@ const routes: Routes = [
         loadChildren:()=>import('./system-config/locations/locations.module').then(m=>m.LocationsModule)
       },
       {
+        path:'config/hospital',
+        loadChildren:()=>import('./system-config/hospital/hospital.module').then(m=>m.HospitalModule)
+
+      },
+      {
         path:'users',
         loadChildren:()=> import('./users/usermanag/usermanag.module').then(m=>m.UsermanagModule)
       },

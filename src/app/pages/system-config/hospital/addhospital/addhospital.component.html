@@ -1,0 +1,61 @@
+
+<div>
+  <div class="w-full">
+    <div class="relative h-full rounded-lg  group  p-6">
+      <div *ngIf="!id" class="font-semibold ">CREATE NEW DEPARTMENT</div>
+      <div *ngIf="id" class="font-semibold ">UPDATE DEPARTMENT</div>
+      <form [formGroup]="hospitalForm">
+        <mat-form-field class="w-full mt-6">
+          <mat-label>Hospital Name: </mat-label>
+          <input matInput placeholder="Ex. LUMUMBA HOSPITAL" formControlName="hospital_name" type="text">
+          <mat-error class="error-message" *ngIf="hospitalForm.controls['hospital_name'].touched && hospitalForm.controls['hospital_name'].invalid">
+            <span *ngIf="hospitalForm.controls['hospital_name'].errors?.['required']">This field is mandatory</span>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="w-full mt-4">
+          <mat-label>Hospital Code:</mat-label>
+          <input matInput placeholder="Ex. HOSP 0099" formControlName="hospital_code" type="text">
+          <mat-error class="error-message" *ngIf="hospitalForm.controls['hospital_code'].touched && hospitalForm.controls['hospital_code'].invalid">
+            <span *ngIf="hospitalForm.controls['hospital_code'].errors?.['required']">This field is mandatory</span>
+            <span *ngIf="hospitalForm.controls['hospital_code'].errors?.['pattern']">This field is invalid (must be contain alpharbetical only)</span>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="w-full mt-4">
+          <mat-label>Hospital Address:</mat-label>
+          <input matInput placeholder="Ex. KAWE " formControlName="hospital_address" type="text">
+          <mat-error class="error-message" *ngIf="hospitalForm.controls['hospital_address'].touched && hospitalForm.controls['hospital_address'].invalid">
+            <span *ngIf="hospitalForm.controls['hospital_address'].errors?.['required']">This field is mandatory</span>
+            <span *ngIf="hospitalForm.controls['hospital_address'].errors?.['pattern']">This field is invalid (must be contain alpharbetical only)</span>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="w-full mt-4">
+          <mat-label>Hospital Email:</mat-label>
+          <input matInput placeholder="Ex. hosp@info.go.tz" formControlName="hospital_email" type="text">
+          <mat-error class="error-message" *ngIf="hospitalForm.controls['hospital_email'].touched && hospitalForm.controls['hospital_email'].invalid">
+            <span *ngIf="hospitalForm.controls['hospital_email'].errors?.['required']">This field is mandatory</span>
+            <span *ngIf="hospitalForm.controls['hospital_email'].errors?.['pattern']">This field is invalid (must be contain alpharbetical only)</span>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="w-full mt-4">
+          <mat-label>Hospital Code:</mat-label>
+          <input matInput placeholder="Ex. +255 777-783455" formControlName="contact_number" type="text">
+          <mat-error class="error-message" *ngIf="hospitalForm.controls['contact_number'].touched && hospitalForm.controls['contact_number'].invalid">
+            <span *ngIf="hospitalForm.controls['contact_number'].errors?.['required']">This field is mandatory</span>
+            <span *ngIf="hospitalForm.controls['contact_number'].errors?.['pattern']">This field is invalid (must be contain alpharbetical only)</span>
+          </mat-error>
+        </mat-form-field>
+      </form>
+    </div>
+  </div>
+
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button *ngIf="!id" mat-flat-button [mat-dialog-close]="true" cdkFocusInitial [disabled]="hospitalForm.invalid" (click)="saveHospital()">Save Data</button>
+    <!-- <button *ngIf="id" mat-flat-button [mat-dialog-close]="true" cdkFocusInitial [disabled]="hospitalForm.invalid" (click)="updateDepartment()">Update Data</button> -->
+  </mat-dialog-actions>
+</div>
+

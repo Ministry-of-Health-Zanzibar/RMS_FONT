@@ -140,13 +140,13 @@ export class SidebarComponent {
           link: '/pages/config/employer-type',
           permission: 'View Employer Type',
         },
-        // {
-        //   type: 'link',
-        //   name: 'Tab Panel',
-        //   link: '/pages/navigation/tab-panel',
-        //   permission: 'View Country',
+        {
+          type: 'link',
+          name: 'Hospital',
+          link: '/pages/config/hospital',
+          permission: 'View Hospital',
 
-        // },
+        },
       ]
     },
 
