@@ -21,20 +21,24 @@ export class HospitalService {
     return this.http.get<any>(`${this.href}/${id}`);
   }
 
-  public addHospital(employerType: any): Observable<any> {
-    return this.http.post(this.href, employerType);
+  public addHospital(hospital: any): Observable<any> {
+    return this.http.post(this.href, hospital);
   }
 
   public deleteHospital(id:any): Observable<any>{
     return this.http.delete(`${this.href}/${id}`);
   }
 
-  public updateHospital(employerType:any, id:any): Observable<any>{
-    return this.http.patch(`${this.href}/${id}`,employerType)
+  public updateHospital(hospital:any, id:any): Observable<any>{
+    return this.http.patch(`${this.href}/${id}`,hospital)
   }
 
-  public unblockHospital(id:any): Observable<any>{
-    return this.http.get(`${this.baseUrl}unBlockHospital/${id}`);
+  public unblockHospital(data: any, id:any): Observable<any>{
+    return this.http.patch(`${this.baseUrl}hospitals/unBlock/${id}`, data);
   }
+
+  // public unblockHospital(id:any): Observable<any>{
+  //   return this.http.patch(`${this.href}/unblock/${id}`);
+  // }
 }
 

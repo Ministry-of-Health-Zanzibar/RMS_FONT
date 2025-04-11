@@ -16,6 +16,7 @@ import { LocationService } from '../../../../services/system-configuration/locat
 import { RolePermissionService } from '../../../../services/users/role-permission.service';
 import { GlobalConstants } from '@shared/global-constants';
 import { CouncilService } from '../../../../services/system-configuration/council.service';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-add-user',
@@ -34,7 +35,8 @@ import { CouncilService } from '../../../../services/system-configuration/counci
     HDividerComponent,
     MatAutocompleteModule,
     MatSelect,
-    AsyncPipe
+    AsyncPipe,
+    MatDatepickerModule,
   ],
   templateUrl: './add-user.component.html',
   styleUrl: './add-user.component.scss'

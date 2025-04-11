@@ -56,11 +56,11 @@ export class AddhospitalComponent {
     }
   }
 
-  // getDepartm(id: any){
-  //   this.departmentService.getAllDepartmentById(id).subscribe(response=>{
-  //     this.departmentForm.patchValue(response.data[0])
-  //   })
-  // }
+  getHospital(id: any){
+    this.hospitalService.getHospitalById(id).subscribe(response=>{
+      this.hospitalForm.patchValue(response.data[0])
+    })
+  }
 
   ngOnDestroy(): void {
     this.onDestroy.next()
@@ -113,32 +113,32 @@ export class AddhospitalComponent {
     }
   }
 
-  // updateDepartment(){
-  //   if(this.departmentForm.valid){
-  //     this.departmentService.updateDepartment(this.departmentForm.value, this.id).subscribe(response=>{
-  //       if(response.statusCode == 201){
-  //         Swal.fire({
-  //           title: "Success",
-  //           text: "Data saved successfull",
-  //           icon: "success",
-  //           confirmButtonColor: "#4690eb",
-  //           confirmButtonText: "Continue"
-  //         });
-  //       }else{
-  //         Swal.fire({
-  //           title: "Error",
-  //           text: response.message,
-  //           icon: "error",
-  //           confirmButtonColor: "#4690eb",
-  //           confirmButtonText: "Continue"
-  //         });
-  //       }
-  //     }
+  updateHospital(){
+    if(this.hospitalForm.valid){
+      this.hospitalService.updateHospital(this.hospitalForm.value, this.id).subscribe(response=>{
+        if(response.statusCode == 201){
+          Swal.fire({
+            title: "Success",
+            text: "Data saved successfull",
+            icon: "success",
+            confirmButtonColor: "#4690eb",
+            confirmButtonText: "Continue"
+          });
+        }else{
+          Swal.fire({
+            title: "Error",
+            text: response.message,
+            icon: "error",
+            confirmButtonColor: "#4690eb",
+            confirmButtonText: "Continue"
+          });
+        }
+      }
 
-  //   );
-  //   }else{
+    );
+    }else{
 
-  //   }
-  // }
+    }
+  }
 }
 

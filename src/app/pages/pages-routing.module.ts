@@ -60,6 +60,11 @@ const routes: Routes = [
         path: 'user-profile',
         loadChildren: () => import('./user-profile/user-profile.module').then(m => m.UserProfileModule)
       },
+      {
+        path:'patient',
+        loadChildren:() => import('./partient/partient.module').then(m=>m.PartientModule)
+
+      },
 
       {
         path: '',

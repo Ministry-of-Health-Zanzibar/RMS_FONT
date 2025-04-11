@@ -165,7 +165,7 @@ export class UserComponent {
             confirmButtonText: "Continue"
           });
         }
-      });
+      }); 
     }
   }
 
