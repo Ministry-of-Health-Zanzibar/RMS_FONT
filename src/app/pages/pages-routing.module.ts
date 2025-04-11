@@ -35,6 +35,11 @@ const routes: Routes = [
 
       },
       {
+        path:'config/reasons',
+        loadChildren:()=>import('./system-config/reasons/reasons.module').then(m=>m.ReasonsModule)
+
+      },
+      {
         path:'users',
         loadChildren:()=> import('./users/usermanag/usermanag.module').then(m=>m.UsermanagModule)
       },

@@ -147,6 +147,13 @@ export class SidebarComponent {
           permission: 'View Hospital',
 
         },
+        {
+          type: 'link',
+          name: 'Reason',
+          link: '/pages/config/reasons',
+          permission: 'View Reason',
+
+        },
       ]
     },
 
