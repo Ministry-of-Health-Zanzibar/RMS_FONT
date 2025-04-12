@@ -16,39 +16,40 @@ import { ReasonsService } from '../../../../services/system-configuration/reason
   selector: 'app-addreason',
   standalone: true,
   imports: [
-     CommonModule,
-        MatButtonModule,
-        MatDialogModule,
-        MatInput,
-        MatFormField,
-        MatLabel,
-        MatDialogModule,
-        MatCheckbox,
-        MatError,
-        ReactiveFormsModule,
-        HDividerComponent
+    CommonModule,
+    MatButtonModule,
+    MatDialogModule,
+    MatInput,
+    MatFormField,
+    MatLabel,
+    MatDialogModule,
+    MatCheckbox,
+    MatError,
+    ReactiveFormsModule,
+    HDividerComponent
   ],
   templateUrl: './addreason.component.html',
   styleUrl: './addreason.component.scss'
 })
 export class AddreasonComponent {
- readonly data = inject<any>(MAT_DIALOG_DATA);
-  private readonly onDestroy = new Subject<void>()
-  public sidebarVisible:boolean = true
+  readonly data = inject<any>(MAT_DIALOG_DATA);
+   private readonly onDestroy = new Subject<void>()
+   public sidebarVisible:boolean = true
+ 
+   reasonForm: FormGroup;
+   parent: any;
+   uploadProgress: number = 0;
+   uploading: boolean = false;
+   errorMessage: string | null = null;
+   id: any;
+ 
+   constructor(private formBuilder:FormBuilder,
+     private reasonsService: ReasonsService,
+     private dialogRef: MatDialogRef<AddreasonComponent>) {
+   }
+ 
 
-  reasonForm: FormGroup;
-  parent: any;
-  uploadProgress: number = 0;
-  uploading: boolean = false;
-  errorMessage: string | null = null;
-  id: any;
-
-  constructor(private formBuilder:FormBuilder,
-    private  reasonService:ReasonsService,
-    private dialogRef: MatDialogRef<AddreasonComponent>) {
-  }
-
-  ngOnInit(): void {
+   ngOnInit(): void {
     this.configForm();
     if(this.data){
       this.id = this.data.id;
@@ -56,11 +57,11 @@ export class AddreasonComponent {
     }
   }
 
-  // getDepartm(id: any){
-  //   this.departmentService.getAllDepartmentById(id).subscribe(response=>{
-  //     this.departmentForm.patchValue(response.data[0])
-  //   })
-  // }
+  getReasons(id: any){
+    this.reasonsService.getReasonsById(id).subscribe(response=>{
+      this.reasonForm.patchValue(response.data[0])
+    })
+  }
 
   ngOnDestroy(): void {
     this.onDestroy.next()
@@ -71,13 +72,13 @@ export class AddreasonComponent {
 
   configForm(){
     this.reasonForm = new FormGroup({
+      reason_id:  new FormControl(null, Validators.required),
       referral_reason_name: new FormControl(null, [Validators.required, Validators.pattern(GlobalConstants.nameRegexOnly)]),
-      reason_descriptions: new FormControl(null, Validators.required),
-      // hospital_address:  new FormControl(null, Validators.required),
-      // hospital_email:new FormControl(null, Validators.required),
-      // contact_number:new FormControl(null, Validators.required),
+      reason_descriptions:  new FormControl(null, Validators.required),
+  
     });
   }
+
 
   // getParent() {
   //   this.departmentService.getAllDepartment().pipe(takeUntil(this.onDestroy)).subscribe((response: any) => {
@@ -85,59 +86,60 @@ export class AddreasonComponent {
   //   });
   // }
 
-  saveReason(){
+  saveReasons(){
     if(this.reasonForm.valid){
-      this.reasonService.addReasons(this.reasonForm.value).subscribe(response=>{
-        if(response.statusCode == 200){
-          Swal.fire({
-            title: "Success",
-            text: "Data saved successfull",
-            icon: "success",
-            confirmButtonColor: "#4690eb",
-            confirmButtonText: "Continue"
-          });
-        }else{
-          Swal.fire({
-            title: "Error",
-            text: response.message,
-            icon: "error",
-            confirmButtonColor: "#4690eb",
-            confirmButtonText: "Continue"
-          });
-        }
-      }
-
-    );
-    }else{
-
-    }
-  }
-
-  // updateDepartment(){
-  //   if(this.departmentForm.valid){
-  //     this.departmentService.updateDepartment(this.departmentForm.value, this.id).subscribe(response=>{
-  //       if(response.statusCode == 201){
-  //         Swal.fire({
-  //           title: "Success",
-  //           text: "Data saved successfull",
-  //           icon: "success",
-  //           confirmButtonColor: "#4690eb",
-  //           confirmButtonText: "Continue"
-  //         });
-  //       }else{
-  //         Swal.fire({
-  //           title: "Error",
-  //           text: response.message,
-  //           icon: "error",
-  //           confirmButtonColor: "#4690eb",
-  //           confirmButtonText: "Continue"
-  //         });
-  //       }
-  //     }
-
-  //   );
-  //   }else{
-
-  //   }
-  // }
-}
+      this.reasonsService.addReasons(this.reasonForm.value).subscribe(response=>{
+        if(response.statusCode == 201){
+           Swal.fire({
+             title: "Success",
+             text: "Data saved successfull",
+             icon: "success",
+             confirmButtonColor: "#4690eb",
+             confirmButtonText: "Continue"
+           });
+         }else{
+           Swal.fire({
+             title: "Error",
+             text: response.message,
+             icon: "error",
+             confirmButtonColor: "#4690eb",
+             confirmButtonText: "Continue"
+           });
+         }
+       }
+ 
+     );
+     }else{
+ 
+     }
+   }
+  updateReasons(){
+     if(this.reasonForm.valid){
+       this.reasonsService.updateReasons(this.reasonForm.value, this.id).subscribe(response=>{
+         if(response.statusCode == 201){
+           Swal.fire({
+             title: "Success",
+             text: "Data saved successfull",
+             icon: "success",
+             confirmButtonColor: "#4690eb",
+             confirmButtonText: "Continue"
+           });
+         }else{
+           Swal.fire({
+             title: "Error",
+             text: response.message,
+             icon: "error",
+             confirmButtonColor: "#4690eb",
+             confirmButtonText: "Continue"
+           });
+         }
+       }
+ 
+     );
+     }else{
+ 
+     }
+   }
+ }
+ 
+ 
