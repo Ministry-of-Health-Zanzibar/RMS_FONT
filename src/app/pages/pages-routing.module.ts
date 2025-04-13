@@ -35,11 +35,18 @@ const routes: Routes = [
 
       },
       {
+<<<<<<< HEAD
         path:'config/referal-type',
         loadChildren:()=>import('./system-config/referal-type/referal-type.module').then(m=>m.ReferalTypeModule)
 
       },
 
+=======
+        path:'config/reasons',
+        loadChildren:()=>import('./system-config/reasons/reasons.module').then(m=>m.ReasonsModule)
+
+      },
+>>>>>>> 9d3cff0a2cc2695d838cb27e845b752d02a3c4b0
       {
         path:'users',
         loadChildren:()=> import('./users/usermanag/usermanag.module').then(m=>m.UsermanagModule)
@@ -65,6 +72,11 @@ const routes: Routes = [
       {
         path: 'user-profile',
         loadChildren: () => import('./user-profile/user-profile.module').then(m => m.UserProfileModule)
+      },
+      {
+        path:'patient',
+        loadChildren:() => import('./partient/partient.module').then(m=>m.PartientModule)
+
       },
 
       {

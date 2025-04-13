@@ -141,34 +141,41 @@ export class SidebarComponent {
           permission: 'View Hospital',
 
         },
+<<<<<<< HEAD
 
         {
           type: 'link',
           name: 'ReferalType',
           link: '/pages/config/referal-type',
           permission: 'View ReferralType',
+=======
+        {
+          type: 'link',
+          name: 'Reason',
+          link: '/pages/config/reasons',
+          permission: 'View Reason',
+>>>>>>> 9d3cff0a2cc2695d838cb27e845b752d02a3c4b0
 
         },
       ]
     },
 
-    // {
-    //   id: 'profile',
-    //   type: 'group',
-    //   name: 'User Profile',
-    //   icon: 'menu',
-    //   permission: 'Setup Management',
-    //   children: [
-    //     {
-    //       type: 'link',
-    //       name: 'Talent Profile',
-    //       link: '/pages/user-profile/talent-profile',
+    {
+      id: 'PID',
+      type: 'group',
+      name: 'Patient',
+      icon: 'menu',
+      permission: 'Patient Module',
+      children: [
+        {
+          type: 'link',
+          name: 'Partient',
+          link: '/pages/patient',
+          permission: 'View Patient',
 
-    //       permission: 'View Permission',
-
-    //     }
-    //   ]
-    // },
+        }
+      ]
+    },
 
   ];
   navItemLinks: NavItem[] = [];

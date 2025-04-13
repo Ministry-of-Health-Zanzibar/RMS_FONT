@@ -1,0 +1,110 @@
+<div class="form-container">
+  <div class="w-full">
+    <div class="relative h-full rounded-lg group p-6">
+      <div class="font-semibold" *ngIf="!id">CREATE NEW PATIENT</div>
+      <div class="font-semibold" *ngIf="id">UPDATE PATIENT</div>
+      <form [formGroup]="userForm" class="horizontal-form">
+
+        <!-- Row 1: First Name, Middle Name -->
+        <div class="form-row">
+          <mat-form-field class="form-field">
+            <mat-label>Full Name</mat-label>
+            <input matInput placeholder="Ex. Ali Juma Ali" formControlName="name" type="text">
+            <mat-error *ngIf="userForm.controls['name'].touched && userForm.controls['name'].invalid">
+              <span *ngIf="userForm.controls['name'].errors?.['required']">This field is mandatory</span>
+              <span *ngIf="userForm.controls['name'].errors?.['pattern']">Must contain alphabetical characters only</span>
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="form-field">
+            <mat-label>Gender</mat-label>
+            <mat-select formControlName="gender">
+              <mat-option value="Male">Male</mat-option>
+              <mat-option value="Female">Female</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- Row 2: Last Name, Address -->
+        <div class="form-row">
+          <mat-form-field class="form-field">
+            <mat-label>Address</mat-label>
+            <input matInput placeholder="Ex. MWERA" formControlName="location" type="text">
+            <mat-error *ngIf="userForm.controls['location'].touched && userForm.controls['location'].invalid">
+              <span *ngIf="userForm.controls['location'].errors?.['required']">This field is mandatory</span>
+              <span *ngIf="userForm.controls['location'].errors?.['pattern']">Must contain alphabetical characters only</span>
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="form-field">
+            <mat-label>Phone Number</mat-label>
+            <input matInput placeholder="Ex. +255 777000000" formControlName="phone" type="text">
+            <mat-error *ngIf="userForm.controls['phone'].touched && userForm.controls['phone'].invalid">
+              <span *ngIf="userForm.controls['phone'].errors?.['required']">This field is mandatory</span>
+              <!-- <span *ngIf="userForm.controls['phone_no'].errors?.['pattern']">Must start +255 and 9 digits</span> -->
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Row 3: Email, Phone Number -->
+        <div class="form-row">
+          <mat-form-field class="form-field">
+            <mat-label>Job</mat-label>
+            <input matInput placeholder="Ex. JOB" formControlName="job" type="text">
+            <mat-error *ngIf="userForm.controls['job'].touched && userForm.controls['job'].invalid">
+              <span *ngIf="userForm.controls['job'].errors?.['required']">This field is mandatory</span>
+              <span *ngIf="userForm.controls['job'].errors?.['pattern']">This field is invalid (email is incorrect)</span>
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="form-field">
+            <mat-label>Position</mat-label>
+            <input matInput placeholder="Ex. POSITION" formControlName="position" type="text">
+            <mat-error *ngIf="userForm.controls['position'].touched && userForm.controls['position'].invalid">
+              <span *ngIf="userForm.controls['position'].errors?.['required']">This field is mandatory</span>
+              <span *ngIf="userForm.controls['position'].errors?.['pattern']">This field is invalid (email is incorrect)</span>
+            </mat-error>
+          </mat-form-field>
+
+
+        </div>
+
+
+
+
+
+        <!-- Row 6: Date of Birth -->
+        <div class="form-row">
+          <mat-form-field class="form-field">
+            <mat-label>Date of Birth</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="date_of_birth" placeholder="Choose a date">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error *ngIf="userForm.controls['date_of_birth'].touched && userForm.controls['date_of_birth'].invalid">
+              <span *ngIf="userForm.controls['date_of_birth'].errors?.['required']">This field is mandatory</span>
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="w-full">
+            <mat-label>Upload File</mat-label>
+            <input matInput type="text" formControlName="referral_letter_file" (click)="fileInput.click()"  placeholder="No file chosen" readonly>
+            <input type="file" accept=".pdf,.doc,.docx,.jpg,.png"  (change)="onAttachementSelected($event)" hidden #fileInput />
+            <mat-icon matSuffix (click)="fileInput.click()" style="cursor: pointer;">attach_file</mat-icon>
+            <mat-error class="error-message" *ngIf="userForm.controls['referral_letter_file'].touched && userForm.controls['referral_letter_file'].invalid">
+              <span *ngIf="userForm.controls['referral_letter_file'].errors?.['required']">This field is mandatory</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+      </form>
+    </div>
+
+    <mat-dialog-actions align="end">
+      <button mat-button mat-dialog-close>Cancel</button>
+      <button mat-flat-button [mat-dialog-close]="true" *ngIf="!id" cdkFocusInitial [disabled]="userForm.invalid" (click)="saveUser()">Save Data</button>
+      <button mat-flat-button [mat-dialog-close]="true" *ngIf="id" cdkFocusInitial [disabled]="userForm.invalid" (click)="updateUser()">Update Data</button>
+    </mat-dialog-actions>
+  </div>
+  </div>
+
+

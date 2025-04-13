@@ -1,0 +1,36 @@
+
+<div>
+    <div class="w-full">
+      <div class="relative h-full rounded-lg  group  p-6">
+        <div *ngIf="!id" class="font-semibold ">CREATE NEW REASONS</div>
+        <div *ngIf="id" class="font-semibold ">UPDATE REASONS</div>
+        <form [formGroup]="reasonForm">
+          <mat-form-field class="w-full mt-6">
+            <mat-label>Referral Reason Name: </mat-label>
+            <input matInput placeholder="Ex. MARADHI SUGU" formControlName="referral_reason_name" type="text">
+            <mat-error class="error-message" *ngIf="reasonForm.controls['referral_reason_name'].touched && reasonForm.controls['referral_reason_name'].invalid">
+              <span *ngIf="reasonForm.controls['referral_reason_name'].errors?.['required']">This field is mandatory</span>
+            </mat-error>
+          </mat-form-field>
+  
+          <mat-form-field class="w-full mt-4">
+            <mat-label>Reason Descriptions :</mat-label>
+            <input matInput placeholder="Ex.YAMESHINDIKANA" formControlName="reason_descriptions" type="text">
+            <mat-error class="error-message" *ngIf="reasonForm.controls['reason_descriptions'].touched && reasonForm.controls['reason_descriptions'].invalid">
+              <span *ngIf="reasonForm.controls['reason_descriptions'].errors?.['required']">This field is mandatory</span>
+              <span *ngIf="reasonForm.controls['reason_descriptions'].errors?.['pattern']">This field is invalid (must be contain alpharbetical only)</span>
+            </mat-error>
+          </mat-form-field>
+  
+        </form>
+      </div>
+    </div>
+  
+    <mat-dialog-actions align="end">
+      <button mat-button mat-dialog-close>Cancel</button>
+      <button *ngIf="!id" mat-flat-button [mat-dialog-close]="true" cdkFocusInitial [disabled]="reasonForm.invalid" (click)="saveReasons()">Save Data</button>
+      <!-- <button *ngIf="id" mat-flat-button [mat-dialog-close]="true" cdkFocusInitial [disabled]="hospitalForm.invalid" (click)="updateDepartment()">Update Data</button> -->
+    </mat-dialog-actions>
+  </div>
+  
+  
