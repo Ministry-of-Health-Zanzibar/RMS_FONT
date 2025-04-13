@@ -1,0 +1,36 @@
+
+<div>
+    <div class="w-full">
+      <div class="relative h-full rounded-lg  group  p-6">
+        <div *ngIf="!id" class="font-semibold ">CREATE NEW REFERRAL TYPE</div>
+        <div *ngIf="id" class="font-semibold ">UPDATE REFERRAL TYPE</div>
+        <form [formGroup]="referralTypeForm">
+          <mat-form-field class="w-full mt-6">
+            <mat-label>Referral Type name: </mat-label>
+            <input matInput placeholder="Ex. MAINLAND" formControlName="referral_type_name" type="text">
+            <mat-error class="error-message" *ngIf="referralTypeForm.controls['referral_type_name'].touched && referralTypeForm.controls['referral_type_name'].invalid">
+              <span *ngIf="referralTypeForm.controls['referral_type_name'].errors?.['required']">This field is mandatory</span>
+            </mat-error>
+          </mat-form-field>
+  
+          <mat-form-field class="w-full mt-4">
+            <mat-label>Referral Type Code:</mat-label>
+            <input matInput placeholder="Ex. REFERRAL 0099" formControlName="referral_type_code" type="text">
+            <mat-error class="error-message" *ngIf="referralTypeForm.controls['referral_type_code'].touched && referralTypeForm.controls['referral_type_code'].invalid">
+              <span *ngIf="referralTypeForm.controls['referral_type_code'].errors?.['required']">This field is mandatory</span>
+              <span *ngIf="referralTypeForm.controls['referral_type_code'].errors?.['pattern']">This field is invalid (must be contain alpharbetical only)</span>
+            </mat-error>
+          </mat-form-field>
+  
+        </form>
+      </div>
+    </div>
+  
+    <mat-dialog-actions align="end">
+      <button mat-button mat-dialog-close>Cancel</button>
+      <button *ngIf="!id" mat-flat-button [mat-dialog-close]="true" cdkFocusInitial [disabled]="referralTypeForm.invalid" (click)="saveReferralType()">Save Data</button>
+      <!-- <button *ngIf="id" mat-flat-button [mat-dialog-close]="true" cdkFocusInitial [disabled]="hospitalForm.invalid" (click)="updateDepartment()">Update Data</button> -->
+    </mat-dialog-actions>
+  </div>
+  
+  

@@ -35,6 +35,12 @@ const routes: Routes = [
 
       },
       {
+        path:'config/referal-type',
+        loadChildren:()=>import('./system-config/referal-type/referal-type.module').then(m=>m.ReferalTypeModule)
+
+      },
+
+      {
         path:'users',
         loadChildren:()=> import('./users/usermanag/usermanag.module').then(m=>m.UsermanagModule)
       },
