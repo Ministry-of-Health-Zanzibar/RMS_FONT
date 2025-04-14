@@ -48,6 +48,12 @@ const routes: Routes = [
       },
 >>>>>>> 9d3cff0a2cc2695d838cb27e845b752d02a3c4b0
       {
+          path:'config/referrals',
+          loadChildren:()=>import('./referrals/referrals.module').then(m=>m.ReferralsModule)
+
+      },
+
+      {
         path:'users',
         loadChildren:()=> import('./users/usermanag/usermanag.module').then(m=>m.UsermanagModule)
       },

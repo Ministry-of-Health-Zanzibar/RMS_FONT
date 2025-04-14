@@ -145,7 +145,7 @@ export class SidebarComponent {
 
         {
           type: 'link',
-          name: 'ReferalType',
+          name: 'ReferralType',
           link: '/pages/config/referal-type',
           permission: 'View ReferralType',
 =======
@@ -160,6 +160,7 @@ export class SidebarComponent {
       ]
     },
 
+<<<<<<< HEAD
     {
       id: 'PID',
       type: 'group',
@@ -172,6 +173,40 @@ export class SidebarComponent {
           name: 'Partient',
           link: '/pages/patient',
           permission: 'View Patient',
+=======
+
+    {
+      id: 'referral',
+      type: 'group',
+      name: 'Referral Management',
+      icon: 'call_split',
+      permission: 'Setup Management',
+      children: [
+        {
+          type: 'link',
+          name: 'View referral',
+          link: '/pages/config/referrals',
+
+          permission: 'View Referral',
+
+        }
+      ]
+    },
+
+
+
+    // {
+    //   id: 'profile',
+    //   type: 'group',
+    //   name: 'User Profile',
+    //   icon: 'menu',
+    //   permission: 'Setup Management',
+    //   children: [
+    //     {
+    //       type: 'link',
+    //       name: 'Talent Profile',
+    //       link: '/pages/user-profile/talent-profile',
+>>>>>>> iddyochu
 
         }
       ]
