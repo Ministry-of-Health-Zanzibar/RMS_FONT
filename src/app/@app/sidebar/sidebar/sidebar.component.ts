@@ -144,13 +144,34 @@ export class SidebarComponent {
 
         {
           type: 'link',
-          name: 'ReferalType',
+          name: 'ReferralType',
           link: '/pages/config/referal-type',
           permission: 'View ReferralType',
 
         },
       ]
     },
+
+
+    {
+      id: 'referral',
+      type: 'group',
+      name: 'Referral Management',
+      icon: 'call_split',
+      permission: 'Setup Management',
+      children: [
+        {
+          type: 'link',
+          name: 'View referral',
+          link: '/pages/config/referrals',
+
+          permission: 'View Referral',
+
+        }
+      ]
+    },
+
+
 
     // {
     //   id: 'profile',
