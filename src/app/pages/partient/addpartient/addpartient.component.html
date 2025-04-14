@@ -75,7 +75,7 @@
 
         <!-- Row 6: Date of Birth -->
         <div class="form-row">
-          <mat-form-field class="form-field">
+          <mat-form-field class="w-full mt-4">
             <mat-label>Date of Birth</mat-label>
             <input matInput [matDatepicker]="picker" formControlName="date_of_birth" placeholder="Choose a date">
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -84,8 +84,27 @@
               <span *ngIf="userForm.controls['date_of_birth'].errors?.['required']">This field is mandatory</span>
             </mat-error>
           </mat-form-field>
-
+          <!-- <mat-form-field class="form-field">
+            <mat-label>Date of Birth</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="date_of_birth" placeholder="Choose a date">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error *ngIf="userForm.controls['date_of_birth'].touched && userForm.controls['date_of_birth'].invalid">
+              <span *ngIf="userForm.controls['date_of_birth'].errors?.['required']">This field is mandatory</span>
+            </mat-error>
+          </mat-form-field> -->
           <mat-form-field class="w-full">
+            <mat-label>Upload File</mat-label>
+            <input matInput type="text" formControlName="referral_letter_file" (click)="fileInput.click()" placeholder="No file chosen" readonly>
+            <input type="file" accept=".pdf,.doc,.docx,.jpg,.png" (change)="onAttachementSelected($event)" hidden #fileInput />
+            <mat-icon matSuffix (click)="fileInput.click()" style="cursor: pointer;">attach_file</mat-icon>
+            <mat-error class="error-message" *ngIf="userForm.controls['referral_letter_file'].touched && userForm.controls['referral_letter_file'].invalid">
+              <span *ngIf="userForm.controls['referral_letter_file'].errors?.['required']">This field is mandatory</span>
+            </mat-error>
+          </mat-form-field>
+
+
+          <!-- <mat-form-field class="w-full">
             <mat-label>Upload File</mat-label>
             <input matInput type="text" formControlName="referral_letter_file" (click)="fileInput.click()"  placeholder="No file chosen" readonly>
             <input type="file" accept=".pdf,.doc,.docx,.jpg,.png"  (change)="onAttachementSelected($event)" hidden #fileInput />
@@ -93,7 +112,7 @@
             <mat-error class="error-message" *ngIf="userForm.controls['referral_letter_file'].touched && userForm.controls['referral_letter_file'].invalid">
               <span *ngIf="userForm.controls['referral_letter_file'].errors?.['required']">This field is mandatory</span>
             </mat-error>
-          </mat-form-field>
+          </mat-form-field> -->
         </div>
 
       </form>

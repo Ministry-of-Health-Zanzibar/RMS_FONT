@@ -52,7 +52,8 @@ export class AddpartientComponent {
   options: any[] = [];
   myControl = new FormControl('');
   filteredOptions: Observable<any[]>;
-  selectedAttachement: File = null!;
+ // selectedAttachement: File = null!;
+  selectedAttachement: File | null = null;
 
   constructor(
     private UserService:PartientService,
@@ -88,10 +89,10 @@ export class AddpartientComponent {
         // Validators.pattern(/^\+255\d{9}$/) // Regex to validate +255 followed by 9 digits
       ]),
 
-      position: new FormControl(null, Validators.required),
-      job: new FormControl(null, Validators.required),
+      position: new FormControl(null),
+      job: new FormControl(null),
 
-      referral_letter_file: new FormControl(null, [Validators.required,]),
+      referral_letter_file: new FormControl(null),
 
       date_of_birth: new FormControl(null, Validators.required),
 
@@ -179,25 +180,64 @@ export class AddpartientComponent {
   }
 
   onAttachementSelected(event: Event) {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      this.selectedAttachement = input.files[0];
-      this.userForm.get('referral_letter_file')?.setValue(this.selectedAttachement.name);
-      this.userForm.get('referral_letter_file')?.updateValueAndValidity();
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (file) {
+      this.selectedAttachement = file;
+      console.log("Selected file:", file.name);
     }
   }
+
+  // onAttachementSelected(event: Event) {
+  //   const input = event.target as HTMLInputElement;
+  //   if (input.files && input.files.length > 0) {
+  //     this.selectedAttachement = input.files[0];
+  //     this.userForm.get('referral_letter_file')?.setValue(this.selectedAttachement.name);
+  //     this.userForm.get('referral_letter_file')?.updateValueAndValidity();
+  //   }
+  // }
+
+
+  // public addAnnouncement(): void {
+  //   const formData = new FormData();
+  //   formData.append('announcement_title', this.name.get('announcementTitle')?.value);
+  //   formData.append('announcement_content', this.announcementForm.get('announcementContent')?.value);
+
+  //   const files = this.announcementForm.get('document')?.value;
+  //   if (files && files.length > 0) {
+  //     for (let i = 0; i < files.length; i++) {
+  //       formData.append('announcement_document[]', files[i], files[i].name); // Append each file
+  //     }
+  //   }
+
+  //   this.announcementService.createAnnouncement(formData).subscribe(
+  //     (response: any) => {
+  //       this.dialogRef.close();
+  //       this.onAddAnnouncementEventEmitter.emit();
+  //       if (response.statusCode === 201) {
+  //         this.toastService.toastSuccess(response.message);
+  //       } else {
+  //         this.toastService.toastError(response.message);
+  //       }
+  //     },
+  //     (errorResponse: HttpErrorResponse) => {
+  //       this.toastService.toastError(errorResponse.error.message);
+  //     }
+  //   );
+  // }
 
 
   saveUser() {
     if (this.userForm.valid) {
       const formData = new FormData();
 
-      // Append all fields from the form to FormData
       Object.keys(this.userForm.controls).forEach(key => {
         if (key === 'referral_letter_file') {
-          formData.append(key, this.selectedAttachement); // append actual file
+          if (this.selectedAttachement) {
+            formData.append('referral_letter_file', this.selectedAttachement);
+          }
         } else {
-          formData.append(key, this.userForm.get(key)?.value);
+          const value = this.userForm.get(key)?.value;
+          formData.append(key, value ?? '');
         }
       });
 
@@ -222,6 +262,7 @@ export class AddpartientComponent {
       });
     }
   }
+
 
 
 

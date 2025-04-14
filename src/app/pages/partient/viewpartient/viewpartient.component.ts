@@ -17,6 +17,7 @@ import { UserService } from '../../../services/users/user.service';
 import { MatSort } from '@angular/material/sort';
 import { PartientService } from '../../../services/partient/partient.service';
 import { AddpartientComponent } from '../addpartient/addpartient.component';
+import { InsuranceComponent } from '../insurance/insurance.component';
 
 @Component({
   selector: 'app-viewpartient',
@@ -197,4 +198,24 @@ export class ViewpartientComponent {
     }
   }
 
-}
+  getInsurance(id:any){
+    // console.log("hiiii",id);
+    let config = new MatDialogConfig()
+    config.disableClose = false
+    config.role = 'dialog'
+    config.maxWidth ='100vw'
+    config.maxHeight = '100vh'
+    config.width = '850px'
+    config.panelClass = 'full-screen-modal'
+    config.data = {id: id}
+
+    const dialogRef = this.dialog.open(InsuranceComponent,config);
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.userPetient();
+    });
+  }
+
+
+  }
+

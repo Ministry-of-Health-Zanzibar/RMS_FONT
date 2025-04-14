@@ -78,7 +78,25 @@
                     color="primary">
                   </mat-slide-toggle>
                 </emr-segmented-button>
+
+                <emr-segmented-button  value="edit_squareData">
+                  <span
+                    (click)="getInsurance(element.patient_id)"
+                    *ngIf="permission.parmissionMatched(['View Patient'])"
+                    matTooltip="Edit"
+                  >
+                    <button
+                      mat-flat-button
+                      class="w-45 h-4 text-sm font-semibold text-white bg-blue-600 rounded-lg shadow-md hover:bg-blue-700 transition-all"
+                    >
+                      INSURANCE
+                    </button>
+                  </span>
+                </emr-segmented-button>
               </emr-segmented>
+
+              <!---->
+
             </td>
           </ng-container>
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -86,10 +104,10 @@
 
           <!-- Row shown when there is no matching data. -->
           <tr class="mat-row" *matNoDataRow>
-            <td class="mat-cell tablefoter" colspan="4" >No data matching the filter " {{input.value}} "</td>
+            <td class="mat-cell tablefoter" colspan="10" >No data matching the filter " {{input.value}} "</td>
           </tr>
         </table>
-        <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+        <mat-paginator [pageSizeOptions]="[10, 20]"
                        showFirstLastButtons
                        aria-label="Select page of permission" class="pt-3">
         </mat-paginator>

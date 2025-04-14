@@ -103,37 +103,37 @@ export class SidebarComponent {
       name: 'System Configuration',
       permission: 'Setup Management',
       children: [
-        {
-          type: 'link',
-          name: 'View Country',
-          link: '/pages/config/country',
-          permission: 'Setup Management',
+        // {
+        //   type: 'link',
+        //   name: 'View Country',
+        //   link: '/pages/config/country',
+        //   permission: 'Setup Management',
 
-        },
+        // },
         {
           type: 'link',
           name: 'Location',
           link: '/pages/config/location',
           permission: 'Setup Management',
         },
-        {
-          type: 'link',
-          name: 'Employer',
-          link: '/pages/config/employer',
-          permission: 'Setup Management',
-        },
-        {
-          type: 'link',
-          name: 'Work Station',
-          link: '/pages/config/work-station',
-          permission: 'Setup Management',
-        },
-        {
-          type: 'link',
-          name: 'Employer Type',
-          link: '/pages/config/employer-type',
-          permission: 'View Employer Type',
-        },
+        // {
+        //   type: 'link',
+        //   name: 'Employer',
+        //   link: '/pages/config/employer',
+        //   permission: 'Setup Management',
+        // },
+        // {
+        //   type: 'link',
+        //   name: 'Work Station',
+        //   link: '/pages/config/work-station',
+        //   permission: 'Setup Management',
+        // },
+        // {
+        //   type: 'link',
+        //   name: 'Employer Type',
+        //   link: '/pages/config/employer-type',
+        //   permission: 'View Employer Type',
+        // },
         {
           type: 'link',
           name: 'Hospital',
