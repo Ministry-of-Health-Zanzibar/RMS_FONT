@@ -40,11 +40,7 @@ const routes: Routes = [
         loadChildren:()=>import('./system-config/referal-type/referal-type.module').then(m=>m.ReferalTypeModule)
 
       },
-<<<<<<< HEAD
       {
-=======
-      {   
->>>>>>> 2fd6928 (referalss)
 
 
         path:'config/reasons',
