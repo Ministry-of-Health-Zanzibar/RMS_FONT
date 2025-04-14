@@ -8,6 +8,9 @@ import { environment } from '../../../environments/environment.prod';
   providedIn: 'root'
 })
 export class ReferalTypeService {
+  unblockReferalType(id: any, referral_type_id: any) {
+    throw new Error('Method not implemented.');
+  }
 private baseUrl: string = `${environment.baseUrl}`;
   private href = `${this.baseUrl}referralTypes`;
 
@@ -33,7 +36,7 @@ private baseUrl: string = `${environment.baseUrl}`;
     return this.http.patch(`${this.href}/${id}`,employerType)
   }
 
-  public unblockHospital(id:any): Observable<any>{
-    return this.http.get(`${this.baseUrl}unBlockReferalType/${id}`);
+  public unblockReferalTypes(data: any, id:any): Observable<any>{
+    return this.http.patch(`${this.baseUrl}ReferralTypes/unBlock/${id}`, data);
   }
 }
