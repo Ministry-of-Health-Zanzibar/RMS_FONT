@@ -145,7 +145,7 @@ export class SidebarComponent {
 
         {
           type: 'link',
-          name: 'ReferalType',
+          name: 'ReferralType',
           link: '/pages/config/referal-type',
           permission: 'View ReferralType',
         },
