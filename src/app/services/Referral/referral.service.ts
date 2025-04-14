@@ -33,7 +33,13 @@ export class ReferralService {
     return this.http.patch(`${this.href}/${id}`,referral)
   }
 
-  public unblockReferral(id:any): Observable<any>{
-    return this.http.get(`${this.baseUrl}unBlockRefferal/${id}`);
+  // public unblockReferral(data: any, id:any): Observable<any>{
+  //   return this.http.patch(`${this.baseUrl}referrals/unBlock/unBlock/${id}`, data);
+  // } 
+  
+  public unblockReferral(data: any, id: any): Observable<any> {
+    return this.http.patch(`${this.baseUrl}referrals/unBlock/${id}`, data);
   }
+  
+  
 }

@@ -18,6 +18,8 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { PermissionService } from '../../../services/authentication/permission.service';
 import { ReferralService } from '../../../services/Referral/referral.service';
 import { AddReferralsComponent } from '../add-referrals/add-referrals.component';
+import Swal from 'sweetalert2';
+import { EmrSegmentedModule } from "../../../../../projects/components/src/lib/segmented/segmented.module";
 
 @Component({
   selector: 'app-view-referrals',
@@ -37,7 +39,8 @@ import { AddReferralsComponent } from '../add-referrals/add-referrals.component'
     MatAnchor,
     MatButton,
     RouterLink,
-  ],
+    EmrSegmentedModule
+],
   templateUrl: './view-referrals.component.html',
   styleUrl: './view-referrals.component.scss'
 })
@@ -47,8 +50,8 @@ export class ViewReferralsComponent implements OnInit,OnDestroy{
    private readonly onDestroy = new Subject<void>()
     
       displayedColumns: string[] = 
-      ['id', 'patient_id', 'referral_type_id',
-      'hospital_id', 'reason_id','start_date', 'end_date', 'status', 'action'];
+      ['id', 'patient_name', 'referral_type_name',
+      'hospital_name', 'referral_reason_name','start_date', 'end_date', 'status', 'action'];
       dataSource: MatTableDataSource<any> = new MatTableDataSource();
     
       @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -113,118 +116,95 @@ export class ViewReferralsComponent implements OnInit,OnDestroy{
         });
       }
     
-      // updateDepartment(id: any) {
-      //   let config = new MatDialogConfig()
-      //   config.disableClose = false
-      //   config.role = 'dialog'
-      //   config.maxWidth ='100vw'
-      //   config.maxHeight = '100vh'
-      //   config.width = '850px'
-      //   config.panelClass = 'full-screen-modal'
-      //   config.data = {id: id}
+      updateRefererral(id: any) {
+        let config = new MatDialogConfig()
+        config.disableClose = false
+        config.role = 'dialog'
+        config.maxWidth ='100vw'
+        config.maxHeight = '100vh'
+        config.width = '850px'
+        config.panelClass = 'full-screen-modal'
+        config.data = {id: id}
     
-      //   const dialogRef = this.dialog.open(AddDepartmentComponent,config);
+        const dialogRef = this.dialog.open(AddReferralsComponent,config);
     
-      //   dialogRef.afterClosed().subscribe(result => {
-      //     this.getDepartment();
-      //   });
-      // }
+        dialogRef.afterClosed().subscribe(result => {
+          this.getReferrals();
+        });
+      }
     
-      // downloadFile(filename: string): void {
-      //   const link = document.createElement('a');
-      //   link.href = `assets/file/${filename}`;
-      //   link.download = filename;
-      //   link.click();
-      // }
+      
     
-      // uploadFile(): void {
-      //   let config = new MatDialogConfig()
-      //   config.disableClose = false
-      //   config.role = 'dialog'
-      //   config.maxWidth ='100vw'
-      //   config.maxHeight = '100vh'
-      //   config.width = '850px'
-      //   config.panelClass = 'full-screen-modal'
-    
-      //   const dialogRef = this.dialog.open(UploadDepartmentComponent,config);
-    
-      //   dialogRef.afterClosed().subscribe(result => {
-      //     this.getDepartment();
-      //   });
-      // }
-    
-      // confirmBlock(data:any){
-      //   var message;
-      //   if(data.deleted_at){
-      //     message = 'Are you sure you want to unblock'
-      //   }
-      //   else{
-      //     message = 'Are you sure you want to block'
-      //   }
-      //   Swal.fire({
-      //     title: "Confirm",
-      //     html: message + ' <b> ' + data.department_name + ' </b> ',
-      //     icon: "warning",
-      //     confirmButtonColor: "#4690eb",
-      //     confirmButtonText: "Confirm",
-      //     cancelButtonColor: "#D5D8DC",
-      //     cancelButtonText: "Cancel",
-      //     showCancelButton: true
-      //   }).then((result) => {
-      //     if (result.isConfirmed) {
-      //       this.blockDepartment(data.department_id, data.deleted_at);
-      //     }
-      //     else{
-      //       this.getDepartment();
-      //     }
-      //   });
-      // }
-    
-      // blockDepartment(id: any, deleted: any): void{
-      //   if(deleted){
-      //     this.departmentService.unblockDepartment(id).subscribe(response=>{
-      //       if(response.statusCode == 201){
-      //         Swal.fire({
-      //           title: "Success",
-      //           text: response.message,
-      //           icon: "success",
-      //           confirmButtonColor: "#4690eb",
-      //           confirmButtonText: "Continue"
-      //         });
-      //         this.getDepartment();
-      //       }else{
-      //         Swal.fire({
-      //           title: "Error",
-      //           text: response.message,
-      //           icon: "error",
-      //           confirmButtonColor: "#4690eb",
-      //           confirmButtonText: "Continue"
-      //         });
-      //       }
-      //     })
-      //   }else{
-      //     this.departmentService.deleteDepartment(id).subscribe(response=>{
-      //       if(response.statusCode == 201){
-      //         Swal.fire({
-      //           title: "Success",
-      //           text: response.message,
-      //           icon: "success",
-      //           confirmButtonColor: "#4690eb",
-      //           confirmButtonText: "Continue"
-      //         });
-      //         this.getDepartment()
-      //       }else{
-      //         Swal.fire({
-      //           title: "Error",
-      //           text: response.message,
-      //           icon: "error",
-      //           confirmButtonColor: "#4690eb",
-      //           confirmButtonText: "Continue"
-      //         });
-      //       }
-      //     });
-      //   }
-      // }
-    
-
-}
+       confirmBlock(data:any){
+           var message;
+           if(data.deleted_at){
+             message = 'Are you sure you want to unblock'
+           }
+           else{
+             message = 'Are you sure you want to block'
+           }
+           Swal.fire({
+             title: "Confirm",
+             html: message + ' <b> ' + data.referral_id + ' </b> ',
+             icon: "warning",
+             confirmButtonColor: "#4690eb",
+             confirmButtonText: "Confirm",
+             cancelButtonColor: "#D5D8DC",
+             cancelButtonText: "Cancel",
+             showCancelButton: true
+           }).then((result) => {
+             if (result.isConfirmed) {
+               this.blockReferral(data, data.deleted_at);
+             }
+             else{
+               this.getReferrals();
+             }
+           });
+         }
+       
+         blockReferral(data: any, deleted: any): void{
+           if(deleted){
+             this.referralService.unblockReferral(data, data?.hospital_id).subscribe(response=>{
+               if(response.statusCode == 200){
+                 Swal.fire({
+                   title: "Success",
+                   text: response.message,
+                   icon: "success",
+                   confirmButtonColor: "#4690eb",
+                   confirmButtonText: "Continue"
+                 });
+                 this.getReferrals();
+               }else{
+                 Swal.fire({
+                   title: "Error",
+                   text: response.message,
+                   icon: "error",
+                   confirmButtonColor: "#4690eb",
+                   confirmButtonText: "Continue"
+                 });
+               }
+             })
+           }else{
+             this.referralService.deleteReferral(data?.referral_id).subscribe(response=>{
+               if(response.statusCode == 200){
+                 Swal.fire({
+                   title: "Success",
+                   text: response.message,
+                   icon: "success",
+                   confirmButtonColor: "#4690eb",
+                   confirmButtonText: "Continue"
+                 });
+                 this.getReferrals()
+               }else{
+                 Swal.fire({
+                   title: "Error",
+                   text: response.message,
+                   icon: "error",
+                   confirmButtonColor: "#4690eb",
+                   confirmButtonText: "Continue"
+                 });
+               }
+             });
+           }
+         }
+      }

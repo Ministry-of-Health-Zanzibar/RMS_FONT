@@ -142,7 +142,6 @@ export class SidebarComponent {
 
         },
 
-
         {
           type: 'link',
           name: 'ReferralType',
@@ -155,16 +154,7 @@ export class SidebarComponent {
           name: 'Reason',
           link: '/pages/config/reasons',
           permission: 'View Reason',
-
-
-        },
-        {
-          type: 'link',
-          name: 'Bill',
-          link: '/pages/config/bill',
-          permission: 'View Bill',
-
-        },
+        }
       ]
     },
 
@@ -180,6 +170,23 @@ export class SidebarComponent {
           name: 'Partient',
           link: '/pages/patient',
           permission: 'View Patient',
+
+        }
+      ]
+    },
+    {
+      id: 'referral',
+      type: 'group',
+      name: 'Referral Management',
+      icon: 'call_split',
+      permission: 'Setup Management',
+      children: [
+        {
+          type: 'link',
+          name: 'View referral',
+          link: '/pages/config/referrals',
+
+          permission: 'View Referral',
 
         }
       ]
