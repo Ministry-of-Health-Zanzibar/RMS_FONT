@@ -72,7 +72,7 @@ export class SidebarComponent {
       icon: 'person',
       permission: ['User Management', 'View Permission', 'View Role'],
       children: [
-      
+
         {
           type: 'link',
           name: 'Manage Users',
@@ -141,20 +141,21 @@ export class SidebarComponent {
           permission: 'View Hospital',
 
         },
-<<<<<<< HEAD
+
 
         {
           type: 'link',
           name: 'ReferalType',
           link: '/pages/config/referal-type',
           permission: 'View ReferralType',
-=======
+        },
+
         {
           type: 'link',
           name: 'Reason',
           link: '/pages/config/reasons',
           permission: 'View Reason',
->>>>>>> 9d3cff0a2cc2695d838cb27e845b752d02a3c4b0
+
 
         },
       ]
