@@ -158,6 +158,13 @@ export class SidebarComponent {
 
 
         },
+        {
+          type: 'link',
+          name: 'Bill',
+          link: '/pages/config/bill',
+          permission: 'View Bill',
+
+        },
       ]
     },
 

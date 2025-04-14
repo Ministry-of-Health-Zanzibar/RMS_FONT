@@ -6,35 +6,34 @@ import { environment } from '../../../environments/environment.prod';
 @Injectable({
   providedIn: 'root'
 })
-export class ReasonsService {
+export class BillService {
 
-private baseUrl: string = `${environment.baseUrl}`;
-  private href = `${this.baseUrl}reasons`;
+  private baseUrl: string = `${environment.baseUrl}`;
+  private href = `${this.baseUrl}bills`;
 
   constructor(private http: HttpClient) {}
 
-  public getAllReasons(): Observable<any> {
+  public getAllBill(): Observable<any> {
     return this.http.get<any>(this.href);
   }
 
-  public getReasonsById(id: any): Observable<any> {
+  public getBillById(id: any): Observable<any> {
     return this.http.get<any>(`${this.href}/${id}`);
   }
 
-  public addReasons(employerType: any): Observable<any> {
+  public addBill(employerType: any): Observable<any> {
     return this.http.post(this.href, employerType);
   }
 
-  public deleteReasons(id:any): Observable<any>{
+  public deleteBill(id:any): Observable<any>{
     return this.http.delete(`${this.href}/${id}`);
   }
 
-  public updateReasons(employerType:any, id:any): Observable<any>{
+  public updateBill(employerType:any, id:any): Observable<any>{
     return this.http.patch(`${this.href}/${id}`,employerType)
   }
-
-  public unblockReasons(data: any, id:any): Observable<any>{
-    return this.http.patch(`${this.baseUrl}reasons/unBlock/${id}`, data);
+  public unblockBill(data: any, id:any): Observable<any>{
+    return this.http.patch(`${this.baseUrl}bills/unBlock/${id}`, data);
   }
 
 }
