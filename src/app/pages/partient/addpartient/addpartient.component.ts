@@ -56,7 +56,7 @@ export class AddpartientComponent {
   selectedAttachement: File | null = null;
 
   constructor(
-    private UserService:PartientService,
+    private patientService:PartientService,
     private roleService: RolePermissionService,
     private dialogRef: MatDialogRef<AddpartientComponent>) {
 
@@ -105,7 +105,7 @@ export class AddpartientComponent {
 
 
   getUser(id: any) {
-    this.UserService.getPartientById(id).subscribe(response=>{
+    this.patientService.getPartientById(id).subscribe(response=>{
       if(response.statusCode == 200){
         this.user = response.data[0];
         this.userForm.patchValue(this.user);
@@ -156,7 +156,7 @@ export class AddpartientComponent {
   updateUser(){
     if(this.userForm.valid){
 
-      this.UserService.updatePartient(this.userForm.value,this.id).subscribe(response=>{
+      this.patientService.updatePartient(this.userForm.value,this.id).subscribe(response=>{
         if(response.statusCode == 200){
           Swal.fire({
             title: "Success",
@@ -179,22 +179,24 @@ export class AddpartientComponent {
     }
   }
 
-  onAttachementSelected(event: Event) {
-    const file = (event.target as HTMLInputElement).files?.[0];
-    if (file) {
-      this.selectedAttachement = file;
-      console.log("Selected file:", file.name);
-    }
-  }
-
   // onAttachementSelected(event: Event) {
-  //   const input = event.target as HTMLInputElement;
-  //   if (input.files && input.files.length > 0) {
-  //     this.selectedAttachement = input.files[0];
-  //     this.userForm.get('referral_letter_file')?.setValue(this.selectedAttachement.name);
-  //     this.userForm.get('referral_letter_file')?.updateValueAndValidity();
+  //   const file = (event.target as HTMLInputElement).files?.[0];
+  //   if (file) {
+  //     this.selectedAttachement = file;
+  //     console.log("Selected file:", file.name);
   //   }
   // }
+
+
+
+  onAttachementSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedAttachement = input.files[0];
+      this.userForm.get('referral_letter_file')?.setValue(this.selectedAttachement.name);
+      this.userForm.get('referral_letter_file')?.updateValueAndValidity();
+    }
+  }
 
 
   // public addAnnouncement(): void {
@@ -241,7 +243,7 @@ export class AddpartientComponent {
         }
       });
 
-      this.UserService.addPartient(formData).subscribe(response => {
+      this.patientService.addPartient(formData).subscribe(response => {
         if (response.statusCode === 201) {
           Swal.fire({
             title: "Success",
