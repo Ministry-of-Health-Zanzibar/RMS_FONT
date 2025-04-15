@@ -90,6 +90,23 @@
                     color="primary">
                   </mat-slide-toggle>
                 </emr-segmented-button>
+
+                <emr-segmented-button  value="edit_squareData">
+                  <span
+                    (click)="getBills(element.referral_id)"
+                    *ngIf="permission.parmissionMatched(['View Referral'])"
+                    matTooltip="Edit"
+                  >
+                    <button
+                      mat-flat-button
+                      class="w-45 h-4 text-sm font-semibold text-white bg-blue-600 rounded-lg shadow-md hover:bg-blue-700 transition-all"
+                    >
+                      Bills
+                    </button>
+                  </span>
+                </emr-segmented-button>
+
+
               </emr-segmented>
             </td>
           </ng-container>

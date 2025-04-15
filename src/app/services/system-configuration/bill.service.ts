@@ -21,8 +21,8 @@ export class BillService {
     return this.http.get<any>(`${this.href}/${id}`);
   }
 
-  public addBill(employerType: any): Observable<any> {
-    return this.http.post(this.href, employerType);
+  public addBill(bills: any): Observable<any> {
+    return this.http.post(this.href,bills);
   }
 
   public deleteBill(id:any): Observable<any>{

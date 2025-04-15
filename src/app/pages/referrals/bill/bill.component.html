@@ -1,0 +1,99 @@
+<div class="w-full">
+    <h5 class="fw-bold mt-4" *ngIf="dialogData.action === 'CREATE NEW'">
+      Create New Bill
+    </h5>
+    <h5 class="fw-bold mt-4" *ngIf="dialogData.action === 'EDIT'">Update Bill</h5>
+
+    <div class="relative h-full rounded-lg  group  p-6">
+    <div *ngIf="id" class="font-semibold ">ADD INSURANCES FORM</div>
+  
+    <form [formGroup]="billsForm">
+      <div class="row">
+    
+  
+        <!-- Amount -->
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Amount</mat-label>
+          <input
+            type="number"
+            formControlName="amount"
+            matInput
+            class="text-black"
+          />
+          <mat-error *ngIf="billsForm.controls['amount'].touched && billsForm.controls['amount'].invalid">
+            <span *ngIf="billsForm.controls['amount'].errors?.['required']">
+              This field is mandatory
+            </span>
+            <span *ngIf="billsForm.controls['amount'].errors?.['min']">
+              Amount must be greater than 0
+            </span>
+          </mat-error>
+        </mat-form-field>
+  
+        <!-- Notes -->
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Notes</mat-label>
+          <textarea
+            formControlName="notes"
+            matInput
+            rows="5"
+            class="text-black"
+          ></textarea>
+          <mat-error *ngIf="billsForm.controls['notes'].touched && billsForm.controls['notes'].invalid">
+            <span *ngIf="billsForm.controls['notes'].errors?.['required']">
+              This field is mandatory
+            </span>
+          </mat-error>
+        </mat-form-field>
+  
+        <!-- Sent To -->
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Sent To</mat-label>
+          <input
+            type="email"
+            formControlName="sent_to"
+            matInput
+            class="text-black"
+          />
+          <mat-error *ngIf="billsForm.controls['sent_to'].touched && billsForm.controls['sent_to'].invalid">
+            <span *ngIf="billsForm.controls['sent_to'].errors?.['required']">
+              This field is mandatory
+            </span>
+            <span *ngIf="billsForm.controls['sent_to'].errors?.['email']">
+              Enter a valid email
+            </span>
+          </mat-error>
+        </mat-form-field>
+  
+        <!-- File Upload -->
+        <div class="w-full">
+          <div class="mb-2">
+            <mat-label>Attach Bill File (PDF)</mat-label>
+          </div>
+          <input
+            type="file"
+            (change)="onFileSelected($event)"
+            accept="application/pdf"
+            class="form-control"
+          />
+          <mat-error *ngIf="fileError">
+            {{ fileError }}
+          </mat-error>
+        </div>
+      </div>
+    </form>
+  
+    <mat-dialog-actions align="end">
+      <button mat-flat-button color="accent" mat-dialog-close>Cancel</button>
+      <button
+        mat-flat-button
+        color="primary"
+        [disabled]="!(billsForm.valid && billsForm.dirty)"
+        (click)="handleBillSubmit()"
+      >
+        {{ action }} Bill
+      </button>
+    </mat-dialog-actions>
+    </div>
+  </div>
+  

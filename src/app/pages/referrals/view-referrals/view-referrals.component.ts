@@ -20,6 +20,7 @@ import { ReferralService } from '../../../services/Referral/referral.service';
 import { AddReferralsComponent } from '../add-referrals/add-referrals.component';
 import Swal from 'sweetalert2';
 import { EmrSegmentedModule } from "../../../../../projects/components/src/lib/segmented/segmented.module";
+import { BillComponent } from '../bill/bill.component';
 
 @Component({
   selector: 'app-view-referrals',
@@ -207,4 +208,23 @@ export class ViewReferralsComponent implements OnInit,OnDestroy{
              });
            }
          }
+
+          getBills(id:any){
+            //  console.log("hiiii",id);
+             let config = new MatDialogConfig()
+             config.disableClose = false
+             config.role = 'dialog'
+             config.maxWidth ='100vw'
+             config.maxHeight = '100vh'
+             config.width = '850px'
+             config.panelClass = 'full-screen-modal'
+             config.data = {id: id}
+         
+             const dialogRef = this.dialog.open(BillComponent,config);
+         
+             dialogRef.afterClosed().subscribe(result => {
+               this.getReferrals();
+             });
+           }
+         
       }
