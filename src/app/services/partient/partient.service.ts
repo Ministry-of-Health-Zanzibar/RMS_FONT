@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { environment } from '../../../environments/environment.prod';
 import { HttpClient, HttpEventType, HttpRequest } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
+import { environment } from '../../../environments/environment.prod';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +21,7 @@ export class PartientService {
   public addPartient(Partient: any): Observable<any> {
     return this.http.post(this.href, Partient);
   }
- 
+
 
   public getPartientById(id: any) {
     return this.http.get<any>(`${this.href}/${id}`);
