@@ -34,7 +34,8 @@ private baseUrl: string = `${environment.baseUrl}`;
     return this.http.patch(`${this.href}/${id}`,employerType)
   }
 
-  public unblockReasons(id: any, reason_id: any): Observable<any>{
-    return this.http.get(`${this.baseUrl}unBlockReasons/${id}`);
+  public unblockReasons(data: any, id:any): Observable<any>{
+    return this.http.patch(`${this.baseUrl}reasons/unBlock/${id}`, data);
   }
+
 }

@@ -19,6 +19,8 @@ import { HospitalService } from '../../../../services/system-configuration/hospi
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ReferalTypeService } from '../../../../services/system-configuration/referal-type.service';
 import { AddReferralTypeComponent } from '../add-referral-type/add-referral-type.component';
+import Swal from 'sweetalert2';
+import { EmrSegmentedModule } from "../../../../../../projects/components/src/lib/segmented/segmented.module";
 
 @Component({
   selector: 'app-view-referal-type',
@@ -38,7 +40,8 @@ import { AddReferralTypeComponent } from '../add-referral-type/add-referral-type
     MatAnchor,
     MatButton,
     RouterLink,
-  ],
+    EmrSegmentedModule
+],
   templateUrl: './view-referal-type.component.html',
   styleUrl: './view-referal-type.component.scss'
 })
@@ -51,6 +54,7 @@ export class ViewReferalTypeComponent implements OnInit,OnDestroy {
   
     @ViewChild(MatPaginator) paginator!: MatPaginator;
     @ViewChild(MatSort) sort!: MatSort;
+  ReferalTypeService: any;
   
   
     constructor(public permission: PermissionService,
@@ -111,22 +115,116 @@ export class ViewReferalTypeComponent implements OnInit,OnDestroy {
       });
     }
   
-    // updateDepartment(id: any) {
-    //   let config = new MatDialogConfig()
-    //   config.disableClose = false
-    //   config.role = 'dialog'
-    //   config.maxWidth ='100vw'
-    //   config.maxHeight = '100vh'
-    //   config.width = '850px'
-    //   config.panelClass = 'full-screen-modal'
-    //   config.data = {id: id}
-  
-    //   const dialogRef = this.dialog.open(AddDepartmentComponent,config);
-  
-    //   dialogRef.afterClosed().subscribe(result => {
-    //     this.getDepartment();
-    //   });
-    // }
+     addReferalType() {
+        let config = new MatDialogConfig()
+        config.disableClose = false
+        config.role = 'dialog'
+        config.maxWidth ='100vw'
+        config.maxHeight = '100vh'
+        config.width = '850px'
+        config.panelClass = 'full-screen-modal'
+    
+        const dialogRef = this.dialog.open(AddReferralTypeComponent,config);
+    
+        dialogRef.afterClosed().subscribe(result => {
+          this.getReferalType();
+        });
+      }
+    
+      updateReferralType(id: any) {
+        let config = new MatDialogConfig()
+        config.disableClose = false
+        config.role = 'dialog'
+        config.maxWidth ='100vw'
+        config.maxHeight = '100vh'
+        config.width = '850px'
+        config.panelClass = 'full-screen-modal'
+        config.data = {id: id}
+    
+        const dialogRef = this.dialog.open(AddReferralTypeComponent,config);
+    
+        dialogRef.afterClosed().subscribe(result => {
+          this.getReferalType();
+        });
+      }
+    
+    
+    
+      confirmBlock(data:any){
+        var message;
+        if(data.deleted_at){
+          message = 'Are you sure you want to unblock'
+        }
+        else{
+          message = 'Are you sure you want to block'
+        }
+        Swal.fire({
+          title: "Confirm",
+          html: message + ' <b> ' + data.referral_type_name + ' </b> ',
+          icon: "warning",
+          confirmButtonColor: "#4690eb",
+          confirmButtonText: "Confirm",
+          cancelButtonColor: "#D5D8DC",
+          cancelButtonText: "Cancel",
+          showCancelButton: true
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.blockReferalType(data, data.deleted_at);
+          }
+          else{
+            this.getReferalType();
+          }
+        });
+      }
+    
+      blockReferalType(data: any, deleted: any): void{
+        if(deleted){
+          this.ReferalTypeService.unblockReferalType(data, data?.referral_type_id).subscribe((response: { statusCode: number; message: any; })=>{
+            if(response.statusCode == 200){
+              Swal.fire({
+                title: "Success",
+                text: response.message,
+                icon: "success",
+                confirmButtonColor: "#4690eb",
+                confirmButtonText: "Continue"
+              });
+              this.getReferalType();
+            }else{
+              Swal.fire({
+                title: "Error",
+                text: response.message,
+                icon: "error",
+                confirmButtonColor: "#4690eb",
+                confirmButtonText: "Continue"
+              });
+            }
+          })
+        }else{
+          this.referalTypeService.deleteReferalType(data?.referral_type_id).subscribe(response=>{
+            if(response.statusCode == 200){
+              Swal.fire({
+                title: "Success",
+                text: response.message,
+                icon: "success",
+                confirmButtonColor: "#4690eb",
+                confirmButtonText: "Continue"
+              });
+              this.getReferalType()
+            }else{
+              Swal.fire({
+                title: "Error",
+                text: response.message,
+                icon: "error",
+                confirmButtonColor: "#4690eb",
+                confirmButtonText: "Continue"
+              });
+            }
+          });
+        }
+      }
+    
+    }
+    
   
     // downloadFile(filename: string): void {
     //   const link = document.createElement('a');
@@ -151,79 +249,7 @@ export class ViewReferalTypeComponent implements OnInit,OnDestroy {
     //   });
     // }
   
-    // confirmBlock(data:any){
-    //   var message;
-    //   if(data.deleted_at){
-    //     message = 'Are you sure you want to unblock'
-    //   }
-    //   else{
-    //     message = 'Are you sure you want to block'
-    //   }
-    //   Swal.fire({
-    //     title: "Confirm",
-    //     html: message + ' <b> ' + data.department_name + ' </b> ',
-    //     icon: "warning",
-    //     confirmButtonColor: "#4690eb",
-    //     confirmButtonText: "Confirm",
-    //     cancelButtonColor: "#D5D8DC",
-    //     cancelButtonText: "Cancel",
-    //     showCancelButton: true
-    //   }).then((result) => {
-    //     if (result.isConfirmed) {
-    //       this.blockDepartment(data.department_id, data.deleted_at);
-    //     }
-    //     else{
-    //       this.getDepartment();
-    //     }
-    //   });
-    // }
-  
-    // blockDepartment(id: any, deleted: any): void{
-    //   if(deleted){
-    //     this.departmentService.unblockDepartment(id).subscribe(response=>{
-    //       if(response.statusCode == 201){
-    //         Swal.fire({
-    //           title: "Success",
-    //           text: response.message,
-    //           icon: "success",
-    //           confirmButtonColor: "#4690eb",
-    //           confirmButtonText: "Continue"
-    //         });
-    //         this.getDepartment();
-    //       }else{
-    //         Swal.fire({
-    //           title: "Error",
-    //           text: response.message,
-    //           icon: "error",
-    //           confirmButtonColor: "#4690eb",
-    //           confirmButtonText: "Continue"
-    //         });
-    //       }
-    //     })
-    //   }else{
-    //     this.departmentService.deleteDepartment(id).subscribe(response=>{
-    //       if(response.statusCode == 201){
-    //         Swal.fire({
-    //           title: "Success",
-    //           text: response.message,
-    //           icon: "success",
-    //           confirmButtonColor: "#4690eb",
-    //           confirmButtonText: "Continue"
-    //         });
-    //         this.getDepartment()
-    //       }else{
-    //         Swal.fire({
-    //           title: "Error",
-    //           text: response.message,
-    //           icon: "error",
-    //           confirmButtonColor: "#4690eb",
-    //           confirmButtonText: "Continue"
-    //         });
-    //       }
-    //     });
-    //   }
-    // }
-  
+    
   
 
-}
+
