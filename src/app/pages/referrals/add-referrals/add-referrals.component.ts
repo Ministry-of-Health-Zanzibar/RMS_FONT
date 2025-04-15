@@ -114,16 +114,18 @@ export class AddReferralsComponent {
       
         saveReferrals(){
           if(this.referralsForm.valid){
-            this.referralsService.addReferral(this.referralsForm.value).subscribe(response=>{
+            this.referralsService.addReferral(this.referralsForm.value).subscribe(response => {
               if(response.statusCode == 201){
                 Swal.fire({
                   title: "Success",
-                  text: "Data saved successfull",
+                  text: "Data saved successfully",
                   icon: "success",
                   confirmButtonColor: "#4690eb",
                   confirmButtonText: "Continue"
+                }).then(() => {
+                  this.dialogRef.close(true); 
                 });
-              }else{
+              } else {
                 Swal.fire({
                   title: "Error",
                   text: response.message,
@@ -131,17 +133,19 @@ export class AddReferralsComponent {
                   confirmButtonColor: "#4690eb",
                   confirmButtonText: "Continue"
                 });
-
-                
               }
-            }
-      
-          );
-          }else{
-      
+            });
+          } else {
+            Swal.fire({
+              title: "Form Invalid",
+              text: "Please fill all required fields correctly.",
+              icon: "warning",
+              confirmButtonColor: "#4690eb",
+              confirmButtonText: "Okay"
+            });
           }
         }
-
+        
         getPatient() {
           this.patientService.getAllPartients().subscribe(response => {
             this.patients = response.data;
