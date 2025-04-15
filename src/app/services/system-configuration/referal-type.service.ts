@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.prod';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -37,6 +38,6 @@ private baseUrl: string = `${environment.baseUrl}`;
   }
 
   public unblockReferalTypes(data: any, id:any): Observable<any>{
-    return this.http.patch(`${this.baseUrl}ReferralTypes/unBlock/${id}`, data);
+    return this.http.patch(`${this.baseUrl}referralTypes/unblock/${id}`, data);
   }
 }
