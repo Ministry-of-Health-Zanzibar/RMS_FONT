@@ -71,6 +71,12 @@
                     <mat-icon class="font-icon edit_squareData">edit_square</mat-icon>
                   </span>
                 </emr-segmented-button>
+                <!--view more details-->
+                <emr-segmented-button value="visibilityData">
+                  <span class="size-9 rounded-full border bg-surface flex items-center justify-center" (click)="displayMoreData(element)" matTooltip="View">
+                    <mat-icon class="font-icon visibilityData">visibility</mat-icon>
+                  </span>
+                </emr-segmented-button>
                 <emr-segmented-button value="edit_squareData">
                   <mat-slide-toggle
                     [checked]="!element.deleted_at"
