@@ -41,7 +41,7 @@ export class AddReferralTypeComponent {
     uploadProgress: number = 0;
     uploading: boolean = false;
     errorMessage: string | null = null;
-    id: any;
+    referralData: any;
   
     constructor(private formBuilder:FormBuilder,
       private referralService:ReferalTypeService,
@@ -50,11 +50,11 @@ export class AddReferralTypeComponent {
 
 
     ngOnInit(): void {
-        this.configForm();
         if(this.data){
-          this.id = this.data.id;
+          this.referralData = this.data.data;
          // this.getHospital(this.id);
         }
+        this.configForm();
       }
     
       // getDepartm(id: any){
@@ -76,6 +76,9 @@ export class AddReferralTypeComponent {
           referral_type_code: new FormControl(null, Validators.required),
             
         });
+        if(this.referralData){
+          this.referralTypeForm.patchValue(this.referralData);
+        }
       }
     
       // getParent() {

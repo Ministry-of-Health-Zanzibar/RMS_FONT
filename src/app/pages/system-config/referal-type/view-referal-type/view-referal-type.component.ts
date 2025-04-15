@@ -109,7 +109,8 @@ export class ViewReferalTypeComponent implements OnInit,OnDestroy {
         this.getReferalType();
       });
     }
-  
+   
+      
      addReferalType() {
         let config = new MatDialogConfig()
         config.disableClose = false
@@ -125,31 +126,9 @@ export class ViewReferalTypeComponent implements OnInit,OnDestroy {
           this.getReferalType();
         });
       }
-       // downloadFile(filename: string): void {
-    //   const link = document.createElement('a');
-    //   link.href = `assets/file/${filename}`;
-    //   link.download = filename;
-    //   link.click();
-    // }
-  
-    // uploadFile(): void {
-    //   let config = new MatDialogConfig()
-    //   config.disableClose = false
-    //   config.role = 'dialog'
-    //   config.maxWidth ='100vw'
-    //   config.maxHeight = '100vh'
-    //   config.width = '850px'
-    //   config.panelClass = 'full-screen-modal'
-  
-    //   const dialogRef = this.dialog.open(UploadDepartmentComponent,config);
-  
-    //   dialogRef.afterClosed().subscribe(result => {
-    //     this.getDepartment();
-    //   });
-    // }
-  
+
     
-      updateReferralType(id: any) {
+      updateReferralType(data: any) {
         let config = new MatDialogConfig()
         config.disableClose = false
         config.role = 'dialog'
@@ -157,7 +136,7 @@ export class ViewReferalTypeComponent implements OnInit,OnDestroy {
         config.maxHeight = '100vh'
         config.width = '850px'
         config.panelClass = 'full-screen-modal'
-        config.data = {id: id}
+        config.data = {data: data}
     
         const dialogRef = this.dialog.open(AddReferralTypeComponent,config);
     
