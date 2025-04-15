@@ -80,6 +80,12 @@ export class AddReferralsComponent {
             this.id = this.data.id;
            // this.getHospital(this.id);
           }
+
+          if (this.data?.id) {
+            this.id = this.data.id;
+            this.getReferralDetails(this.id);
+          }
+          
         }
       
         // getDepartm(id: any){
@@ -171,34 +177,40 @@ export class AddReferralsComponent {
             this.reason = response.data;
           });
         }
+
+        getReferralDetails(id: number) {
+          this.referralsService.getReferralById(id).subscribe(response => {
+            if (response.statusCode === 200) {
+              this.referralsForm.patchValue(response.data);
+            }
+          });
+        }
+        
       
-        // updateDepartment(){
-        //   if(this.departmentForm.valid){
-        //     this.departmentService.updateDepartment(this.departmentForm.value, this.id).subscribe(response=>{
-        //       if(response.statusCode == 201){
-        //         Swal.fire({
-        //           title: "Success",
-        //           text: "Data saved successfull",
-        //           icon: "success",
-        //           confirmButtonColor: "#4690eb",
-        //           confirmButtonText: "Continue"
-        //         });
-        //       }else{
-        //         Swal.fire({
-        //           title: "Error",
-        //           text: response.message,
-        //           icon: "error",
-        //           confirmButtonColor: "#4690eb",
-        //           confirmButtonText: "Continue"
-        //         });
-        //       }
-        //     }
-      
-        //   );
-        //   }else{
-      
-        //   }
-        // }
+        updateReferrals() {
+          if (this.referralsForm.valid) {
+            this.referralsService.updateReferral(this.referralsForm.value, this.id).subscribe(response => {
+              if (response.statusCode === 201) {
+                Swal.fire({
+                  title: 'Success',
+                  text: 'Referral updated successfully',
+                  icon: 'success',
+                  confirmButtonColor: '#4690eb',
+                  confirmButtonText: 'Continue',
+                });
+              } else {
+                Swal.fire({
+                  title: 'Error',
+                  text: response.message,
+                  icon: 'error',
+                  confirmButtonColor: '#4690eb',
+                  confirmButtonText: 'Continue',
+                });
+              }
+            });
+          }
+        }
+        
       
   
 
