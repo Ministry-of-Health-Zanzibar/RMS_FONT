@@ -25,6 +25,10 @@ export class AuthService {
     return JSON.parse(localStorage.getItem('permissions')!);
   }
 
+  changePassword(data: any) {
+    return this.http.post<any>(`${this.baseUrl}changePassword`,data);
+  }
+
   private hasRefreshed = false;
 
   shouldRefresh(): boolean {
