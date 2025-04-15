@@ -157,7 +157,7 @@ export class ViewreasonComponent {
 
  blockReasons(data: any, deleted: any): void{
      if(deleted){
-       this.reasonsService.unblockReasons(data, data?.reason_id).subscribe(response=>{
+      this.reasonsService.unblockReasons(data, data?.reason_id).subscribe(response=>{
          if(response.statusCode == 200){
            Swal.fire({
              title: "Success",

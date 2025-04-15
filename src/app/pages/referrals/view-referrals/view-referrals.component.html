@@ -16,8 +16,8 @@
                    class="border-b h-10 w-96 text-sm bg-transparent dark:border-b-inverse outline-0 focus-within:border-neutral-950" matInput (keyup)="applyFilter($event)" #input>
           </div>
           <div class="flex space-x-2">
-            <button mat-flat-button (click) = "addReferrals()"  *ngIf="permission.parmissionMatched(['Create ReferralType'])">
-              <mat-icon class="font-icon">add</mat-icon>Add Referral Type
+            <button mat-flat-button (click) = "addReferrals()"  *ngIf="permission.parmissionMatched(['Create Referral'])">
+              <mat-icon class="font-icon">add</mat-icon>Add Referrals
             </button>
             </div>
         </div>
@@ -31,28 +31,28 @@
             </ng-container>
   
             <!-- Name Column -->
-            <ng-container matColumnDef="patient_id">
-              <th mat-header-cell *matHeaderCellDef class="text-neutral-500 dark:text-neutral-400"> Patient ID</th>
-              <td mat-cell *matCellDef="let element,"> {{element.patient_id}} </td>
+            <ng-container matColumnDef="patient_name">
+              <th mat-header-cell *matHeaderCellDef class="text-neutral-500 dark:text-neutral-400"> Patient Full-Name</th>
+              <td mat-cell *matCellDef="let element,"> {{element.patient_name}} </td>
             </ng-container>
   
   
             <!-- Name Column -->
-            <ng-container matColumnDef="hospital_id">
-              <th mat-header-cell *matHeaderCellDef class="text-neutral-500 dark:text-neutral-400">Hospital ID </th>
-              <td mat-cell *matCellDef="let element,"> {{element.hospital_id}} </td>
+            <ng-container matColumnDef="hospital_name">
+              <th mat-header-cell *matHeaderCellDef class="text-neutral-500 dark:text-neutral-400">Hospital name </th>
+              <td mat-cell *matCellDef="let element,"> {{element.hospital_name}} </td>
             </ng-container>
 
              <!-- Name Column -->
-             <ng-container matColumnDef="referral_type_id">
-                <th mat-header-cell *matHeaderCellDef class="text-neutral-500 dark:text-neutral-400">Referral Type ID </th>
-                <td mat-cell *matCellDef="let element,"> {{element.referral_type_id}} </td>
+             <ng-container matColumnDef="referral_type_name">
+                <th mat-header-cell *matHeaderCellDef class="text-neutral-500 dark:text-neutral-400">Referral Type </th>
+                <td mat-cell *matCellDef="let element,"> {{element.referral_type_name}} </td>
               </ng-container>
 
                <!-- Name Column -->
-             <ng-container matColumnDef="reason_id">
-                <th mat-header-cell *matHeaderCellDef class="text-neutral-500 dark:text-neutral-400">Reason ID </th>
-                <td mat-cell *matCellDef="let element,"> {{element.reason_id}} </td>
+             <ng-container matColumnDef="referral_reason_name">
+                <th mat-header-cell *matHeaderCellDef class="text-neutral-500 dark:text-neutral-400">Reason </th>
+                <td mat-cell *matCellDef="let element,"> {{element.referral_reason_name}} </td>
               </ng-container>
 
               <ng-container matColumnDef="status">
@@ -72,16 +72,44 @@
                 <td mat-cell *matCellDef="let element,"> {{element.end_date}} </td>
               </ng-container>
             
-            <!-- Weight Column -->
-            <ng-container matColumnDef="action">
-              <th mat-header-cell *matHeaderCellDef class="text-neutral-500 dark:text-neutral-400"> Action </th>
-              <td mat-cell *matCellDef="let element">
-                <mat-slide-toggle
-                  [checked]="true"
-                  color="primary">
-                </mat-slide-toggle>
-              </td>
-            </ng-container>
+            
+          <!-- Weight Column -->
+          <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef class="text-neutral-500 dark:text-neutral-400"> Action </th>
+            <td mat-cell *matCellDef="let element">
+              <emr-segmented theme="simple" class="-mx-2">
+                <emr-segmented-button *ngIf="!element.deleted_at" value="edit_squareData">
+                  <span class="size-9 rounded-full border bg-surface flex items-center justify-center" (click)="updateRefererral(element.hospital_id)" *ngIf="permission.parmissionMatched(['Update Referral'])" matTooltip="Edit">
+                    <mat-icon class="font-icon edit_squareData">edit_square</mat-icon>
+                  </span>
+                </emr-segmented-button>
+                <emr-segmented-button value="edit_squareData">
+                  <mat-slide-toggle
+                    [checked]="!element.deleted_at"
+                    (toggleChange)="confirmBlock(element)"
+                    color="primary">
+                  </mat-slide-toggle>
+                </emr-segmented-button>
+
+                <emr-segmented-button  value="edit_squareData">
+                  <span
+                    (click)="getBills(element.referral_id)"
+                    *ngIf="permission.parmissionMatched(['View Referral'])"
+                    matTooltip="Edit"
+                  >
+                    <button
+                      mat-flat-button
+                      class="w-45 h-4 text-sm font-semibold text-white bg-blue-600 rounded-lg shadow-md hover:bg-blue-700 transition-all"
+                    >
+                      Bills
+                    </button>
+                  </span>
+                </emr-segmented-button>
+
+
+              </emr-segmented>
+            </td>
+          </ng-container>
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   

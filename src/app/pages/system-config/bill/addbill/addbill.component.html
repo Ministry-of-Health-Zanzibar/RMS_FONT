@@ -1,0 +1,62 @@
+
+<div>
+    <div class="w-full">
+      <div class="relative h-full rounded-lg  group  p-6">
+        <div *ngIf="!id" class="font-semibold ">CREATE NEW BILL</div>
+        <div *ngIf="id" class="font-semibold ">UPDATE BILL</div>
+        <form [formGroup]="billForm">
+          <mat-form-field class="w-full mt-6">
+            <mat-label>referral_id : </mat-label>
+            <input matInput placeholder="Ex. LUMUMBA HOSPITAL" formControlName="referral_id" type="text">
+            <mat-error class="error-message" *ngIf="billForm.controls['referral_id'].touched && billForm.controls['referral_id'].invalid">
+              <span *ngIf="billForm.controls['referral_id'].errors?.['required']">This field is mandatory</span>
+            </mat-error>
+          </mat-form-field>
+  
+          <mat-form-field class="w-full mt-4">
+            <mat-label>amount :</mat-label>
+            <input matInput placeholder="Ex. HOSP 0099" formControlName="amount" type="text">
+            <mat-error class="error-message" *ngIf="billForm.controls['amount'].touched && billForm.controls['amount'].invalid">
+              <span *ngIf="billForm.controls['amount'].errors?.['required']">This field is mandatory</span>
+              <span *ngIf="billForm.controls['amount'].errors?.['pattern']">This field is invalid (must be contain alpharbetical only)</span>
+            </mat-error>
+          </mat-form-field>
+  
+          <mat-form-field class="w-full mt-4">
+            <mat-label> notes:</mat-label>
+            <input matInput placeholder="Ex. KAWE " formControlName="notes" type="text">
+            <mat-error class="error-message" *ngIf="billForm.controls['notes'].touched && billForm.controls['notes'].invalid">
+              <span *ngIf="billForm.controls['notes'].errors?.['required']">This field is mandatory</span>
+              <span *ngIf="billForm.controls['notes'].errors?.['pattern']">This field is invalid (must be contain alpharbetical only)</span>
+            </mat-error>
+          </mat-form-field>
+  
+          <mat-form-field class="w-full mt-4">
+            <mat-label>bill_file :</mat-label>
+            <input matInput placeholder="Ex. hosp@info.go.tz" formControlName="hospital_email" type="text">
+            <mat-error class="error-message" *ngIf="billForm.controls['hospital_email'].touched && billForm.controls['hospital_email'].invalid">
+              <span *ngIf="billForm.controls['hospital_email'].errors?.['required']">This field is mandatory</span>
+              <span *ngIf="billForm.controls['hospital_email'].errors?.['pattern']">This field is invalid (must be contain alpharbetical only)</span>
+            </mat-error>
+          </mat-form-field>
+  
+          <mat-form-field class="w-full mt-4">
+            <mat-label>Hospital Phone:</mat-label>
+            <input matInput placeholder="Ex. +255 777-783455" formControlName="bill_file" type="text">
+            <mat-error class="error-message" *ngIf="billForm.controls['bill_file'].touched && billForm.controls['bill_file'].invalid">
+              <span *ngIf="billForm.controls['bill_file'].errors?.['required']">This field is mandatory</span>
+              <span *ngIf="billForm.controls['bill_file'].errors?.['pattern']">This field is invalid (must be contain alpharbetical only)</span>
+            </mat-error>
+          </mat-form-field>
+        </form>
+      </div>
+    </div>
+  
+    <mat-dialog-actions align="end">
+      <button mat-button mat-dialog-close>Cancel</button>
+      <button *ngIf="!id" mat-flat-button [mat-dialog-close]="true" cdkFocusInitial [disabled]="billForm.invalid" (click)="saveBill()">Save Data</button>
+      <button *ngIf="id" mat-flat-button [mat-dialog-close]="true" cdkFocusInitial [disabled]="billForm.invalid" (click)="updateBill()">Update Data</button>
+    </mat-dialog-actions>
+  </div>
+  
+  

@@ -55,6 +55,11 @@ const routes: Routes = [
       },
 
       {
+        path:'config/bill',
+        loadChildren:()=>import('./system-config/bill/bill.module').then(m=>m.BillModule)
+
+      },
+      {
         path:'users',
         loadChildren:()=> import('./users/usermanag/usermanag.module').then(m=>m.UsermanagModule)
       },
