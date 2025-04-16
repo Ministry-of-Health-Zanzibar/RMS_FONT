@@ -115,7 +115,7 @@ readonly data = inject<any>(MAT_DIALOG_DATA);
         }
       }
     
-      updateDepartment(){
+      updateHospital(){
         if(this.hospitalForm.valid){
           this.hospitalService.updateHospital(this.hospitalForm.value, this.hospitalData.hospital_id).subscribe(response=>{
             if(response.statusCode == 200){
