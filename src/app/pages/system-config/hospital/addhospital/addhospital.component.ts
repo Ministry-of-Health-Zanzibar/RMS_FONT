@@ -115,33 +115,33 @@ readonly data = inject<any>(MAT_DIALOG_DATA);
         }
       }
     
-      // updateDepartment(){
-      //   if(this.departmentForm.valid){
-      //     this.departmentService.updateDepartment(this.departmentForm.value, this.id).subscribe(response=>{
-      //       if(response.statusCode == 201){
-      //         Swal.fire({
-      //           title: "Success",
-      //           text: "Data saved successfull",
-      //           icon: "success",
-      //           confirmButtonColor: "#4690eb",
-      //           confirmButtonText: "Continue"
-      //         });
-      //       }else{
-      //         Swal.fire({
-      //           title: "Error",
-      //           text: response.message,
-      //           icon: "error",
-      //           confirmButtonColor: "#4690eb",
-      //           confirmButtonText: "Continue"
-      //         });
-      //       }
-      //     }
+      updateHospital(){
+        if(this.hospitalForm.valid){
+          this.hospitalService.updateHospital(this.hospitalForm.value, this.hospitalData.hospital_id).subscribe(response=>{
+            if(response.statusCode == 200){
+              Swal.fire({
+                title: "Success",
+                text: "Data saved successfull",
+                icon: "success",
+                confirmButtonColor: "#4690eb",
+                confirmButtonText: "Continue"
+              });
+            }else{
+              Swal.fire({
+                title: "Error",
+                text: response.message,
+                icon: "error",
+                confirmButtonColor: "#4690eb",
+                confirmButtonText: "Continue"
+              });
+            }
+          }
     
-      //   );
-      //   }else{
+        );
+        }else{
     
-      //   }
-      // }
+        }
+      }
     
 }
 

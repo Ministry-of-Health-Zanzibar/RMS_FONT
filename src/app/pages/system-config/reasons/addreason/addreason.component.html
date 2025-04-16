@@ -29,7 +29,7 @@
     <mat-dialog-actions align="end">
       <button mat-button mat-dialog-close>Cancel</button>
       <button *ngIf="!reasonData" mat-flat-button [mat-dialog-close]="true" cdkFocusInitial [disabled]="reasonForm.invalid" (click)="saveReasons()">Save Reason</button>
-      <button *ngIf="reasonData" mat-flat-button [mat-dialog-close]="true" cdkFocusInitial [disabled]="reasonForm.invalid" (click)="saveReasons()">Save Reason</button>
+      <button *ngIf="reasonData" mat-flat-button [mat-dialog-close]="true" cdkFocusInitial [disabled]="reasonForm.invalid" (click)="updateReason()">Save Reason</button>
     </mat-dialog-actions>
   </div>
   

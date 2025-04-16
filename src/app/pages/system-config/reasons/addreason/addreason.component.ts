@@ -90,7 +90,7 @@ export class AddreasonComponent {
        saveReasons(){
          if(this.reasonForm.valid){
            this.reasonsService.addReasons(this.reasonForm.value).subscribe(response=>{
-             if(response.statusCode == 201){
+             if(response.statusCode == 200){
                Swal.fire({
                  title: "Success",
                  text: "Data saved successfull",
@@ -115,33 +115,33 @@ export class AddreasonComponent {
          }
        }
      
-       // updateDepartment(){
-       //   if(this.departmentForm.valid){
-       //     this.departmentService.updateDepartment(this.departmentForm.value, this.id).subscribe(response=>{
-       //       if(response.statusCode == 201){
-       //         Swal.fire({
-       //           title: "Success",
-       //           text: "Data saved successfull",
-       //           icon: "success",
-       //           confirmButtonColor: "#4690eb",
-       //           confirmButtonText: "Continue"
-       //         });
-       //       }else{
-       //         Swal.fire({
-       //           title: "Error",
-       //           text: response.message,
-       //           icon: "error",
-       //           confirmButtonColor: "#4690eb",
-       //           confirmButtonText: "Continue"
-       //         });
-       //       }
-       //     }
+       updateReason(){
+         if(this.reasonForm.valid){
+          this.reasonsService.updateReasons(this.reasonForm.value, this.reasonData.reason_id).subscribe(response=>{
+             if(response.statusCode == 200){
+               Swal.fire({
+                 title: "Success",
+                 text: "Data saved successfull",
+                 icon: "success",
+                 confirmButtonColor: "#4690eb",
+                 confirmButtonText: "Continue"
+               });
+             }else{
+               Swal.fire({
+                 title: "Error",
+                 text: response.message,
+                 icon: "error",
+                 confirmButtonColor: "#4690eb",
+                 confirmButtonText: "Continue"
+               });
+             }
+           }
      
-       //   );
-       //   }else{
+         );
+         }else{
      
-       //   }
-       // }
+         }
+       }
  }
  
  

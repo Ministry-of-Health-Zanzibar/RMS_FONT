@@ -34,7 +34,7 @@ private baseUrl: string = `${environment.baseUrl}`;
   }
 
   public updateReferalType(employerType:any, id:any): Observable<any>{
-    return this.http.patch(`${this.href}/${id}`,employerType)
+    return this.http.put(`${this.href}/${id}`,employerType)
   }
   public unBlockReferralTypes(data: any, id:any): Observable<any>{
     return this.http.patch(`${this.baseUrl}referralTypes/unblock/${id}`, data);
