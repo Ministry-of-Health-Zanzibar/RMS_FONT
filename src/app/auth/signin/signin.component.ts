@@ -76,8 +76,7 @@ export class SigninComponent implements OnInit {
               localStorage.setItem("user_id", response.data.user_id);
               localStorage.setItem("full_name", response.data.full_name);
               localStorage.setItem("email", response.data.email);
-              localStorage.setItem("workingStationID", response.data.working_station_id);
-              localStorage.setItem("workingStationName", response.data.working_station_name);
+
               // localStorage.setItem("roles", response.data.roles.name);
               localStorage.setItem("roles", response.data.roles[0]?.name || 'Default Role');
 

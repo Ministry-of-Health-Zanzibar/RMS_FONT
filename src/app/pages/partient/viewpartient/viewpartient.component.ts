@@ -55,7 +55,7 @@ export class ViewpartientComponent {
 
   ){}
 
-  displayedColumns: string[] = ['id','name','phone','location','position','job','action'];
+  displayedColumns: string[] = ['id','name','phone','location','position','job','action','action2'];
   dataSource: MatTableDataSource<any> = new MatTableDataSource();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -221,7 +221,7 @@ export class ViewpartientComponent {
   }
 
   displayMoreData(data: any) {
-    
+
     const id = data.patient_id;
      this.router.navigate(['/pages/patient/more', id]); // Navigate to the new page with complain_id
    }
