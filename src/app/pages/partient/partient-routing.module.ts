@@ -5,6 +5,10 @@ const routes: Routes = [
   {
     path:'',
     loadComponent:()=>import('./viewpartient/viewpartient.component').then(c=>c.ViewpartientComponent)
+  },
+  {
+    path:'more/:id',
+    loadComponent:()=>import('./displaymoredata/displaymoredata.component').then(c=>c.DisplaymoredataComponent)
   }
 ];
 

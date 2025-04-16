@@ -77,7 +77,7 @@ export class InsuranceComponent {
     this.clientForm = new FormGroup({
       patient_id: new FormControl(this.id),
       insurance_provider_name: new FormControl(null, Validators.required),
-      policy_number: new FormControl(null, [Validators.required, ]),
+      card_number: new FormControl(null, [Validators.required, ]),
       valid_until: new FormControl(null, [Validators.required, ]),
 
 

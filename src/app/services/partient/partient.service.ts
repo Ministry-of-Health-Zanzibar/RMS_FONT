@@ -10,7 +10,8 @@ export class PartientService {
 
   private baseUrl: string = `${environment.baseUrl}`;
   private href = `${this.baseUrl}patients`;
-  private href_insurances = `${this.baseUrl}insuarances`;
+  private href_insurances = `${this.baseUrl}insurances`;
+  private href_patientInsurance = `${this.baseUrl}patients-withinsurance`;
 
   constructor(private http: HttpClient) {}
 
@@ -61,6 +62,12 @@ export class PartientService {
           }
         })
       )
+  }
+  // public getPatientInsurances(): Observable<any> {
+  //   return this.http.get<any>(this.href_patientInsurance);
+  // }
+  public getPatientInsurances(id: any) {
+    return this.http.get<any>(`${this.href_patientInsurance}/${id}`); // adjust endpoint as needed
   }
 
 

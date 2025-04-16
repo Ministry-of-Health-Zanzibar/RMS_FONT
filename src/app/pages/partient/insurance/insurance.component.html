@@ -8,10 +8,10 @@
 
         <mat-form-field class="w-full mt-4">
           <mat-label>Insurance Number:</mat-label>
-          <input matInput placeholder="Ex. 0009998-778 " formControlName="policy_number" type="text">
-          <mat-error class="error-message" *ngIf="clientForm.controls['policy_number'].touched && clientForm.controls['policy_number'].invalid">
-            <span *ngIf="clientForm.controls['policy_number'].errors?.['required']">This field is mandatory</span>
-            <span *ngIf="clientForm.controls['policy_number'].errors?.['pattern']">This field is invalid (must be contain alpharbetical only)</span>
+          <input matInput placeholder="Ex. 0009998-778 " formControlName="card_number" type="text">
+          <mat-error class="error-message" *ngIf="clientForm.controls['card_number'].touched && clientForm.controls['card_number'].invalid">
+            <span *ngIf="clientForm.controls['card_number'].errors?.['required']">This field is mandatory</span>
+            <span *ngIf="clientForm.controls['card_number'].errors?.['pattern']">This field is invalid (must be contain alpharbetical only)</span>
           </mat-error>
         </mat-form-field>
         <mat-form-field class="w-full mt-4">

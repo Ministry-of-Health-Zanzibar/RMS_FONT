@@ -19,6 +19,7 @@ import { PartientService } from '../../../services/partient/partient.service';
 import { AddpartientComponent } from '../addpartient/addpartient.component';
 import { InsuranceComponent } from '../insurance/insurance.component';
 import { DisplaymoredataComponent } from '../displaymoredata/displaymoredata.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-viewpartient',
@@ -49,7 +50,9 @@ export class ViewpartientComponent {
   constructor(
     public permission: PermissionService,
     private userService: PartientService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private router:Router,
+
   ){}
 
   displayedColumns: string[] = ['id','name','phone','location','position','job','action'];
@@ -216,25 +219,31 @@ export class ViewpartientComponent {
       this.userPetient();
     });
   }
-  displayMoreData(key:any){
-    console.log('Select data from here: ', key);
 
-         let config = new MatDialogConfig();
-         config.data = {
-           data:key
-         }
-         config.role = 'dialog'
-         config.maxWidth ='100vw'
-         config.maxHeight = '100vh'
-         config.height = '600px'
-         config.width = '850px'
-         config.panelClass = 'full-screen-modal'
+  displayMoreData(data: any) {
+    
+    const id = data.patient_id;
+     this.router.navigate(['/pages/patient/more', id]); // Navigate to the new page with complain_id
+   }
+  // displayMoreData(key:any){
+  //   console.log('Select data from here: ', key);
 
-         const dialogRef = this.dialog.open(DisplaymoredataComponent, config);
-         dialogRef.afterClosed().subscribe(result => {
-           dialogRef.close();
-         });
-       }
+  //        let config = new MatDialogConfig();
+  //        config.data = {
+  //          data:key
+  //        }
+  //        config.role = 'dialog'
+  //        config.maxWidth ='100vw'
+  //        config.maxHeight = '100vh'
+  //        config.height = '600px'
+  //        config.width = '850px'
+  //        config.panelClass = 'full-screen-modal'
+
+  //        const dialogRef = this.dialog.open(DisplaymoredataComponent, config);
+  //        dialogRef.afterClosed().subscribe(result => {
+  //          dialogRef.close();
+  //        });
+  //      }
 
 
   }

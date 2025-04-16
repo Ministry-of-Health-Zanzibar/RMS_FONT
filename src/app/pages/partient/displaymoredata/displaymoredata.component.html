@@ -1,1 +1,54 @@
-<p>displaymoredata works!</p>
+<div *ngIf="patient" class="p-4">
+  <h2 class="text-xl font-bold mb-4">Patient Information</h2>
+
+  <table class="table-auto w-full mb-6 border border-gray-300">
+    <tr class="bg-gray-100">
+      <th class="p-2 border">Full Name</th>
+      <th class="p-2 border">Date of Birth</th>
+      <th class="p-2 border">Gender</th>
+      <th class="p-2 border">Phone</th>
+      <th class="p-2 border">Location</th>
+      <th class="p-2 border">Referral Letter</th>
+    </tr>
+    <tr>
+      <td class="p-2 border">{{ patient.name }}</td>
+      <td class="p-2 border">{{ patient.date_of_birth | date: 'dd-MM-yyyy' }}</td>
+      <td class="p-2 border">{{ patient.gender }}</td>
+      <td class="p-2 border">{{ patient.phone }}</td>
+      <td class="p-2 border">{{ patient.location }}</td>
+      <td class="p-2 border">
+        <a
+          [href]="'http://127.0.0.1:8000/storage/' + patient.referral_letter_file"
+          target="_blank"
+          class="text-blue-600 underline hover:text-blue-800">
+          View PDF
+        </a>
+      </td>
+    </tr>
+  </table>
+
+  <h3 class="text-lg font-bold mb-3">Insurance Information</h3>
+  <table class="table-auto w-full border border-gray-300">
+    <thead class="bg-gray-100">
+      <tr>
+        <th class="p-2 border">Provider</th>
+        <th class="p-2 border">Card Number</th>
+        <th class="p-2 border">Valid Until</th>
+        <th class="p-2 border">Insurance Code</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let insurance of patient.insurances">
+        <td class="p-2 border">{{ insurance.insurance_provider_name }}</td>
+        <td class="p-2 border">{{ insurance.card_number }}</td>
+        <td class="p-2 border">{{ insurance.valid_until | date: 'dd-MM-yyyy' }}</td>
+        <td class="p-2 border">{{ insurance.insurance_code }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- If no patient is loaded -->
+<div *ngIf="!patient" class="text-center text-red-500 mt-6 font-semibold">
+  No patient data found.
+</div>
