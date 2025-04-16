@@ -150,7 +150,7 @@ export class SidebarComponent {
           permission: 'View ReferralType',
 
         },
-      
+
 
         {
           type: 'link',
@@ -166,7 +166,7 @@ export class SidebarComponent {
       type: 'group',
       name: 'Patient',
       icon: 'menu',
-      permission: 'Patient Module',
+      permission: 'View Patient',
       children: [
         {
           type: 'link',
@@ -182,7 +182,7 @@ export class SidebarComponent {
       type: 'group',
       name: 'Referral Management',
       icon: 'call_split',
-      permission: 'Setup Management',
+      permission: 'View Referral',
       children: [
         {
           type: 'link',

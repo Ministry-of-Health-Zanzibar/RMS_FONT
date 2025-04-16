@@ -48,7 +48,7 @@ export class LocationService {
     return this.http.patch(`${this.href}/${id}`,user)
   }
 
-  public getShehia(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}getShehias`);
+  public getLocation(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}locations`);
   }
 }

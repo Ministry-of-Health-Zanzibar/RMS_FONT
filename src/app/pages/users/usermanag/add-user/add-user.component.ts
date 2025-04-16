@@ -73,7 +73,6 @@ export class AddUserComponent {
       this.getUser(this.id);
     }
     this.getLocation();
-    this.getCouncil();
     this.getRoles();
   }
 
@@ -91,7 +90,7 @@ export class AddUserComponent {
       middle_name: new FormControl(null, [Validators.required, Validators.pattern(GlobalConstants.nameRegexOnly)]),
       last_name: new FormControl(null, [Validators.required,Validators.pattern(GlobalConstants.nameRegexOnly)]),
       location_id: new FormControl(null, Validators.required),
-      council_id: new FormControl(null, Validators.required),
+      address: new FormControl(null, Validators.required),
       phone_no: new FormControl(null, [Validators.required, Validators.pattern(GlobalConstants.phoneNoRegex)]),
       email: new FormControl(null, [Validators.required, Validators.pattern(GlobalConstants.emailRegex)]),
       gender: new FormControl(null, Validators.required),
@@ -101,7 +100,7 @@ export class AddUserComponent {
   }
 
   getLocation() {
-    this.locationService.getShehia().subscribe(response => {
+    this.locationService.getLocation().subscribe(response => {
       this.locations = response.data;
       this.options = response.data;
       this.filteredOptions = this.userForm.get('location_id')!.valueChanges.pipe(
@@ -124,11 +123,7 @@ export class AddUserComponent {
     return option.location_id;
   }
 
-  getCouncil() {
-    this.councilService.getAllCouncil().subscribe(response => {
-      this.councils = response.data;
-    });
-  }
+
 
   getRoles() {
     this.roleService.getAllRoles().subscribe(response => {
@@ -162,6 +157,7 @@ export class AddUserComponent {
           Swal.fire({
             title: "Success",
             text: response.message,
+            html: "<b>Default Credential</b><br> Username: <b>"+response.email +"</b><br> Password: <b>" +response.password +"</b>",
             icon: "success",
             confirmButtonColor: "#4690eb",
             confirmButtonText: "Close"

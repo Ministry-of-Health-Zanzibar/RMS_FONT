@@ -49,7 +49,7 @@ export class UserComponent {
     private dialog: MatDialog
   ){}
 
-  displayedColumns: string[] = ['id','name','address','phone','email','council','action'];
+  displayedColumns: string[] = ['id','name','address','phone','email','role','action'];
   dataSource: MatTableDataSource<any> = new MatTableDataSource();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -165,7 +165,7 @@ export class UserComponent {
             confirmButtonText: "Continue"
           });
         }
-      }); 
+      });
     }
   }
 

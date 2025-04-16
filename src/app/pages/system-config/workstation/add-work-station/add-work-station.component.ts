@@ -88,7 +88,7 @@ export class AddWorkStationComponent {
   }
 
   getLocation() {
-    this.locationService.getShehia().subscribe(response => {
+    this.locationService.getLocation().subscribe(response => {
       this.locations = response.data;
       this.options = response.data;
       this.filteredOptions = this.workStationForm.get('location_id')!.valueChanges.pipe(
