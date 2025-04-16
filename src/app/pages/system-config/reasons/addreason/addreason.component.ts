@@ -90,7 +90,7 @@ export class AddreasonComponent {
        saveReasons(){
          if(this.reasonForm.valid){
            this.reasonsService.addReasons(this.reasonForm.value).subscribe(response=>{
-             if(response.statusCode == 201){
+             if(response.statusCode == 200){
                Swal.fire({
                  title: "Success",
                  text: "Data saved successfull",
