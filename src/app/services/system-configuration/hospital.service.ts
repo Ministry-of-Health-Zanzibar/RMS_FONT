@@ -31,7 +31,7 @@ export class HospitalService {
   }
 
   public updateHospital(hospital:any, id:any): Observable<any>{
-    return this.http.patch(`${this.href}/${id}`,hospital)
+    return this.http.put(`${this.href}/${id}`,hospital)
   }
 
   public unblockHospital(data: any, id:any): Observable<any>{

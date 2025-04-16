@@ -73,7 +73,7 @@ export class AddReferralTypeComponent {
       configForm(){
         this.referralTypeForm = new FormGroup({
           referral_type_name: new FormControl(null, [Validators.required, Validators.pattern(GlobalConstants.nameRegexOnly)]),
-          referral_type_code: new FormControl(null, Validators.required),
+          // referral_type_code: new FormControl(null, Validators.required),
             
         });
         if(this.referralData){
@@ -115,33 +115,33 @@ export class AddReferralTypeComponent {
         }
       }
     
-      // updateDepartment(){
-      //   if(this.departmentForm.valid){
-      //     this.departmentService.updateDepartment(this.departmentForm.value, this.id).subscribe(response=>{
-      //       if(response.statusCode == 201){
-      //         Swal.fire({
-      //           title: "Success",
-      //           text: "Data saved successfull",
-      //           icon: "success",
-      //           confirmButtonColor: "#4690eb",
-      //           confirmButtonText: "Continue"
-      //         });
-      //       }else{
-      //         Swal.fire({
-      //           title: "Error",
-      //           text: response.message,
-      //           icon: "error",
-      //           confirmButtonColor: "#4690eb",
-      //           confirmButtonText: "Continue"
-      //         });
-      //       }
-      //     }
+      updateReferralType(){
+        if(this.referralTypeForm.valid){
+          this.referralService.updateReferalType(this.referralTypeForm.value, this.referralData.referral_type_id).subscribe(response=>{
+            if(response.statusCode == 200){
+              Swal.fire({
+                title: "Success",
+                text: "Data saved successfull",
+                icon: "success",
+                confirmButtonColor: "#4690eb",
+                confirmButtonText: "Continue"
+              });
+            }else{
+              Swal.fire({
+                title: "Error",
+                text: response.message,
+                icon: "error",
+                confirmButtonColor: "#4690eb",
+                confirmButtonText: "Continue"
+              });
+            }
+          }
     
-      //   );
-      //   }else{
+        );
+        }else{
     
-      //   }
-      // }
+        }
+      }
     
 
 }
