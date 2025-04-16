@@ -2,11 +2,11 @@
 <div>
     <div class="w-full">
       <div class="relative h-full rounded-lg  group  p-6">
-        <div *ngIf="!reasonData" class="font-semibold ">UPDATE NEW REASONS</div>
-        <div *ngIf="reasonData" class="font-semibold ">UPDATE REASONS</div>
+        <div *ngIf="!reasonData" class="font-semibold ">ADD NEW REASON</div>
+        <div *ngIf="reasonData" class="font-semibold ">UPDATE REASON</div>
         <form [formGroup]="reasonForm">
           <mat-form-field class="w-full mt-6">
-            <mat-label>Referral Reason Name: </mat-label>
+            <mat-label>Referral Reason : </mat-label>
             <input matInput placeholder="Ex. MARADHI SUGU" formControlName="referral_reason_name" type="text">
             <mat-error class="error-message" *ngIf="reasonForm.controls['referral_reason_name'].touched && reasonForm.controls['referral_reason_name'].invalid">
               <span *ngIf="reasonForm.controls['referral_reason_name'].errors?.['required']">This field is mandatory</span>

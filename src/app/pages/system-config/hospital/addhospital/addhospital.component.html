@@ -2,8 +2,8 @@
 <div>
   <div class="w-full">
     <div class="relative h-full rounded-lg  group  p-6">
-      <div *ngIf="!id" class="font-semibold ">CREATE NEW HOSPITAL</div>
-      <div *ngIf="id" class="font-semibold ">UPDATE HOSPITAL</div>
+      <div *ngIf="!hospitalData" class="font-semibold ">ADD NEW HOSPITAL</div>
+      <div *ngIf="hospitalData" class="font-semibold ">ADD HOSPITAL</div>
       <form [formGroup]="hospitalForm">
         <mat-form-field class="w-full mt-6">
           <mat-label>Hospital Name: </mat-label>
@@ -54,8 +54,8 @@
 
   <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close>Cancel</button>
-    <button *ngIf="!id" mat-flat-button [mat-dialog-close]="true" cdkFocusInitial [disabled]="hospitalForm.invalid" (click)="saveHospital()">Save Data</button>
-    <button *ngIf="id" mat-flat-button [mat-dialog-close]="true" cdkFocusInitial [disabled]="hospitalForm.invalid" (click)="updateHospital()">Update Data</button>
+    <button *ngIf="!hospitalData" mat-flat-button [mat-dialog-close]="true" cdkFocusInitial [disabled]="hospitalForm.invalid" (click)="saveHospital()">Save Data</button>
+    <button *ngIf="hospitalData" mat-flat-button [mat-dialog-close]="true" cdkFocusInitial [disabled]="hospitalForm.invalid" (click)="saveHospital()">Update Data</button>
   </mat-dialog-actions>
 </div>
 

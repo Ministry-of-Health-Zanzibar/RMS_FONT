@@ -31,114 +31,117 @@ import Swal from 'sweetalert2';
   styleUrl: './addhospital.component.scss'
 })
 export class AddhospitalComponent {
-
-  readonly data = inject<any>(MAT_DIALOG_DATA);
-  private readonly onDestroy = new Subject<void>()
-  public sidebarVisible:boolean = true
-
-  hospitalForm: FormGroup;
-  parent: any;
-  uploadProgress: number = 0;
-  uploading: boolean = false;
-  errorMessage: string | null = null;
-  id: any;
-
-  constructor(private formBuilder:FormBuilder,
-    private hospitalService: HospitalService,
-    private dialogRef: MatDialogRef<AddhospitalComponent>) {
-  }
-
-  ngOnInit(): void {
-    this.configForm();
-    if(this.data){
-      this.id = this.data.id;
-     // this.getHospital(this.id);
+readonly data = inject<any>(MAT_DIALOG_DATA);
+    private readonly onDestroy = new Subject<void>()
+    public sidebarVisible:boolean = true
+  
+    hospitalForm: FormGroup;
+    parent: any;
+    uploadProgress: number = 0;
+    uploading: boolean = false;
+    errorMessage: string | null = null;
+    hospitalData: any;
+  
+    constructor(private formBuilder:FormBuilder,
+      private hospitalService:HospitalService,
+      private dialogRef: MatDialogRef<AddhospitalComponent>) {
     }
-  }
 
-  getHospital(id: any){
-    this.hospitalService.getHospitalById(id).subscribe(response=>{
-      this.hospitalForm.patchValue(response.data[0])
-    })
-  }
 
-  ngOnDestroy(): void {
-    this.onDestroy.next()
-  }
-  onClose() {
-    this.dialogRef.close(false)
-  }
-
-  configForm(){
-    this.hospitalForm = new FormGroup({
-      hospital_name: new FormControl(null, [Validators.required, Validators.pattern(GlobalConstants.nameRegexOnly)]),
-      // hospital_code: new FormControl(null, Validators.required),
-      hospital_address:  new FormControl(null, Validators.required),
-      hospital_email:new FormControl(null, Validators.required),
-      contact_number:new FormControl(null, Validators.required),
-    });
-  }
-
-  // getParent() {
-  //   this.departmentService.getAllDepartment().pipe(takeUntil(this.onDestroy)).subscribe((response: any) => {
-  //     this.parent = response.data;
-  //   });
-  // }
-
-  saveHospital(){
-    if(this.hospitalForm.valid){
-      this.hospitalService.addHospital(this.hospitalForm.value).subscribe(response=>{
-        if(response.statusCode == 201){
-          Swal.fire({
-            title: "Success",
-            text: "Data saved successfull",
-            icon: "success",
-            confirmButtonColor: "#4690eb",
-            confirmButtonText: "Continue"
-          });
-        }else{
-          Swal.fire({
-            title: "Error",
-            text: response.message,
-            icon: "error",
-            confirmButtonColor: "#4690eb",
-            confirmButtonText: "Continue"
-          });
+    ngOnInit(): void {
+        if(this.data){
+          this.hospitalData = this.data.data;
+         // this.getHospital(this.id);
+        }
+        this.configForm();
+      }
+    
+      // getDepartm(id: any){
+      //   this.departmentService.getAllDepartmentById(id).subscribe(response=>{
+      //     this.departmentForm.patchValue(response.data[0])
+      //   })
+      // }
+    
+      ngOnDestroy(): void {
+        this.onDestroy.next()
+      }
+      onClose() {
+        this.dialogRef.close(false)
+      }
+    
+      configForm(){
+        this.hospitalForm = new FormGroup({
+          hospital_name: new FormControl(null, [Validators.required, Validators.pattern(GlobalConstants.nameRegexOnly)]),
+          hospital_address: new FormControl(null, Validators.required),
+          hospital_email: new FormControl(null, Validators.required),
+          contact_number: new FormControl(null, Validators.required),
+        });
+        if(this.hospitalData){
+          this.hospitalForm.patchValue(this.hospitalData);
         }
       }
-
-    );
-    }else{
-
-    }
-  }
-
-  updateHospital(){
-    if(this.hospitalForm.valid){
-      this.hospitalService.updateHospital(this.hospitalForm.value, this.id).subscribe(response=>{
-        if(response.statusCode == 201){
-          Swal.fire({
-            title: "Success",
-            text: "Data saved successfull",
-            icon: "success",
-            confirmButtonColor: "#4690eb",
-            confirmButtonText: "Continue"
-          });
+    
+      // getParent() {
+      //   this.departmentService.getAllDepartment().pipe(takeUntil(this.onDestroy)).subscribe((response: any) => {
+      //     this.parent = response.data;
+      //   });
+      // }
+    
+      saveHospital(){
+        if(this.hospitalForm.valid){
+          this.hospitalService.addHospital(this.hospitalForm.value).subscribe(response=>{
+            if(response.statusCode == 200){
+              Swal.fire({
+                title: "Success",
+                text: "Data saved successfull",
+                icon: "success",
+                confirmButtonColor: "#4690eb",
+                confirmButtonText: "Continue"
+              });
+            }else{
+              Swal.fire({
+                title: "Error",
+                text: response.message,
+                icon: "error",
+                confirmButtonColor: "#4690eb",
+                confirmButtonText: "Continue"
+              });
+            }
+          }
+    
+        );
         }else{
-          Swal.fire({
-            title: "Error",
-            text: response.message,
-            icon: "error",
-            confirmButtonColor: "#4690eb",
-            confirmButtonText: "Continue"
-          });
+    
         }
       }
-
-    );
-    }else{
-
-    }
-  }
+    
+      // updateDepartment(){
+      //   if(this.departmentForm.valid){
+      //     this.departmentService.updateDepartment(this.departmentForm.value, this.id).subscribe(response=>{
+      //       if(response.statusCode == 201){
+      //         Swal.fire({
+      //           title: "Success",
+      //           text: "Data saved successfull",
+      //           icon: "success",
+      //           confirmButtonColor: "#4690eb",
+      //           confirmButtonText: "Continue"
+      //         });
+      //       }else{
+      //         Swal.fire({
+      //           title: "Error",
+      //           text: response.message,
+      //           icon: "error",
+      //           confirmButtonColor: "#4690eb",
+      //           confirmButtonText: "Continue"
+      //         });
+      //       }
+      //     }
+    
+      //   );
+      //   }else{
+    
+      //   }
+      // }
+    
 }
 

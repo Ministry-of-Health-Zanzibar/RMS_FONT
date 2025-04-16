@@ -90,7 +90,7 @@ export class AddReferralTypeComponent {
       saveReferralType(){
         if(this.referralTypeForm.valid){
           this.referralService.addReferalType(this.referralTypeForm.value).subscribe(response=>{
-            if(response.statusCode == 201){
+            if(response.statusCode == 200){
               Swal.fire({
                 title: "Success",
                 text: "Data saved successfull",
