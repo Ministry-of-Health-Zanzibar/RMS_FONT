@@ -22,11 +22,9 @@ import Swal from 'sweetalert2';
     MatFormField,
     MatLabel,
     MatDialogModule,
-    MatCheckbox,
     MatError,
-    ReactiveFormsModule,
-    HDividerComponent
-  ],
+    ReactiveFormsModule
+],
   templateUrl: './addhospital.component.html',
   styleUrl: './addhospital.component.scss'
 })

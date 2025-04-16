@@ -87,33 +87,33 @@ export class AddReferralTypeComponent {
       //   });
       // }
     
-      saveReferralType(){
-        if(this.referralTypeForm.valid){
-          this.referralService.addReferalType(this.referralTypeForm.value).subscribe(response=>{
-            if(response.statusCode == 200){
-              Swal.fire({
-                title: "Success",
-                text: "Data saved successfull",
-                icon: "success",
-                confirmButtonColor: "#4690eb",
-                confirmButtonText: "Continue"
-              });
-            }else{
-              Swal.fire({
-                title: "Error",
-                text: response.message,
-                icon: "error",
-                confirmButtonColor: "#4690eb",
-                confirmButtonText: "Continue"
-              });
-            }
-          }
-    
-        );
-        }else{
-    
-        }
-      }
+        saveReferralType(){
+               if(this.referralTypeForm.valid){
+                 this.referralService.addReferalType(this.referralTypeForm.value).subscribe(response=>{
+                   if(response.statusCode == 201){
+                     Swal.fire({
+                       title: "Success",
+                       text: "Data saved successfull",
+                       icon: "success",
+                       confirmButtonColor: "#4690eb",
+                       confirmButtonText: "Continue"
+                     });
+                   }else{
+                     Swal.fire({
+                       title: "Error",
+                       text: response.message,
+                       icon: "error",
+                       confirmButtonColor: "#4690eb",
+                       confirmButtonText: "Continue"
+                     });
+                   }
+                 }
+           
+               );
+               }else{
+           
+               }
+             }
     
       updateReferralType(){
         if(this.referralTypeForm.valid){
