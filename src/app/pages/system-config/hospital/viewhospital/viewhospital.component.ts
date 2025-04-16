@@ -113,7 +113,7 @@ export class ViewhospitalComponent implements OnInit,OnDestroy{
     });
   }
 
-  updateHospital(id: any) {
+  updateHospital(data: any) {
     let config = new MatDialogConfig()
     config.disableClose = false
     config.role = 'dialog'
@@ -121,7 +121,7 @@ export class ViewhospitalComponent implements OnInit,OnDestroy{
     config.maxHeight = '100vh'
     config.width = '850px'
     config.panelClass = 'full-screen-modal'
-    config.data = {id: id}
+    config.data = {data: data}
 
     const dialogRef = this.dialog.open(AddhospitalComponent,config);
 
