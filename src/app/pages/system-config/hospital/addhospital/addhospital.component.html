@@ -2,8 +2,8 @@
 <div>
   <div class="w-full">
     <div class="relative h-full rounded-lg  group  p-6">
-      <div *ngIf="!hospitalData" class="font-semibold ">CREATE NEW HOSPITAL</div>
-      <div *ngIf="hospitalData" class="font-semibold ">ADD NEW HOSPITAL</div>
+      <div *ngIf="!hospitalData" class="font-semibold ">ADD NEW HOSPITAL</div>
+      <div *ngIf="hospitalData" class="font-semibold ">ADD HOSPITAL</div>
       <form [formGroup]="hospitalForm">
         <mat-form-field class="w-full mt-6">
           <mat-label>Hospital Name: </mat-label>
