@@ -119,9 +119,7 @@ export class ViewReferalTypeComponent implements OnInit,OnDestroy {
         config.maxHeight = '100vh'
         config.width = '850px'
         config.panelClass = 'full-screen-modal'
-    
         const dialogRef = this.dialog.open(AddReferralTypeComponent,config);
-    
         dialogRef.afterClosed().subscribe(result => {
           this.getReferalType();
         });
