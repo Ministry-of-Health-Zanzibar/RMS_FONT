@@ -76,21 +76,24 @@ export class ViewReferralsComponent implements OnInit,OnDestroy{
       }
     
       getReferrals() {
-        this.referralService.getAllRefferal().pipe(takeUntil(this.onDestroy)).subscribe((response: any)=>{
-          if(response.statusCode==200){
-            this.dataSource = new MatTableDataSource(response.data);
-            this.dataSource.paginator = this.paginator;
-            this.dataSource.sort = this.sort;
-          }if(response.statusCode==401){
-            this.route.navigateByUrl("/")
-            console.log(response.message)
+        this.referralService.getAllRefferal().pipe(takeUntil(this.onDestroy)).subscribe(
+          (response: any) => {
+            if (response.statusCode == 200) {
+              this.dataSource = new MatTableDataSource(response.data);
+              this.dataSource.paginator = this.paginator;
+              this.dataSource.sort = this.sort;
+            } else if (response.statusCode == 401) {
+              this.route.navigateByUrl("/");
+              console.log(response.message);
+            }
+          },
+          (error) => {
+            this.route.navigateByUrl("/");
+            console.log("Failed to load referrals.");
           }
-        },(error)=>{
-          this.route.navigateByUrl("/")
-          console.log('country getAway api fail to load')
-        })
+        );
       }
-    
+      
     
       applyFilter(event: Event) {
         const filterValue = (event.target as HTMLInputElement).value;
@@ -136,78 +139,77 @@ export class ViewReferralsComponent implements OnInit,OnDestroy{
     
       
     
-       confirmBlock(data:any){
-           var message;
-           if(data.deleted_at){
-             message = 'Are you sure you want to unblock'
-           }
-           else{
-             message = 'Are you sure you want to block'
-           }
-           Swal.fire({
-             title: "Confirm",
-             html: message + ' <b> ' + data.referral_id + ' </b> ',
-             icon: "warning",
-             confirmButtonColor: "#4690eb",
-             confirmButtonText: "Confirm",
-             cancelButtonColor: "#D5D8DC",
-             cancelButtonText: "Cancel",
-             showCancelButton: true
-           }).then((result) => {
-             if (result.isConfirmed) {
-               this.blockReferral(data, data.deleted_at);
-             }
-             else{
-               this.getReferrals();
-             }
-           });
-         }
-       
-         blockReferral(data: any, deleted: any): void{
-           if(deleted){
-             this.referralService.unblockReferral(data, data?.hospital_id).subscribe(response=>{
-               if(response.statusCode == 200){
-                 Swal.fire({
-                   title: "Success",
-                   text: response.message,
-                   icon: "success",
-                   confirmButtonColor: "#4690eb",
-                   confirmButtonText: "Continue"
-                 });
-                 this.getReferrals();
-               }else{
-                 Swal.fire({
-                   title: "Error",
-                   text: response.message,
-                   icon: "error",
-                   confirmButtonColor: "#4690eb",
-                   confirmButtonText: "Continue"
-                 });
-               }
-             })
-           }else{
-             this.referralService.deleteReferral(data?.referral_id).subscribe(response=>{
-               if(response.statusCode == 200){
-                 Swal.fire({
-                   title: "Success",
-                   text: response.message,
-                   icon: "success",
-                   confirmButtonColor: "#4690eb",
-                   confirmButtonText: "Continue"
-                 });
-                 this.getReferrals()
-               }else{
-                 Swal.fire({
-                   title: "Error",
-                   text: response.message,
-                   icon: "error",
-                   confirmButtonColor: "#4690eb",
-                   confirmButtonText: "Continue"
-                 });
-               }
-             });
-           }
-         }
+      confirmBlock(data: any) {
+        const message = data.deleted_at ? 
+          'Are you sure you want to unblock' : 
+          'Are you sure you want to block';
+      
+        Swal.fire({
+          title: "Confirm",
+          html: `${message} <b>${data.referral_id}</b>`,
+          icon: "warning",
+          confirmButtonColor: "#4690eb",
+          confirmButtonText: "Confirm",
+          cancelButtonColor: "#D5D8DC",
+          cancelButtonText: "Cancel",
+          showCancelButton: true
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.toggleReferralStatus(data);
+          } else {
+            this.getReferrals();
+          }
+        });
+      }
+      
+      toggleReferralStatus(data: any): void {
+        if (data.deleted_at) {
+          // Unblock the referral
+          this.referralService.unblockReferral(data.referral_id).subscribe(response => {
+            if (response.statusCode === 200) {
+              Swal.fire({
+                title: "Success",
+                text: response.message,
+                icon: "success",
+                confirmButtonColor: "#4690eb",
+                confirmButtonText: "Continue"
+              });
+              this.getReferrals();
+            } else {
+              Swal.fire({
+                title: "Error",
+                text: response.message,
+                icon: "error",
+                confirmButtonColor: "#4690eb",
+                confirmButtonText: "Continue"
+              });
+            }
+          });
+        } else {
+          // Block the referral (assuming some blocking logic)
+          this.referralService.deleteReferral(data.referral_id).subscribe(response => {
+            if (response.statusCode === 200) {
+              Swal.fire({
+                title: "Success",
+                text: response.message,
+                icon: "success",
+                confirmButtonColor: "#4690eb",
+                confirmButtonText: "Continue"
+              });
+              this.getReferrals();
+            } else {
+              Swal.fire({
+                title: "Error",
+                text: response.message,
+                icon: "error",
+                confirmButtonColor: "#4690eb",
+                confirmButtonText: "Continue"
+              });
+            }
+          });
+        }
+      }
+      
 
           getBills(id:any){
             //  console.log("hiiii",id);

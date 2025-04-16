@@ -2,8 +2,8 @@
 <div>
     <div class="w-full">
       <div class="relative h-full rounded-lg  group  p-6">
-        <div *ngIf="!id" class="font-semibold ">CREATE NEW REASONS</div>
-        <div *ngIf="id" class="font-semibold ">UPDATE REASONS</div>
+        <div *ngIf="!reasonData" class="font-semibold ">UPDATE NEW REASONS</div>
+        <div *ngIf="reasonData" class="font-semibold ">UPDATE REASONS</div>
         <form [formGroup]="reasonForm">
           <mat-form-field class="w-full mt-6">
             <mat-label>Referral Reason Name: </mat-label>
@@ -28,8 +28,8 @@
   
     <mat-dialog-actions align="end">
       <button mat-button mat-dialog-close>Cancel</button>
-      <button *ngIf="!id" mat-flat-button [mat-dialog-close]="true" cdkFocusInitial [disabled]="reasonForm.invalid" (click)="saveReasons()">Save Data</button>
-      <!-- <button *ngIf="id" mat-flat-button [mat-dialog-close]="true" cdkFocusInitial [disabled]="hospitalForm.invalid" (click)="updateDepartment()">Update Data</button> -->
+      <button *ngIf="!reasonData" mat-flat-button [mat-dialog-close]="true" cdkFocusInitial [disabled]="reasonForm.invalid" (click)="saveReasons()">Save Reason</button>
+      <button *ngIf="reasonData" mat-flat-button [mat-dialog-close]="true" cdkFocusInitial [disabled]="reasonForm.invalid" (click)="saveReasons()">Save Reason</button>
     </mat-dialog-actions>
   </div>
   

@@ -2,8 +2,8 @@
 <div>
     <div class="w-full">
       <div class="relative h-full rounded-lg  group  p-6">
-        <div *ngIf="!id" class="font-semibold ">CREATE NEW REFERRAL TYPE</div>
-        <div *ngIf="id" class="font-semibold ">UPDATE REFERRAL TYPE</div>
+        <div *ngIf="!referralData" class="font-semibold ">CREATE NEW REFERRAL TYPE</div>
+        <div *ngIf="referralData" class="font-semibold ">UPDATE REFERRAL TYPE</div>
         <form [formGroup]="referralTypeForm">
           <mat-form-field class="w-full mt-6">
             <mat-label>Referral Type name: </mat-label>
@@ -28,8 +28,8 @@
   
     <mat-dialog-actions align="end">
       <button mat-button mat-dialog-close>Cancel</button>
-      <button *ngIf="!id" mat-flat-button [mat-dialog-close]="true" cdkFocusInitial [disabled]="referralTypeForm.invalid" (click)="saveReferralType()">Save Data</button>
-      <!-- <button *ngIf="id" mat-flat-button [mat-dialog-close]="true" cdkFocusInitial [disabled]="hospitalForm.invalid" (click)="updateDepartment()">Update Data</button> -->
+      <button *ngIf="!referralData" mat-flat-button [mat-dialog-close]="true" cdkFocusInitial [disabled]="referralTypeForm.invalid" (click)="saveReferralType()">Save ReferralType</button>
+      <button *ngIf="referralData" mat-flat-button [mat-dialog-close]="true" cdkFocusInitial [disabled]="referralTypeForm.invalid" (click)="saveReferralType()">Save ReferralType</button>
     </mat-dialog-actions>
   </div>
   
