@@ -57,7 +57,13 @@
 
               <ng-container matColumnDef="status">
                 <th mat-header-cell *matHeaderCellDef class="text-neutral-500 dark:text-neutral-400">Status </th>
-                <td mat-cell *matCellDef="let element,"> {{element.status}} </td>
+                <td mat-cell *matCellDef="let element,"
+                [ngClass]="{
+                  'text-green-600': element.status === 'Confirmed',
+                  'text-red-600':  element.status === 'Denied',
+                  'text-yellow-600': element.status === 'Pending'
+                }"
+                > {{element.status}} </td>
               </ng-container>
 
                 <!-- Name Column -->
@@ -77,7 +83,29 @@
           <ng-container matColumnDef="action">
             <th mat-header-cell *matHeaderCellDef class="text-neutral-500 dark:text-neutral-400"> Action </th>
             <td mat-cell *matCellDef="let element">
+              
               <emr-segmented theme="simple" class="-mx-2">
+                 <!-- View referrals-details -->
+                <emr-segmented-button value="visibilityData">
+                  <span class="size-9 rounded-full border bg-surface flex items-center justify-center" (click)="displayMoreData(element)" matTooltip="View">
+                    <mat-icon class="font-icon visibilityData">visibility</mat-icon>
+                  </span>
+                </emr-segmented-button>
+
+                <!-- <emr-segmented-button value="visibilityData">
+                  <span class="size-9 rounded-full border bg-surface flex items-center justify-center" (click)="displayMoreData(element)" matTooltip="View">
+                    <mat-icon class="font-icon visibilityData">print</mat-icon>
+                  </span>
+                </emr-segmented-button> -->
+
+                <emr-segmented-button *ngIf="element.status === 'Confirmed'" value="visibilityData">
+                  <span class="size-9 rounded-full border bg-surface flex items-center justify-center" (click)="displayMoreData(element)" matTooltip="Print">
+                    <mat-icon class="font-icon visibilityData">print</mat-icon>
+                  </span>
+                </emr-segmented-button>
+                
+
+
                 <emr-segmented-button *ngIf="!element.deleted_at" value="edit_squareData">
                   <span class="size-9 rounded-full border bg-surface flex items-center justify-center" (click)="updateRefererral(element.hospital_id)" *ngIf="permission.parmissionMatched(['Update Referral'])" matTooltip="Edit">
                     <mat-icon class="font-icon edit_squareData">edit_square</mat-icon>

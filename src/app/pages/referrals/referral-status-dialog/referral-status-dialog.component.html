@@ -1,0 +1,43 @@
+<div class="w-full max-w-4xl mx-auto">
+    <div class="relative h-full rounded-2xl group p-8 bg-white shadow-2xl border border-gray-300">
+      <h2 mat-dialog-title class="text-3xl font-bold text-gray-800 mb-8 text-center">
+        Conform referral
+      </h2>
+  
+      <form [formGroup]="statusForm" (ngSubmit)="onSubmit()">
+        <!-- Start Date with Angular Material Datepicker -->
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Start Date</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="startDate" />
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+         <!-- Start Date with Angular Material Datepicker -->
+        <mat-form-field appearance="outline" class="w-full">
+            <mat-label>End Date</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="startDate" />
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+  
+        <!-- Status Selection -->
+        <!-- <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Status</mat-label>
+          <mat-select formControlName="status">
+            <mat-option value="Confirmed">Confirm</mat-option>
+            <mat-option value="Denied">Deny</mat-option>
+          </mat-select>
+        </mat-form-field> -->
+  
+        <!-- Action Buttons -->
+        <div class="flex justify-end gap-6 pt-4">
+          <button mat-raised-button color="warn" type="button" (click)="onCancel()">Cancel</button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="!statusForm.valid">
+            Submit
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  

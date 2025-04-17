@@ -10,7 +10,16 @@ const routes: Routes = [
   {
     path:'',
     loadComponent:()=>import('./view-referrals/view-referrals.component').then(c=>c.ViewReferralsComponent)
-  }
+  },
+  {
+    path:'more/:id',
+    loadComponent:()=>import('./referral-details/referral-details.component').then(c=>c.ReferralDetailsComponent)
+  },
+  {
+    path:'dialog',
+    loadComponent:()=>import('./referral-status-dialog/referral-status-dialog.component').then(c=>c.ReferralStatusDialogComponent)
+  },
+ 
 ];
 
 @NgModule({

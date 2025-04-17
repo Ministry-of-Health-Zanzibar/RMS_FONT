@@ -1,0 +1,59 @@
+<div *ngIf="referral" class="max-w-5xl min-h-[600px] mx-auto p-10 bg-white shadow-2xl rounded-2xl border border-gray-300 mt-10">
+    <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">Referral Preview</h2>
+  
+    <form class="space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label class="block text-gray-700 font-semibold mb-2">Patient Name</label>
+          <input type="text" class="w-full p-3 border rounded-lg bg-gray-100 text-lg" [value]="referral.patient_id" disabled />
+        </div>
+        <div>
+          <label class="block text-gray-700 font-semibold mb-2">Hospital Name</label>
+          <input type="text" class="w-full p-3 border rounded-lg bg-gray-100 text-lg" [value]="referral.hospital_id" disabled />
+        </div>
+        <div>
+          <label class="block text-gray-700 font-semibold mb-2">Referral Type</label>
+          <input type="text" class="w-full p-3 border rounded-lg bg-gray-100 text-lg" [value]="referral.referral_type_id" disabled />
+        </div>
+        <div>
+          <label class="block text-gray-700 font-semibold mb-2">Reason</label>
+          <input type="text" class="w-full p-3 border rounded-lg bg-gray-100 text-lg" [value]="referral.reason_id" disabled />
+        </div>
+        <div class="md:col-span-2">
+          <label class="block text-gray-700 font-semibold mb-2">Status</label>
+          <input type="text"
+            class="w-full p-3 border rounded-lg font-bold bg-gray-100 text-lg"
+            [ngClass]="{
+              'text-green-600': referral.status === 'Confirmed',
+              'text-red-600': referral.status === 'Denied',
+              'text-yellow-600': referral.status === 'Pending'
+            }"
+            [value]="referral.status" disabled />
+        </div>
+      </div>
+  
+      <div class="flex justify-center mt-10 space-x-6">
+        <button
+  type="button"
+  class="bg-primary-600 hover:bg-primary-700 text-white px-8 py-3 rounded-lg text-lg font-semibold shadow"
+  (click)="updateStatusPopup()"
+  [disabled]="referral.status !== 'Pending'">
+  Confirm
+</button>
+
+        <!-- <button
+          type="button"
+          class="bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-lg text-lg font-semibold shadow"
+          (click)="updateStatus('Denied')"
+          [disabled]="referral.status !== 'Pending'">
+          Deny
+        </button> -->
+      </div>
+    </form>
+  </div>
+  
+  <!-- No data message -->
+  <div *ngIf="!referral" class="text-center text-red-500 mt-10 text-xl font-semibold">
+    No patient data found.
+  </div>
+  

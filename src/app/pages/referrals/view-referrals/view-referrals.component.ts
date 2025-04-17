@@ -61,7 +61,7 @@ export class ViewReferralsComponent implements OnInit,OnDestroy{
     
       constructor(public permission: PermissionService,
         public referralService:ReferralService,
-        private route:Router,
+        private router:Router,
         private dialog: MatDialog
         ){}
     
@@ -83,12 +83,12 @@ export class ViewReferralsComponent implements OnInit,OnDestroy{
               this.dataSource.paginator = this.paginator;
               this.dataSource.sort = this.sort;
             } else if (response.statusCode == 401) {
-              this.route.navigateByUrl("/");
+              this.router.navigateByUrl("/");
               console.log(response.message);
             }
           },
           (error) => {
-            this.route.navigateByUrl("/");
+            this.router.navigateByUrl("/");
             console.log("Failed to load referrals.");
           }
         );
@@ -228,5 +228,10 @@ export class ViewReferralsComponent implements OnInit,OnDestroy{
                this.getReferrals();
              });
            }
-         
+           
+           displayMoreData(data: any) {
+
+            const id = data.patient_id;
+             this.router.navigate(['/pages/config/referrals/more', id]); // Navigate to the new page with complain_id
+           }
       }
