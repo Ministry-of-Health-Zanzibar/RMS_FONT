@@ -145,7 +145,7 @@ export class SidebarComponent {
 
         {
           type: 'link',
-          name: 'ReferralType',
+          name: 'Referral Type',
           link: '/pages/config/referal-type',
           permission: 'View ReferralType',
 
@@ -170,7 +170,7 @@ export class SidebarComponent {
       children: [
         {
           type: 'link',
-          name: 'Partient',
+          name: 'Patient',
           link: '/pages/patient',
           permission: 'View Patient',
 
