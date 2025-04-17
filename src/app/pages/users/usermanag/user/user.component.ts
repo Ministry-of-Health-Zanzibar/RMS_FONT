@@ -49,7 +49,7 @@ export class UserComponent {
     private dialog: MatDialog
   ){}
 
-  displayedColumns: string[] = ['id','name','address','phone','email','role','action'];
+  displayedColumns: string[] = ['id','name','gender','address','phone','email','action'];
   dataSource: MatTableDataSource<any> = new MatTableDataSource();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;

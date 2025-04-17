@@ -23,6 +23,7 @@
           class="text-blue-600 underline hover:text-blue-800">
           View PDF
         </a>
+        <!-- <iframe src="'http://127.0.0.1:8000/storage/' + patient.referral_letter_file" frameborder="0">View PDF</iframe> -->
       </td>
     </tr>
   </table>
@@ -33,7 +34,7 @@
       <tr>
         <th class="p-2 border">Provider</th>
         <th class="p-2 border">Card Number</th>
-        <th class="p-2 border">Valid Until</th>
+        <!-- <th class="p-2 border">Valid Until</th> -->
         <th class="p-2 border">Insurance Code</th>
       </tr>
     </thead>
@@ -41,7 +42,7 @@
       <tr *ngFor="let insurance of patient.insurances">
         <td class="p-2 border">{{ insurance.insurance_provider_name }}</td>
         <td class="p-2 border">{{ insurance.card_number }}</td>
-        <td class="p-2 border">{{ insurance.valid_until | date: 'dd-MM-yyyy' }}</td>
+        <!-- <td class="p-2 border">{{ insurance.valid_until | date: 'dd-MM-yyyy' }}</td> -->
         <td class="p-2 border">{{ insurance.insurance_code }}</td>
       </tr>
     </tbody>

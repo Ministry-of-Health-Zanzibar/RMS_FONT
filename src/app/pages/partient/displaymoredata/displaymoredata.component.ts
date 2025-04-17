@@ -90,7 +90,9 @@ export class DisplaymoredataComponent implements OnInit{
     this.displayServices.getPatientInsurances(this.patientID).subscribe(
       response => {
         console.log('Full API Response:', response);
-        this.patient = response.data; // Assuming API returns { data: {...} }
+        this.patient = response;
+
+
       },
       error => {
         console.error('Failed to load patient data', error);

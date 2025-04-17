@@ -7,11 +7,11 @@
       <app-assistant-search></app-assistant-search>
     </div>
     <div class="ms-auto flex items-center gap-3">
-      <button mat-icon-button [matMenuTriggerFor]="appsMenu" matTooltip="Applications">
+      <!-- <button mat-icon-button [matMenuTriggerFor]="appsMenu" matTooltip="Applications">
         <mat-icon class="font-icon">apps</mat-icon>
-      </button>
+      </button> -->
       <button mat-icon-button matTooltip="Notifications"
-              [emrPopoverTriggerFor]="notificationsPopover" position="below-end">
+               position="below-end">
         <mat-icon class="font-icon"
                   matBadge="3" matBadgeColor="warn" matBadgeSize="small">notifications</mat-icon>
       </button>
@@ -29,7 +29,7 @@
   </div>
 </div>
 
-<mat-menu xPosition="before" #appsMenu="matMenu" class="max-h-[400px]">
+<!-- <mat-menu xPosition="before" #appsMenu="matMenu" class="max-h-[400px]">
   <div class="w-80">
     <a routerLink="/" mat-menu-item>
       <div class="flex items-center gap-3 my-3">
@@ -110,17 +110,17 @@
       </div>
     </a>
   </div>
-</mat-menu>
+</mat-menu> -->
 
-<ng-template #notificationsPopover>
+<!-- <ng-template #notificationsPopover>
   <emr-popover class="overflow-hidden">
     <app-header-notification-list></app-header-notification-list>
   </emr-popover>
-</ng-template>
+</ng-template> -->
 
 <mat-menu xPosition="before" #accountMenu="matMenu">
   <div class="flex items-center px-4 pb-4 pt-2 gap-3">
-    <emr-avatar text="VS" class="w-14 h-14"></emr-avatar>
+    <emr-avatar text="RIS" class="w-14 h-14"></emr-avatar>
     <div class="-mt-0.5">
       <div class="flex items-center gap-2">
         {{fullName}}
@@ -128,16 +128,16 @@
       <div class="text-xs text-gray-500 mt-0.5 dark:text-gray-400">{{emails}}</div>
     </div>
   </div>
-  <mat-divider></mat-divider>
+  <!-- <mat-divider></mat-divider>
   <a mat-menu-item>
     <mat-icon class="font-icon">question_mark</mat-icon>
     <span>Help Center</span>
-  </a>
-  <mat-divider></mat-divider>
+  </a> -->
+  <!-- <mat-divider></mat-divider>
   <a mat-menu-item>
     <mat-icon class="font-icon">translate</mat-icon>
     <span>Language</span>
-  </a>
+  </a> -->
   <mat-divider></mat-divider>
   <a mat-menu-item (click)="logoutHead()">
     <mat-icon class="font-icon">logout</mat-icon>
