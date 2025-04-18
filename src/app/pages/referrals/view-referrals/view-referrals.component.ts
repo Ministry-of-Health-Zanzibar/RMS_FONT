@@ -49,22 +49,24 @@ export class ViewReferralsComponent implements OnInit,OnDestroy{
 
 
    private readonly onDestroy = new Subject<void>()
-    
-      displayedColumns: string[] = 
+   loading: boolean = false;
+
+
+      displayedColumns: string[] =
       ['id', 'patient_name', 'referral_type_name',
       'hospital_name', 'referral_reason_name','start_date', 'end_date', 'status', 'action'];
       dataSource: MatTableDataSource<any> = new MatTableDataSource();
-    
+
       @ViewChild(MatPaginator) paginator!: MatPaginator;
       @ViewChild(MatSort) sort!: MatSort;
-    
-    
+
+
       constructor(public permission: PermissionService,
         public referralService:ReferralService,
         private router:Router,
         private dialog: MatDialog
         ){}
-    
+
       ngOnInit(): void {
         this.getReferrals();
       }
@@ -74,10 +76,13 @@ export class ViewReferralsComponent implements OnInit,OnDestroy{
       renew(){
         this.getReferrals();
       }
-    
+
       getReferrals() {
+        this.loading = true;
         this.referralService.getAllRefferal().pipe(takeUntil(this.onDestroy)).subscribe(
+
           (response: any) => {
+            this.loading = false;
             if (response.statusCode == 200) {
               this.dataSource = new MatTableDataSource(response.data);
               this.dataSource.paginator = this.paginator;
@@ -88,22 +93,23 @@ export class ViewReferralsComponent implements OnInit,OnDestroy{
             }
           },
           (error) => {
+            this.loading = false;
             this.router.navigateByUrl("/");
             console.log("Failed to load referrals.");
           }
         );
       }
-      
-    
+
+
       applyFilter(event: Event) {
         const filterValue = (event.target as HTMLInputElement).value;
         this.dataSource.filter = filterValue.trim().toLowerCase();
-    
+
         if (this.dataSource.paginator) {
           this.dataSource.paginator.firstPage();
         }
       }
-    
+
       addReferrals() {
         let config = new MatDialogConfig()
         config.disableClose = false
@@ -112,14 +118,14 @@ export class ViewReferralsComponent implements OnInit,OnDestroy{
         config.maxHeight = '100vh'
         config.width = '850px'
         config.panelClass = 'full-screen-modal'
-    
+
         const dialogRef = this.dialog.open(AddReferralsComponent,config);
-    
+
         dialogRef.afterClosed().subscribe(result => {
           this.getReferrals();
         });
       }
-    
+
       updateRefererral(id: any) {
         let config = new MatDialogConfig()
         config.disableClose = false
@@ -129,21 +135,21 @@ export class ViewReferralsComponent implements OnInit,OnDestroy{
         config.width = '850px'
         config.panelClass = 'full-screen-modal'
         config.data = {id: id}
-    
+
         const dialogRef = this.dialog.open(AddReferralsComponent,config);
-    
+
         dialogRef.afterClosed().subscribe(result => {
           this.getReferrals();
         });
       }
-    
-      
-    
+
+
+
       confirmBlock(data: any) {
-        const message = data.deleted_at ? 
-          'Are you sure you want to unblock' : 
+        const message = data.deleted_at ?
+          'Are you sure you want to unblock' :
           'Are you sure you want to block';
-      
+
         Swal.fire({
           title: "Confirm",
           html: `${message} <b>${data.referral_id}</b>`,
@@ -161,7 +167,7 @@ export class ViewReferralsComponent implements OnInit,OnDestroy{
           }
         });
       }
-      
+
       toggleReferralStatus(data: any): void {
         if (data.deleted_at) {
           // Unblock the referral
@@ -209,7 +215,7 @@ export class ViewReferralsComponent implements OnInit,OnDestroy{
           });
         }
       }
-      
+
 
           getBills(id:any){
             //  console.log("hiiii",id);
@@ -221,14 +227,14 @@ export class ViewReferralsComponent implements OnInit,OnDestroy{
              config.width = '850px'
              config.panelClass = 'full-screen-modal'
              config.data = {id: id}
-         
+
              const dialogRef = this.dialog.open(BillComponent,config);
-         
+
              dialogRef.afterClosed().subscribe(result => {
                this.getReferrals();
              });
            }
-           
+
            displayMoreData(data: any) {
 
             const id = data.patient_id;

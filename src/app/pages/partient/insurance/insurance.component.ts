@@ -49,7 +49,8 @@ export class InsuranceComponent {
   constructor(
 
     private insurance:PartientService,
-    private dialogRef: MatDialogRef<InsuranceComponent>) {
+    private dialogRef: MatDialogRef<InsuranceComponent>)
+    {
 
   }
 
