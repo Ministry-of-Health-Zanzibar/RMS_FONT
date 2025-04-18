@@ -12,8 +12,15 @@ export class ReferralService {
 
   private baseUrl: string = `${environment.baseUrl}`;
   private href = `${this.baseUrl}referrals`;
+  private href_letter = `${this.baseUrl}referralLetters`;
+
+
 
   constructor(private http: HttpClient) {}
+
+  public addReferralLetter(referral: any): Observable<any> {
+    return this.http.post(this.href_letter,referral);
+  }
 
   public getAllRefferal(): Observable<any> {
     return this.http.get<any>(this.href);
@@ -33,12 +40,12 @@ export class ReferralService {
 
   public updateReferral(referral:any, id:any): Observable<any>{
     return this.http.patch(`${this.href}/${id}`,referral)
-  } 
-  
-  public unblockReferral(id: any): Observable<any> {
-    return this.http.patch(`${this.href}/unBlock/${id}`, {}); 
   }
 
-  
-  
+  public unblockReferral(id: any): Observable<any> {
+    return this.http.patch(`${this.href}/unBlock/${id}`, {});
+  }
+
+
+
 }

@@ -46,6 +46,8 @@ import { Router } from '@angular/router';
 export class ViewpartientComponent {
 
  private readonly onDestroy = new Subject<void>()
+ loading: boolean = false;
+
 
   constructor(
     public permission: PermissionService,
@@ -72,21 +74,38 @@ export class ViewpartientComponent {
     this.userPetient();
   }
 
+  // userPetient() {
+  //   this.userService.getAllPartients().pipe(takeUntil(this.onDestroy)).subscribe((response: any)=>{
+  //     if(response.data){
+  //       console.log(response)
+  //       this.dataSource = new MatTableDataSource(response.data);
+  //       this.dataSource.paginator = this.paginator;
+  //       this.dataSource.sort = this.sort;
+  //     }
+  //     else{
+  //       console.log('permission response errors')
+  //     }
+  //   },(error)=>{
+  //     console.log('permision getAway api fail to load')
+  //   })
+  // }
   userPetient() {
-    this.userService.getAllPartients().pipe(takeUntil(this.onDestroy)).subscribe((response: any)=>{
-      if(response.data){
-        console.log(response)
+    this.loading = true;
+    this.userService.getAllPartients().pipe(takeUntil(this.onDestroy)).subscribe((response: any) => {
+      this.loading = false;
+      if (response.data) {
         this.dataSource = new MatTableDataSource(response.data);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
+      } else {
+        console.log('permission response errors');
       }
-      else{
-        console.log('permission response errors')
-      }
-    },(error)=>{
-      console.log('permision getAway api fail to load')
-    })
+    }, (error) => {
+      this.loading = false;
+      console.log('permission getAway api fail to load');
+    });
   }
+
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;

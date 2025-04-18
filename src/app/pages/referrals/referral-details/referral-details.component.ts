@@ -61,7 +61,7 @@ export class ReferralDetailsComponent {
     this.referralsService.getReferralById(this.referralID).subscribe(
       response => {
         console.log('Full API Response:', response);
-        this.referral = response.data; // Assuming API returns { data: {...} }
+        this.referral = response.data // Assuming API returns { data: {...} }
       },
       error => {
         console.error('Failed to load patient data', error);
@@ -70,18 +70,21 @@ export class ReferralDetailsComponent {
   }
 
   updateStatusPopup() {
+    console.log("id hiiiii",this.referral);
     const dialogRef = this.dialog.open(ReferralStatusDialogComponent, {
-      width: '400px',
-      data: { referralId: this.referralID }
+
+      width: '700px',
+      data: { data:this.referral}
+
     });
-  
+
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         console.log('Dialog result:', result);
         this.referral.status = result.status;
-  
-        
-  
+
+
+
         Swal.fire({
           icon: 'success',
           title: `Referral ${result.status}`,
@@ -91,6 +94,6 @@ export class ReferralDetailsComponent {
     });
   }
 
-  
+
 
 }
