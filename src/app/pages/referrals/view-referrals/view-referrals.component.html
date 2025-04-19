@@ -107,7 +107,7 @@
 
 
                 <emr-segmented-button *ngIf="!element.deleted_at" value="edit_squareData">
-                  <span class="size-9 rounded-full border bg-surface flex items-center justify-center" (click)="updateRefererral(element.hospital_id)" *ngIf="permission.parmissionMatched(['Update Referral'])" matTooltip="Edit">
+                  <span class="size-9 rounded-full border bg-surface flex items-center justify-center" (click)="updateRefererral(element.referral_id)" *ngIf="permission.parmissionMatched(['Update Referral'])" matTooltip="Edit">
                     <mat-icon class="font-icon edit_squareData">edit_square</mat-icon>
                   </span>
                 </emr-segmented-button>

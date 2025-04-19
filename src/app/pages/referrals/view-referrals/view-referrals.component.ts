@@ -237,7 +237,18 @@ export class ViewReferralsComponent implements OnInit,OnDestroy{
 
            displayMoreData(data: any) {
 
-            const id = data.patient_id;
+            const id = data.referral_id;
              this.router.navigate(['/pages/config/referrals/more', id]); // Navigate to the new page with complain_id
            }
+
+            // USER ROLES
+    public getUserRole(): any {
+      return localStorage.getItem('roles');
+      console.log("roles :",localStorage.getItem('roles'))
+    }
+
+    public get isStaff(): boolean {
+      return this.getUserRole() === 'ROLE STAFF';
+    }
+
       }
