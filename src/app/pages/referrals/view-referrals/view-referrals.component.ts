@@ -243,6 +243,17 @@ export class ViewReferralsComponent implements OnInit,OnDestroy{
              this.router.navigate(['/pages/config/referrals/more', id]); // Navigate to the new page with complain_id
            }
 
+            // USER ROLES
+    public getUserRole(): any {
+      return localStorage.getItem('roles');
+    
+    }
+
+    public get isStaff(): boolean {
+      return this.getUserRole() === 'ROLE STAFF';
+    }
+
+
 
 
           //  referralsLetterPopup(referral_id: any) {
