@@ -1,0 +1,14 @@
+#letterContent {
+    font-family: 'Times New Roman', serif;
+    background-color: white;
+    padding: 20px;
+    color: black;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  
+  @media print {
+    button {
+      display: none;
+    }
+  }
+  

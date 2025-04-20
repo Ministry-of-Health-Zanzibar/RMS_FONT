@@ -21,6 +21,7 @@ import { AddReferralsComponent } from '../add-referrals/add-referrals.component'
 import Swal from 'sweetalert2';
 import { EmrSegmentedModule } from "../../../../../projects/components/src/lib/segmented/segmented.module";
 import { BillComponent } from '../bill/bill.component';
+import { ReferralsLetterComponent } from '../referrals-letter/referrals-letter.component';
 
 @Component({
   selector: 'app-view-referrals',
@@ -59,6 +60,7 @@ export class ViewReferralsComponent implements OnInit,OnDestroy{
 
       @ViewChild(MatPaginator) paginator!: MatPaginator;
       @ViewChild(MatSort) sort!: MatSort;
+  referralsLetter: any;
 
 
       constructor(public permission: PermissionService,
@@ -237,7 +239,49 @@ export class ViewReferralsComponent implements OnInit,OnDestroy{
 
            displayMoreData(data: any) {
 
-            const id = data.patient_id;
+            const id = data.referral_id;
              this.router.navigate(['/pages/config/referrals/more', id]); // Navigate to the new page with complain_id
            }
+
+
+
+          //  referralsLetterPopup(referral_id: any) {
+          //   console.log("id hiiiii", referral_id);
+          //   const dialogRef = this.dialog.open(ReferralsLetterComponent, {
+          //     width: '700px',
+          //     data: { data: referral_id }
+          //   });
+          
+          //   dialogRef.afterClosed().subscribe(result => {
+          //     if (result) {
+          //       console.log('Dialog result:', this.referralsLetter);
+          
+          //       Swal.fire({
+          //         icon: 'success',
+          //         title: `Referral `,
+          //         text: `Start Date:`
+          //       });
+          //     }
+          //   });
+          // }
+
+            // referralsLetterPopup(data: any) {
+
+            //   const id = data.referral_id;
+            //   this.router.navigate(['/pages/config/referrals/more', id]); // Navigate to the new page with complain_id
+            // }
+
+            referralsLetterPopup(data: any): void {
+              const dialogRef = this.dialog.open(ReferralsLetterComponent, {
+                maxWidth: '100vw',
+                maxHeight: '100vh',
+                 data: data  // pass referral data to the dialog
+              });
+            
+              dialogRef.afterClosed().subscribe(result => {
+                console.log('The dialog was closed');
+              });
+            }
+
+          
       }
