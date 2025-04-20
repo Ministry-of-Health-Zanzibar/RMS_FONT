@@ -16,6 +16,7 @@ import Swal from 'sweetalert2';
 import { RolePermissionService } from '../../../services/users/role-permission.service';
 
 import { PartientService } from '../../../services/partient/partient.service';
+import { GlobalConstants } from '@shared/global-constants';
 
 @Component({
   selector: 'app-addpartient',
@@ -43,9 +44,9 @@ export class AddpartientComponent {
   readonly data = inject<any>(MAT_DIALOG_DATA);
   public sidebarVisible:boolean = true
 
-  userForm: FormGroup;
+  patientForm: FormGroup;
   user: any;
-  id: any;
+  patientData: any;
   locations: any;
   workStation: any;
   roles: any;
@@ -63,71 +64,65 @@ export class AddpartientComponent {
   }
 
   ngOnInit(): void {
-    this.configForm();
     if(this.data){
-      this.id = this.data.id;
-      this.getUser(this.id);
+      this.patientData = this.data.data;
+     // this.getHospital(this.id);
     }
-
+    this.configForm();
   }
+
+  // getDepartm(id: any){
+  //   this.departmentService.getAllDepartmentById(id).subscribe(response=>{
+  //     this.departmentForm.patchValue(response.data[0])
+  //   })
+  // }
 
   ngOnDestroy(): void {
     this.onDestroy.next()
   }
-
   onClose() {
     this.dialogRef.close(false)
   }
 
+
   configForm(){
-    this.userForm = new FormGroup({
-      name: new FormControl(null, Validators.required ),
-      gender: new FormControl(null, Validators.required),
-      location: new FormControl(null, Validators.required),
-      phone: new FormControl(null, [
-        Validators.required,
-        // Validators.pattern(/^\+255\d{9}$/) // Regex to validate +255 followed by 9 digits
-      ]),
+         this.patientForm = new FormGroup({
+           name: new FormControl(null, [Validators.required, Validators.pattern(GlobalConstants.nameRegexOnly)]),
+           gender: new FormControl(null, Validators.required),
+           location: new FormControl(null, Validators.required),
+           phone: new FormControl(null, Validators.required),
+           job: new FormControl(null, Validators.required),
+           position: new FormControl(null, Validators.required),
+           date_of_birth: new FormControl(null, Validators.required),
+           referral_letter_file: new FormControl(null, Validators.required),
+         });
+         if(this.patientData){
+           this.patientForm.patchValue(this.patientData);
+         }
+       }
 
-      position: new FormControl(null),
-      job: new FormControl(null),
+  // getUser(patientData: any) {
+  //   this.patientService.getPartientById(patientData).subscribe(response=>{
+  //     if(response.statusCode == 200){
+  //       this.user = response.data[0];
+  //       this.patientForm.patchValue(this.user);
 
-      referral_letter_file: new FormControl(null),
+  //     }
+  //     else{
+  //       Swal.fire({
+  //         title: "error",
+  //         text: response.message,
+  //         icon: "error",
+  //         confirmButtonColor: "#4690eb",
+  //         confirmButtonText: "Close"
+  //       });
+  //     }
+  //   })
+  // }
 
-      date_of_birth: new FormControl(null, Validators.required),
-
-    });
-  }
-
-
-
-
-
-
-  getUser(id: any) {
-    this.patientService.getPartientById(id).subscribe(response=>{
-      if(response.statusCode == 200){
-        this.user = response.data[0];
-        this.userForm.patchValue(this.user);
-
-      }
-      else{
-        Swal.fire({
-          title: "error",
-          text: response.message,
-          icon: "error",
-          confirmButtonColor: "#4690eb",
-          confirmButtonText: "Close"
-        });
-      }
-    })
-  }
-
-  // saveUser(){
-
-
-  //   if(this.userForm.valid){
-  //     this.UserService.addPartient(this.userForm.value).subscribe(response=>{
+  // savePartient(){
+  //   if(this.patientForm.valid){
+  //     this.patientService.addPartient(this.patientForm.value).subscribe(response=>{
   //       if(response.statusCode == 201){
   //         var message;
   //         Swal.fire({
@@ -153,31 +148,7 @@ export class AddpartientComponent {
   //   }
   // }
 
-  updateUser(){
-    if(this.userForm.valid){
 
-      this.patientService.updatePartient(this.userForm.value,this.id).subscribe(response=>{
-        if(response.statusCode == 200){
-          Swal.fire({
-            title: "Success",
-            text: response.message,
-            icon: "success",
-            confirmButtonColor: "#4690eb",
-            confirmButtonText: "Close"
-          });
-        }
-        else{
-          Swal.fire({
-            title: "Error",
-            text: response.message,
-            icon: "error",
-            confirmButtonColor: "#4690eb",
-            confirmButtonText: "Close"
-          });
-        }
-      })
-    }
-  }
 
   // onAttachementSelected(event: Event) {
   //   const file = (event.target as HTMLInputElement).files?.[0];
@@ -193,8 +164,8 @@ export class AddpartientComponent {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       this.selectedAttachement = input.files[0];
-      this.userForm.get('referral_letter_file')?.setValue(this.selectedAttachement.name);
-      this.userForm.get('referral_letter_file')?.updateValueAndValidity();
+      this.patientForm.get('referral_letter_file')?.setValue(this.selectedAttachement.name);
+      this.patientForm.get('referral_letter_file')?.updateValueAndValidity();
     }
   }
 
@@ -228,22 +199,22 @@ export class AddpartientComponent {
   // }
 
 
-  saveUser() {
-    if (this.userForm.valid) {
-      const formData = new FormData();
+  savePatient() {
+    if (this.patientForm.valid) {
+      const patientData = new this.patientData();
 
-      Object.keys(this.userForm.controls).forEach(key => {
+      Object.keys(this.patientForm.controls).forEach(key => {
         if (key === 'referral_letter_file') {
           if (this.selectedAttachement) {
-            formData.append('referral_letter_file', this.selectedAttachement);
+            patientData.append('referral_letter_file', this.selectedAttachement);
           }
         } else {
-          const value = this.userForm.get(key)?.value;
-          formData.append(key, value ?? '');
+          const value = this.patientForm.get(key)?.value;
+          patientData.append(key, value ?? '');
         }
       });
 
-      this.patientService.addPartient(formData).subscribe(response => {
+      this.patientService.addPartient(patientData).subscribe(response => {
         if (response.statusCode === 201) {
           Swal.fire({
             title: "Success",
@@ -264,7 +235,30 @@ export class AddpartientComponent {
       });
     }
   }
-
+  updatePatient(){
+    if(this.patientForm.valid){
+      this.patientService.updatePartient(this.patientForm.value, this.patientData.patient_id).subscribe(response=>{
+        if(response.statusCode == 200){
+          Swal.fire({
+            title: "Success",
+            text: response.message,
+            icon: "success",
+            confirmButtonColor: "#4690eb",
+            confirmButtonText: "Close"
+          });
+        }
+        else{
+          Swal.fire({
+            title: "Error",
+            text: response.message,
+            icon: "error",
+            confirmButtonColor: "#4690eb",
+            confirmButtonText: "Close"
+          });
+        }
+      })
+    }
+  }
 
 
 

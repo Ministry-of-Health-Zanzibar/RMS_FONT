@@ -34,7 +34,7 @@ export class PartientService {
   }
 
   public updatePartient(patient:any, id:any): Observable<any>{
-    return this.http.patch(`${this.href}/${id}`,patient)
+    return this.http.post(`${this.href}/update/${id}`,patient)
   }
 
   public unblockPatient(data: any, id:any): Observable<any>{
@@ -68,6 +68,9 @@ export class PartientService {
   // }
   public getPatientInsurances(id: any) {
     return this.http.get<any>(`${this.href_patientInsurance}/${id}`); // adjust endpoint as needed
+  }
+  public unblockPatientInsurances(data: any, id:any): Observable<any>{
+    return this.http.patch(`${this.baseUrl}patients/unblock/${id}`, data);
   }
 
 
