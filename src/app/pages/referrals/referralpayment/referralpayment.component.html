@@ -1,0 +1,47 @@
+
+<div>
+  <div class="w-full">
+    <div class="relative h-full rounded-lg  group  p-6">
+
+      <div *ngIf="id" class="font-semibold ">ADD PAYMENT FORM</div>
+      <form [formGroup]="clientForm">
+
+        <!-- <mat-form-field class="w-full mt-4">
+          <mat-label>Insurance Number:</mat-label>
+          <input matInput placeholder="Ex. 0009998-778 " formControlName="card_number" type="text">
+          <mat-error class="error-message" *ngIf="clientForm.controls['card_number'].touched && clientForm.controls['card_number'].invalid">
+            <span *ngIf="clientForm.controls['card_number'].errors?.['required']">This field is mandatory</span>
+            <span *ngIf="clientForm.controls['card_number'].errors?.['pattern']">This field is invalid (must be contain alpharbetical only)</span>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="w-full mt-4">
+          <mat-label>Insurance Provider</mat-label>
+          <mat-select formControlName="insurance_provider_name">
+            <mat-option value="ZHSF">ZHSF</mat-option>
+            <mat-option value="NHSF">NHSF</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="w-full mt-4">
+          <mat-label>Valid Until</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="valid_until" placeholder="Choose a date">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error *ngIf="clientForm.controls['valid_until'].touched && clientForm.controls['valid_until'].invalid">
+            <span *ngIf="clientForm.controls['valid_until'].errors?.['required']">This field is mandatory</span>
+          </mat-error>
+        </mat-form-field> -->
+
+      </form>
+    </div>
+  </div>
+
+  <mat-dialog-actions align ="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <!-- <button *ngIf="id" mat-flat-button [mat-dialog-close]="true" cdkFocusInitial [disabled]="clientForm.invalid" (click)="saveClient()">Add Payment</button> -->
+  </mat-dialog-actions>
+</div>
+
+
+
+

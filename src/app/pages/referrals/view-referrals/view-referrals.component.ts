@@ -244,7 +244,7 @@ export class ViewReferralsComponent implements OnInit,OnDestroy{
             // USER ROLES
     public getUserRole(): any {
       return localStorage.getItem('roles');
-    
+
     }
 
     public get isStaff(): boolean {

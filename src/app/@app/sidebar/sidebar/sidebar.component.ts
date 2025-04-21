@@ -191,6 +191,14 @@ export class SidebarComponent {
 
           permission: 'View Referral',
 
+        },
+        {
+          type: 'link',
+          name: 'View Bill',
+          link: '/pages/config/referrals/bill',
+
+          permission: 'View Referral',
+
         }
       ]
     },
