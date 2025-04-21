@@ -25,6 +25,11 @@ const routes: Routes = [
     loadComponent:()=>import('./referral-status-dialog/referral-status-dialog.component').then(c=>c.ReferralStatusDialogComponent)
   },
 
+  {
+    path:'referralsLetter',
+    loadComponent:()=>import('./referrals-letter/referrals-letter.component').then(c=>c.ReferralsLetterComponent)
+  },
+
 ];
 
 @NgModule({

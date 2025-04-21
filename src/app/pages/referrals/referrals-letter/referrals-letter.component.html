@@ -1,0 +1,88 @@
+
+     <div id="print-section" *ngIf="referral" class="p-10 bg-white shadow-lg rounded-lg max-w-4xl mx-auto text-gray-900">
+       
+    <div *ngIf="referral" class="p-10 bg-white shadow-lg rounded-lg max-w-4xl mx-auto text-gray-900">
+        <div class="flex justify-center mb-4">
+            <img src="../../../../assets/img/smz.png" alt="" class="w-auto h-24">
+          </div>
+        <div class="text-center space-y-1 mb-6">
+          <p class="text-lg font-semibold">SERIKALI YA MAPINDUZI YA ZANZIBAR</p>
+          <p class="text-lg font-semibold">WIZARA YA AFYA</p>
+          <div class="grid grid-cols-2 gap-4 text-sm text-left">
+            <!-- Left Column -->
+            <div>
+              <p>6 Barabara ya Health Office, S.L.P 236 MNANZIMMOJA</p>
+              <p>POSTIKODI: 70467 Mjini Magharibi Zanzibar</p>
+            </div>
+          
+            <!-- Right Column -->
+            <div class="text-right">
+              <p>
+                Tovuti: 
+                <a href="http://www.mohz.go.tz" class="text-blue-600 hover:underline">www.mohz.go.tz</a>
+              </p>
+              <p>
+                Barua pepe: 
+                <a href="{{email}}" class="text-blue-600 hover:underline">{{email}}</a>
+              </p>
+            </div>
+          </div>
+          
+        </div>
+      
+        <hr>
+      
+        <div class="flex justify-between text-sm font-medium my-4">
+          <p>KUMB: CDA.25/254/01</p>
+          <p class="font-semibold uppercase">TAREHE: {{ referral.start_date }}</p>
+        </div>
+        <div class="mb-6 space-y-1">
+          <p class="font-semibold uppercase">MKURUGENZI MTENDAJI,</p>
+          <p class="font-semibold uppercase">{{ referral.hospital_name }},</p>
+          <p class="font-semibold uppercase">{{referral.hospital_address}}</p>
+          <p class="font-semibold mt-2">ATT: MKURUGENZI FEDHA NA MIPANGO - MNH</p>
+        </div>
+      
+        <div class="mb-4 text-center">
+            <p class="font-semibold uppercase">
+              Kuh: KUMPATIA MATIBABU MGONJWA {{ referral.patient_name }}
+            </p>
+          </div>          
+      
+        <div class="space-y-3 text-sm">
+          <p>Tafadhali naomba uhusike na mada ya hapo juu.</p>
+          <p>Wizara ya Afya Zanzibar, inamleta kwenu kwa uchunguzi na matibabu zaidi mtajwa hapo juu.</p>
+          <p>Kwa barua hii, tunaomba mumpokee na kumpatia matibabu stahiki kama tulivyokubaliana.</p>
+          <p>Gharama za matibabu zitalipwa na Wizara ya Afya kwa mujibu wa Mkataba na Muhimbili National Hospital.</p>
+          <p>Wizara ya Afya inaomba taarifa fupi za maendeleo ya matibabu kwa mhusika ikiwemo Diagnosis, Tiba aliyopewa, tathmini, na sababu ya kurudi mara nyingine.</p>
+          <p>Aidha Wizara ya Afya inaomba ripoti kamili iwasilishwe mwishoni mwa matibabu.</p>
+          <p>Naomba kuwasiliana kwa hatua.</p>
+          <p><strong>Ahsante,</strong></p>
+        </div>
+      
+        <div class="mt-8">
+          <p class="font-semibold">DKT. AMOUR S. MOHAMED</p>
+          <p class="uppercase">MKURUGENZI MKUU</p>
+          <p>WIZARA YA AFYA, ZANZIBAR</p>
+        </div>
+      
+        <mat-divider class="my-6"></mat-divider>
+      
+        <div class="text-xs text-gray-600">
+          <p><em><strong>Kwa mawasiliano ya moja kwa moja:</strong></em></p>
+          <p>Waziri ..........., Katibu Mkuu .........., Mkurugenzi Mkuu barua pepe: 
+            <a href="mailto:dg@mohz.go.tz" class="text-blue-600 hover:underline">{{dg}}</a>
+          </p>
+        </div>
+
+        <div class="flex justify-end mb-4">
+            <button (click)="print()" mat-raised-button color="primary">
+              <mat-icon>print</mat-icon> print
+            </button>
+          </div>
+          
+      </div>
+      </div>
+      
+  
+  
