@@ -55,7 +55,7 @@ export class ReferralpaymentComponent  {
      this.configForm();
      if(this.data){
        this.id = this.data.id;
-     console.log("bill   here  ",this.id);
+     console.log("bill ID   here  ",this.id);
      }
     // this.viewUser();
 
@@ -73,44 +73,44 @@ export class ReferralpaymentComponent  {
 
    configForm(){
      this.clientForm = new FormGroup({
-       referral_id: new FormControl(this.id),
-       insurance_provider_name: new FormControl(null, Validators.required),
-       card_number: new FormControl(null, [Validators.required, ]),
-       valid_until: new FormControl(null, [Validators.required, ]),
+       bill_id: new FormControl(this.id),
+       amount_paid: new FormControl(null, Validators.required),
+       payment_method: new FormControl(null, [Validators.required, ]),
+       bill_status: new FormControl(null, [Validators.required, ]),
 
 
      });
    }
 
 
-  //  saveClient() {
-  //    if (this.clientForm.valid) {
-  //      const formData = {
-  //        ...this.clientForm.value,
-  //        patient_id: this.id  // override in case it was not set in form
-  //      };
+   savePaymment() {
+     if (this.clientForm.valid) {
+       const formData = {
+         ...this.clientForm.value,
+         bill_id: this.id  // override in case it was not set in form
+       };
 
-  //      this.insurance.addInsurances(formData).subscribe(response => {
-  //        if (response.statusCode === 201) {
-  //          Swal.fire({
-  //            title: "Success",
-  //            text: response.message,
-  //            icon: "success",
-  //            confirmButtonColor: "#4690eb",
-  //            confirmButtonText: "Continue"
-  //          });
-  //        } else {
-  //          Swal.fire({
-  //            title: "Error",
-  //            text: response.message,
-  //            icon: "error",
-  //            confirmButtonColor: "#4690eb",
-  //            confirmButtonText: "Close"
-  //          });
-  //        }
-  //      });
-  //    }
-  //  }
+       this.billServices.addPayment(formData).subscribe(response => {
+         if (response.statusCode === 201) {
+           Swal.fire({
+             title: "Success",
+             text: response.message,
+             icon: "success",
+             confirmButtonColor: "#4690eb",
+             confirmButtonText: "Continue"
+           });
+         } else {
+          Swal.fire({
+            title: "Success",
+            text: response.message,
+            icon: "success",
+            confirmButtonColor: "#4690eb",
+            confirmButtonText: "Continue"
+           });
+         }
+       });
+     }
+   }
 
 
 

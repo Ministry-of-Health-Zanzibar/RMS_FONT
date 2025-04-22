@@ -10,6 +10,7 @@ export class BillService {
 
   private baseUrl: string = `${environment.baseUrl}`;
   private href = `${this.baseUrl}bills`;
+  private href_payment = `${this.baseUrl}payments`;
 
   constructor(private http: HttpClient) {}
 
@@ -34,6 +35,12 @@ export class BillService {
   }
   public unblockBill(data: any, id:any): Observable<any>{
     return this.http.patch(`${this.baseUrl}bills/unBlock/${id}`, data);
+  }
+
+  //payment endpoint
+
+  public addPayment(payment: any): Observable<any> {
+    return this.http.post(this.href_payment,payment);
   }
 
 }

@@ -114,7 +114,7 @@
 
               <emr-segmented-button *ngIf="element.status === 'Confirmed' && element.bill_status === 'Pending'" value="edit_squareData">
                 <span
-                  (click)="getPayment(element.referral_id)"
+                  (click)="getPayment(element.bill_id)"
                   *ngIf="permission.parmissionMatched(['View Payment'])"
                   matTooltip="Edit"
                 >

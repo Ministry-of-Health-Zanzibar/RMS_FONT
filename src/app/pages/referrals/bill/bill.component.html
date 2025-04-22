@@ -5,12 +5,12 @@
     <h5 class="fw-bold mt-4" *ngIf="dialogData.action === 'EDIT'">Update Bill</h5>
 
     <div class="relative h-full rounded-lg  group  p-6">
-    <div *ngIf="id" class="font-semibold ">ADD BILLS FORM</div>
-  
+    <div *ngIf="id" class="font-semibold " style="margin-top: 10px;text-align: center;color: black;font-size: 24px;margin-bottom: 10px;">ADD BILLS FORM</div>
+
     <form [formGroup]="billsForm">
       <div class="row">
-    
-  
+
+
         <!-- Amount -->
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>Amount</mat-label>
@@ -29,7 +29,7 @@
             </span>
           </mat-error>
         </mat-form-field>
-  
+
         <!-- Notes -->
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>Notes</mat-label>
@@ -45,7 +45,7 @@
             </span>
           </mat-error>
         </mat-form-field>
-  
+
         <!-- Sent To -->
           <mat-form-field appearance="outline" class="w-full">
             <mat-label>Sent To</mat-label>
@@ -62,7 +62,7 @@
               Enter a valid email
             </span>
           </mat-error>
-    
+
         <!-- File Upload -->
         <div class="w-full">
           <div class="mb-2">
@@ -80,9 +80,14 @@
         </div>
       </div>
     </form>
-  
+
     <mat-dialog-actions align="end">
-      <button mat-flat-button color="accent" mat-dialog-close>Cancel</button>
+     <!-- Example with "warn" (red) -->
+    <button mat-flat-button color="warn" type="button" mat-dialog-close>
+    Cancel
+    </button>
+
+
       <button
         mat-flat-button
         color="primary"
@@ -94,4 +99,3 @@
     </mat-dialog-actions>
     </div>
   </div>
-  
