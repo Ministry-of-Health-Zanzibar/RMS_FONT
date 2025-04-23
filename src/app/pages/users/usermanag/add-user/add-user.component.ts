@@ -103,37 +103,37 @@ export class AddUserComponent {
     }
   }
 
-  // getLocation() {
-  //   this.locationService.getLocation().subscribe(response => {
-  //     this.locations = response.data;
-  //     this.options = response.data;
-  //     this.filteredOptions = this.userForm.get('location_id')!.valueChanges.pipe(
-  //       startWith(''),
-  //       map((value: any) => typeof value === 'string' ? this._filter(value) : this.options.slice())
-  //     );
-  //   });
-  // }
+  getLocation() {
+    this.locationService.getLocation().subscribe(response => {
+      this.locations = response.data;
+      this.options = response.data;
+      this.filteredOptions = this.userForm.get('location_id')!.valueChanges.pipe(
+        startWith(''),
+        map((value: any) => typeof value === 'string' ? this._filter(value) : this.options.slice())
+      );
+    });
+  }
 
-  // private _filter(value: string): any[] {
-  //   const filterValue = value.toLowerCase();
-  //   return this.options.filter(option => option.label.toLowerCase().includes(filterValue));
-  // }
+  private _filter(value: string): any[] {
+    const filterValue = value.toLowerCase();
+    return this.options.filter(option => option.label.toLowerCase().includes(filterValue));
+  }
 
-  // displayFn(option: any): string {
-  //   return option ? option.label : '';
-  // }
+  displayFn(option: any): string {
+    return option ? option.label : '';
+  }
 
-  // trackById(index: number, option: any): any {
-  //   return option.location_id;
-  // }
+  trackById(index: number, option: any): any {
+    return option.location_id;
+  }
 
 
 
-  // getRoles() {
-  //   this.roleService.getAllRoles().subscribe(response => {
-  //     this.roles = response.data;
-  //   });
-  // }
+  getRoles() {
+    this.roleService.getAllRoles().subscribe(response => {
+      this.roles = response.data;
+    });
+  }
 
   // getUser(userData: any) {
   //   this.userService.getUserById(userData).subscribe(response=>{
