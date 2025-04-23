@@ -106,7 +106,7 @@ export class UserComponent {
     });
   }
 
-  updateUser(id: any) {
+  updateUser(data: any) {
     let config = new MatDialogConfig()
     config.disableClose = false
     config.role = 'dialog'
@@ -115,7 +115,7 @@ export class UserComponent {
     config.height = '600px'
     config.width = '850px'
     config.panelClass = 'full-screen-modal'
-    config.data = {id: id}
+    config.data = {data:data}
 
     const dialogRef = this.dialog.open(AddUserComponent, config);
     dialogRef.afterClosed().subscribe(result => {
@@ -123,9 +123,9 @@ export class UserComponent {
     });
   }
 
-  blockUser(id: any, deleted: any): void{
+  blockUser(data: any, deleted: any): void{
     if(deleted){
-      this.userService.activateUser(id).subscribe(response=>{
+      this.userService.activateUser(data).subscribe(response=>{
         if(response.statusCode == 201){
           Swal.fire({
             title: "Success",
@@ -146,7 +146,7 @@ export class UserComponent {
         }
       })
     }else{
-      this.userService.blockUser(id).subscribe(response=>{
+      this.userService.blockUser(data).subscribe(response=>{
         if(response.statusCode == 200){
           Swal.fire({
             title: "Success",

@@ -49,7 +49,7 @@ export class AddUserComponent {
 
   userForm: FormGroup;
   user: any;
-  id: any;
+  userData: any;
   locations: any;
   councils: any;
   roles: any;
@@ -67,14 +67,15 @@ export class AddUserComponent {
   }
 
   ngOnInit(): void {
-    this.configForm();
     if(this.data){
-      this.id = this.data.id;
-      this.getUser(this.id);
+      this.userData = this.data.data;
+     // this.getHospital(this.id);
     }
-    this.getLocation();
-    this.getRoles();
+    this.configForm();
   }
+  //   this.getLocation();
+  //   this.getRoles();
+  // }
 
   ngOnDestroy(): void {
     this.onDestroy.next()
@@ -89,118 +90,123 @@ export class AddUserComponent {
       first_name: new FormControl(null, [Validators.required, Validators.pattern(GlobalConstants.nameRegexOnly)]),
       middle_name: new FormControl(null, [Validators.required, Validators.pattern(GlobalConstants.nameRegexOnly)]),
       last_name: new FormControl(null, [Validators.required,Validators.pattern(GlobalConstants.nameRegexOnly)]),
-      location_id: new FormControl(null, Validators.required),
+      // location_id: new FormControl(null, Validators.required),
       address: new FormControl(null, Validators.required),
       phone_no: new FormControl(null, [Validators.required, Validators.pattern(GlobalConstants.phoneNoRegex)]),
       email: new FormControl(null, [Validators.required, Validators.pattern(GlobalConstants.emailRegex)]),
       gender: new FormControl(null, Validators.required),
       date_of_birth: new FormControl(null, Validators.required),
-      role_id: new FormControl(null, Validators.required)
+      // role_id: new FormControl(null, Validators.required)
     });
-  }
-
-  getLocation() {
-    this.locationService.getLocation().subscribe(response => {
-      this.locations = response.data;
-      this.options = response.data;
-      this.filteredOptions = this.userForm.get('location_id')!.valueChanges.pipe(
-        startWith(''),
-        map((value: any) => typeof value === 'string' ? this._filter(value) : this.options.slice())
-      );
-    });
-  }
-
-  private _filter(value: string): any[] {
-    const filterValue = value.toLowerCase();
-    return this.options.filter(option => option.label.toLowerCase().includes(filterValue));
-  }
-
-  displayFn(option: any): string {
-    return option ? option.label : '';
-  }
-
-  trackById(index: number, option: any): any {
-    return option.location_id;
-  }
-
-
-
-  getRoles() {
-    this.roleService.getAllRoles().subscribe(response => {
-      this.roles = response.data;
-    });
-  }
-
-  getUser(id: any) {
-    this.userService.getUserById(id).subscribe(response=>{
-      if(response.statusCode == 200){
-        this.user = response.data[0];
-        this.userForm.patchValue(this.user);
-      }
-      else{
-        Swal.fire({
-          title: "error",
-          text: response.message,
-          icon: "error",
-          confirmButtonColor: "#4690eb",
-          confirmButtonText: "Close"
-        });
-      }
-    })
-  }
-
-  saveUser(){
-    this.userForm.patchValue({ location_id: this.userForm.value.location_id.location_id });
-    if(this.userForm.valid){
-      this.userService.addUser(this.userForm.value).subscribe(response=>{
-        if(response.statusCode == 201){
-          Swal.fire({
-            title: "Success",
-            text: response.message,
-            html: "<b>Default Credential</b><br> Username: <b>"+response.email +"</b><br> Password: <b>" +response.password +"</b>",
-            icon: "success",
-            confirmButtonColor: "#4690eb",
-            confirmButtonText: "Close"
-          });
-        }
-        else{
-          Swal.fire({
-            title: "Error",
-            text: response.message,
-            icon: "error",
-            confirmButtonColor: "#4690eb",
-            confirmButtonText: "Close"
-          });
-        }
-      })
+    if(this.userData){
+      this.userForm.patchValue(this.userData);
     }
   }
 
-  updateUser(){
-    if(this.userForm.valid){
-      this.userForm.patchValue({ location_id: this.userForm.value.location_id.location_id });
-      this.userService.updateUser(this.userForm.value,this.id).subscribe(response=>{
-        if(response.statusCode == 201){
-          Swal.fire({
-            title: "Success",
-            text: response.message,
-            icon: "success",
-            confirmButtonColor: "#4690eb",
-            confirmButtonText: "Close"
-          });
-        }
-        else{
-          Swal.fire({
-            title: "Error",
-            text: response.message,
-            icon: "error",
-            confirmButtonColor: "#4690eb",
-            confirmButtonText: "Close"
-          });
-        }
-      })
-    }
-  }
+  // getLocation() {
+  //   this.locationService.getLocation().subscribe(response => {
+  //     this.locations = response.data;
+  //     this.options = response.data;
+  //     this.filteredOptions = this.userForm.get('location_id')!.valueChanges.pipe(
+  //       startWith(''),
+  //       map((value: any) => typeof value === 'string' ? this._filter(value) : this.options.slice())
+  //     );
+  //   });
+  // }
 
-}
+  // private _filter(value: string): any[] {
+  //   const filterValue = value.toLowerCase();
+  //   return this.options.filter(option => option.label.toLowerCase().includes(filterValue));
+  // }
 
+  // displayFn(option: any): string {
+  //   return option ? option.label : '';
+  // }
+
+  // trackById(index: number, option: any): any {
+  //   return option.location_id;
+  // }
+
+
+
+  // getRoles() {
+  //   this.roleService.getAllRoles().subscribe(response => {
+  //     this.roles = response.data;
+  //   });
+  // }
+
+  // getUser(userData: any) {
+  //   this.userService.getUserById(userData).subscribe(response=>{
+  //     if(response.statusCode == 200){
+  //       this.user = response.data[0];
+  //       this.userForm.patchValue(this.user);
+  //     }
+  //     else{
+  //       Swal.fire({
+  //         title: "error",
+  //         text: response.message,
+  //         icon: "error",
+  //         confirmButtonColor: "#4690eb",
+  //         confirmButtonText: "Close"
+  //       });
+  //     }
+  //   })
+  // }
+ saveUser(){
+         if(this.userForm.valid){
+           this.userService.addUser(this.userForm.value).subscribe(response=>{
+             if(response.statusCode == 200){
+               Swal.fire({
+                 title: "Success",
+                 text: "Data saved successfull",
+                 icon: "success",
+                 confirmButtonColor: "#4690eb",
+                 confirmButtonText: "Continue"
+               });
+             }else{
+               Swal.fire({
+                 title: "Error",
+                 text: response.message,
+                 icon: "error",
+                 confirmButtonColor: "#4690eb",
+                 confirmButtonText: "Continue"
+               });
+             }
+           }
+     
+         );
+         }else{
+     
+         }
+       }
+     
+       updateUser(){
+         if(this.userForm.valid){
+          this.userService.updateUser(this.userForm.value, this.userData.id).subscribe(response=>{
+             if(response.statusCode == 201){
+               Swal.fire({
+                 title: "Success",
+                 text: "Data saved successfull",
+                 icon: "success",
+                 confirmButtonColor: "#4690eb",
+                 confirmButtonText: "Continue"
+               });
+             }else{
+               Swal.fire({
+                 title: "Error",
+                 text: response.message,
+                 icon: "error",
+                 confirmButtonColor: "#4690eb",
+                 confirmButtonText: "Continue"
+               });
+             }
+           }
+     
+         );
+         }else{
+     
+         }
+       }
+ }
+ 
+ 
