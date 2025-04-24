@@ -115,7 +115,7 @@ export class ViewpartientComponent {
     }
   }
 
-  addUser() {
+  addPatient() {
     let config = new MatDialogConfig()
     config.disableClose = false
     config.role = 'dialog'
@@ -131,7 +131,7 @@ export class ViewpartientComponent {
     });
   }
 
-  updateUser(id: any) {
+  updatePatient(data: any) {
     let config = new MatDialogConfig()
     config.disableClose = false
     config.role = 'dialog'
@@ -140,7 +140,7 @@ export class ViewpartientComponent {
     config.height = '600px'
     config.width = '850px'
     config.panelClass = 'full-screen-modal'
-    config.data = {id: id}
+    config.data = {data: data}
 
     const dialogRef = this.dialog.open(AddpartientComponent, config);
     dialogRef.afterClosed().subscribe(result => {
