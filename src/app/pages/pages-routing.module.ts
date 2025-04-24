@@ -90,6 +90,11 @@ const routes: Routes = [
         loadChildren:() => import('./partient/partient.module').then(m=>m.PartientModule)
 
       },
+      {
+        path:'accounts',
+        loadChildren:()=>import('./accountants/account/account.module').then(m=>m.AccountModule)
+
+      },
 
       {
         path: '',

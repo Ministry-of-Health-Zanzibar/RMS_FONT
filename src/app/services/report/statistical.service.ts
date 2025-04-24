@@ -23,4 +23,16 @@ export class StatisticalService {
   public getClientReport(): Observable<any> {
     return this.http.get<any>(this.href_statistical);
   }
+
+  public getReferralPerMonthReport(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}referralPerMonthReport`);
+  }
+
+  public getReferralReport(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}hospitalCountReport`);
+  }
+
+  public getComplainReports(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}complainReports`);
+  }
 }

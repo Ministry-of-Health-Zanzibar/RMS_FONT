@@ -58,32 +58,6 @@ export class DisplaymoredataComponent implements OnInit{
   }
 
 
-  // getMoreData() {
-  //    if (!this.patient_id) return;
-
-  //   this.displayServices.getPatientInsurances(this.patient_id)
-  //     .subscribe(response => {
-  //       console.log("Full API Response:", response);
-  //       this.patient = response.data; // assuming your API returns { data: {...} }
-  //     }, error => {
-  //       console.error('Error fetching patient details:', error);
-  //     });
-  // }
-  // getFeedbackById() {
-
-  //   this.displayServices.getPatientInsurances(this.patientID)
-  //     .subscribe(response => {
-  //       console.log("Full API Response:", response);
-
-  //       // Make sure you're correctly accessing the "data" array
-  //       const responseData = (response as any).data;
-  //       if (responseData && responseData.length > 0) {
-  //         this.patient = responseData[0]; // Get the first complaint object
-  //       }
-  //     }, error => {
-  //       console.error('Error fetching complaint details:', error);
-  //     });
-  // }
   public getMoreData() {
     if (!this.patientID) return;
 

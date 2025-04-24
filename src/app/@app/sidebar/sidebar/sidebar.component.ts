@@ -203,6 +203,61 @@ export class SidebarComponent {
       ]
     },
 
+    {
+      id: 'accountant',
+      type: 'group',
+      name: 'Accountant Management',
+      icon: 'call_split',
+      // permission: 'Accountant Module',
+      permission: 'View Source',
+      children: [
+        {
+          type: 'link',
+          name: 'Sources',
+          link: '/pages/accounts/source',
+
+          permission: 'View Source',
+
+        },
+        {
+          type: 'link',
+          name: 'Source Type',
+          link: '/pages/accounts/sourceType',
+          permission: 'View Source Type',
+
+        },
+        {
+          type: 'link',
+          name: 'Category',
+          link: '/pages/accounts/category',
+          permission: 'View Category',
+
+        },
+        {
+          type: 'link',
+          name: 'Document Type',
+          link: '/pages/accounts/documentCategory',
+          permission: 'View Document Type',
+
+        },
+        {
+          type: 'link',
+          name: 'Document Form',
+          link: '/pages/accounts/documentForm',
+          permission: 'View Document Form',
+
+        },
+        {
+          type: 'link',
+          name: 'Report',
+          link: '/pages/accounts/report',
+          permission: 'View Report',
+
+        },
+
+      ]
+    },
+
   ];
   navItemLinks: NavItem[] = [];
   activeLinkId: any = '/';

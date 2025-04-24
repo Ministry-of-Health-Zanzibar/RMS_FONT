@@ -1,0 +1,29 @@
+
+<div>
+  <div class="w-full">
+    <div class="relative h-full rounded-lg  group  p-6">
+      <div *ngIf="!categoryData" class="font-semibold ">ADD NEW CATEGORY</div>
+      <div *ngIf="categoryData" class="font-semibold ">UPDATE CATEGORY</div>
+      <form [formGroup]="categoryForm">
+        <mat-form-field class="w-full mt-6">
+          <mat-label>category Name: </mat-label>
+          <input matInput placeholder="Ex. category" formControlName="category_name" type="text">
+          <mat-error class="error-message" *ngIf="categoryForm.controls['category_name'].touched && categoryForm.controls['category_name'].invalid">
+            <span *ngIf="categoryForm.controls['category_name'].errors?.['required']">This field is mandatory</span>
+          </mat-error>
+        </mat-form-field>
+
+
+      </form>
+    </div>
+  </div>
+
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button *ngIf="!categoryData" mat-flat-button [mat-dialog-close]="true" cdkFocusInitial [disabled]="categoryForm.invalid" (click)="savecategory()">Save Data</button>
+    <button *ngIf="categoryData" mat-flat-button [mat-dialog-close]="true" cdkFocusInitial [disabled]="categoryForm.invalid" (click)="updatecategory()">Update Data</button>
+  </mat-dialog-actions>
+</div>
+
+
+

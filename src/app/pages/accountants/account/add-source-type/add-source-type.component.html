@@ -1,0 +1,39 @@
+
+<div>
+  <div class="w-full">
+    <div class="relative h-full rounded-lg  group  p-6">
+      <div *ngIf="!sourceData" class="font-semibold ">ADD NEW SOURCES</div>
+      <div *ngIf="sourceData" class="font-semibold ">ADD SOURCES</div>
+      <form [formGroup]="sourceForm">
+        <mat-form-field class="w-full mt-6">
+          <mat-label>Source Name</mat-label>
+          <mat-select formControlName="source_id">
+            <mat-option *ngFor="let s of source" [value]="s.source_id">
+              {{ s.source_name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="w-full mt-6">
+          <mat-label>Source Type Name: </mat-label>
+          <input matInput placeholder="Ex. source" formControlName="source_type_name" type="text">
+          <mat-error class="error-message" *ngIf="sourceForm.controls['source_type_name'].touched && sourceForm.controls['source_type_name'].invalid">
+            <span *ngIf="sourceForm.controls['source_type_name'].errors?.['required']">This field is mandatory</span>
+          </mat-error>
+        </mat-form-field>
+
+
+
+
+      </form>
+    </div>
+  </div>
+
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button *ngIf="!sourceData" mat-flat-button [mat-dialog-close]="true" cdkFocusInitial [disabled]="sourceForm.invalid" (click)="savesource()">Save Data</button>
+    <button *ngIf="sourceData" mat-flat-button [mat-dialog-close]="true" cdkFocusInitial [disabled]="sourceForm.invalid" (click)="updatesource()">Update Data</button>
+  </mat-dialog-actions>
+</div>
+
+
+

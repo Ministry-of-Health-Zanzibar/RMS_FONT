@@ -56,6 +56,8 @@ export class ReferralpaymentComponent  {
      if(this.data){
        this.id = this.data.id;
      console.log("bill ID   here  ",this.id);
+    // console.log("bill amount   here  ",this.data);
+
      }
     // this.viewUser();
 

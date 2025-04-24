@@ -1,0 +1,112 @@
+<div class="form-container">
+  <div class="w-full">
+    <div class="relative h-full rounded-lg group p-6">
+      <div class="font-semibold" *ngIf="!id">CREATE NEW PATIENT</div>
+      <div class="font-semibold" *ngIf="id">UPDATE PATIENT</div>
+      <form [formGroup]="userForm" class="horizontal-form">
+
+        <!-- Row 1: First Name, Middle Name -->
+        <div class="form-row">
+          <mat-form-field class="form-field">
+            <mat-label>Pay Name</mat-label>
+            <input matInput placeholder="Ex. Ali Juma Ali" formControlName="payee_name" type="text">
+            <mat-error *ngIf="userForm.controls['payee_name'].touched && userForm.controls['payee_name'].invalid">
+              <span *ngIf="userForm.controls['payee_name'].errors?.['required']">This field is mandatory</span>
+              <span *ngIf="userForm.controls['payee_name'].errors?.['pattern']">Must contain alphabetical characters only</span>
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="form-field">
+            <mat-label>Amount</mat-label>
+            <input matInput placeholder="Ex. 2000,000,.00" formControlName="amount" type="number">
+            <mat-error *ngIf="userForm.controls['amount'].touched && userForm.controls['amount'].invalid">
+              <span *ngIf="userForm.controls['amount'].errors?.['required']">This field is mandatory</span>
+              <span *ngIf="userForm.controls['amount'].errors?.['pattern']">Must contain alphabetical characters only</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Row 2: Last Name, Address -->
+        <div class="form-row">
+          <mat-form-field class="form-field">
+            <mat-label>Tin Number</mat-label>
+            <input matInput placeholder="Ex. Tin" formControlName="tin_number" type="text">
+            <mat-error *ngIf="userForm.controls['tin_number'].touched && userForm.controls['tin_number'].invalid">
+              <span *ngIf="userForm.controls['tin_number'].errors?.['required']">This field is mandatory</span>
+              <span *ngIf="userForm.controls['tin_number'].errors?.['pattern']">Must contain alphabetical characters only</span>
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="form-field">
+            <mat-label>Document Name</mat-label>
+            <mat-select formControlName="document_type_id">
+              <mat-option *ngFor="let s of documents" [value]="s.document_type_id">
+                {{ s.document_type_name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- Row 3: Email, Phone Number -->
+        <div class="form-row">
+          <mat-form-field class="w-full mt-6">
+            <mat-label>Source Name</mat-label>
+            <mat-select formControlName="source_type_id">
+              <mat-option *ngFor="let s of source" [value]="s.source_type_id">
+                {{ s.source_type_name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field class="w-full mt-6">
+            <mat-label>Category Name</mat-label>
+            <mat-select formControlName="category_id">
+              <mat-option *ngFor="let c of category" [value]="c.category_id">
+                {{ c.category_name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+
+        </div>
+
+
+
+
+
+        <!-- Row 6: Date of Birth -->
+        <div class="form-row">
+          <mat-form-field class="w-full mt-6">
+            <mat-label>Year</mat-label>
+            <input matInput placeholder="Ex. 12-2-1990" formControlName="year" type="date">
+            <mat-error class="error-message" *ngIf="userForm.controls['year'].touched && userForm.controls['year'].invalid">
+              <span *ngIf="userForm.controls['year'].errors?.['required']">This field is mandatory</span>
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="w-full">
+            <mat-label>Upload File</mat-label>
+            <input matInput type="text" formControlName="document_file" (click)="fileInput.click()" placeholder="No file chosen" readonly>
+            <input type="file" accept=".pdf,.doc,.docx,.jpg,.png" (change)="onAttachementSelected($event)" hidden #fileInput />
+            <mat-icon matSuffix (click)="fileInput.click()" style="cursor: pointer;">attach_file</mat-icon>
+            <mat-error class="error-message" *ngIf="userForm.controls['document_file'].touched && userForm.controls['document_file'].invalid">
+              <span *ngIf="userForm.controls['document_file'].errors?.['required']">This field is mandatory</span>
+            </mat-error>
+          </mat-form-field>
+
+
+        </div>
+
+      </form>
+    </div>
+
+    <mat-dialog-actions align="end">
+      <button mat-button mat-dialog-close>Cancel</button>
+      <button mat-flat-button [mat-dialog-close]="true" *ngIf="!id" cdkFocusInitial [disabled]="userForm.invalid" (click)="saveUser()">Save Data</button>
+      <button mat-flat-button [mat-dialog-close]="true" *ngIf="id" cdkFocusInitial [disabled]="userForm.invalid" (click)="updateUser()">Update Data</button>
+    </mat-dialog-actions>
+  </div>
+  </div>
+
+
+

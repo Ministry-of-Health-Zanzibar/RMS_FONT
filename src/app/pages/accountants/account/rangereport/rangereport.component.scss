@@ -1,0 +1,45 @@
+.search-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.form-fields {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+}
+
+.form-field {
+  flex: 1;
+}
+
+.small-field {
+  max-width: 390px;
+}
+
+/* Adjust the search-button to align left and include an icon */
+.search-button {
+  align-self: flex-start;  /* Align button to the left */
+  height: 44px;
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, #291fb3, #1b29ed);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+  padding: 0 15px;
+  display: flex;
+  align-items: center;
+  gap: 5px; /* Spacing between the icon and text */
+}
+
+.search-button:hover {
+  background: linear-gradient(135deg, #45a049, #2e7d32);
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+}

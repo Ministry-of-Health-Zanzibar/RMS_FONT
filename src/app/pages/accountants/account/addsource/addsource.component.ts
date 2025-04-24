@@ -1,64 +1,72 @@
-import { CommonModule } from '@angular/common';
+import { AsyncPipe, CommonModule } from '@angular/common';
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { MatError, MatFormField, MatInput, MatLabel } from '@angular/material/input';
+import { MatError, MatFormField, MatInput, MatInputModule, MatLabel } from '@angular/material/input';
 import { HDividerComponent } from '@elementar/components';
 import { Subject, takeUntil } from 'rxjs';
 import { GlobalConstants } from '@shared/global-constants';
-import { HospitalService } from '../../../../services/system-configuration/hospital.service';
+
 import Swal from 'sweetalert2';
+import { SourcesService } from '../../../../services/accountants/sources.service';
+import { MatOption, MatSelect } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 @Component({
-  selector: 'app-addhospital',
+  selector: 'app-addsource',
   standalone: true,
   imports: [
-    CommonModule,
-    MatButtonModule,
-    MatDialogModule,
-    MatInput,
-    MatFormField,
-    MatLabel,
-    MatDialogModule,
-    MatError,
-    ReactiveFormsModule
-],
-  templateUrl: './addhospital.component.html',
-  styleUrl: './addhospital.component.scss'
+     CommonModule,
+        MatButtonModule,
+        MatDialogModule,
+        MatInputModule,
+        MatFormFieldModule,
+        MatLabel,
+        MatDialogModule,
+        MatCheckbox,
+        MatError,
+        ReactiveFormsModule,
+        HDividerComponent,
+        MatAutocompleteModule,
+        MatSelect,
+        AsyncPipe,
+        MatDatepickerModule,
+  ],
+  templateUrl: './addsource.component.html',
+  styleUrl: './addsource.component.scss'
 })
-export class AddhospitalComponent {
-   readonly data = inject<any>(MAT_DIALOG_DATA);
+export class AddsourceComponent {
+
+    readonly data = inject<any>(MAT_DIALOG_DATA);
     private readonly onDestroy = new Subject<void>()
     public sidebarVisible:boolean = true
 
-    hospitalForm: FormGroup;
+    sourceForm: FormGroup;
     parent: any;
     uploadProgress: number = 0;
     uploading: boolean = false;
     errorMessage: string | null = null;
-    hospitalData: any;
+    sourceData: any;
+    source:any;
 
     constructor(private formBuilder:FormBuilder,
-      private hospitalService:HospitalService,
-      private dialogRef: MatDialogRef<AddhospitalComponent>) {
+      private sources:SourcesService,
+      public sourceServices:SourcesService,
+      private dialogRef: MatDialogRef<AddsourceComponent>) {
     }
 
 
     ngOnInit(): void {
         if(this.data){
-          this.hospitalData = this.data.data;
-         // this.getHospital(this.id);
+          this.sourceData = this.data.data;
+         // this.getsource(this.id);
         }
         this.configForm();
       }
-
-      // getDepartm(id: any){
-      //   this.departmentService.getAllDepartmentById(id).subscribe(response=>{
-      //     this.departmentForm.patchValue(response.data[0])
-      //   })
-      // }
 
       ngOnDestroy(): void {
         this.onDestroy.next()
@@ -68,27 +76,20 @@ export class AddhospitalComponent {
       }
 
       configForm(){
-        this.hospitalForm = new FormGroup({
-          hospital_name: new FormControl(null, [Validators.required, Validators.pattern(GlobalConstants.nameRegexOnly)]),
-          hospital_address: new FormControl(null, Validators.required),
-          hospital_email: new FormControl(null, Validators.required),
-          contact_number: new FormControl(null, Validators.required),
+        this.sourceForm = new FormGroup({
+          source_name: new FormControl(null, [Validators.required,]),
+
+
         });
-        if(this.hospitalData){
-          this.hospitalForm.patchValue(this.hospitalData);
+        if(this.sourceData){
+          this.sourceForm.patchValue(this.sourceData);
         }
       }
 
-      // getParent() {
-      //   this.departmentService.getAllDepartment().pipe(takeUntil(this.onDestroy)).subscribe((response: any) => {
-      //     this.parent = response.data;
-      //   });
-      // }
-
-      saveHospital(){
-        if(this.hospitalForm.valid){
-          this.hospitalService.addHospital(this.hospitalForm.value).subscribe(response=>{
-            if(response.statusCode == 200){
+      savesource(){
+        if(this.sourceForm.valid){
+          this.sources.addSource(this.sourceForm.value).subscribe(response=>{
+            if(response.statusCode == 201){
               Swal.fire({
                 title: "Success",
                 text: "Data saved successfull",
@@ -113,9 +114,9 @@ export class AddhospitalComponent {
         }
       }
 
-      updateHospital(){
-        if(this.hospitalForm.valid){
-          this.hospitalService.updateHospital(this.hospitalForm.value, this.hospitalData.hospital_id).subscribe(response=>{
+      updatesource(){
+        if(this.sourceForm.valid){
+          this.sources.updateSource(this.sourceForm.value, this.sourceData.source_id).subscribe(response=>{
             if(response.statusCode == 200){
               Swal.fire({
                 title: "Success",
@@ -142,4 +143,3 @@ export class AddhospitalComponent {
       }
 
 }
-
