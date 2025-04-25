@@ -1,6 +1,6 @@
 import { AdddocumentsComponent } from './../adddocuments/adddocuments.component';
 import { CommonModule } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatAnchor, MatButton, MatIconButton, MatMiniFabButton } from '@angular/material/button';
 import { MatDivider } from '@angular/material/divider';
@@ -40,7 +40,7 @@ import { MatSort } from '@angular/material/sort';
   templateUrl: './documents.component.html',
   styleUrl: './documents.component.scss'
 })
-export class DocumentsComponent {
+export class DocumentsComponent implements OnInit,OnDestroy{
 
 private readonly onDestroy = new Subject<void>()
  loading: boolean = false;

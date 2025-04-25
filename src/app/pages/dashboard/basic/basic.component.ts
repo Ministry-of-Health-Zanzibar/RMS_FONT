@@ -1,3 +1,4 @@
+import { GraphreportService } from './../../../services/accountants/graphreport.service';
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
@@ -22,7 +23,8 @@ import { TeamWidgetComponent } from '@shared/widgets/team-widget/team-widget.com
 import { TasksInProgressWidgetComponent } from '@shared/widgets/tasks-in-progress-widget/tasks-in-progress-widget.component';
 import { CustomerSatisfactionWidgetComponent } from '@shared/widgets/customer-satisfaction-widget/customer-satisfaction-widget.component';
 import { StatisticalService } from '../../../services/report/statistical.service';
-import { Chart } from 'chart.js';
+import { Chart, registerables } from 'chart.js';
+Chart.register(...registerables);
 
 
 
@@ -63,47 +65,70 @@ export class BasicComponent implements OnInit {
   complain: any = {};
   totalMaleComplain: any;
 
-  constructor(private dashboardService: StatisticalService) {}
+
+
+  constructor(private dashboardService: StatisticalService,
+    private reportService: GraphreportService
+  ) {}
 
 
   ngOnInit(): void {
 
-    this.dashboardService.getClientReport().subscribe((data) => {
-      // this.createChart(
-      //   'complainsPerWeekChart',
-      //   data.complains_per_week,
-      //   'Complains Per Week'
-      // );
-      this.createChart(
-        'referralPerMonthChart',
-        data.referral_per_month,
-        'Referral Per Month'
-      );
-      // this.createChart(
-      //   'complainsPerYearChart',
-      //   data.complains_per_year,
-      //   'Complains Per Year'
-      // );
-      // this.createChart(
-      //   'complainsByStatusChart',
-      //   data.complains_by_status,
-      //   'Complains by Status'
-      // );
-    });
-   this.getReferralPerMonthReport();
+    // this.dashboardService.getClientReport().subscribe((data) => {
+
+    //   this.createChart(
+    //     'referralPerMonthChart',
+    //     data.referral_per_month,
+    //     'Referral Per Month'
+    //   );
+
+
+    // });
+   this.getDocumentPerWeekReport();
+   this.getDocumentPerMonthReport();
+   this.getSourceSummaryReport();
+   this.getDocumentTypeSummaryReport();
   }
 
-  public getReferralPerMonthReport(): void {
-    this.dashboardService
-    .getReferralPerMonthReport()
+
+
+
+  public getDocumentPerWeekReport(): void {
+    this.reportService.getDocumentPerWeekReport().subscribe((data) => {
+      if (!data.weeklyData) {
+        console.error('No weeklyData found');
+        return;
+      }
+
+      // Use raw ISO week as labels (e.g., "2025-17")
+      const labels = data.weeklyData.map((item: any) => `Week ${item.week}`);
+
+      const reportData = data.weeklyData.map((item: any) => item.total);
+
+      this.renderChart(
+        'documentPerWeekChart',
+        labels,
+        reportData,
+        'bar',
+        'Documents per Week'
+      );
+    });
+  }
+
+
+
+
+
+  public getDocumentPerMonthReport(): void {
+    this.reportService.getDocumentPerMonthReport()
       .subscribe((data) => {
-        if (!data.referral_per_month) {
-          console.error('No complains_per_month data found');
+        if (!data.monthlyData) {
+          console.error('No monthlyData data found');
           return;
         }
 
 
-        const labels = data.referral_per_month.map((item: any) => {
+        const labels = data.monthlyData.map((item: any) => {
           const [year, month] = item.month.split('-'); // Split "2025-02" into ["2025", "02"]
           const date = new Date(Number(year), Number(month) - 1); // Create a Date object
           return new Intl.DateTimeFormat('en-US', {
@@ -112,21 +137,67 @@ export class BasicComponent implements OnInit {
           }).format(date);
         });
 
-        const complainData = data.referral_per_month.map(
+        const complainData = data.monthlyData.map(
           (item: any) => item.total
         );
 
 
 
         this.renderChart(
-          'referralPerMonthChart',
+          'documentPerMonthChart',
           labels,
           complainData,
           'bar',
-          'Referral Per Month'
+          'Document Per Month'
         );
       });
   }
+
+  public getSourceSummaryReport(): void {
+    this.reportService.getSourceReport().subscribe((data) => {
+      if (!data.sourceSummary) {
+        console.error('No sourceSummary data found');
+        return;
+      }
+
+      const labels = data.sourceSummary.map((item: any) => item.source_name);
+      const totals = data.sourceSummary.map((item: any) => item.total);
+
+      this.renderChart(
+        'sourcePieChart',     // ID of your canvas element
+        labels,
+        totals,
+        'pie',
+        'Documents by Source'
+      );
+    });
+  }
+
+  public getDocumentTypeSummaryReport(): void {
+    this.reportService.getDocumentTypeReport().subscribe((data) => {
+      if (!data.documentTypeSummary) {
+        console.error('No documentTypeSummary data found');
+        return;
+      }
+
+      const labels = data.documentTypeSummary.map((item: any) => item.document_type_name);
+      const totals = data.documentTypeSummary.map((item: any) => item.total);
+
+      this.renderChart(
+        'documentTypeChart',  // ID of your canvas element
+        labels,
+        totals,
+        'pie',
+        'Documents by Type'
+      );
+    });
+  }
+
+
+
+
+
+
     // With Months
     renderChart(
       canvasId: string,
@@ -217,4 +288,5 @@ export class BasicComponent implements OnInit {
       },
     });
   }
+
 }
