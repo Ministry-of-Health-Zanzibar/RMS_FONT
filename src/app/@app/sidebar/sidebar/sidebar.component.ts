@@ -206,8 +206,8 @@ export class SidebarComponent {
     {
       id: 'accountant',
       type: 'group',
-      name: 'Accountant Management',
-      icon: 'call_split',
+      name: 'Accountant Setup',
+      icon: 'menu',
       // permission: 'Accountant Module',
       permission: 'View Source',
       children: [
@@ -240,6 +240,23 @@ export class SidebarComponent {
           permission: 'View Document Type',
 
         },
+
+
+
+
+
+
+
+      ]
+    },
+
+    {
+      id: 'report2',
+      type: 'group',
+      name: 'Document information',
+      icon: 'call_split',
+      permission: 'View Report',
+      children: [
         {
           type: 'link',
           name: 'Document Form',
@@ -249,12 +266,18 @@ export class SidebarComponent {
         },
         {
           type: 'link',
-          name: 'Report',
+          name: 'Range Report',
           link: '/pages/accounts/report',
           permission: 'View Report',
 
         },
+        {
+          type: 'link',
+          name: 'Search Report',
+          link: '/pages/accounts/parameter-report',
+          permission: 'View Report',
 
+        },
       ]
     },
 
@@ -375,6 +398,16 @@ filterChildrenByPermissions(children: Array<NavItem>): Array<NavItem> {
   updateMenu(): void {
     this.navItems = this.filterMenuByPermissions(this.navItems);
   }
+
+           // USER ROLES
+           public getUserRole(): any {
+            return localStorage.getItem('roles');
+
+          }
+
+          public get isStaff(): boolean {
+            return this.getUserRole() === 'ROLE STAFF';
+          }
 
 
   //====================================== code zangu mwisho hapa ============================

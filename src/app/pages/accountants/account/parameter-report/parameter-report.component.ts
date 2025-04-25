@@ -28,10 +28,12 @@ import { EmrSegmentedModule } from '@elementar/components';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { PermissionService } from '../../../../services/authentication/permission.service';
 import { RangereportService } from '../../../../services/accountants/rangereport.service';
-
+import { SourcesService } from '../../../../services/accountants/sources.service';
+import { SourceTypeService } from '../../../../services/accountants/source-type.service';
+import { CategoryService } from '../../../../services/accountants/category.service';
 
 @Component({
-  selector: 'app-rangereport',
+  selector: 'app-parameter-report',
   standalone: true,
   imports: [
     CommonModule,
@@ -48,10 +50,10 @@ import { RangereportService } from '../../../../services/accountants/rangereport
     MatFormFieldModule,
     EmrSegmentedModule
   ],
-  templateUrl: './rangereport.component.html',
-  styleUrl: './rangereport.component.scss'
+  templateUrl: './parameter-report.component.html',
+  styleUrl: './parameter-report.component.scss'
 })
-export class RangereportComponent implements OnInit, OnDestroy {
+export class ParameterReportComponent implements OnInit, OnDestroy {
   private readonly onDestroy = new Subject<void>();
 
   reportForm: FormGroup;
@@ -59,6 +61,9 @@ export class RangereportComponent implements OnInit, OnDestroy {
   dataSource = new MatTableDataSource<any>();
 
   documents: any[] = [];
+  sources:any;
+  sourceType:any;
+  category:any;
   loading = false;
   errorMessage = '';
 
@@ -68,6 +73,9 @@ export class RangereportComponent implements OnInit, OnDestroy {
   constructor(
     public permission: PermissionService,
     // public locationService: LocationService,
+    private sourceServices:SourcesService,
+    private sourceTypeService:SourceTypeService,
+    private categoryServices:CategoryService,
     private reportService: RangereportService,
     private fb: FormBuilder,
     private dialog: MatDialog
@@ -75,69 +83,65 @@ export class RangereportComponent implements OnInit, OnDestroy {
 
 
 
-  renew(): void {
-    this.fetchReports();
-  }
 
-
-  configForm(): void {
-    this.reportForm = new FormGroup({
-      start_date: new FormControl(null,Validators.required),
-      end_date: new FormControl(null,Validators.required),
-
-    });
-  }
-
-  fetchReports() {
-    if (this.reportForm.invalid) {
-      this.errorMessage = 'Please select valid start and end dates.';
-      return;
-    }
-
-    const { start_date, end_date } = this.reportForm.value;
-    if (new Date(start_date) > new Date(end_date)) {
-      this.errorMessage = 'Start date cannot be after end date.';
-      return;
-    }
-
-    this.errorMessage = '';
-    this.loading = true;
-
-    this.reportService.generateDateReport(start_date, end_date).subscribe({
-      next: (response) => {
-        this.documents = response.data;
-        console.log("data hzii",this.documents);
-        this.dataSource.data = this.documents; // Fix: Assign data to dataSource
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort; // Fix: Enable sorting
-        this.loading = false;
-      },
-      error: () => {
-        this.errorMessage = 'Error fetching reports';
-        this.loading = false;
-      }
-    });
-  }
-
-  // Fix: Improve search filter to work across all columns
   ngOnInit(): void {
     this.configForm();
-    this.dataSource.filterPredicate = (data: any, filter: string) => {
-      return Object.values(data).some((value) =>
-        String(value).toLowerCase().includes(filter)
-      );
-    };
+    this.getSource();
+    this.getSourceType();
+    this.getCategory();
   }
 
-  // Fix: Override default search functionality
+  renew(): void {
+    this.searchReport();
+  }
+
   applyFilter(event: Event): void {
-    const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
-    this.dataSource.filter = filterValue;
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
 
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
   }
+
+  configForm(): void {
+    this.reportForm = new FormGroup({
+      source_name: new FormControl(null),
+      source_type_name: new FormControl(null),
+      amount: new FormControl(null),
+      payee_name: new FormControl(null),
+      category_name: new FormControl(null),
+
+    });
+  }
+
+  getSource(): void {
+    this.sourceServices.getAllSource().subscribe(response => {
+      this.sources = response.data;
+    });
+  }
+  getSourceType(): void {
+    this.sourceTypeService.getAllSourceType().subscribe(response => {
+      this.sourceType = response.data;
+    });
+  }
+  getCategory(): void {
+    this.categoryServices.getAllCategory().subscribe(response => {
+      this.category = response.data;
+    });
+  }
+
+  searchReport(): void {
+    if (this.reportForm.valid) {
+      this.reportService.generateReport(this.reportForm.value).subscribe(response => {
+        this.dataSource.data = response.data;
+        this.dataSource.paginator = this.paginator;
+        console.log('Response Data:', response.data);
+      });
+    }
+  }
+
+  // Fix: Improve search filter to work across all columns
 
 
 
@@ -198,4 +202,5 @@ function autoTable(doc: jsPDF, arg1: { head: string[][]; body: any[][]; }) {
 function saveAs(data: Blob, arg1: string) {
   throw new Error('Function not implemented.');
 }
+
 

@@ -47,24 +47,11 @@ export class ReferralStatusDialogComponent {
 
     // @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    // this.statusForm = this.fb.group({
-    //   startDate: ['', Validators.required],
-    //   endDate: ['', Validators.required],
-    //    status: ['', Validators.required],
-    //    letter_text: ['', Validators.required]
-    // });
+   
   }
 
 
-  // onSubmit() {
-  //   if (this.statusForm.valid) {
-  //     this.dialogRef.close(this.statusForm.value);
-  //   }
-  // }
 
-  // onCancel() {
-  //   this.dialogRef.close();
-  // }
 
    ngOnInit(): void {
       this.configForm();

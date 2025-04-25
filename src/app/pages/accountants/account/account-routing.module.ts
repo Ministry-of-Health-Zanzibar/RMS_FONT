@@ -30,6 +30,10 @@ const routes: Routes = [
     path:'report',
     loadComponent:()=>import('./rangereport/rangereport.component').then(c=>c.RangereportComponent)
 
+  },
+  {
+  path:'parameter-report',
+  loadComponent:()=>import('./parameter-report/parameter-report.component').then(c=>c.ParameterReportComponent)
   }
 
 ];
