@@ -21,6 +21,11 @@ import * as XLSX from 'xlsx';
 // import { saveAs } from 'file-saver';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+// import { saveAs } from 'file-saver';
+
+
+
+import autoTable from 'jspdf-autotable';
 
 
 
@@ -54,6 +59,8 @@ import { CategoryService } from '../../../../services/accountants/category.servi
   styleUrl: './parameter-report.component.scss'
 })
 export class ParameterReportComponent implements OnInit, OnDestroy {
+
+  loading: boolean = false;
   private readonly onDestroy = new Subject<void>();
 
   reportForm: FormGroup;
@@ -64,7 +71,7 @@ export class ParameterReportComponent implements OnInit, OnDestroy {
   sources:any;
   sourceType:any;
   category:any;
-  loading = false;
+
   errorMessage = '';
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -93,6 +100,9 @@ export class ParameterReportComponent implements OnInit, OnDestroy {
 
   renew(): void {
     this.searchReport();
+  }
+  ngOnDestroy(): void {
+    this.onDestroy.next();
   }
 
   applyFilter(event: Event): void {
@@ -132,8 +142,11 @@ export class ParameterReportComponent implements OnInit, OnDestroy {
   }
 
   searchReport(): void {
+
     if (this.reportForm.valid) {
+      this.loading = true;
       this.reportService.generateReport(this.reportForm.value).subscribe(response => {
+        this.loading = false;
         this.dataSource.data = response.data;
         this.dataSource.paginator = this.paginator;
         console.log('Response Data:', response.data);
@@ -146,33 +159,32 @@ export class ParameterReportComponent implements OnInit, OnDestroy {
 
 
 
+
+
+  // Export Excel
   exportExcel(): void {
-    // Use dataSource.data as the source for export
     const dataToExport = this.dataSource.data;
-    // Create a worksheet from JSON data
     const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dataToExport);
-    // Create a workbook and add the worksheet
     const workbook: XLSX.WorkBook = { Sheets: { 'Reports': worksheet }, SheetNames: ['Reports'] };
-    // Generate buffer
     const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-    // Save Excel file
-    this.saveAsExcelFile(excelBuffer, 'reports');
+   // this.saveAsExcelFile(excelBuffer, 'reports');
   }
 
-  private saveAsExcelFile(buffer: any, fileName: string): void {
-    const data: Blob = new Blob(
-      [buffer],
-      { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8' }
-    );
-    saveAs(data, `${fileName}_export_${new Date().getTime()}.xlsx`);
-  }
+  // private saveAsExcelFile(buffer: any, fileName: string): void {
+  //   const data: Blob = new Blob(
+  //     [buffer],
+  //     { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8' }
+  //   );
+  //   saveAs(data, `${fileName}_export_${new Date().getTime()}.xlsx`);
+  // }
 
+  // Export PDF
   exportPDF() {
     const doc = new jsPDF();
     doc.text('Report Data', 10, 10);
 
     autoTable(doc, {
-      head: [['No', 'name', 'amount', 'tin_number', 'source_name','source_type_name','category_name','document_type_name']],
+      head: [['No', 'Name', 'Amount', 'TIN', 'Source', 'Source Type', 'Category', 'Doc Type']],
       body: this.dataSource.data.map((element, index) => [
         index + 1,
         element.payee_name,
@@ -189,18 +201,12 @@ export class ParameterReportComponent implements OnInit, OnDestroy {
   }
 
 
-  ngOnDestroy(): void {
-    this.onDestroy.next();
-  }
+
+
 
 
 }
 
-function autoTable(doc: jsPDF, arg1: { head: string[][]; body: any[][]; }) {
-  throw new Error('Function not implemented.');
-}
-function saveAs(data: Blob, arg1: string) {
-  throw new Error('Function not implemented.');
-}
+
 
 

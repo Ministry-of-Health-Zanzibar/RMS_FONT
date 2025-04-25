@@ -14,7 +14,7 @@
     </div>
   </div>
 
- 
+
   <div class="search-container bg-gray-100 p-6 rounded-xl shadow-md">
     <form [formGroup]="reportForm" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
@@ -115,8 +115,9 @@
       <!-- Full Name Column -->
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef>Full Name</th>
-        <td mat-cell *matCellDef="let element">{{ element.payee_name }}</td>
+        <td mat-cell *matCellDef="let element">{{ element.payee_name | uppercase }}</td>
       </ng-container>
+
       <!-- <ng-container matColumnDef="fullname">
         <th mat-header-cell *matHeaderCellDef>Full Name</th>
         <td mat-cell *matCellDef="let element">{{ element.first_name + ' ' + element.middle_name+ ' '+ element.last_name}}</td>
@@ -161,37 +162,17 @@
             target="_blank"
             class="inline-flex items-center gap-2 text-indigo-600 hover:text-indigo-800 font-medium text-sm transition"
           >
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round"
-              d="M15.75 9V5.25A2.25 2.25 0 0013.5 3H6.75A2.25 2.25 0 004.5 5.25v13.5A2.25 2.25 0 006.75 21h10.5A2.25 2.25 0 0019.5 18.75V12m-3.75-3L21 3m0 0v4.5M21 3h-4.5" />
-          </svg>
+          <button class="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.828a2 2 0 00-.586-1.414l-3.828-3.828A2 2 0 0010.172 2H6zm4 1.414L14.586 8H11a1 1 0 01-1-1V3.414zM7 11a1 1 0 011 1v1a1 1 0 102 0v-1a1 1 0 112 0v1a3 3 0 11-6 0v-1a1 1 0 011-1z" />
+            </svg>
+            Export PDF
+          </button>
+
 
           </a>
         </ng-container></td>
       </ng-container>
-
-
-
-      <!-- Complaint Column -->
-      <!-- <ng-container matColumnDef="complain_body">
-        <th mat-header-cell *matHeaderCellDef>Complaint</th>
-        <td mat-cell *matCellDef="let element">
-          {{ element.complain_body.split(' ').slice(0, 5).join(' ') }}{{ element?.complain_body.split(' ').length > 5 ? '...' : '' }}
-        </td>
-      </ng-container> -->
-
-
-      <!-- <ng-container matColumnDef="action" >
-        <th mat-header-cell *matHeaderCellDef class="text-neutral-500 dark:text-neutral-400"> Action </th>
-        <td mat-cell *matCellDef="let element">
-
-          <emr-segmented theme="simple" class="-mx-2">
-
-
-            </emr-segmented>
-            </td>
-      </ng-container> -->
-
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       <tr class="mat-row" *matNoDataRow>
@@ -200,7 +181,17 @@
     </table>
     <mat-paginator [pageSizeOptions]="[10, 20, 100]" showFirstLastButtons></mat-paginator>
   </div>
+
+  <div *ngIf="loading" class="fixed inset-0 flex items-center justify-center bg-white bg-opacity-70 z-50">
+    <div class="w-16 h-16 border-4 border-blue-500 border-dashed rounded-full animate-spin"></div>
+  </div>
+
+  
 </div>
+
+
+
+
 
 
 

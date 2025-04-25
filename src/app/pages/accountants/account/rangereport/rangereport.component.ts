@@ -21,6 +21,11 @@ import * as XLSX from 'xlsx';
 // import { saveAs } from 'file-saver';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+// import { saveAs } from 'file-saver';
+
+
+
+import autoTable from 'jspdf-autotable';
 
 
 
@@ -152,16 +157,16 @@ export class RangereportComponent implements OnInit, OnDestroy {
     // Generate buffer
     const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
     // Save Excel file
-    this.saveAsExcelFile(excelBuffer, 'reports');
+   // this.saveAsExcelFile(excelBuffer, 'reports');
   }
 
-  private saveAsExcelFile(buffer: any, fileName: string): void {
-    const data: Blob = new Blob(
-      [buffer],
-      { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8' }
-    );
-    saveAs(data, `${fileName}_export_${new Date().getTime()}.xlsx`);
-  }
+  // private saveAsExcelFile(buffer: any, fileName: string): void {
+  //   const data: Blob = new Blob(
+  //     [buffer],
+  //     { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8' }
+  //   );
+  //   saveAs(data, `${fileName}_export_${new Date().getTime()}.xlsx`);
+  // }
 
   exportPDF() {
     const doc = new jsPDF();
@@ -192,10 +197,10 @@ export class RangereportComponent implements OnInit, OnDestroy {
 
 }
 
-function autoTable(doc: jsPDF, arg1: { head: string[][]; body: any[][]; }) {
-  throw new Error('Function not implemented.');
-}
-function saveAs(data: Blob, arg1: string) {
-  throw new Error('Function not implemented.');
-}
+// function autoTable(doc: jsPDF, arg1: { head: string[][]; body: any[][]; }) {
+//   throw new Error('Function not implemented.');
+// }
+// function saveAs(data: Blob, arg1: string) {
+//   throw new Error('Function not implemented.');
+// }
 
