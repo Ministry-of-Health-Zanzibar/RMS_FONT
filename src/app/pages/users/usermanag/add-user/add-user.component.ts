@@ -72,9 +72,10 @@ export class AddUserComponent {
      // this.getHospital(this.id);
     }
     this.configForm();
+    this.getRoles();
   }
   //   this.getLocation();
-  //   this.getRoles();
+
   // }
 
   ngOnDestroy(): void {
@@ -96,7 +97,7 @@ export class AddUserComponent {
       email: new FormControl(null, [Validators.required, Validators.pattern(GlobalConstants.emailRegex)]),
       gender: new FormControl(null, Validators.required),
       date_of_birth: new FormControl(null, Validators.required),
-      // role_id: new FormControl(null, Validators.required)
+      id: new FormControl(null, Validators.required)
     });
     if(this.userData){
       this.userForm.patchValue(this.userData);
@@ -132,6 +133,7 @@ export class AddUserComponent {
   getRoles() {
     this.roleService.getAllRoles().subscribe(response => {
       this.roles = response.data;
+      console.log("role",this.roles)
     });
   }
 
@@ -152,13 +154,14 @@ export class AddUserComponent {
   //     }
   //   })
   // }
- saveUser(){
+        saveUser(){
          if(this.userForm.valid){
            this.userService.addUser(this.userForm.value).subscribe(response=>{
-             if(response.statusCode == 200){
+             if(response.statusCode == 201){
                Swal.fire({
                  title: "Success",
                  text: "Data saved successfull",
+                 html: "<b>Default Credential</b><br> Username: <b>"+response.email +"</b><br> Password: <b>" +response.password +"</b>",
                  icon: "success",
                  confirmButtonColor: "#4690eb",
                  confirmButtonText: "Continue"
@@ -173,13 +176,13 @@ export class AddUserComponent {
                });
              }
            }
-     
+
          );
          }else{
-     
+
          }
        }
-     
+
        updateUser(){
          if(this.userForm.valid){
           this.userService.updateUser(this.userForm.value, this.userData.id).subscribe(response=>{
@@ -201,12 +204,11 @@ export class AddUserComponent {
                });
              }
            }
-     
+
          );
          }else{
-     
+
          }
        }
  }
- 
- 
+

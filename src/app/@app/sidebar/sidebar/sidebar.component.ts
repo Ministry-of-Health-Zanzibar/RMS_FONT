@@ -70,14 +70,14 @@ export class SidebarComponent {
       type: 'group',
       name: 'Config Users & Audit',
       icon: 'person',
-      permission: ['User Management', 'View Permission', 'View Role'],
+      permission: ['View User', 'View Permission', 'View Role'],
       children: [
 
         {
           type: 'link',
           name: 'Manage Users',
           link: '/pages/users',
-          permission: 'User Management',
+          permission: 'View User',
 
         },
         {
