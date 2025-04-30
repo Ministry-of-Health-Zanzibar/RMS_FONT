@@ -57,7 +57,7 @@ export class SidebarComponent {
       children: [
         {
           type: 'link',
-          name: 'Vaccine Dashboard',
+          name: 'Dashboard',
           link: '/pages/dashboard',
           permission: 'View Dashboard',
 
@@ -84,7 +84,7 @@ export class SidebarComponent {
           type: 'link',
           name: 'Manage Roles',
           link: '/pages/users/role-permission',
-          permission: 'User Management',
+          permission: 'View Role',
 
         },
         {
