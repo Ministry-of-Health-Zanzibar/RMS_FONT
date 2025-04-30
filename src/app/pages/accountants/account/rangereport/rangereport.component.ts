@@ -9,7 +9,7 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 
-import { Observable, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { MatSort } from '@angular/material/sort';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatInput } from '@angular/material/input';
@@ -23,14 +23,12 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 // import { saveAs } from 'file-saver';
 
-
-
 import autoTable from 'jspdf-autotable';
 
 
 
 import { EmrSegmentedModule } from '@elementar/components';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog} from '@angular/material/dialog';
 import { PermissionService } from '../../../../services/authentication/permission.service';
 import { RangereportService } from '../../../../services/accountants/rangereport.service';
 
