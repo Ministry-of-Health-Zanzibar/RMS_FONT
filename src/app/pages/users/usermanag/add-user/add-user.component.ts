@@ -97,7 +97,7 @@ export class AddUserComponent {
       email: new FormControl(null, [Validators.required, Validators.pattern(GlobalConstants.emailRegex)]),
       gender: new FormControl(null, Validators.required),
       date_of_birth: new FormControl(null, Validators.required),
-      id: new FormControl(null, Validators.required)
+      role_id: new FormControl(null, Validators.required)
     });
     if(this.userData){
       this.userForm.patchValue(this.userData);
