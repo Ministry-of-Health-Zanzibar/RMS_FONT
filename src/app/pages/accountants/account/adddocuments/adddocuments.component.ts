@@ -50,7 +50,8 @@ export class AdddocumentsComponent {
   user: any;
   id: any;
   documents: any;
-  source: any;
+  sources: any[] = [];
+sourceTypes: any[] = [];
   category: any;
   options: any[] = [];
   myControl = new FormControl('');
@@ -61,6 +62,7 @@ export class AdddocumentsComponent {
   constructor(
     private docService:DocumentsService,
     private sourceServices:SourceTypeService,
+    private sourcesServices:SourcesService,
     private categoryServices:CategoryService,
     private documentType:DocumentTypeService,
     private roleService: RolePermissionService,
@@ -76,7 +78,9 @@ export class AdddocumentsComponent {
     }
     this.getCategory();
     this.getDocumentType();
-    this.getSouurce();
+
+
+   this.getSouurce();
 
   }
 
@@ -93,6 +97,7 @@ export class AdddocumentsComponent {
       payee_name: new FormControl(null, Validators.required ),
       amount: new FormControl(null, Validators.required),
       tin_number: new FormControl(null, Validators.required),
+      source_name: new FormControl(null, Validators.required),
       source_type_id: new FormControl(null),
       category_id: new FormControl(null),
       document_type_id: new FormControl(null),
@@ -104,23 +109,29 @@ export class AdddocumentsComponent {
 
 
   getDocumentById(id: any) {
-    this.docService.getDocumentById(id).subscribe(response=>{
-      if(response.statusCode == 200){
+    this.docService.getDocumentById(id).subscribe(response => {
+      if (response.statusCode == 200) {
         this.user = response.data[0];
         this.userForm.patchValue(this.user);
 
-      }
-      else{
+        // ✅ Handle source_name and dynamically load source types
+        if (this.user.source_name) {
+          this.userForm.patchValue({ source_name: this.user.source_name });
+          this.onSourceChange(this.user.source_name);
+        }
+
+      } else {
         Swal.fire({
-          title: "error",
+          title: "Error",
           text: response.message,
           icon: "error",
           confirmButtonColor: "#4690eb",
           confirmButtonText: "Close"
         });
       }
-    })
+    });
   }
+
 
   getCategory(){
     this.categoryServices.getAllCategory().subscribe(response=>{
@@ -136,9 +147,21 @@ export class AdddocumentsComponent {
     })
   }
 
+  onSourceChange(selectedSourceName: string): void {
+    this.sourceServices.getSourceTypesBySourceName(selectedSourceName)
+      .subscribe((response) => {
+        console.log("data ",response.data)
+        if (response.data) {
+          this.sourceTypes = response.data;
+        } else {
+          this.sourceTypes = [];
+        }
+      });
+  }
+
   getSouurce(){
-    this.sourceServices.getAllSourceType().subscribe(response=>{
-      this.source=response.data;
+    this.sourcesServices.getAllSource().subscribe(response=>{
+      this.sources=response.data;
 
     })
   }

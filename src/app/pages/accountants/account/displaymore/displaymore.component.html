@@ -1,110 +1,88 @@
 <div *ngIf="documentForm" class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-100 p-6 md:p-10 font-sans">
-  <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
+  <div class="max-w-6xl mx-auto">
 
-    <div class="lg:col-span-2 backdrop-blur-md bg-white/70 shadow-2xl rounded-3xl p-8 border border-white/40 animate-fade-in-up">
+    <!-- Row Header with Avatar -->
+    <div class="flex items-center mb-6 space-x-4">
+      <div class="w-16 h-16 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 text-white flex items-center justify-center text-3xl shadow-inner">
+        🧾
+      </div>
+      <h2 class="text-3xl font-bold text-gray-800">{{ documentForm?.payee_name }}</h2>
+    </div>
 
-      <!-- Header with Avatar -->
-      <div class="flex items-center space-x-3 mb-12">
-        <div class="w-16 h-16 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 text-white flex items-center justify-center text-3xl shadow-inner">
-          🧾
-        </div>
+    <!-- All Data in One Row -->
+    <div class="flex flex-wrap border border-gray-300 rounded-xl overflow-hidden shadow-md bg-white/80">
+
+      <!-- Reusable block for each item -->
+      <div class="flex items-center px-6 py-4 border-r border-b border-gray-300 w-full sm:w-auto sm:flex-1">
+        <span class="mr-2 text-blue-500 text-xl">📆</span>
         <div>
-          <h2 class="text-3xl font-bold text-gray-800">{{ documentForm?.payee_name }}</h2>
-          <!-- <p class="text-gray-500 text-sm"></p> -->
+          <div class="text-sm font-semibold text-blue-600">Year</div>
+          <div>{{ documentForm.year }}</div>
         </div>
       </div>
 
-      <!-- Info Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-6 text-gray-800 text-base">
-
-        <!-- Date of Birth -->
-        <div class="flex items-start gap-3">
-          <span class="text-blue-500 text-xl">📆</span>
-          <div>
-            <div class="font-semibold text-sm text-blue-600">Date of Birth</div>
-            <div>{{ documentForm.year | date: 'dd-MM-yyyy' }}</div>
-          </div>
-        </div>
-
-        <!-- Category -->
-        <div class="flex items-start gap-3">
-          <span class="text-pink-500 text-xl">🏷️</span>
-          <div>
-            <div class="font-semibold text-sm text-pink-500">Category</div>
-            <div>{{ documentForm.category_name }}</div>
-          </div>
-        </div>
-
-        <!-- Amount -->
-        <div class="flex items-start gap-3">
-          <span class="text-green-500 text-xl">💵</span>
-          <div>
-            <div class="font-semibold text-sm text-green-600">Amount</div>
-            <div>{{ documentForm.amount | number:'1.0-2' }}</div>
-          </div>
-        </div>
-
-        <!-- TIN Number -->
-        <div class="flex items-start gap-3">
-          <span class="text-purple-500 text-xl">🔢</span>
-          <div>
-            <div class="font-semibold text-sm text-purple-600">TIN Number</div>
-            <div>{{ documentForm.tin_number }}</div>
-          </div>
-        </div>
-
-        <!-- Source Name -->
-        <div class="flex items-start gap-3">
-          <span class="text-yellow-500 text-xl">🏛️</span>
-          <div>
-            <div class="font-semibold text-sm text-yellow-600">Source Name</div>
-            <div>{{ documentForm.source_name }}</div>
-          </div>
-        </div>
-
-        <!-- Source Type Name -->
-        <div class="flex items-start gap-3">
-          <span class="text-indigo-500 text-xl">📂</span>
-          <div>
-            <div class="font-semibold text-sm text-indigo-600">Source Type</div>
-            <div>{{ documentForm.source_type_name }}</div>
-          </div>
+      <div class="flex items-center px-6 py-4 border-r border-b border-gray-300 w-full sm:w-auto sm:flex-1">
+        <span class="mr-2 text-pink-500 text-xl">🏷️</span>
+        <div>
+          <div class="text-sm font-semibold text-pink-600">Category</div>
+          <div>{{ documentForm.category_name }}</div>
         </div>
       </div>
 
-      <!-- PDF Section -->
-      <div class="mt-8 pt-6 border-t border-white/50">
-        <ng-container *ngIf="documentForm.document_file && documentForm.document_file.endsWith('.pdf'); else noPdf">
-          <a
-            [href]="'http://127.0.0.1:8000/storage/' + documentForm.document_file"
-            target="_blank"
-            class="inline-flex items-center gap-2 text-indigo-600 hover:text-indigo-800 font-medium text-sm transition"
-          >
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round"
-                d="M15.75 9V5.25A2.25 2.25 0 0013.5 3H6.75A2.25 2.25 0 004.5 5.25v13.5A2.25 2.25 0 006.75 21h10.5A2.25 2.25 0 0019.5 18.75V12m-3.75-3L21 3m0 0v4.5M21 3h-4.5" />
-            </svg>
-            View Referral Letter (PDF)
-          </a>
-        </ng-container>
+      <div class="flex items-center px-6 py-4 border-r border-b border-gray-300 w-full sm:w-auto sm:flex-1">
+        <span class="mr-2 text-green-500 text-xl">💵</span>
+        <div>
+          <div class="text-sm font-semibold text-green-600">Amount</div>
+          <div>{{ documentForm.amount | number:'1.0-2' }}</div>
+        </div>
+      </div>
 
-        <ng-template #noPdf>
-          <p class="text-sm text-red-500 italic mt-2">❌ No PDF file available</p>
-        </ng-template>
+      <div class="flex items-center px-6 py-4 border-r border-b border-gray-300 w-full sm:w-auto sm:flex-1">
+        <span class="mr-2 text-purple-500 text-xl">🔢</span>
+        <div>
+          <div class="text-sm font-semibold text-purple-600">TIN Number</div>
+          <div>{{ documentForm.tin_number }}</div>
+        </div>
+      </div>
+
+      <div class="flex items-center px-6 py-4 border-r border-b border-gray-300 w-full sm:w-auto sm:flex-1">
+        <span class="mr-2 text-yellow-500 text-xl">🏛️</span>
+        <div>
+          <div class="text-sm font-semibold text-yellow-600">Source Name</div>
+          <div>{{ documentForm.source_name }}</div>
+        </div>
+      </div>
+
+      <div class="flex items-center px-6 py-4 border-b border-gray-300 w-full sm:w-auto sm:flex-1">
+        <span class="mr-2 text-indigo-500 text-xl">📂</span>
+        <div>
+          <div class="text-sm font-semibold text-indigo-600">Source Type</div>
+          <div>{{ documentForm.source_type_name }}</div>
+        </div>
       </div>
 
     </div>
+
+    <!-- PDF Section -->
+    <div class="mt-8">
+      <ng-container *ngIf="documentForm.document_file && documentForm.document_file.endsWith('.pdf'); else noPdf">
+        <a
+          [href]="'http://127.0.0.1:8000/storage/' + documentForm.document_file"
+          target="_blank"
+          class="inline-flex items-center gap-2 text-indigo-600 hover:text-indigo-800 font-medium text-sm transition mt-4"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M15.75 9V5.25A2.25 2.25 0 0013.5 3H6.75A2.25 2.25 0 004.5 5.25v13.5A2.25 2.25 0 006.75 21h10.5A2.25 2.25 0 0019.5 18.75V12m-3.75-3L21 3m0 0v4.5M21 3h-4.5" />
+          </svg>
+          View Referral Letter (PDF)
+        </a>
+      </ng-container>
+
+      <ng-template #noPdf>
+        <p class="text-sm text-red-500 italic mt-2">❌ No PDF file available</p>
+      </ng-template>
+    </div>
+
   </div>
 </div>
-
-
-
-
-
-    <!-- Loader -->
-<div *ngIf="!documentForm" class="flex flex-col justify-center items-center h-64">
-  <div class="w-16 h-16 border-[5px] border-indigo-400 border-t-transparent rounded-full animate-spin mb-4"></div>
-  <p class="text-gray-500">Loading Document Form data...</p>
-</div>
-
-

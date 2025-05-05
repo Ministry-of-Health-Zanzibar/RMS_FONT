@@ -8,7 +8,7 @@
         <!-- Row 1: First Name, Middle Name -->
         <div class="form-row">
           <mat-form-field class="form-field">
-            <mat-label>Pay Name</mat-label>
+            <mat-label>Vendor Name</mat-label>
             <input matInput placeholder="Ex. Ali Juma Ali" formControlName="payee_name" type="text">
             <mat-error *ngIf="userForm.controls['payee_name'].touched && userForm.controls['payee_name'].invalid">
               <span *ngIf="userForm.controls['payee_name'].errors?.['required']">This field is mandatory</span>
@@ -49,15 +49,41 @@
 
         <!-- Row 3: Email, Phone Number -->
         <div class="form-row">
-          <mat-form-field class="w-full mt-6">
+          <!-- Source Name Selector -->
+           <!-- Source Name Selector -->
+       <mat-form-field class="w-full mt-6">
+         <mat-label>Source Name</mat-label>
+        <mat-select formControlName="source_name" (selectionChange)="onSourceChange($event.value)">
+         <mat-option *ngFor="let s of sources" [value]="s.source_name">
+             {{ s.source_name }}
+        </mat-option>
+       </mat-select>
+     </mat-form-field>
+
+<!-- Source Type Selector (auto-updated) -->
+    <mat-form-field class="w-full mt-6" *ngIf="sourceTypes.length > 0">
+      <mat-label>Source Type</mat-label>
+      <mat-select formControlName="source_type_id">
+     <mat-option *ngFor="let type of sourceTypes" [value]="type.source_type_id">
+      {{ type.source_type_name }}
+      </mat-option>
+     </mat-select>
+   </mat-form-field>
+
+
+          <!-- <mat-form-field class="w-full mt-6">
             <mat-label>Source Name</mat-label>
             <mat-select formControlName="source_type_id">
               <mat-option *ngFor="let s of source" [value]="s.source_type_id">
                 {{ s.source_type_name }}
               </mat-option>
             </mat-select>
-          </mat-form-field>
+          </mat-form-field> -->
 
+
+
+        </div>
+        <div class="form-row">
           <mat-form-field class="w-full mt-6">
             <mat-label>Category Name</mat-label>
             <mat-select formControlName="category_id">
@@ -66,8 +92,6 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
-
-
         </div>
 
 
@@ -78,13 +102,14 @@
         <div class="form-row">
           <mat-form-field class="w-full mt-6">
             <mat-label>Year</mat-label>
-            <input matInput placeholder="Ex. 12-2-1990" formControlName="year" type="date">
-            <mat-error class="error-message" *ngIf="userForm.controls['year'].touched && userForm.controls['year'].invalid">
+            <input matInput placeholder="Ex. 2026/2022 " formControlName="year" type="text">
+            <mat-error *ngIf="userForm.controls['year'].touched && userForm.controls['year'].invalid">
               <span *ngIf="userForm.controls['year'].errors?.['required']">This field is mandatory</span>
+              <span *ngIf="userForm.controls['year'].errors?.['pattern']">Must contain alphabetical characters only</span>
             </mat-error>
           </mat-form-field>
 
-          <mat-form-field class="w-full">
+          <mat-form-field class="w-full mt-6">
             <mat-label>Upload File</mat-label>
             <input matInput type="text" formControlName="document_file" (click)="fileInput.click()" placeholder="No file chosen" readonly>
             <input type="file" accept=".pdf,.doc,.docx,.jpg,.png" (change)="onAttachementSelected($event)" hidden #fileInput />

@@ -209,43 +209,37 @@ export class SidebarComponent {
       name: 'Accountant Setup',
       icon: 'menu',
       // permission: 'Accountant Module',
-      permission: 'View Source',
+      permission: 'Accountant Module',
       children: [
         {
           type: 'link',
           name: 'Sources',
           link: '/pages/accounts/source',
 
-          permission: 'View Source',
+          permission: 'Accountant Module',
 
         },
         {
           type: 'link',
           name: 'Source Type',
           link: '/pages/accounts/sourceType',
-          permission: 'View Source Type',
+          permission: 'Accountant Module',
 
         },
         {
           type: 'link',
           name: 'Category',
           link: '/pages/accounts/category',
-          permission: 'View Category',
+          permission: 'Accountant Module',
 
         },
         {
           type: 'link',
           name: 'Document Type',
           link: '/pages/accounts/documentCategory',
-          permission: 'View Document Type',
+          permission: 'Accountant Module',
 
         },
-
-
-
-
-
-
 
       ]
     },
