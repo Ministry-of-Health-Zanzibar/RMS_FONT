@@ -16,6 +16,7 @@ import { AssistantSearchComponent } from '@app/header/_assistant-search/assistan
 import { ThemeManagerService } from '@elementar/components';
 import { LayoutApiService } from '@elementar/components';
 import Swal from 'sweetalert2';
+import { InactivityService } from '../../../services/accountants/inactivity.service';
 
 @Component({
   selector: 'app-header',
@@ -67,7 +68,9 @@ export class HeaderComponent implements OnInit{
     this.sidebarHidden = !this.sidebarHidden;
   }
 
-  constructor(private route:Router,){}
+  constructor(private route:Router,
+    private inactivityService: InactivityService
+  ){}
 
   fullName:any;
   emails:any;
@@ -77,28 +80,23 @@ export class HeaderComponent implements OnInit{
     this.emails = localStorage.getItem('email');
   }
 
-  logoutHead(){
+  logoutHead() {
     Swal.fire({
       title: "Are you sure?",
-      text: "You want to logout in this system",
+      text: "You want to logout from this system",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, Logout",
-      allowOutsideClick: () => !Swal.isVisible()
+      confirmButtonText: "Yes, Logout"
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire({
-          title: "Congratulation!!!!",
-          text: "You have a succeessfully to logout",
-          icon: "success",
-          allowOutsideClick: () => !Swal.isVisible()
-        }).then(() => {
-          localStorage.clear();
-          this.route.navigate(['/']);
-        });
+        this.inactivityService.stopListener(); // ✅ stop timeout/countdown
+        localStorage.clear();
+        this.route.navigate(['/auth/sign-in']);
       }
     });
   }
+
+
 }

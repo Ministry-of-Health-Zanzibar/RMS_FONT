@@ -11,6 +11,7 @@ import { GlobalConstants } from '@shared/global-constants';
 import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
 import { MatTooltip } from '@angular/material/tooltip';
+import { InactivityService } from '../../services/accountants/inactivity.service';
 
 @Component({
   selector: 'app-signin',
@@ -41,7 +42,9 @@ export class SigninComponent implements OnInit {
 
   constructor(private formBuilder:FormBuilder,
     private route:Router,
-    private authService:AuthService,){}
+    private authService:AuthService,
+    private inactivityService: InactivityService
+  ){}
 
     ngOnInit(): void {
       if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
@@ -72,6 +75,7 @@ export class SigninComponent implements OnInit {
           if(response.statusCode != 401 && response.data.statusCode == 200){
             localStorage.setItem("token", `Bearer ${response.data.token}`);
             if(response.data.login_status === '1'){
+
               this.authService.setPermissions(response.data.permissions);
               localStorage.setItem("user_id", response.data.user_id);
               localStorage.setItem("full_name", response.data.full_name);
@@ -80,7 +84,9 @@ export class SigninComponent implements OnInit {
               // localStorage.setItem("roles", response.data.roles.name);
               localStorage.setItem("roles", response.data.roles[0]?.name || 'Default Role');
 
+
               localStorage.setItem("isLogin","true");
+              this.inactivityService.initListener();
               const Toast = Swal.mixin({
                 toast: true,
                 position: "top-end",
