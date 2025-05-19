@@ -48,7 +48,7 @@ export class AdddocumentsComponent {
 
   userForm: FormGroup;
   user: any;
-  id: any;
+  sourceData:any;
   documents: any;
   sources: any[] = [];
 sourceTypes: any[] = [];
@@ -71,11 +71,13 @@ sourceTypes: any[] = [];
   }
 
   ngOnInit(): void {
-    this.configForm();
+
     if(this.data){
-      this.id = this.data.id;
-      this.getDocumentById(this.id);
+      this.sourceData = this.data.data;
+      console.log("nazipata data ",this.sourceData)
+      // this.getDocumentById(this.id);
     }
+    this.configForm();
     this.getCategory();
     this.getDocumentType();
 
@@ -105,32 +107,35 @@ sourceTypes: any[] = [];
       document_file:new FormControl(null, Validators.required),
 
     });
+    if(this.sourceData){
+      this.userForm.patchValue(this.sourceData);
+    }
   }
 
 
-  getDocumentById(id: any) {
-    this.docService.getDocumentById(id).subscribe(response => {
-      if (response.statusCode == 200) {
-        this.user = response.data[0];
-        this.userForm.patchValue(this.user);
+  // getDocumentById(id: any) {
+  //   this.docService.getDocumentById(id).subscribe(response => {
+  //     if (response.statusCode == 200) {
+  //       this.user = response.data[0];
+  //       this.userForm.patchValue(this.user);
 
-        // ✅ Handle source_name and dynamically load source types
-        if (this.user.source_name) {
-          this.userForm.patchValue({ source_name: this.user.source_name });
-          this.onSourceChange(this.user.source_name);
-        }
+  //       // ✅ Handle source_name and dynamically load source types
+  //       if (this.user.source_name) {
+  //         this.userForm.patchValue({ source_name: this.user.source_name });
+  //         this.onSourceChange(this.user.source_name);
+  //       }
 
-      } else {
-        Swal.fire({
-          title: "Error",
-          text: response.message,
-          icon: "error",
-          confirmButtonColor: "#4690eb",
-          confirmButtonText: "Close"
-        });
-      }
-    });
-  }
+  //     } else {
+  //       Swal.fire({
+  //         title: "Error",
+  //         text: response.message,
+  //         icon: "error",
+  //         confirmButtonColor: "#4690eb",
+  //         confirmButtonText: "Close"
+  //       });
+  //     }
+  //   });
+  // }
 
 
   getCategory(){
@@ -171,7 +176,7 @@ sourceTypes: any[] = [];
   updateUser(){
     if(this.userForm.valid){
 
-      this.docService.updateDocument(this.userForm.value,this.id).subscribe(response=>{
+      this.docService.updateDocument(this.userForm.value,this.sourceData.document_form_id).subscribe(response=>{
         if(response.statusCode == 200){
           Swal.fire({
             title: "Success",

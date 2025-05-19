@@ -114,7 +114,7 @@ private readonly onDestroy = new Subject<void>()
     });
   }
 
-  updateDocument(id: any) {
+  updateDocument(data: any) {
     let config = new MatDialogConfig()
     config.disableClose = false
     config.role = 'dialog'
@@ -123,7 +123,7 @@ private readonly onDestroy = new Subject<void>()
     config.height = '600px'
     config.width = '850px'
     config.panelClass = 'full-screen-modal'
-    config.data = {id: id}
+    config.data = {data: data}
 
     const dialogRef = this.dialog.open(AdddocumentsComponent, config);
     dialogRef.afterClosed().subscribe(result => {

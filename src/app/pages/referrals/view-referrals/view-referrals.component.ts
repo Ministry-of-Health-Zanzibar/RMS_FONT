@@ -262,11 +262,11 @@ export class ViewReferralsComponent implements OnInit,OnDestroy{
           //     width: '700px',
           //     data: { data: referral_id }
           //   });
-          
+
           //   dialogRef.afterClosed().subscribe(result => {
           //     if (result) {
           //       console.log('Dialog result:', this.referralsLetter);
-          
+
           //       Swal.fire({
           //         icon: 'success',
           //         title: `Referral `,
@@ -288,11 +288,11 @@ export class ViewReferralsComponent implements OnInit,OnDestroy{
                 maxHeight: '100vh',
                  data: data  // pass referral data to the dialog
               });
-            
+
               dialogRef.afterClosed().subscribe(result => {
                 console.log('The dialog was closed');
               });
             }
 
-          
+
       }

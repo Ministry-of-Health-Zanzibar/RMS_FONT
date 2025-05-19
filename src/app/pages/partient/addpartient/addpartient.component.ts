@@ -17,6 +17,7 @@ import { RolePermissionService } from '../../../services/users/role-permission.s
 
 import { PartientService } from '../../../services/partient/partient.service';
 import { GlobalConstants } from '@shared/global-constants';
+import { position } from 'html2canvas/dist/types/css/property-descriptors/position';
 
 @Component({
   selector: 'app-addpartient',
@@ -101,62 +102,7 @@ export class AddpartientComponent {
          }
        }
 
-  // getUser(patientData: any) {
-  //   this.patientService.getPartientById(patientData).subscribe(response=>{
-  //     if(response.statusCode == 200){
-  //       this.user = response.data[0];
-  //       this.patientForm.patchValue(this.user);
 
-  //     }
-  //     else{
-  //       Swal.fire({
-  //         title: "error",
-  //         text: response.message,
-  //         icon: "error",
-  //         confirmButtonColor: "#4690eb",
-  //         confirmButtonText: "Close"
-  //       });
-  //     }
-  //   })
-  // }
-
-  // savePartient(){
-  //   if(this.patientForm.valid){
-  //     this.patientService.addPartient(this.patientForm.value).subscribe(response=>{
-  //       if(response.statusCode == 201){
-  //         var message;
-  //         Swal.fire({
-  //           title: "Success",
-
-  //           text: response.message,
-
-  //           icon: "success",
-  //           confirmButtonColor: "#4690eb",
-  //           confirmButtonText: "Close"
-  //         });
-  //       }
-  //       else{
-  //         Swal.fire({
-  //           title: "Error",
-  //           text: response.message,
-  //           icon: "error",
-  //           confirmButtonColor: "#4690eb",
-  //           confirmButtonText: "Close"
-  //         });
-  //       }
-  //     })
-  //   }
-  // }
-
-
-
-  // onAttachementSelected(event: Event) {
-  //   const file = (event.target as HTMLInputElement).files?.[0];
-  //   if (file) {
-  //     this.selectedAttachement = file;
-  //     console.log("Selected file:", file.name);
-  //   }
-  // }
 
 
 
@@ -170,51 +116,35 @@ export class AddpartientComponent {
   }
 
 
-  // public addAnnouncement(): void {
-  //   const formData = new FormData();
-  //   formData.append('announcement_title', this.name.get('announcementTitle')?.value);
-  //   formData.append('announcement_content', this.announcementForm.get('announcementContent')?.value);
-
-  //   const files = this.announcementForm.get('document')?.value;
-  //   if (files && files.length > 0) {
-  //     for (let i = 0; i < files.length; i++) {
-  //       formData.append('announcement_document[]', files[i], files[i].name); // Append each file
-  //     }
-  //   }
-
-  //   this.announcementService.createAnnouncement(formData).subscribe(
-  //     (response: any) => {
-  //       this.dialogRef.close();
-  //       this.onAddAnnouncementEventEmitter.emit();
-  //       if (response.statusCode === 201) {
-  //         this.toastService.toastSuccess(response.message);
-  //       } else {
-  //         this.toastService.toastError(response.message);
-  //       }
-  //     },
-  //     (errorResponse: HttpErrorResponse) => {
-  //       this.toastService.toastError(errorResponse.error.message);
-  //     }
-  //   );
-  // }
-
 
   savePatient() {
     if (this.patientForm.valid) {
-      const patientData = new this.patientData();
+      const formData = this.patientForm.value;
 
-      Object.keys(this.patientForm.controls).forEach(key => {
-        if (key === 'referral_letter_file') {
-          if (this.selectedAttachement) {
-            patientData.append('referral_letter_file', this.selectedAttachement);
-          }
-        } else {
-          const value = this.patientForm.get(key)?.value;
-          patientData.append(key, value ?? '');
-        }
-      });
+      // Ensure you're extracting the correct IDs
+      const requestData = {
+        name: formData.name,
+        gender: formData.gender ,
+        location:formData.location,
+        phone:formData.phone,
+        job:formData.job,
+        position:formData.position,
+        date_of_birth:formData.date_of_birth,
+        referral_letter_file:formData.referral_letter_file
+      };
 
-      this.patientService.addPartient(patientData).subscribe(response => {
+      // Object.keys(this.patientForm.controls).forEach(key => {
+      //   if (key === 'referral_letter_file') {
+      //     if (this.selectedAttachement) {
+      //       patientData.append('referral_letter_file', this.selectedAttachement);
+      //     }
+      //   } else {
+      //     const value = this.patientForm.get(key)?.value;
+      //     patientData.append(key, value ?? '');
+      //   }
+      // });
+
+      this.patientService.addPartient(formData).subscribe(response => {
         if (response.statusCode === 201) {
           Swal.fire({
             title: "Success",
