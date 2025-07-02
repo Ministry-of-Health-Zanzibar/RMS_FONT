@@ -109,7 +109,7 @@ export class SigninComponent implements OnInit {
                 toast: true,
                 position: "top-end",
                 showConfirmButton: false,
-                timer: 300,
+                timer: 3000000,
                 timerProgressBar: true,
                 didOpen: (toast) => {
                   toast.onmouseenter = Swal.stopTimer;

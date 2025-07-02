@@ -47,7 +47,7 @@ export class ReferralStatusDialogComponent {
 
     // @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-   
+
   }
 
 
@@ -77,8 +77,7 @@ export class ReferralStatusDialogComponent {
     configForm(){
       this.statusForm = new FormGroup({
         referral_id: new FormControl(this.id),
-        start_date: new FormControl(null, Validators.required),
-        end_date: new FormControl(null,[Validators.required, ]  ),
+      
         status: new FormControl(null, [Validators.required, ]),
         letter_text: new FormControl(null, [Validators.required, ]),
 
