@@ -39,6 +39,6 @@ export class AuthService {
     this.hasRefreshed = true;
     setTimeout(() => {
       location.reload();
-    }, 300);
+    }, 300000);
   }
 }

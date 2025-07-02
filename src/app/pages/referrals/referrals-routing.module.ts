@@ -29,6 +29,14 @@ const routes: Routes = [
     path:'referralsLetter',
     loadComponent:()=>import('./referrals-letter/referrals-letter.component').then(c=>c.ReferralsLetterComponent)
   },
+  {
+    path:'confirm0000111101',
+    loadComponent:()=>import('./view-referal-confirm/view-referal-confirm.component').then(c=>c.ViewReferalConfirmComponent)
+  },
+  {
+    path:'billpayment2222200000',
+    loadComponent:()=>import('./billpayment/billpayment.component').then(c=>c.BillpaymentComponent)
+  }
 
 ];
 

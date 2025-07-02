@@ -17,12 +17,11 @@ import { Router, RouterLink } from '@angular/router';
 import { PermissionService } from '../../../services/authentication/permission.service';
 import { ReferralService } from '../../../services/Referral/referral.service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import Swal from 'sweetalert2';
 import { BillComponent } from '../bill/bill.component';
 import { ReferralpaymentComponent } from '../referralpayment/referralpayment.component';
 
 @Component({
-  selector: 'app-referralwithbills',
+  selector: 'app-billpayment',
   standalone: true,
   imports: [
      CommonModule,
@@ -41,10 +40,10 @@ import { ReferralpaymentComponent } from '../referralpayment/referralpayment.com
         RouterLink,
         EmrSegmentedModule
   ],
-  templateUrl: './referralwithbills.component.html',
-  styleUrl: './referralwithbills.component.scss'
+  templateUrl: './billpayment.component.html',
+  styleUrl: './billpayment.component.scss'
 })
-export class ReferralwithbillsComponent implements OnInit,OnDestroy{
+export class BillpaymentComponent implements OnInit,OnDestroy{
 
 
    private readonly onDestroy = new Subject<void>()
@@ -53,7 +52,7 @@ export class ReferralwithbillsComponent implements OnInit,OnDestroy{
 
       displayedColumns: string[] =
       ['id', 'patient_name', 'referral_type_name',
-      'hospital_name', 'referral_reason_name','start_date', 'end_date', 'status', 'action'];
+      'hospital_name', 'referral_reason_name','bill_amount', 'status', 'action'];
       dataSource: MatTableDataSource<any> = new MatTableDataSource();
 
       @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -76,7 +75,6 @@ export class ReferralwithbillsComponent implements OnInit,OnDestroy{
         this.getReferrals();
       }
 
-
      getReferrals() {
   this.loading = true;
   this.referralService.getReferralwithBills()
@@ -86,7 +84,7 @@ export class ReferralwithbillsComponent implements OnInit,OnDestroy{
         this.loading = false;
         if (response.statusCode === 200) {
           const filtered = response.data.filter((item: { status: string; bill_status: string; }) =>
-            item.status === 'Confirmed' && item.bill_status === null
+            item.status === 'Confirmed' && item.bill_status === 'Pending'
           );
           this.dataSource = new MatTableDataSource(filtered);
           this.dataSource.paginator = this.paginator;
@@ -101,6 +99,8 @@ export class ReferralwithbillsComponent implements OnInit,OnDestroy{
       }
     );
 }
+
+
 
       applyFilter(event: Event) {
         const filterValue = (event.target as HTMLInputElement).value;

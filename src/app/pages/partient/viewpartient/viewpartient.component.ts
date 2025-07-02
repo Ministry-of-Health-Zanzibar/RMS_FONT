@@ -57,7 +57,7 @@ export class ViewpartientComponent {
 
   ){}
 
-  displayedColumns: string[] = ['id','name','phone','location','position','job','action','action2'];
+  displayedColumns: string[] = ['id','name','phone','location','position','job','action'];
   dataSource: MatTableDataSource<any> = new MatTableDataSource();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;

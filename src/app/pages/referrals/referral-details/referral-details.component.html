@@ -1,39 +1,50 @@
-<div *ngIf="referral" class="max-w-4xl mx-auto mt-12 p-8 bg-white shadow-xl rounded-3xl border border-gray-200">
-  <h2 class="text-4xl font-bold text-center text-primary-700 mb-10 tracking-tight">Referral Details</h2>
+<div *ngIf="referral">
+  <h2 class="text-4xl font-bold text-center text-primary-700 mb-10 tracking-tight">
+    Referral Details
+  </h2>
 
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-    <div class="flex flex-col space-y-1">
-      <label class="text-gray-600 font-medium">Patient Name</label>
-      <div class="bg-gray-50 border border-gray-200 rounded-xl p-3 text-lg text-gray-800">{{ referral.patient_name }}</div>
-    </div>
-
-    <div class="flex flex-col space-y-1">
-      <label class="text-gray-600 font-medium">Hospital Name</label>
-      <div class="bg-gray-50 border border-gray-200 rounded-xl p-3 text-lg text-gray-800">{{ referral.hospital_name }}</div>
-    </div>
-
-    <div class="flex flex-col space-y-1">
-      <label class="text-gray-600 font-medium">Referral Type</label>
-      <div class="bg-gray-50 border border-gray-200 rounded-xl p-3 text-lg text-gray-800">{{ referral.referral_type_name }}</div>
-    </div>
-
-    <div class="flex flex-col space-y-1">
-      <label class="text-gray-600 font-medium">Reason</label>
-      <div class="bg-gray-50 border border-gray-200 rounded-xl p-3 text-lg text-gray-800">{{ referral.referral_reason_name }}</div>
-    </div>
-
-    <div class="md:col-span-2 flex flex-col space-y-1">
-      <label class="text-gray-600 font-medium">Status</label>
-      <div
-        class="bg-gray-50 border border-gray-200 rounded-xl p-3 text-lg font-semibold"
-        [ngClass]="{
-          'text-green-600': referral.status === 'Confirmed',
-          'text-red-600': referral.status === 'Cancelled',
-          'text-yellow-600': referral.status === 'Pending'
-        }">
-        {{ referral.status }}
-      </div>
-    </div>
+  <div class="overflow-x-auto">
+    <table class="table-auto w-full border-collapse border border-gray-300">
+      <thead>
+        <tr class="bg-gray-100">
+          <th class="border border-gray-300 px-4 py-2 text-left text-sm font-semibold text-gray-700">Field</th>
+          <th class="border border-gray-300 px-4 py-2 text-left text-sm font-semibold text-gray-700">Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="border border-gray-300 px-4 py-2 font-medium text-gray-600">Patient Name</td>
+          <td class="border border-gray-300 px-4 py-2 bg-gray-50 rounded-xl">{{ referral.patient_name }}</td>
+        </tr>
+        <tr>
+          <td class="border border-gray-300 px-4 py-2 font-medium text-gray-600">Hospital Name</td>
+          <td class="border border-gray-300 px-4 py-2 bg-gray-50 rounded-xl">{{ referral.hospital_name }}</td>
+        </tr>
+        <tr>
+          <td class="border border-gray-300 px-4 py-2 font-medium text-gray-600">Referral Type</td>
+          <td class="border border-gray-300 px-4 py-2 bg-gray-50 rounded-xl">{{ referral.referral_type_name }}</td>
+        </tr>
+        <tr>
+          <td class="border border-gray-300 px-4 py-2 font-medium text-gray-600">Reason</td>
+          <td class="border border-gray-300 px-4 py-2 bg-gray-50 rounded-xl">{{ referral.referral_reason_name }}</td>
+        </tr>
+        <tr>
+          <td class="border border-gray-300 px-4 py-2 font-medium text-gray-600">Status</td>
+          <td class="border border-gray-300 px-4 py-2">
+            <span
+              class="inline-flex items-center px-2.5 py-0.5 text-xs font-semibold rounded-full text-white"
+              [ngClass]="{
+                'bg-green-500': referral.status === 'Confirmed',
+                'bg-red-500': referral.status === 'Cancelled',
+                'bg-yellow-500': referral.status === 'Pending'
+              }"
+            >
+              {{ referral.status }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 
   <div class="flex justify-center mt-12 space-x-6">
@@ -41,20 +52,11 @@
       type="button"
       class="bg-primary-600 hover:bg-primary-700 transition-all duration-200 text-white px-8 py-3 rounded-xl text-lg font-semibold shadow-lg"
       (click)="updateStatusPopup()"
-      [disabled]="referral.status !== 'Pending'">
+      [disabled]="referral.status !== 'Pending'"
+    >
       Confirm
     </button>
-
-    <!-- Uncomment kama utahitaji Deny button -->
-    <!--
-    <button
-      type="button"
-      class="bg-red-600 hover:bg-red-700 transition-all duration-200 text-white px-8 py-3 rounded-xl text-lg font-semibold shadow-lg"
-      (click)="updateStatus('Denied')"
-      [disabled]="referral.status !== 'Pending'">
-      Deny
-    </button>
-    -->
+    <!-- Optional Deny button could be added here -->
   </div>
 </div>
 

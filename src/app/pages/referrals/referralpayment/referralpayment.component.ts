@@ -13,6 +13,7 @@ import { HDividerComponent } from '@elementar/components';
 import Swal from 'sweetalert2';
 import { BillService } from '../../../services/system-configuration/bill.service';
 import { Subject } from 'rxjs';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-referralpayment',
@@ -30,6 +31,7 @@ import { Subject } from 'rxjs';
     MatAutocompleteModule,
     MatSelect,
     MatDatepickerModule,
+    MatIcon
   ],
   templateUrl: './referralpayment.component.html',
   styleUrl: './referralpayment.component.scss'
@@ -42,6 +44,7 @@ export class ReferralpaymentComponent  {
    clientForm: FormGroup;
    user: any;
    id: any;
+   bill: any = null;
 
    constructor(
 
@@ -59,6 +62,7 @@ export class ReferralpaymentComponent  {
     // console.log("bill amount   here  ",this.data);
 
      }
+     this.getBillByIds()
     // this.viewUser();
 
    }
@@ -85,7 +89,22 @@ export class ReferralpaymentComponent  {
    }
 
 
-   savePaymment() {
+
+getBillByIds() {
+  this.billServices.getBillById(this.id).subscribe((response: any) => {
+    if (response.statusCode === 200 && response.data) {
+      this.bill = response.data;  // not an array – extract data directly
+      console.log('Bill data:', this.bill);
+    }
+  }, error => {
+    console.error('Error fetching bill:', error);
+  });
+}
+
+
+
+
+   savePayment() {
      if (this.clientForm.valid) {
        const formData = {
          ...this.clientForm.value,

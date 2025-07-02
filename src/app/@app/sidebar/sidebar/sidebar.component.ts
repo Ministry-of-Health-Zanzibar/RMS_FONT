@@ -47,23 +47,31 @@ export class SidebarComponent {
   navigation!: any;
 
   navItems: NavItem[] = [
-
-    {
+     {
       id: 'dashboard',
-      type: 'group',
+      type: 'Single',  // Changed from 'group' to 'link'
       name: 'Dashboard',
       icon: 'dashboard',
       permission: 'View Dashboard',
-      children: [
-        {
-          type: 'link',
-          name: 'Dashboard',
-          link: '/pages/dashboard',
-          permission: 'View Dashboard',
-
-        }
-      ]
+      link: '/pages/dashboard'
     },
+
+    // {
+    //   id: 'dashboard',
+    //   type: 'group',
+    //   name: 'Dashboard',
+    //   icon: 'dashboard',
+    //   permission: 'View Dashboard',
+    //   children: [
+    //     {
+    //       type: 'link',
+    //       name: 'Dashboard',
+    //       link: '/pages/dashboard',
+    //       permission: 'View Dashboard',
+
+    //     }
+    //   ]
+    // },
 
     {
       id: 'users',
@@ -174,6 +182,13 @@ export class SidebarComponent {
           link: '/pages/patient',
           permission: 'View Patient',
 
+        },
+         {
+          type: 'link',
+          name: 'Insurances',
+          link: '/pages/patient/insurances0000011111',
+          permission: 'View Patient',
+
         }
       ]
     },
@@ -188,14 +203,26 @@ export class SidebarComponent {
           type: 'link',
           name: 'View referral',
           link: '/pages/config/referrals',
-
           permission: 'View Referral',
-
+        },
+        {
+          type: 'link',
+          name: 'Confirmed Referral',
+          link: '/pages/config/referrals/confirm0000111101',
+          permission: 'View Referral',
         },
         {
           type: 'link',
           name: 'View Bill',
           link: '/pages/config/referrals/bill',
+
+          permission: 'View Referral',
+
+        },
+         {
+          type: 'link',
+          name: 'Payment',
+          link: '/pages/config/referrals/billpayment2222200000',
 
           permission: 'View Referral',
 
@@ -282,29 +309,28 @@ export class SidebarComponent {
   constructor(public permission: PermissionService) {}
 
   ngOnInit() {
-    this.navItems.forEach(navItem => {
+    this.navItems.forEach((navItem) => {
       this.navItemLinks.push(navItem);
 
       if (navItem.children) {
-        this.navItemLinks = this.navItemLinks.concat(navItem.children as NavItem[]);
+        this.navItemLinks = this.navItemLinks.concat(
+          navItem.children as NavItem[]
+        );
         this.updateMenu();
       }
     });
     this._activateLink();
     this.router.events
-      .pipe(
-        filter(event => event instanceof NavigationEnd)
-      )
+      .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe(() => {
         this._activateLink();
         this.updateMenu();
-      })
-    ;
+      });
   }
 
   private _activateLink() {
     const activeLink = this.navItemLinks.find(
-      navItem => navItem.link === this.location.path()
+      (navItem) => navItem.link === this.location.path()
     );
 
     if (activeLink) {
@@ -321,7 +347,9 @@ export class SidebarComponent {
   hasPermission(action: string | string[]): boolean {
     if (Array.isArray(action)) {
       // If it's an array, check if the user has permission for at least one action
-      return action.some(permission => this.permission.parmissionMatched([permission.trim()]));
+      return action.some((permission) =>
+        this.permission.parmissionMatched([permission.trim()])
+      );
     } else {
       // If it's a string, check if the user has permission for that action
       return this.permission.parmissionMatched([action.trim()]);
@@ -329,64 +357,68 @@ export class SidebarComponent {
   }
 
   // Function to filter out menu items based on permissions
-filterMenuByPermissions(menu: Array<NavItem>): Array<NavItem> {
-  return menu
-    .map(group => {
-      // Check if the group itself has a permission and if it's valid
-      if (group.permission && !this.hasPermission(group.permission)) {
-        // If the group's permission is not met, exclude it entirely
-        return null;
-      }
+  filterMenuByPermissions(menu: Array<NavItem>): Array<NavItem> {
+    return menu
+      .map((group) => {
+        // Check if the group itself has a permission and if it's valid
+        if (group.permission && !this.hasPermission(group.permission)) {
+          // If the group's permission is not met, exclude it entirely
+          return null;
+        }
 
-      return {
-        ...group,
-        children: group.children ? this.filterChildrenByPermissions(group.children) : []
-      };
-    })
-    .filter(group => group !== null && group.children.length > 0) as NavItem[];
-}
+        return {
+          ...group,
+          children: group.children
+            ? this.filterChildrenByPermissions(group.children)
+            : [],
+        };
+      })
+      .filter(
+        (group) => group !== null && group.id !== null
+      ) as NavItem[];
+  }
 
-// Recursive function to filter children based on permissions
-filterChildrenByPermissions(children: Array<NavItem>): Array<NavItem> {
-  return children
-    .map(item => ({
-      ...item,
-      children: item.children ? this.filterChildrenByPermissions(item.children) : []
-    }))
-    .filter(item => {
-      if (!item.permission) {
-        // If the menu item does not have a permission specified, include it in the filtered menu
-        return true;
-      }
-      return this.hasPermission(item.permission);
-    });
-}
+  // Recursive function to filter children based on permissions
+  filterChildrenByPermissions(children: Array<NavItem>): Array<NavItem> {
+    return children
+      .map((item) => ({
+        ...item,
+        children: item.children
+          ? this.filterChildrenByPermissions(item.children)
+          : [],
+      }))
+      .filter((item) => {
+        if (!item.permission) {
+          // If the menu item does not have a permission specified, include it in the filtered menu
+          return true;
+        }
+        return this.hasPermission(item.permission);
+      });
+  }
 
+  // // Function to filter out menu items based on permissions
+  // filterMenuByPermissions(menu: Array<NavItem>): Array<NavItem> {
+  //   return menu.map(group => ({
+  //     ...group,
+  //     children: group.children ? this.filterChildrenByPermissions(group.children) : []
+  //   })).filter(group => group.children.length > 0);
+  // }
 
-// // Function to filter out menu items based on permissions
-// filterMenuByPermissions(menu: Array<NavItem>): Array<NavItem> {
-//   return menu.map(group => ({
-//     ...group,
-//     children: group.children ? this.filterChildrenByPermissions(group.children) : []
-//   })).filter(group => group.children.length > 0);
-// }
-
-// // Recursive function to filter children based on permissions
-// filterChildrenByPermissions(children: Array<NavItem>): Array<NavItem> {
-//   return children
-//     .map(item => ({
-//       ...item,
-//       children: item.children ? this.filterChildrenByPermissions(item.children) : []
-//     }))
-//     .filter(item => {
-//       if (!item.permission) {
-//         // If the menu item does not have a permission specified, include it in the filtered menu
-//         return true;
-//       }
-//       return this.hasPermission(item.permission);
-//     });
-// }
-
+  // // Recursive function to filter children based on permissions
+  // filterChildrenByPermissions(children: Array<NavItem>): Array<NavItem> {
+  //   return children
+  //     .map(item => ({
+  //       ...item,
+  //       children: item.children ? this.filterChildrenByPermissions(item.children) : []
+  //     }))
+  //     .filter(item => {
+  //       if (!item.permission) {
+  //         // If the menu item does not have a permission specified, include it in the filtered menu
+  //         return true;
+  //       }
+  //       return this.hasPermission(item.permission);
+  //     });
+  // }
 
   // Function to update the menu based on user permissions
   updateMenu(): void {

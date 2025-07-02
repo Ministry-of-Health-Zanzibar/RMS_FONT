@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { MatMiniFabButton, MatIconButton, MatAnchor, MatButton } from '@angular/material/button';
 import { MatDivider } from '@angular/material/divider';
 import { MatIcon } from '@angular/material/icon';
-import { VDividerComponent } from '@elementar/components';
+import { EmrSegmentedModule, VDividerComponent } from '@elementar/components';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { Router, RouterLink } from '@angular/router';
@@ -19,34 +19,33 @@ import { PermissionService } from '../../../services/authentication/permission.s
 import { ReferralService } from '../../../services/Referral/referral.service';
 import { AddReferralsComponent } from '../add-referrals/add-referrals.component';
 import Swal from 'sweetalert2';
-import { EmrSegmentedModule } from "../../../../../projects/components/src/lib/segmented/segmented.module";
 import { BillComponent } from '../bill/bill.component';
 import { ReferralsLetterComponent } from '../referrals-letter/referrals-letter.component';
 
 @Component({
-  selector: 'app-view-referrals',
+  selector: 'app-view-referal-confirm',
   standalone: true,
   imports: [
-    CommonModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatDivider,
-    MatIcon,
-    MatMiniFabButton,
-    MatIconButton,
-    VDividerComponent,
-    MatTooltip,
-    MatSlideToggleModule,
-    FormsModule,
-    MatAnchor,
-    MatButton,
-    RouterLink,
-    EmrSegmentedModule
-],
-  templateUrl: './view-referrals.component.html',
-  styleUrl: './view-referrals.component.scss'
+     CommonModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatDivider,
+        MatIcon,
+        MatMiniFabButton,
+        MatIconButton,
+        VDividerComponent,
+        MatTooltip,
+        MatSlideToggleModule,
+        FormsModule,
+        MatAnchor,
+        MatButton,
+        RouterLink,
+        EmrSegmentedModule
+  ],
+  templateUrl: './view-referal-confirm.component.html',
+  styleUrl: './view-referal-confirm.component.scss'
 })
-export class ViewReferralsComponent implements OnInit,OnDestroy{
+export class ViewReferalConfirmComponent implements OnInit,OnDestroy{
 
 
    private readonly onDestroy = new Subject<void>()
@@ -79,7 +78,7 @@ export class ViewReferralsComponent implements OnInit,OnDestroy{
         this.getReferrals();
       }
 
-    getReferrals() {
+     getReferrals() {
   this.loading = true;
   this.referralService.getAllRefferal()
     .pipe(takeUntil(this.onDestroy))
@@ -88,7 +87,7 @@ export class ViewReferralsComponent implements OnInit,OnDestroy{
         this.loading = false;
         if (response.statusCode === 200) {
           // Filter data to include only items with status === 'Pending'
-          const pending = response.data.filter((item: { status: string; }) => item.status === 'Pending' || item.status === 'Cancelled');
+          const pending = response.data.filter((item: { status: string; }) => item.status === 'Confirmed');
           this.dataSource = new MatTableDataSource(pending);
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;

@@ -15,11 +15,7 @@
             <input type="text" placeholder="Search..."
                    class="border-b h-10 w-96 text-sm bg-transparent dark:border-b-inverse outline-0 focus-within:border-neutral-950" matInput (keyup)="applyFilter($event)" #input>
           </div>
-          <div class="flex space-x-2" *ngIf="isStaff">
-            <button mat-flat-button (click) = "addReferrals()"  *ngIf="permission.parmissionMatched(['Create Referral'])">
-              <mat-icon class="font-icon">add</mat-icon>Add Referrals
-            </button>
-            </div>
+
         </div>
 
         <div class="border dark:border-inverse rounded-lg overflow-hidden mt-4">
@@ -86,37 +82,27 @@
 
               <emr-segmented  theme="simple" class="-mx-2">
                  <!-- View referral more data for confirmation hii aone DG tu -->
-                <emr-segmented-button *ngIf="!isStaff" value="visibilityData">
+                <!-- <emr-segmented-button *ngIf="!isStaff" value="visibilityData">
                   <span class="size-9 rounded-full border bg-surface flex items-center justify-center" (click)="displayMoreData(element)" matTooltip="View">
                     <mat-icon class="font-icon visibilityData">visibility</mat-icon>
-                  </span>
-                </emr-segmented-button>
-
-
-
-                <!--print value-->
-                <!-- <emr-segmented-button *ngIf="element.status === 'Confirmed'" value="visibilityData">
-                  <span class="size-9 rounded-full border bg-surface flex items-center justify-center" (click)="referralsLetterPopup(element)" matTooltip="Print">
-                    <mat-icon class="font-icon visibilityData">print</mat-icon>
                   </span>
                 </emr-segmented-button> -->
 
 
-                <!--update for staff-->
-                <emr-segmented-button  *ngIf="isStaff" value="edit_squareData">
-                  <span class="size-9 rounded-full border bg-surface flex items-center justify-center" (click)="updateRefererral(element.referral_id)" *ngIf="permission.parmissionMatched(['Update Referral'])" matTooltip="Edit">
-                    <mat-icon class="font-icon edit_squareData">edit_square</mat-icon>
+
+                <!--print value-->
+                <emr-segmented-button *ngIf="element.status === 'Confirmed'" value="visibilityData">
+                  <span class="size-9 rounded-full border bg-surface flex items-center justify-center" (click)="referralsLetterPopup(element)" matTooltip="Print">
+                    <mat-icon class="font-icon visibilityData">print</mat-icon>
                   </span>
                 </emr-segmented-button>
-                <!-- block for staff-->
-                <emr-segmented-button  *ngIf="isStaff" value="edit_squareData">
-                  <mat-slide-toggle
-                    [checked]="!element.deleted_at"
-                    (toggleChange)="confirmBlock(element)"
-                    color="primary">
-                  </mat-slide-toggle>
-                </emr-segmented-button>
-             
+
+
+
+
+
+
+
               </emr-segmented>
             </td>
           </ng-container>
@@ -140,4 +126,5 @@
       <div class="w-16 h-16 border-4 border-blue-500 border-dashed rounded-full animate-spin"></div>
     </div>
   </div>
+
 
