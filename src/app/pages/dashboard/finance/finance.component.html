@@ -1,74 +1,82 @@
-<div class="p-10">
+<div class="p-10 space-y-8">
   <div class="flex items-center justify-between">
-    <h1 class="text-lg font-bold">Finance Dashboard</h1>
+    <h1 class="text-lg font-bold">Dashboard</h1>
   </div>
-  <div class="mt-8 grid grid-cols-12 gap-6">
-    <div class="col-span-12">
-      <div class="flex items-end gap-10">
+  <div class="container mx-auto px-4 py-6">
+    <h2 class="text-2xl font-bold text-center mb-6">Referral Reports</h2>
+
+    <!-- KPI Cards Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Total Referral Hospitals -->
+      <div class="bg-white shadow rounded-lg p-6 flex items-center justify-between">
         <div>
-          <div class="text-md text-neutral">
-            Total balance
-          </div>
-          <div class="font-bold text-4xl mt-1 uppercase">
-            {{ totalBalance | number }} {{ currencyCode }}
-          </div>
+          <h3 class="text-xl font-semibold">Total Referral Hospitals</h3>
+          <p class="mt-2 text-3xl font-bold" id="total-hospitals">12</p>
         </div>
-        <div class="flex items-center gap-4">
-          <button mat-flat-button>
-            <mat-icon class="font-icon">arrow_upward</mat-icon>Send
-          </button>
-          <button mat-stroked-button>
-            <mat-icon class="font-icon">add</mat-icon>Add money
-          </button>
-          <button mat-stroked-button>
-            <mat-icon class="font-icon">arrow_downward</mat-icon>Request
-          </button>
+        <div class="text-indigo-500">
+          <!-- Icon -->
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none"
+               viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M9 12h6m2 0a2 2 0 100-4 2 2 0 000 4zm-8 0a2 2
+                     0 100-4 2 2 0 000 4z" />
+          </svg>
         </div>
       </div>
-      <div class="mt-10 flex gap-5">
-        <div class="relative bg-neutral-200 dark:bg-neutral-700 dark:hover:bg-neutral-650 p-5 rounded-2xl w-64 h-52 cursor-pointer hover:bg-neutral-300" matRipple>
-          <div class="flex items-center gap-3">
-            <emr-icon name="circle-flags:us" class="size-12"></emr-icon>
-            <span class="uppercase text-xl font-medium">USD</span>
-          </div>
-          <div class="absolute bottom-5 start-5 right-5">
-            <div class="flex items-center gap-2 text-neutral-650 dark:text-neutral-200">
-              <mat-icon class="font-icon text-lg !w-5 !h-7">account_balance</mat-icon>
-              <span class="text-sm">·· 22315</span>
-            </div>
-            <div class="text-2xl font-medium mt-1">0.00</div>
-          </div>
+
+      <!-- Total Referral Reasons -->
+      <div class="bg-white shadow rounded-lg p-6 flex items-center justify-between">
+        <div>
+          <h3 class="text-xl font-semibold">Total Referral Reasons</h3>
+          <p class="mt-2 text-3xl font-bold" id="total-reasons">8</p>
         </div>
-        <div class="relative bg-neutral-200 dark:bg-neutral-700 dark:hover:bg-neutral-650 p-5 rounded-2xl w-64 h-52 cursor-pointer hover:bg-neutral-300" matRipple>
-          <div class="flex items-center gap-3">
-            <emr-icon name="circle-flags:en" class="size-12"></emr-icon>
-            <span class="uppercase text-xl font-medium">GPB</span>
-          </div>
-          <div class="absolute bottom-5 start-5 right-5">
-            <div class="flex items-center gap-2 text-neutral-650 dark:text-neutral-200">
-              <mat-icon class="font-icon text-lg !w-5 !h-7">account_balance</mat-icon>
-              <span class="text-sm">·· 12345</span>
-            </div>
-            <div class="text-2xl font-medium mt-1">40.00</div>
-          </div>
+        <div class="text-green-500">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none"
+               viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M11 17a4 4 0 01-8 0m8 0a4 4 0 018 0m-8
+                     0V5a2 2 0 114 0v12" />
+          </svg>
         </div>
-        <div class="relative bg-neutral-200 dark:bg-neutral-700 dark:hover:bg-neutral-650 p-5 rounded-2xl w-64 h-52 cursor-pointer hover:bg-neutral-300" matRipple>
-          <div class="flex items-center gap-3">
-            <div class="size-12 rounded-full bg-neutral-400 flex items-center justify-center">
-              <mat-icon class="font-icon">add</mat-icon>
-            </div>
-            <span class="text-xl font-medium">Open</span>
-          </div>
-          <div class="absolute bottom-5 start-5 right-5 text-sm text-neutral-650 dark:text-neutral-200">
-            Explore ways to spend, save and grow your money
-          </div>
+      </div>
+
+      <!-- Total Referral Types -->
+      <div class="bg-white shadow rounded-lg p-6 flex items-center justify-between">
+        <div>
+          <h3 class="text-xl font-semibold">Total Referral Types</h3>
+          <p class="mt-2 text-3xl font-bold" id="total-types">5</p>
+        </div>
+        <div class="text-yellow-500">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none"
+               viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M5 13l4 4L19 7m0 0H7m12 0v12" />
+          </svg>
         </div>
       </div>
     </div>
   </div>
-  <div class="mt-14 grid grid-cols-12 gap-6">
-    <div class="col-span-7">
-      <app-transactions-widget [transactions]="transactions"></app-transactions-widget>
+
+
+
+
+
+
+  <div class="container mx-auto px-4 py-6 space-y-12">
+   
+
+    <!-- Grid Layout for Charts -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+      <!-- Other chart cards go here -->
+    </div>
+
+    <!-- Full-Width External Referral Section -->
+    <div class="bg-white rounded-lg shadow p-8">
+      <h3 class="text-2xl font-semibold mb-4">🌍 External Referral Overview</h3>
+      <p class="text-gray-700 text-lg leading-relaxed">
+        External referrals occur when a patient must be sent to a provider outside their usual care network—such as another clinic, hospital, or specialist facility. These cases often involve added steps like authorizations, travel coordination, and ensuring medical records are seamlessly transferred. Though more complex, these referrals are vital for accessing specialized care, reducing treatment delays, and improving patient outcomes. External referrals uphold care quality by bridging gaps across health systems.
+      </p>
     </div>
   </div>
-</div>
+  </div>
+

@@ -1,0 +1,82 @@
+<div class="form-container">
+  <div class="w-full">
+    <div class="relative h-full rounded-lg group p-6">
+      <!-- Title -->
+      <div class="font-semibold" *ngIf="!patientData">CREATE NEW MONTH BILL</div>
+      <div class="font-semibold" *ngIf="patientData">UPDATE MONTH BILL</div>
+
+      <!-- Form -->
+        <!-- <form [formGroup]="patientForm" class="space-y-4" enctype="multipart/form-data">
+           <h2 class="text-xl font-semibold text-gray-800 flex items-center space-x-4">
+      <mat-icon class="text-gray-600">payment</mat-icon>
+      <span>Add Month Payment</span>
+    </h2>
+
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Currently Amount Paid in Month</mat-label>
+        <mat-icon matPrefix>attach_money</mat-icon>
+        <input matInput formControlName="current_monthly_bill_amount" type="number" placeholder="e.g. 2,000,000">
+       <mat-error *ngIf="patientForm.get('current_monthly_bill_amount')?.invalid && patientForm.get('current_monthly_bill_amount')?.touched">
+              <span *ngIf="patientForm.get('current_monthly_bill_amount')?.errors?.['required']">This field is mandatory</span>
+              <span *ngIf="patientForm.get('current_monthly_bill_amount')?.errors?.['pattern']">Must contain alphabetical characters only</span>
+            </mat-error>
+
+      </mat-form-field>
+
+       <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Amount After Audit</mat-label>
+        <mat-icon matPrefix>attach_money</mat-icon>
+        <input matInput formControlName="after_audit_monthly_bill_amount" type="number" placeholder="e.g. 2,000,000">
+        <mat-error *ngIf="patientForm.get('after_audit_monthly_bill_amount')?.invalid && patientForm.get('after_audit_monthly_bill_amount')?.touched">
+              <span *ngIf="patientForm.get('after_audit_monthly_bill_amount')?.errors?.['required']">This field is mandatory</span>
+            </mat-error>
+
+      </mat-form-field>
+
+    </form> -->
+      <form [formGroup]="patientForm" class="horizontal-form" enctype="multipart/form-data">
+
+
+
+          <mat-form-field class="form-field">
+            <mat-label>Current Month Bill</mat-label>
+            <input matInput placeholder="Tsh 200,000.00" formControlName="current_monthly_bill_amount" type="number">
+            <mat-error *ngIf="patientForm.get('current_monthly_bill_amount')?.invalid && patientForm.get('current_monthly_bill_amount')?.touched">
+              <span *ngIf="patientForm.get('current_monthly_bill_amount')?.errors?.['required']">This field is mandatory</span>
+              <span *ngIf="patientForm.get('current_monthly_bill_amount')?.errors?.['pattern']">Must contain alphabetical characters only</span>
+            </mat-error>
+          </mat-form-field>
+
+
+
+          <mat-form-field class="form-field">
+            <mat-label>Month Bill after Audit</mat-label>
+            <input matInput placeholder="Ex. +255 777000000" formControlName="after_audit_monthly_bill_amount" type="number">
+            <mat-error *ngIf="patientForm.get('after_audit_monthly_bill_amount')?.invalid && patientForm.get('after_audit_monthly_bill_amount')?.touched">
+              <span *ngIf="patientForm.get('after_audit_monthly_bill_amount')?.errors?.['required']">This field is mandatory</span>
+            </mat-error>
+          </mat-form-field>
+
+
+
+
+
+
+      </form>
+
+      <!-- Actions -->
+      <mat-dialog-actions align="end">
+        <button mat-button (click)="onClose()">Cancel</button>
+        <button
+          mat-flat-button
+          color="primary"
+          [disabled]="patientForm.invalid"
+          (click)="patientData ? updateMonth() : saveMonth()"
+        >
+          {{ patientData ? 'Update' : 'Save' }}
+        </button>
+      </mat-dialog-actions>
+    </div>
+  </div>
+</div>
+

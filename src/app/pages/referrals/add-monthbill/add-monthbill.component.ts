@@ -10,34 +10,30 @@ import { MatInputModule } from '@angular/material/input';
 import { HDividerComponent } from '@elementar/components';
 import { map, Observable, startWith, Subject } from 'rxjs';
 import Swal from 'sweetalert2';
-
-import { UserService } from './../../../services/users/user.service';
+import { MonthBillService } from '../../../services/Referral/month-bill.service';
 import { RolePermissionService } from '../../../services/users/role-permission.service';
-import { PartientService } from '../../../services/partient/partient.service';
-import { GlobalConstants } from '@shared/global-constants';
-import { MatSelectModule } from '@angular/material/select';
-import { MatIconModule } from '@angular/material/icon';
-import { MatNativeDateModule } from '@angular/material/core';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
-  selector: 'app-addpartient',
+  selector: 'app-add-monthbill',
   standalone: true,
   imports: [
-  CommonModule,
-    ReactiveFormsModule,
-    MatButtonModule,
-    MatDialogModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    MatDatepickerModule,
-    MatIconModule,
-    MatDatepickerModule,
+     CommonModule,
+        ReactiveFormsModule,
+        MatButtonModule,
+        MatDialogModule,
+        MatFormFieldModule,
+        MatInputModule,
+
+        MatDatepickerModule,
+
+        MatDatepickerModule,
+        MatIcon
   ],
-  templateUrl: './addpartient.component.html',
-  styleUrl: './addpartient.component.scss'
+  templateUrl: './add-monthbill.component.html',
+  styleUrl: './add-monthbill.component.scss'
 })
-export class AddpartientComponent implements OnInit, OnDestroy {
+export class AddMonthbillComponent implements OnInit, OnDestroy {
 
   private readonly onDestroy = new Subject<void>();
   readonly data = inject<any>(MAT_DIALOG_DATA);
@@ -47,9 +43,9 @@ export class AddpartientComponent implements OnInit, OnDestroy {
   patientData: any;
 
   constructor(
-    private patientService: PartientService,
+    private monthService: MonthBillService,
     private roleService: RolePermissionService,
-    private dialogRef: MatDialogRef<AddpartientComponent>
+    private dialogRef: MatDialogRef<AddMonthbillComponent>
   ) {}
 
   ngOnInit(): void {
@@ -71,45 +67,23 @@ export class AddpartientComponent implements OnInit, OnDestroy {
 
   configForm() {
     this.patientForm = new FormGroup({
-      name: new FormControl(null, [Validators.required, Validators.pattern(GlobalConstants.nameRegexOnly)]),
-      gender: new FormControl(null, Validators.required),
-      location: new FormControl(null, Validators.required),
-      phone: new FormControl(null, Validators.required),
-      job: new FormControl(null, Validators.required),
-      position: new FormControl(null, Validators.required),
-      date_of_birth: new FormControl(null, Validators.required),
-      referral_letter_file: new FormControl(null, Validators.required),
+
+      current_monthly_bill_amount: new FormControl(null, Validators.required),
+      after_audit_monthly_bill_amount: new FormControl(null,Validators.required ),
+
     });
   }
 
-  onAttachmentSelected(event: any): void {
-    const file = event.target.files?.[0] ?? null;
-    if (file) {
-      this.patientForm.patchValue({ referral_letter_file: file.name });
-      this.selectedAttachement = file;
-    }
-  }
 
-  savePatient() {
+
+  saveMonth() {
     if (this.patientForm.invalid) return;
 
   const formValue: any = { ...this.patientForm.value };
-
-
-
     const formData = new FormData();
-    Object.keys(this.patientForm.controls).forEach(key => {
-      if (key === 'referral_letter_file') {
-        if (this.selectedAttachement) {
-          formData.append('referral_letter_file', this.selectedAttachement);
-        }
-      } else {
-        const value = this.patientForm.get(key)?.value;
-        formData.append(key, value ?? '');
-      }
-    });
 
-    this.patientService.addPartient(formData).subscribe(response => {
+
+    this.monthService.addMonthBill(formData).subscribe(response => {
       if (response.statusCode === 201) {
         Swal.fire({
           title: "Success",
@@ -131,10 +105,10 @@ export class AddpartientComponent implements OnInit, OnDestroy {
     });
   }
 
-  updatePatient() {
+  updateMonth() {
     if (this.patientForm.invalid) return;
 
-    this.patientService.updatePartient(this.patientForm.value, this.patientData.patient_id).subscribe(response => {
+    this.monthService.updateMonth(this.patientForm.value, this.patientData.monthly_bill_id).subscribe(response => {
       if (response.statusCode === 200) {
         Swal.fire({
           title: "Success",

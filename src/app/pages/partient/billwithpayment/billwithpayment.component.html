@@ -1,0 +1,125 @@
+<div class="max-w-lg mx-auto my-4 rounded-1xl p-2 space-y-4">
+  <div *ngIf="bill" class="space-y-2">
+     <!-- 🧑 Patient Details -->
+    <div class="mt-4 p-4 bg-gray-50 rounded-lg space-y-2">
+      <h3 class="text-xl font-semibold text-gray-800 flex items-center space-x-2">
+        <mat-icon class="text-green-500">medical_services</mat-icon>
+        <span>Patient Information</span>
+      </h3>
+      <ul class="text-gray-700 space-y-1">
+        <li class="flex items-left space-x-2">
+          <mat-icon class="text-gray-500">badge</mat-icon>
+          <strong>Name:</strong> <span>{{ bill.patient.name }}</span>
+        </li>
+        <li class="flex items-right space-x-2">
+          <mat-icon class="text-gray-500">cake</mat-icon>
+          <strong>DOB:</strong> <span>{{ bill.patient.date_of_birth }}</span>
+        </li>
+        <li class="flex items-left space-x-2">
+          <mat-icon class="text-gray-500">wc</mat-icon>
+          <strong>Gender:</strong> <span>{{ bill.patient.gender }}</span>
+        </li>
+        <li class="flex items-right space-x-2">
+          <mat-icon class="text-gray-500">phone</mat-icon>
+          <strong>Phone:</strong> <span>{{ bill.patient.phone }}</span>
+        </li>
+        <li class="flex items-left space-x-2">
+          <mat-icon class="text-gray-500">location_on</mat-icon>
+          <strong>Location:</strong> <span>{{ bill.patient.location }}</span>
+        </li>
+        <li class="flex items-right space-x-2">
+          <mat-icon class="text-gray-500">work</mat-icon>
+          <strong>Job:</strong> <span>{{ bill.patient.job }}</span>
+        </li>
+        <li class="flex items-left space-x-2">
+          <mat-icon class="text-gray-500">emoji_objects</mat-icon>
+          <strong>Position:</strong> <span>{{ bill.patient.position }}</span>
+        </li>
+      </ul>
+    </div>
+    <h2 class="text-2xl font-bold text-gray-800 flex items-center space-x-2">
+      <mat-icon class="text-blue-500">receipt_long</mat-icon>
+      <span>Bill Details</span>
+    </h2>
+
+    <div class="text-1xl font-extrabold text-gray-900">
+      <mat-icon class="align-middle text-xl text-gray-600">monetization_on</mat-icon>
+      {{ bill.bill_amount | currency:'TSh':true }}
+    </div>
+
+    <ul class="text-gray-700 space-y-1">
+      <!-- <li class="flex items-center space-x-2">
+        <mat-icon class="text-gray-500">note</mat-icon>
+        <span>{{ bill.notes }}</span>
+      </li> -->
+      <li class="flex items-center space-x-2">
+        <mat-icon class="text-gray-500">person</mat-icon>
+        <span>To: {{ bill.sent_to }}</span>
+      </li>
+      <li class="flex items-center space-x-2">
+        <mat-icon class="text-gray-500">calendar_today</mat-icon>
+        <span>Date: {{ bill.sent_date }}</span>
+      </li>
+      <li class="flex items-center space-x-2">
+        <mat-icon class="text-gray-500">attach_file</mat-icon>
+        <span  *ngIf="bill.bill_file && bill.bill_file.endsWith('.pdf');">>
+          <a [href]="'http://127.0.0.1:8000/storage/' + bill.bill_file" target="_blank" class="text-blue-600 hover:underline">
+            View Bill File
+          </a>
+        </span>
+      </li>
+      <li class="flex items-center space-x-2">
+        <mat-icon class="text-gray-500">info</mat-icon>
+        <span>
+          <span
+            class="inline-block px-2 py-0.5 rounded-full text-sm font-semibold"
+            [ngClass]="{
+              'bg-yellow-100 text-yellow-800': bill.bill_status === 'Pending',
+              'bg-green-100 text-green-800': bill.bill_status === 'Paid',
+              'bg-blue-100 text-blue-800': bill.bill_status === 'Partially Paid'
+            }">
+            {{ bill.bill_status || 'N/A' }}
+          </span>
+        </span>
+      </li>
+    </ul>
+
+
+
+    <!-- 💵 Payments -->
+    <div *ngIf="bill.payments?.length" class="mt-2 p-2  space-y-2">
+      <h3 class="text-xl font-semibold text-gray-800 flex items-center space-x-2">
+        <mat-icon class="text-purple-500">payment</mat-icon>
+        <span>Payments Made</span>
+      </h3>
+      <ul class="text-gray-700 space-y-1">
+        <li *ngFor="let p of bill.payments" class="flex justify-between items-center">
+          <span>
+            <mat-icon class="text-gray-500 align-middle">schedule</mat-icon>
+            {{ p.payment_date | date:'medium' }} ({{ p.payment_method }})
+          </span>
+          <span class="font-medium">
+            <mat-icon class="text-1xl text-gray-600 align-middle text-lg">paid</mat-icon>
+            {{ p.amount_paid | currency:'TSh':true }}
+          </span>
+        </li>
+        <li class="flex justify-between font-bold border-t pt-2 mt-2">
+          <span>
+            <mat-icon class="text-gray-500">summarize</mat-icon>
+            Total Payments
+          </span>
+          <span>{{ totalPayments | currency:'TSh':true }}</span>
+        </li>
+        <li class="flex justify-between font-bold">
+          <span>
+            <mat-icon class="text-gray-500">balance</mat-icon>
+            Remaining Bill
+          </span>
+          <span [ngClass]="{'text-2xl text-green-600': difference >= 0, 'text-red-600': difference < 0}">
+            {{ difference | currency:'TSh':true }}
+          </span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

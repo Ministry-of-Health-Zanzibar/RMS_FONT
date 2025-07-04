@@ -76,11 +76,6 @@ const routes: Routes = [
         loadChildren:()=>import('./system-config/employer-type/employer-type.module').then(m=>m.EmployerTypeModule)
 
       },
-
-
-
-
-
       {
         path: 'user-profile',
         loadChildren: () => import('./user-profile/user-profile.module').then(m => m.UserProfileModule)

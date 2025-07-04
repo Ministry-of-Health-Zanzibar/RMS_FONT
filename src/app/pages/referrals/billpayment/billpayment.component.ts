@@ -19,6 +19,7 @@ import { ReferralService } from '../../../services/Referral/referral.service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { BillComponent } from '../bill/bill.component';
 import { ReferralpaymentComponent } from '../referralpayment/referralpayment.component';
+import { BillwithpaymentComponent } from '../../partient/billwithpayment/billwithpayment.component';
 
 @Component({
   selector: 'app-billpayment',
@@ -144,6 +145,25 @@ export class BillpaymentComponent implements OnInit,OnDestroy{
              config.data = {id: id}
 
              const dialogRef = this.dialog.open(ReferralpaymentComponent,config);
+
+             dialogRef.afterClosed().subscribe(result => {
+               this.getReferrals();
+             });
+
+           }
+
+             getBillwithPayment(id:any){
+              console.log("hiiii bill with payment",id);
+             let config = new MatDialogConfig()
+             config.disableClose = false
+             config.role = 'dialog'
+             config.maxWidth ='100vw'
+             config.maxHeight = '100vh'
+             config.width = '850px'
+             config.panelClass = 'full-screen-modal'
+             config.data = {id: id}
+
+             const dialogRef = this.dialog.open(BillwithpaymentComponent,config);
 
              dialogRef.afterClosed().subscribe(result => {
                this.getReferrals();

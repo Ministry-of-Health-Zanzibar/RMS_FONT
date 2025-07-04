@@ -12,12 +12,21 @@ export class StatisticalService {
   private href = `${this.baseUrl}reports/referralByHospital`;
 
   private href_statistical = `${this.baseUrl}getClientComplainReports`;
+  private href_reasons = `${this.baseUrl}reports/referralsByType`;
+
+
 
 
   constructor(private http: HttpClient) { }
 
-  public getCount(): Observable<any> {
+  public getHospitalCount(): Observable<any> {
     return this.http.get<any>(this.href);
+  }
+    public getCount(): Observable<any> {
+    return this.http.get<any>(this.href);
+  }
+   public getTypeCount(): Observable<any> {
+    return this.http.get<any>(this.href_reasons);
   }
 
   public getClientReport(): Observable<any> {

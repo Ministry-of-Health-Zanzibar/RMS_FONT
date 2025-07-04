@@ -53,8 +53,19 @@ export class SidebarComponent {
       name: 'Dashboard',
       icon: 'dashboard',
       permission: 'View Dashboard',
-      link: '/pages/dashboard'
+      link: '/pages/dashboard/basic'
     },
+
+    {
+      id: 'dashboard1',
+      type: 'Single',  // Changed from 'group' to 'link'
+      name: 'Dashboard',
+      icon: 'dashboard',
+      permission: 'View Referral Dashboard',
+      link: '/pages/dashboard/finance'
+    },
+
+
 
     // {
     //   id: 'dashboard',
@@ -226,9 +237,18 @@ export class SidebarComponent {
 
           permission: 'View Referral',
 
+        },
+          {
+          type: 'link',
+          name: 'Month Bill',
+          link: '/pages/config/referrals/monthbill00998778',
+
+          permission: 'View Monthly Bill',
+
         }
       ]
     },
+
 
     {
       id: 'accountant',

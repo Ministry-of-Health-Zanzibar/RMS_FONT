@@ -92,6 +92,13 @@
                   </span>
                 </emr-segmented-button>
 
+                 <emr-segmented-button value="visibilityData">
+                  <span class="size-9 rounded-full border bg-surface flex items-center justify-center" (click)="displayComment(element.referral_id)" matTooltip="View">
+                   <mat-icon aria-hidden="false" aria-label="Comments icon">comment</mat-icon>
+
+                  </span>
+                </emr-segmented-button>
+
 
 
                 <!--print value-->
@@ -116,7 +123,7 @@
                     color="primary">
                   </mat-slide-toggle>
                 </emr-segmented-button>
-             
+
               </emr-segmented>
             </td>
           </ng-container>

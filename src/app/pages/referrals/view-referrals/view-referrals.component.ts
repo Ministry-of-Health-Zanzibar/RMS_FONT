@@ -22,6 +22,7 @@ import Swal from 'sweetalert2';
 import { EmrSegmentedModule } from "../../../../../projects/components/src/lib/segmented/segmented.module";
 import { BillComponent } from '../bill/bill.component';
 import { ReferralsLetterComponent } from '../referrals-letter/referrals-letter.component';
+import { DisplaycommentsComponent } from '../displaycomments/displaycomments.component';
 
 @Component({
   selector: 'app-view-referrals',
@@ -88,7 +89,7 @@ export class ViewReferralsComponent implements OnInit,OnDestroy{
         this.loading = false;
         if (response.statusCode === 200) {
           // Filter data to include only items with status === 'Pending'
-          const pending = response.data.filter((item: { status: string; }) => item.status === 'Pending' || item.status === 'Cancelled');
+          const pending = response.data.filter((item: { status: string; }) => item.status === 'Pending' || item.status === 'Cancelled' || item.status === 'Confirmed');
           this.dataSource = new MatTableDataSource(pending);
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
@@ -143,6 +144,24 @@ export class ViewReferralsComponent implements OnInit,OnDestroy{
         config.data = {id: id}
 
         const dialogRef = this.dialog.open(AddReferralsComponent,config);
+
+        dialogRef.afterClosed().subscribe(result => {
+          this.getReferrals();
+        });
+      }
+
+       displayComment(id: any) {
+        let config = new MatDialogConfig()
+        config.disableClose = false
+        config.role = 'dialog'
+        config.maxWidth ='100vw'
+        config.maxHeight = '100vh'
+        config.width = '850px'
+        config.panelClass = 'full-screen-modal'
+        config.data = {id: id}
+      
+
+        const dialogRef = this.dialog.open(DisplaycommentsComponent,config);
 
         dialogRef.afterClosed().subscribe(result => {
           this.getReferrals();

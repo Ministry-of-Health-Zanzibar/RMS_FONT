@@ -36,6 +36,10 @@ const routes: Routes = [
   {
     path:'billpayment2222200000',
     loadComponent:()=>import('./billpayment/billpayment.component').then(c=>c.BillpaymentComponent)
+  },
+  {
+    path:'monthbill00998778',
+    loadComponent:()=>import('./month-bill/month-bill.component').then(c=>c.MonthBillComponent)
   }
 
 ];

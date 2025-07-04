@@ -1,11 +1,11 @@
-<div class="max-w-lg mx-auto my-12 bg-white rounded-2xl shadow-xl border border-gray-200 p-8 space-y-8">
+<div class="max-w-lg mx-auto my-4  rounded-1xl  p-2 space-y-4">
   <!-- 💳 Bill Details -->
-  <div *ngIf="bill" class="space-y-4">
+  <div *ngIf="bill" class="space-y-2">
     <h2 class="text-2xl font-bold text-gray-800 flex items-center space-x-2">
       <mat-icon fontSet="material-icons" class="text-blue-500">receipt_long</mat-icon>
       <span>Bill Details</span>
     </h2>
-    <div class="text-5xl font-extrabold text-gray-900">
+    <div class="text-3xl font-extrabold text-gray-900">
       {{ bill.amount | currency:'TSh':true }}
     </div>
     <ul class="text-gray-700 space-y-1">
@@ -40,8 +40,8 @@
   </div>
 
   <!-- 🏦 Payment Form -->
-  <div *ngIf="id" class="space-y-4">
-    <h2 class="text-xl font-semibold text-gray-800 flex items-center space-x-2">
+  <div *ngIf="id" class="space-y-2">
+    <h2 class="text-xl font-semibold text-gray-800 flex items-center space-x-4">
       <mat-icon class="text-gray-600">payment</mat-icon>
       <span>Add Payment</span>
     </h2>

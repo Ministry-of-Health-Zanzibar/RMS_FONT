@@ -10,6 +10,7 @@ export class BillService {
 
   private baseUrl: string = `${environment.baseUrl}`;
   private href = `${this.baseUrl}bills`;
+  private bill_payment = `${this.baseUrl}bills/getPatientBillAndPaymentByBillId`;
   private href_payment = `${this.baseUrl}payments`;
 
   constructor(private http: HttpClient) {}
@@ -20,6 +21,9 @@ export class BillService {
 
   public getBillById(id: any): Observable<any> {
     return this.http.get<any>(`${this.href}/${id}`);
+  }
+  public getBillwithPayment(id: any): Observable<any> {
+    return this.http.get<any>(`${this.bill_payment}/${id}`);
   }
 
   public addBill(bills: any): Observable<any> {

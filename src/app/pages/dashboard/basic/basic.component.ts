@@ -33,10 +33,7 @@ Chart.register(...registerables);
   standalone: true,
   imports: [
 
-    TotalSubscribersWidgetComponent,
-    AvgOpenRateWidgetComponent,
-    AvgClickRateWidgetComponent,
-    UniqueVisitorsWidgetComponent,
+   
     CommonModule, // Required for Angular standalone components
     MatButtonModule,
     MatDividerModule,
@@ -44,18 +41,7 @@ Chart.register(...registerables);
     MatFormFieldModule,
     MatSelectModule,
     MatCheckboxModule,
-    TotalSubscribersWidgetComponent,
-    AvgOpenRateWidgetComponent,
-    UniqueVisitorsWidgetComponent,
-    EventsWidgetComponent,
-    TeamWidgetComponent,
-    TasksInProgressWidgetComponent,
-    CustomerSatisfactionWidgetComponent,
-    ExchangeWidgetComponent,
-    MyInvestmentsComponent,
-    PaymentInformationWidgetComponent,
-    PurchasesByChannelsWidgetComponent,
-    SiteVisitorsWidgetComponent,
+
 
   ],
   templateUrl: './basic.component.html',
