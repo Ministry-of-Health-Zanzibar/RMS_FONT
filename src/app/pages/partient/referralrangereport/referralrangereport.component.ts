@@ -56,7 +56,7 @@ export class ReferralrangereportComponent implements OnInit, OnDestroy {
   private readonly onDestroy = new Subject<void>();
 
   reportForm: FormGroup;
-  displayedColumns: string[] = ['no', 'name', 'amount', 'tin_number', 'source_name','source_type_name','category_name','document_type_name','pdf_file'];
+  displayedColumns: string[] = ['no','patient_name', 'hospital_name','hospital_address','amount','bill_file'];
   dataSource = new MatTableDataSource<any>();
 
   documents: any[] = [];
@@ -169,16 +169,14 @@ export class ReferralrangereportComponent implements OnInit, OnDestroy {
     doc.text('Report Data', 10, 10);
 
     autoTable(doc, {
-      head: [['No', 'name', 'amount', 'tin_number', 'source_name','source_type_name','category_name','document_type_name']],
+      head: [['no', 'patient_name', 'hospital_name','hospital_address','amount','bill_file']],
       body: this.dataSource.data.map((element, index) => [
         index + 1,
-        element.payee_name,
+        element.patient?.name,
+        element.hospital?.hospital_name,
+        element.hospital?.hospital_address,
         element.amount,
-        element.tin_number,
-        element.source_name,
-        element.source_type_name,
-        element.category_name,
-        element.document_type_name
+        
       ]),
     });
 

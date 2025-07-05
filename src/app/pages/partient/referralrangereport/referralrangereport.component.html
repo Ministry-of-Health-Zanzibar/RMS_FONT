@@ -1,148 +1,104 @@
-<div class="p-10 space-y-8" *ngIf="permission.parmissionMatched(['View Report'])">
+<div class="p-10 space-y-8" *ngIf="permission.parmissionMatched(['View Monthly Bill'])">
+  <!-- Header & Export -->
   <div class="flex items-center justify-between">
     <h1 class="text-lg font-bold">View Report</h1>
-    <!-- Export Buttons -->
     <div class="flex gap-4">
-      <button mat-raised-button color="accent" (click)="exportExcel()">
-        <mat-icon>table_chart</mat-icon>
-        Export Excel
-      </button>
+      <!-- <button mat-raised-button color="accent" (click)="exportExcel()">
+        <mat-icon>table_chart</mat-icon> Export Excel
+      </button> -->
       <button mat-raised-button color="warn" (click)="exportPDF()">
-        <mat-icon>picture_as_pdf</mat-icon>
-        Export PDF
+        <mat-icon>picture_as_pdf</mat-icon> Export PDF
       </button>
     </div>
   </div>
 
+  <!-- Search / Filter -->
   <div class="search-container bg-gray-100 p-6 rounded-xl shadow-md">
     <form [formGroup]="reportForm" class="flex flex-wrap gap-4 items-end">
-
-      <!-- Start Date -->
       <div class="flex flex-col w-full sm:w-1/3">
-        <label for="start_date" class="mb-1 text-sm font-semibold text-gray-700">Start Date</label>
-        <input
-          type="date"
-          id="start_date"
-          formControlName="start_date"
-          class="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
+        <label>Start Date</label>
+        <input type="date" formControlName="start_date" class="..."/>
       </div>
-
-      <!-- End Date -->
       <div class="flex flex-col w-full sm:w-1/3">
-        <label for="end_date" class="mb-1 text-sm font-semibold text-gray-700">End Date</label>
-        <input
-          type="date"
-          id="end_date"
-          formControlName="end_date"
-          class="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
+        <label>End Date</label>
+        <input type="date" formControlName="end_date" class="..."/>
       </div>
-
-      <!-- Search Button -->
-      <div>
-        <button
-          mat-flat-button
-          color="primary"
-          class="h-[50px] px-6 rounded-md text-white bg-blue-600 hover:bg-blue-700 flex items-center gap-2"
-          (click)="fetchReports()"
-        >
-          <mat-icon>search</mat-icon>
-          Search
-        </button>
-      </div>
-
+      <button mat-flat-button color="primary" (click)="fetchReports()">
+        <mat-icon>search</mat-icon> Search
+      </button>
     </form>
   </div>
 
-
+  <!-- Refresh + Quick Filter -->
   <div class="mt-4 flex items-center justify-between">
-    <div class="flex items-center gap-1.5">
-      <div class="size-9 rounded-full border bg-surface flex items-center justify-center" (click)="renew()" matTooltip="Refresh">
-        <mat-icon class="font-icon visibilityData">refresh</mat-icon>
-      </div>
-      <input type="text" placeholder="Search..." class="border-b h-10 w-96 text-sm bg-transparent dark:border-b-inverse outline-0 focus-within:border-neutral-950" matInput (keyup)="applyFilter($event)" #input>
+    <div class="flex items-center gap-2">
+      <button mat-icon-button (click)="renew()" matTooltip="Refresh">
+        <mat-icon>refresh</mat-icon>
+      </button>
+      <input #input matInput placeholder="Search..." (keyup)="applyFilter($event)" class="border-b h-10 w-96"/>
     </div>
   </div>
 
-  <div class="border dark:border-inverse rounded-lg overflow-hidden mt-4">
+  <!-- Data Table -->
+  <div class="border rounded-lg overflow-hidden mt-4">
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
       <!-- No Column -->
       <ng-container matColumnDef="no">
         <th mat-header-cell *matHeaderCellDef>No</th>
         <td mat-cell *matCellDef="let element; let i = index">{{ i + 1 }}</td>
       </ng-container>
 
-      <!-- Full Name Column -->
-      <ng-container matColumnDef="name">
+      <!-- Patient Name -->
+      <ng-container matColumnDef="patient_name">
         <th mat-header-cell *matHeaderCellDef>Full Name</th>
-        <td mat-cell *matCellDef="let element">{{ element.payee_name | uppercase}}</td>
+        <td mat-cell *matCellDef="let element">{{ element.patient?.name | titlecase }}</td>
       </ng-container>
-      <!-- <ng-container matColumnDef="fullname">
-        <th mat-header-cell *matHeaderCellDef>Full Name</th>
-        <td mat-cell *matCellDef="let element">{{ element.first_name + ' ' + element.middle_name+ ' '+ element.last_name}}</td>
-      </ng-container> -->
 
-      <!-- Phone Column -->
+      <!-- Hospital -->
+      <ng-container matColumnDef="hospital_name">
+        <th mat-header-cell *matHeaderCellDef>Hospital Name</th>
+        <td mat-cell *matCellDef="let element">{{ element.hospital?.hospital_name }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="hospital_address">
+        <th mat-header-cell *matHeaderCellDef>Hospital Address</th>
+        <td mat-cell *matCellDef="let element">{{ element.hospital?.hospital_address }}</td>
+      </ng-container>
+
+      <!-- Amount -->
       <ng-container matColumnDef="amount">
-        <th mat-header-cell *matHeaderCellDef>Ammount</th>
-        <td mat-cell *matCellDef="let element">{{ element.amount }}</td>
+        <th mat-header-cell *matHeaderCellDef>Amount</th>
+        <td mat-cell *matCellDef="let element">{{ element.amount | number:'1.0-0' }}</td>
       </ng-container>
 
-      <ng-container matColumnDef="tin_number">
-        <th mat-header-cell *matHeaderCellDef>Tin Number</th>
-        <td mat-cell *matCellDef="let element">{{ element.tin_number }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="source_name">
-        <th mat-header-cell *matHeaderCellDef>Source Name</th>
-        <td mat-cell *matCellDef="let element">{{ element.source_name }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="source_type_name">
-        <th mat-header-cell *matHeaderCellDef>Source Type</th>
-        <td mat-cell *matCellDef="let element">{{ element.source_type_name }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="category_name">
-        <th mat-header-cell *matHeaderCellDef>Category Name</th>
-        <td mat-cell *matCellDef="let element">{{ element.category_name }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="document_type_name">
-        <th mat-header-cell *matHeaderCellDef>Document Type</th>
-        <td mat-cell *matCellDef="let element">{{ element.document_type_name }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="pdf_file">
+      <!-- Bill File (PDF link) -->
+      <ng-container matColumnDef="bill_file">
         <th mat-header-cell *matHeaderCellDef>View PDF</th>
-        <td mat-cell *matCellDef="let element"> <ng-container *ngIf="element.document_file && element.document_file.endsWith('.pdf');">
-          <a
-            [href]="'http://127.0.0.1:8000/storage/' + element.document_file"
-            target="_blank"
-            class="inline-flex items-center gap-2 text-indigo-600 hover:text-indigo-800 font-medium text-sm transition"
-          >
-          <button class="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md">
-            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.828a2 2 0 00-.586-1.414l-3.828-3.828A2 2 0 0010.172 2H6zm4 1.414L14.586 8H11a1 1 0 01-1-1V3.414zM7 11a1 1 0 011 1v1a1 1 0 102 0v-1a1 1 0 112 0v1a3 3 0 11-6 0v-1a1 1 0 011-1z" />
-            </svg>
-            Export PDF
-          </button>
-
-          </a>
-        </ng-container></td>
+        <td mat-cell *matCellDef="let element">
+          <ng-container *ngIf="element.bill_file?.endsWith('.pdf')">
+            <a [href]="'http://127.0.0.1:8000/storage/' + element.bill_file"
+               target="_blank"
+               class="inline-flex items-center gap-1 text-indigo-600 hover:text-indigo-800">
+              <mat-icon>picture_as_pdf</mat-icon>
+              View PDF
+            </a>
+          </ng-container>
+        </td>
       </ng-container>
 
-
+      <!-- Table Rows -->
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       <tr class="mat-row" *matNoDataRow>
-        <td class="mat-cell tablefoter" colspan="10">No data matching the filter "{{input.value}}"</td>
+        <td class="mat-cell" colspan="6">
+          No data matching "{{ input.value }}"
+        </td>
       </tr>
+
     </table>
-    <mat-paginator [pageSizeOptions]="[10, 20, 100]" showFirstLastButtons></mat-paginator>
+
+    <!-- Pagination -->
+    <mat-paginator [pageSizeOptions]="[10,20,100]" showFirstLastButtons></mat-paginator>
   </div>
 </div>
-
-
-

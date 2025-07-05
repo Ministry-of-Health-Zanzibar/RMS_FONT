@@ -14,6 +14,11 @@ const routes: Routes = [
   {
     path:'more/:id',
     loadComponent:()=>import('./displaymoredata/displaymoredata.component').then(c=>c.DisplaymoredataComponent)
+  },
+  {
+    path:'referralreport0990',
+    loadComponent:()=>import('./referralrangereport/referralrangereport.component').then(c=>c.ReferralrangereportComponent)
+
   }
 ];
 
