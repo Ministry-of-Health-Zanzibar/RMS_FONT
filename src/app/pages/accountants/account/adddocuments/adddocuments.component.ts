@@ -51,7 +51,7 @@ export class AdddocumentsComponent {
   sourceData:any;
   documents: any;
   sources: any[] = [];
-sourceTypes: any[] = [];
+  sourceTypes: any[] = [];
   category: any;
   options: any[] = [];
   myControl = new FormControl('');
@@ -74,8 +74,7 @@ sourceTypes: any[] = [];
 
     if(this.data){
       this.sourceData = this.data.data;
-      console.log("nazipata data ",this.sourceData)
-      // this.getDocumentById(this.id);
+     
     }
     this.configForm();
     this.getCategory();

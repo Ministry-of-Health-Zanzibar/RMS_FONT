@@ -86,7 +86,7 @@ export class ReferralwithbillsComponent implements OnInit,OnDestroy{
         this.loading = false;
         if (response.statusCode === 200) {
           const filtered = response.data.filter((item: { status: string; bill_status: string; }) =>
-            item.status === 'Confirmed' && item.bill_status === null
+            item.status === 'Confirmed' && (item.bill_status === null || item.bill_status === 'Pending')
           );
           this.dataSource = new MatTableDataSource(filtered);
           this.dataSource.paginator = this.paginator;

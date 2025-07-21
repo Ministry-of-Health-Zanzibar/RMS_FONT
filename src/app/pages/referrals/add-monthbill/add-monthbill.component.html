@@ -1,82 +1,116 @@
 <div class="form-container">
-  <div class="w-full">
-    <div class="relative h-full rounded-lg group p-6">
-      <!-- Title -->
-      <div class="font-semibold" *ngIf="!patientData">CREATE NEW MONTH BILL</div>
-      <div class="font-semibold" *ngIf="patientData">UPDATE MONTH BILL</div>
+    <div class="w-full">
+      <div class="relative h-full rounded-lg group p-6">
+        <div class="font-semibold text-lg mb-4" *ngIf="!id">CREATE NEW REFERRALS</div>
+        <div class="font-semibold text-lg mb-4" *ngIf="id">UPDATE REFERRALS</div>
 
-      <!-- Form -->
-        <!-- <form [formGroup]="patientForm" class="space-y-4" enctype="multipart/form-data">
-           <h2 class="text-xl font-semibold text-gray-800 flex items-center space-x-4">
-      <mat-icon class="text-gray-600">payment</mat-icon>
-      <span>Add Month Payment</span>
-    </h2>
-
-      <mat-form-field appearance="outline" class="w-full">
-        <mat-label>Currently Amount Paid in Month</mat-label>
+        <form [formGroup]="referralsForm" class="horizontal-form" >
+          <!-- Patient Name -->
+           <div class="form-row">
+          <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Current Amount</mat-label>
         <mat-icon matPrefix>attach_money</mat-icon>
         <input matInput formControlName="current_monthly_bill_amount" type="number" placeholder="e.g. 2,000,000">
-       <mat-error *ngIf="patientForm.get('current_monthly_bill_amount')?.invalid && patientForm.get('current_monthly_bill_amount')?.touched">
-              <span *ngIf="patientForm.get('current_monthly_bill_amount')?.errors?.['required']">This field is mandatory</span>
-              <span *ngIf="patientForm.get('current_monthly_bill_amount')?.errors?.['pattern']">Must contain alphabetical characters only</span>
-            </mat-error>
+        <mat-error *ngIf="referralsForm.get('current_monthly_bill_amount')?.hasError('required')">
+          Amount is required
+        </mat-error>
 
       </mat-form-field>
-
-       <mat-form-field appearance="outline" class="w-full">
-        <mat-label>Amount After Audit</mat-label>
+      </div>
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Current Amount After Audit</mat-label>
         <mat-icon matPrefix>attach_money</mat-icon>
         <input matInput formControlName="after_audit_monthly_bill_amount" type="number" placeholder="e.g. 2,000,000">
-        <mat-error *ngIf="patientForm.get('after_audit_monthly_bill_amount')?.invalid && patientForm.get('after_audit_monthly_bill_amount')?.touched">
-              <span *ngIf="patientForm.get('after_audit_monthly_bill_amount')?.errors?.['required']">This field is mandatory</span>
-            </mat-error>
+        <!-- <mat-error *ngIf="referralsForm.get('after_audit_monthly_bill_amount')?.hasError('required')">
+          Amount is required
+        </mat-error> -->
 
       </mat-form-field>
+      </div>
 
-    </form> -->
-      <form [formGroup]="patientForm" class="horizontal-form" enctype="multipart/form-data">
+          <!-- Hospital Name -->
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="w-full">
+              <mat-label>Hospital Name</mat-label>
+              <mat-select formControlName="hospital_id">
+                <mat-option *ngFor="let h of hospital" [value]="h.hospital_id">
+                  {{ h.hospital_name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
 
 
 
-          <mat-form-field class="form-field">
-            <mat-label>Current Month Bill</mat-label>
-            <input matInput placeholder="Tsh 200,000.00" formControlName="current_monthly_bill_amount" type="number">
-            <mat-error *ngIf="patientForm.get('current_monthly_bill_amount')?.invalid && patientForm.get('current_monthly_bill_amount')?.touched">
-              <span *ngIf="patientForm.get('current_monthly_bill_amount')?.errors?.['required']">This field is mandatory</span>
-              <span *ngIf="patientForm.get('current_monthly_bill_amount')?.errors?.['pattern']">Must contain alphabetical characters only</span>
+
+
+          <!-- Start Date -->
+            <div class="form-row">
+          <mat-form-field class="form-field w-full">
+            <mat-label>Date of Birth</mat-label>
+            <input matInput type="date" formControlName="bill_date">
+            <!-- <mat-error *ngIf="referralsForm.get('bill_date')?.invalid && referralsForm.get('bill_date')?.touched">
+              This field is mandatory
+            </mat-error> -->
+          </mat-form-field>
+          </div>
+          <!-- <div class="form-row">
+            <mat-form-field appearance="outline" class="w-full">
+              <mat-label>Start Date</mat-label>
+              <input matInput [matDatepicker]="startPicker" formControlName="bill_date" placeholder="Choose a date">
+              <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+              <mat-datepicker #startPicker></mat-datepicker>
+              <mat-error *ngIf="referralsForm.controls['bill_date'].touched && referralsForm.controls['bill_date'].invalid">
+                <span *ngIf="referralsForm.controls['bill_date'].errors?.['required']">This field is mandatory</span>
+              </mat-error>
+            </mat-form-field>
+          </div> -->
+      <div class="form-row">
+           <mat-form-field class="form-field w-full">
+            <mat-label>Upload File</mat-label>
+            <input
+              matInput
+              type="text"
+              formControlName="bill_file"
+              readonly
+              placeholder="No file chosen"
+              (click)="fileInput.click()"
+            />
+            <input
+              type="file"
+              accept=".pdf,.doc,.docx,.jpg,.png"
+              hidden
+              #fileInput
+              (change)="onAttachmentSelected($event)"
+            />
+            <mat-icon matSuffix style="cursor: pointer;" (click)="fileInput.click()">attach_file</mat-icon>
+            <mat-error *ngIf="referralsForm.get('bill_file')?.invalid && referralsForm.get('bill_file')?.touched">
+              File is required
             </mat-error>
           </mat-form-field>
+</div>
 
+        </form>
+      </div>
 
+      <!-- <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close class="!text-red-600 hover:!text-red-700 font-semibold">Cancel</button>
+        <button mat-flat-button color="primary" *ngIf="!id" [disabled]="referralsForm.invalid" (click)="saveReferrals()">Save Data</button>
+        <button mat-flat-button color="accent" *ngIf="id" [disabled]="referralsForm.invalid" (click)="updateReferrals()">Update</button>
 
-          <mat-form-field class="form-field">
-            <mat-label>Month Bill after Audit</mat-label>
-            <input matInput placeholder="Ex. +255 777000000" formControlName="after_audit_monthly_bill_amount" type="number">
-            <mat-error *ngIf="patientForm.get('after_audit_monthly_bill_amount')?.invalid && patientForm.get('after_audit_monthly_bill_amount')?.touched">
-              <span *ngIf="patientForm.get('after_audit_monthly_bill_amount')?.errors?.['required']">This field is mandatory</span>
-            </mat-error>
-          </mat-form-field>
-
-
-
-
-
-
-      </form>
-
-      <!-- Actions -->
+      </mat-dialog-actions> -->
       <mat-dialog-actions align="end">
         <button mat-button (click)="onClose()">Cancel</button>
         <button
           mat-flat-button
           color="primary"
-          [disabled]="patientForm.invalid"
-          (click)="patientData ? updateMonth() : saveMonth()"
+          [disabled]="referralsForm.invalid"
+          (click)="patientData ? updateReferrals() : saveReferrals()"
         >
           {{ patientData ? 'Update' : 'Save' }}
         </button>
       </mat-dialog-actions>
-    </div>
-  </div>
-</div>
 
+
+  </div>

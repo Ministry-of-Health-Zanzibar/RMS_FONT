@@ -36,6 +36,7 @@ export class ReferralDetailsComponent {
   referral: any = null;
   insurance: any = null;
   userRole: string | null;
+ // loading: boolean = false;
 
   constructor(private route: ActivatedRoute,
     public referralsService:ReferralService,
@@ -55,13 +56,28 @@ export class ReferralDetailsComponent {
     }
   }
 
+  //   getMoreData() {
+
+
+  //   this.referralsService.getReferralById(this.referralID)
+  //     .subscribe(response => {
+
+  //       const responseData = (response as any).data;
+  //       if (responseData && responseData.length > 0) {
+  //        this.referral = responseData.data
+  //       }
+  //     }, error => {
+  //       console.error('Error fetching complaint details:', error);
+  //     });
+  // }
+
   public getMoreData() {
     if (!this.referralID) return;
 
     this.referralsService.getReferralById(this.referralID).subscribe(
       response => {
         console.log('Full API Response:', response);
-        this.referral = response.data // Assuming API returns { data: {...} }
+        this.referral = response.data 
       },
       error => {
         console.error('Failed to load patient data', error);

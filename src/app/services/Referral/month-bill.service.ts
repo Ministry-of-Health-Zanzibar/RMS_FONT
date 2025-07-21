@@ -22,12 +22,20 @@ export class MonthBillService {
   public addMonthBill(months: any): Observable<any> {
     return this.http.post(this.href, months);
   }
+//   addMonthBill(data: FormData) {
+//   return this.http.post(`${this.baseUrl}/month-bills`, data); // no headers here
+// }
+
 
 
   public getMonthBillById(id: any) {
     return this.http.get<any>(`${this.href}/${id}`);
   }
-  public updateMonth(month:any, id:any): Observable<any>{
-    return this.http.patch(`${this.href}/${id}`,month)
-  }
+  // public updateMonth(month:any, id:any): Observable<any>{
+  //   return this.http.patch(`${this.href}/update/${id}`,month)
+  // }
+  public updateMonth(formData: FormData, id: number): Observable<any> {
+  return this.http.post(`${this.href}/update/${id}`, formData);
+}
+
 }

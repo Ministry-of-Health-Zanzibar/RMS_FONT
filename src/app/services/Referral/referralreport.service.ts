@@ -9,8 +9,8 @@ import { Observable } from 'rxjs';
 export class ReferralreportService {
 
   private baseUrl: string = `${environment.baseUrl}`;
-  private href_parameter = `${this.baseUrl}accountant/reports/searchReportByParameter`;
-  private href_final = `${this.baseUrl}accountant/reports/getDocumentFormReportByDate`;
+  private href_parameter = `${this.baseUrl}reports/searchReferralReport`;
+  private href_final = `${this.baseUrl}reports/getBillsBetweenDates`;
 
   constructor(private http: HttpClient) {}
 

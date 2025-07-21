@@ -91,7 +91,7 @@ export class HeaderComponent implements OnInit{
       confirmButtonText: "Yes, Logout"
     }).then((result) => {
       if (result.isConfirmed) {
-        this.inactivityService.stopListener(); // ✅ stop timeout/countdown
+        // this.inactivityService.stopListener(); // ✅ stop timeout/countdown
         localStorage.clear();
         this.route.navigate(['/auth/sign-in']);
       }

@@ -53,7 +53,7 @@ export class MonthBillComponent implements OnInit,OnDestroy{
 
 
       displayedColumns: string[] =
-      ['id', 'current_bill', 'after_audit','action'];
+      ['id', 'current_bill','hospital','bill_date','bill_file', 'after_audit','action'];
       dataSource: MatTableDataSource<any> = new MatTableDataSource();
 
       @ViewChild(MatPaginator) paginator!: MatPaginator;

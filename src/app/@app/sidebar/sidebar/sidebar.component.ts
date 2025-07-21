@@ -222,32 +222,67 @@ export class SidebarComponent {
           link: '/pages/config/referrals/confirm0000111101',
           permission: 'View Referral',
         },
-        {
-          type: 'link',
-          name: 'View Bill',
-          link: '/pages/config/referrals/bill',
 
+
+
+        //  {
+        //   type: 'link',
+        //   name: 'Range Report',
+        //  link: '/pages/config/referrals/referralreport0990',
+
+        //   permission: 'View Monthly Bill',
+
+        // }
+      ]
+    },
+    {
+           id: 'bills',
+           type: 'Single',
+          name: 'View Bill',
+          icon:'bill',
+          link: '/pages/config/referrals/bill',
           permission: 'View Referral',
 
         },
          {
-          type: 'link',
+          id: 'payment',
+          type: 'Single',
           name: 'Payment',
+          icon:'payment',
           link: '/pages/config/referrals/billpayment2222200000',
-
           permission: 'View Referral',
 
         },
-          {
-          type: 'link',
+         {
+          id: 'months1',
+          type: 'Single',
           name: 'Month Bill',
+          icon:'month',
           link: '/pages/config/referrals/monthbill00998778',
-
           permission: 'View Monthly Bill',
 
-        }
-      ]
+        },
+     {
+      id: 'report3',
+      type: 'Single',  // Changed from 'group' to 'link'
+      name: 'Range Report',
+      icon: 'report',
+      permission: 'View Monthly Bill',
+      link: '/pages/patient/referralreport0990',
+
     },
+     {
+      id: 'report4',
+      type: 'Single',  // Changed from 'group' to 'link'
+      name: 'Search Report',
+      icon: 'search',
+      permission: 'View Monthly Bill',
+      link: '/pages/patient/searchreport99990000',
+
+    },
+
+
+
 
 
     {
@@ -262,7 +297,6 @@ export class SidebarComponent {
           type: 'link',
           name: 'Sources',
           link: '/pages/accounts/source',
-
           permission: 'Accountant Module',
 
         },
@@ -291,20 +325,23 @@ export class SidebarComponent {
       ]
     },
 
+     {
+      id: 'dodument1',
+      type: 'Single',  // Changed from 'group' to 'link'
+      name: 'Document',
+      icon: 'document',
+      permission: 'View Document Form',
+      link: '/pages/accounts/documentForm',
+    },
+
     {
       id: 'report2',
       type: 'group',
-      name: 'Document information',
-      icon: 'call_split',
+      name: 'Report',
+      icon: 'report',
       permission: 'View Report',
       children: [
-        {
-          type: 'link',
-          name: 'Document Form',
-          link: '/pages/accounts/documentForm',
-          permission: 'View Document Form',
 
-        },
         {
           type: 'link',
           name: 'Range Report',

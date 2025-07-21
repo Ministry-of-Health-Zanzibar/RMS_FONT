@@ -19,6 +19,10 @@ const routes: Routes = [
     path:'referralreport0990',
     loadComponent:()=>import('./referralrangereport/referralrangereport.component').then(c=>c.ReferralrangereportComponent)
 
+  },
+  {
+    path:'searchreport99990000',
+    loadComponent:()=>import('./referralsearchreport/referralsearchreport.component').then(c=>c.ReferralsearchreportComponent)
   }
 ];
 

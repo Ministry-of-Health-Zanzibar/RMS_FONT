@@ -29,8 +29,8 @@
         <!-- Row 2: Last Name, Address -->
         <div class="form-row">
           <mat-form-field class="form-field">
-            <mat-label>Tin Number</mat-label>
-            <input matInput placeholder="Ex. Tin" formControlName="tin_number" type="text">
+            <mat-label>Tin Number or ZanID</mat-label>
+            <input matInput placeholder="Ex. 6200000938883" formControlName="tin_number or ZanID" type="text">
             <mat-error *ngIf="userForm.controls['tin_number'].touched && userForm.controls['tin_number'].invalid">
               <span *ngIf="userForm.controls['tin_number'].errors?.['required']">This field is mandatory</span>
               <span *ngIf="userForm.controls['tin_number'].errors?.['pattern']">Must contain alphabetical characters only</span>
@@ -100,14 +100,23 @@
 
         <!-- Row 6: Date of Birth -->
         <div class="form-row">
-          <mat-form-field class="w-full mt-6">
+           <mat-form-field class="w-full mt-6">
+            <mat-label>Date of Birth</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="year" placeholder="Choose a date">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error *ngIf="userForm.controls['year'].touched && userForm.controls['year'].invalid">
+              <span *ngIf="userForm.controls['year'].errors?.['required']">This field is mandatory</span>
+            </mat-error>
+          </mat-form-field>
+          <!-- <mat-form-field class="w-full mt-6">
             <mat-label>Year</mat-label>
             <input matInput placeholder="Ex. 2026/2022 " formControlName="year" type="text">
             <mat-error *ngIf="userForm.controls['year'].touched && userForm.controls['year'].invalid">
               <span *ngIf="userForm.controls['year'].errors?.['required']">This field is mandatory</span>
               <span *ngIf="userForm.controls['year'].errors?.['pattern']">Must contain alphabetical characters only</span>
             </mat-error>
-          </mat-form-field>
+          </mat-form-field> -->
 
           <mat-form-field class="w-full mt-6">
             <mat-label>Upload File</mat-label>

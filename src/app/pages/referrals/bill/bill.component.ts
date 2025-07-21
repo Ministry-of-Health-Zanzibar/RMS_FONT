@@ -13,6 +13,7 @@ import { MatSelect } from '@angular/material/select';
 import { HDividerComponent } from '@elementar/components';
 import Swal from 'sweetalert2';
 import { map, Observable, startWith, Subject } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-bill',
@@ -46,11 +47,12 @@ export class BillComponent implements OnInit, OnDestroy {
   public fileError: string | null = null;
   public selectedFile: File | null = null;
   id: any;
- 
 
+private router: Router
   constructor(
     @Inject(MAT_DIALOG_DATA) public dialogData: any,
     private billService: BillService,
+
     private dialogRef: MatDialogRef<BillComponent>
   ) {}
 
@@ -95,7 +97,10 @@ export class BillComponent implements OnInit, OnDestroy {
       (response: any) => {
         this.dialogRef.close();
         this.onAddBillEventEmitter.emit();
-        Swal.fire('Success', response.message, 'success');
+      this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate(['/referrals/billpayment2222200000']);
+      });
+
       },
       (error) => {
         Swal.fire('Error', error.error.message, 'error');

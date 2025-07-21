@@ -86,7 +86,7 @@ export class SigninComponent implements OnInit {
 
 
               localStorage.setItem("isLogin","true");
-              this.inactivityService.initListener();
+              // this.inactivityService.initListener();
               const Toast = Swal.mixin({
                 toast: true,
                 position: "top-end",

@@ -7,7 +7,6 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { MatError, MatFormField, MatInput, MatInputModule, MatLabel } from '@angular/material/input';
 import { HDividerComponent } from '@elementar/components';
 import { Subject, takeUntil } from 'rxjs';
-import { GlobalConstants } from '@shared/global-constants';
 import Swal from 'sweetalert2';
 import { ReferralService } from '../../../services/Referral/referral.service';
 import { HospitalService } from '../../../services/system-configuration/hospital.service';
@@ -35,9 +34,9 @@ import { MatNativeDateModule } from '@angular/material/core';
     ReactiveFormsModule,
     HDividerComponent,
     MatSelectModule,
-    MatDatepickerModule,  
-    MatNativeDateModule,   
-    MatInputModule 
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatInputModule
   ],
   templateUrl: './add-referrals.component.html',
   styleUrl: './add-referrals.component.scss'
@@ -48,7 +47,7 @@ export class AddReferralsComponent {
   readonly data = inject<any>(MAT_DIALOG_DATA);
       private readonly onDestroy = new Subject<void>()
       public sidebarVisible:boolean = true
-    
+
       referralsForm: FormGroup;
       parent: any;
       uploadProgress: number = 0;
@@ -59,7 +58,7 @@ export class AddReferralsComponent {
      hospital: any;
   referralTypes: any;
   reason: any;
-    
+
       constructor(private formBuilder:FormBuilder,
         private referralsService:ReferralService,
         private hostpitalService:HospitalService,
@@ -68,8 +67,8 @@ export class AddReferralsComponent {
         private reasonService:ReasonsService,
         private dialogRef: MatDialogRef<AddReferralsComponent>) {
       }
-  
-  
+
+
       ngOnInit(): void {
         this.getHospital();
         this.getPatient();
@@ -85,22 +84,22 @@ export class AddReferralsComponent {
             this.id = this.data.id;
             this.getReferralDetails(this.id);
           }
-          
+
         }
-      
+
         // getDepartm(id: any){
         //   this.departmentService.getAllDepartmentById(id).subscribe(response=>{
         //     this.departmentForm.patchValue(response.data[0])
         //   })
         // }
-      
+
         ngOnDestroy(): void {
           this.onDestroy.next()
         }
         onClose() {
           this.dialogRef.close(false)
         }
-      
+
         configForm(){
           this.referralsForm = new FormGroup({
             patient_id: new FormControl(null, Validators.required),
@@ -108,16 +107,16 @@ export class AddReferralsComponent {
             referral_type_id: new FormControl(null, Validators.required),
             reason_id: new FormControl(null, Validators.required),
             start_date: new FormControl(null, Validators.required),
-            end_date: new FormControl(null, Validators.required),   
+            end_date: new FormControl(null, Validators.required),
           });
         }
-      
+
         // getParent() {
         //   this.departmentService.getAllDepartment().pipe(takeUntil(this.onDestroy)).subscribe((response: any) => {
         //     this.parent = response.data;
         //   });
         // }
-      
+
         saveReferrals(){
           if(this.referralsForm.valid){
             this.referralsService.addReferral(this.referralsForm.value).subscribe(response => {
@@ -129,7 +128,7 @@ export class AddReferralsComponent {
                   confirmButtonColor: "#4690eb",
                   confirmButtonText: "Continue"
                 }).then(() => {
-                  this.dialogRef.close(true); 
+                  this.dialogRef.close(true);
                 });
               } else {
                 Swal.fire({
@@ -151,7 +150,7 @@ export class AddReferralsComponent {
             });
           }
         }
-        
+
         getPatient() {
           this.patientService.getAllPartients().subscribe(response => {
             this.patients = response.data;
@@ -185,8 +184,8 @@ export class AddReferralsComponent {
             }
           });
         }
-        
-      
+
+
         updateReferrals() {
           if (this.referralsForm.valid) {
             this.referralsService.updateReferral(this.referralsForm.value, this.id).subscribe(response => {
@@ -210,8 +209,8 @@ export class AddReferralsComponent {
             });
           }
         }
-        
-      
-  
+
+
+
 
 }
