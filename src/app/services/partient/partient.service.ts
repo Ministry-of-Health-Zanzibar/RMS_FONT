@@ -24,6 +24,10 @@ export class PartientService {
     return this.http.post(this.href_bodylist, Partient);
   }
 
+    public addPatientfromBodyList(patient: any): Observable<any> {
+    return this.http.post(this.href, patient);
+  }
+
   //end body list services
 
   public getAllPartients(): Observable<any> {

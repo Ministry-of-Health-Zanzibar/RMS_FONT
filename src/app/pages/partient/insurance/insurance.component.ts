@@ -42,7 +42,7 @@ export class InsuranceComponent {
   readonly data = inject<any>(MAT_DIALOG_DATA);
   public sidebarVisible:boolean = true
 
-  clientForm: FormGroup;
+  patientForm: FormGroup;
   user: any;
   id: any;
 
@@ -75,11 +75,16 @@ export class InsuranceComponent {
   }
 
   configForm(){
-    this.clientForm = new FormGroup({
-      patient_id: new FormControl(this.id),
-      insurance_provider_name: new FormControl(null, Validators.required),
-      card_number: new FormControl(null, [Validators.required, ]),
-      valid_until: new FormControl(null, [Validators.required, ]),
+    this.patientForm = new FormGroup({
+          patient_list_id: new FormControl(this.id),
+
+          name: new FormControl(null, [Validators.required]),
+           gender: new FormControl(null, Validators.required),
+           location: new FormControl(null, Validators.required),
+           phone: new FormControl(null, Validators.required),
+           job: new FormControl(null, Validators.required),
+           position: new FormControl(null, Validators.required),
+           date_of_birth: new FormControl(null, Validators.required),
 
 
     });
@@ -87,13 +92,13 @@ export class InsuranceComponent {
 
 
   saveClient() {
-    if (this.clientForm.valid) {
+    if (this.patientForm.valid) {
       const formData = {
-        ...this.clientForm.value,
-        patient_id: this.id  // override in case it was not set in form
+        ...this.patientForm.value,
+        patient_list_id: this.id  // override in case it was not set in form
       };
 
-      this.insurance.addInsurances(formData).subscribe(response => {
+      this.insurance.addPatientfromBodyList(formData).subscribe(response => {
         if (response.statusCode === 201) {
           Swal.fire({
             title: "Success",

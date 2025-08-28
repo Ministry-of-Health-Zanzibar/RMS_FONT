@@ -4,33 +4,82 @@
     <div class="relative h-full rounded-lg  group  p-6">
 
       <div *ngIf="id" class="font-semibold ">ADD INSURANCES FORM</div>
-      <form [formGroup]="clientForm">
+      <form [formGroup]="patientForm" class="horizontal-form" enctype="multipart/form-data">
 
-        <mat-form-field class="w-full mt-4">
-          <mat-label>Insurance Number:</mat-label>
-          <input matInput placeholder="Ex. 0009998-778 " formControlName="card_number" type="text">
-          <mat-error class="error-message" *ngIf="clientForm.controls['card_number'].touched && clientForm.controls['card_number'].invalid">
-            <span *ngIf="clientForm.controls['card_number'].errors?.['required']">This field is mandatory</span>
-            <span *ngIf="clientForm.controls['card_number'].errors?.['pattern']">This field is invalid (must be contain alpharbetical only)</span>
-          </mat-error>
-        </mat-form-field>
-        <mat-form-field class="w-full mt-4">
-          <mat-label>Insurance Provider</mat-label>
-          <mat-select formControlName="insurance_provider_name">
-            <mat-option value="ZHSF">ZHSF</mat-option>
-            <mat-option value="NHSF">NHSF</mat-option>
-          </mat-select>
-        </mat-form-field>
+        <!-- Row 1: Full Name, Gender -->
+        <div class="form-row">
+          <mat-form-field class="form-field">
+            <mat-label>Full Name</mat-label>
+            <input matInput placeholder="Ex. Ali Juma Ali" formControlName="name" type="text">
+            <mat-error *ngIf="patientForm.get('name')?.invalid && patientForm.get('name')?.touched">
+              <span *ngIf="patientForm.get('name')?.errors?.['required']">This field is mandatory</span>
+              <span *ngIf="patientForm.get('name')?.errors?.['pattern']">Must contain alphabetical characters only</span>
+            </mat-error>
+          </mat-form-field>
 
-        <mat-form-field class="w-full mt-4">
-          <mat-label>Valid Until</mat-label>
-          <input matInput [matDatepicker]="picker" formControlName="valid_until" placeholder="Choose a date">
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-          <mat-error *ngIf="clientForm.controls['valid_until'].touched && clientForm.controls['valid_until'].invalid">
-            <span *ngIf="clientForm.controls['valid_until'].errors?.['required']">This field is mandatory</span>
-          </mat-error>
-        </mat-form-field>
+          <mat-form-field class="form-field">
+            <mat-label>Gender</mat-label>
+            <mat-select formControlName="gender">
+              <mat-option value="Male">Male</mat-option>
+              <mat-option value="Female">Female</mat-option>
+            </mat-select>
+            <mat-error *ngIf="patientForm.get('gender')?.invalid && patientForm.get('gender')?.touched">
+              This field is mandatory
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Row 2: Address, Phone Number -->
+        <div class="form-row">
+          <mat-form-field class="form-field">
+            <mat-label>Address</mat-label>
+            <input matInput placeholder="Ex. MWERA" formControlName="location" type="text">
+            <mat-error *ngIf="patientForm.get('location')?.invalid && patientForm.get('location')?.touched">
+              <span *ngIf="patientForm.get('location')?.errors?.['required']">This field is mandatory</span>
+              <span *ngIf="patientForm.get('location')?.errors?.['pattern']">Must contain alphabetical characters only</span>
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="form-field">
+            <mat-label>Phone Number</mat-label>
+            <input matInput placeholder="Ex. +255 777000000" formControlName="phone" type="text">
+            <mat-error *ngIf="patientForm.get('phone')?.invalid && patientForm.get('phone')?.touched">
+              <span *ngIf="patientForm.get('phone')?.errors?.['required']">This field is mandatory</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Row 3: Job, Position -->
+        <div class="form-row">
+          <mat-form-field class="form-field">
+            <mat-label>Job</mat-label>
+            <input matInput placeholder="Ex. Teacher" formControlName="job" type="text">
+            <mat-error *ngIf="patientForm.get('job')?.invalid && patientForm.get('job')?.touched">
+              <span *ngIf="patientForm.get('job')?.errors?.['required']">This field is mandatory</span>
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="form-field">
+            <mat-label>Position</mat-label>
+            <input matInput placeholder="Ex. Head" formControlName="position" type="text">
+            <mat-error *ngIf="patientForm.get('position')?.invalid && patientForm.get('position')?.touched">
+              <span *ngIf="patientForm.get('position')?.errors?.['required']">This field is mandatory</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Row 4: Date of Birth, File Upload -->
+        <div class="form-row">
+          <mat-form-field class="form-field w-full">
+            <mat-label>Date of Birth</mat-label>
+            <input matInput type="date" formControlName="date_of_birth">
+            <mat-error *ngIf="patientForm.get('date_of_birth')?.invalid && patientForm.get('date_of_birth')?.touched">
+              This field is mandatory
+            </mat-error>
+          </mat-form-field>
+
+
+        </div>
 
       </form>
     </div>
@@ -38,7 +87,7 @@
 
   <mat-dialog-actions align ="end">
     <button mat-button mat-dialog-close>Cancel</button>
-    <button *ngIf="id" mat-flat-button [mat-dialog-close]="true" cdkFocusInitial [disabled]="clientForm.invalid" (click)="saveClient()">Add Insurance</button>
+    <button *ngIf="id" mat-flat-button [mat-dialog-close]="true" cdkFocusInitial [disabled]="patientForm.invalid" (click)="saveClient()">Add Patient</button>
   </mat-dialog-actions>
 </div>
 

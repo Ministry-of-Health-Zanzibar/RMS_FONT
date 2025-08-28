@@ -55,7 +55,7 @@ export class BodyformListComponent {
 
   ){}
 
-  displayedColumns: string[] = ['id','title','pdf','action'];
+  displayedColumns: string[] = ['id','title','pdf','action','action2'];
   dataSource: MatTableDataSource<any> = new MatTableDataSource();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -204,8 +204,8 @@ export class BodyformListComponent {
     }
   }
 
-  getInsurance(id:any){
-    // console.log("hiiii",id);
+  getPatient(id:any){
+     console.log("hiiii",id);
     let config = new MatDialogConfig()
     config.disableClose = false
     config.role = 'dialog'
