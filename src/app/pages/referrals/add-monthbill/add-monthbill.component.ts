@@ -160,8 +160,9 @@ saveReferrals() {
 
 
          getHospital() {
-           this.hostpitalService.getAllHospital().subscribe(response => {
+           this.hostpitalService.getAllHospitalByRefferal().subscribe(response => {
              this.hospital = response.data;
+             console.log("data ",this.hospital)
            });
          }
 

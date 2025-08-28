@@ -3,17 +3,17 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: 'basic',
+    path: 'finance',
     title: 'Basic Dashboard',
     loadComponent: () => import('./basic/basic.component').then(c => c.BasicComponent)
   },
   {
-    path: '',
+    path: 'basic',
     title: 'Ecommerce Dashboard',
     loadComponent: () => import('./ecommerce/ecommerce.component').then(c => c.EcommerceComponent)
   },
   {
-    path: 'finance',
+    path: '',
     title: 'Finance Dashboard',
     loadComponent: () => import('./finance/finance.component').then(c => c.FinanceComponent)
   }

@@ -11,11 +11,18 @@ export class HospitalService {
 
  private baseUrl: string = `${environment.baseUrl}`;
   private href = `${this.baseUrl}hospitals`;
+  private hospitalByRefferal = `${this.baseUrl}hospitals/reffered-hospitals`;
+
+
 
   constructor(private http: HttpClient) {}
 
   public getAllHospital(): Observable<any> {
     return this.http.get<any>(this.href);
+  }
+
+   public getAllHospitalByRefferal(): Observable<any> {
+    return this.http.get<any>(this.hospitalByRefferal);
   }
 
   public getHospitalById(id: any): Observable<any> {

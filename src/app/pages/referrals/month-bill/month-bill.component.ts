@@ -53,7 +53,7 @@ export class MonthBillComponent implements OnInit,OnDestroy{
 
 
       displayedColumns: string[] =
-      ['id', 'current_bill','hospital','bill_date','bill_file', 'after_audit','action'];
+      ['id', 'hospital_name','total_monthly_bill','total_after_audit_monthly_bill','action'];
       dataSource: MatTableDataSource<any> = new MatTableDataSource();
 
       @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -135,6 +135,12 @@ export class MonthBillComponent implements OnInit,OnDestroy{
         this.getMonthBill();
       });
     }
+
+     displayMoreData(data: any) {
+   // alert(data.complain_id);
+   const id = data.hospital_id;
+    this.router.navigate(['/pages/config/referrals/monthbill', id]); // Navigate to the new page with complain_id
+  }
 
 
       }

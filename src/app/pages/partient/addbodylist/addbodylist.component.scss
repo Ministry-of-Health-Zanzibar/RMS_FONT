@@ -1,0 +1,132 @@
+.horizontal-form {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.form-row {
+  display: flex;
+  width: 100%;
+  gap: 16px;
+}
+
+.form-field {
+  flex: 1;
+  min-width: 300px;
+}
+
+@media (max-width: 768px) {
+  .form-row {
+    flex-direction: column;
+  }
+
+  .form-field {
+    min-width: 100%;
+  }
+}
+
+.file-input {
+  border: 1px solid rgba(0,0,0,0.23);
+  border-radius: 4px;
+  padding: 8px;
+  width: 100%;
+  cursor: pointer;
+}
+
+/* Form container */
+
+
+/* Title styling */
+.font-semibold {
+  font-size: 1.8rem;
+  color: #00796b; /* Complementary color for headings */
+  margin-bottom: 24px;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* mat-form-field styles */
+.mat-form-field {
+  width: 100%;
+  margin-bottom: 20px; /* Space between fields */
+}
+
+.mat-form-field .mat-label {
+  font-size: 1.1rem;
+  color: #00796b;
+}
+
+.mat-form-field .mat-input-element {
+  padding: 12px;
+  border-radius: 8px;
+  background-color: #f9f9f9; /* Light gray input background */
+  border: 1px solid #ccc; /* Subtle border for inputs */
+}
+
+.mat-form-field.mat-focused .mat-input-element {
+  border-color: #00796b; /* Change border color on focus */
+  box-shadow: 0 0 8px rgba(0, 121, 107, 0.3); /* Soft focus effect */
+}
+
+/* Error message styles */
+.mat-form-field .error-message {
+  color: #f44336; /* Red error color */
+  font-size: 0.85rem;
+  margin-top: 6px;
+}
+
+/* Autocomplete option styling */
+.mat-option {
+  font-size: 1rem;
+  color: #333;
+}
+
+/* Button styling */
+mat-dialog-actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+button.mat-flat-button {
+  background-color: #00796b;
+  color: #ffffff;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+button.mat-flat-button:hover {
+  background-color: #004d40; /* Darker on hover */
+}
+
+button[mat-dialog-close] {
+  color: #333;
+  border: 1px solid #ddd;
+  margin-right: 12px;
+  padding: 10px 24px;
+}
+
+button[mat-dialog-close]:hover {
+  background-color: #f0f0f0;
+}
+
+/* Responsive form on smaller screens */
+@media (max-width: 768px) {
+  .form-container {
+    padding: 16px;
+    max-width: 100%;
+  }
+
+  mat-dialog-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  button.mat-flat-button {
+    width: 100%;
+    margin-top: 10px;
+  }
+}
+
+

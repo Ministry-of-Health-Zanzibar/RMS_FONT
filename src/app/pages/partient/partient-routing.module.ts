@@ -23,6 +23,11 @@ const routes: Routes = [
   {
     path:'searchreport99990000',
     loadComponent:()=>import('./referralsearchreport/referralsearchreport.component').then(c=>c.ReferralsearchreportComponent)
+  },
+  {
+    path: 'bodylist',
+    loadComponent:()=>import('./bodyform-list/bodyform-list.component').then(c=>c.BodyformListComponent)
+
   }
 ];
 

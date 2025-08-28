@@ -200,6 +200,13 @@ export class SidebarComponent {
           link: '/pages/patient/insurances0000011111',
           permission: 'View Patient',
 
+        },
+        {
+          type: 'link',
+          name: 'Patient List',
+          link: '/pages/patient/bodylist',
+          permission: 'View Patient List',
+
         }
       ]
     },

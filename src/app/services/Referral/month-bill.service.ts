@@ -12,6 +12,10 @@ export class MonthBillService {
   private baseUrl: string = `${environment.baseUrl}`;
   private href = `${this.baseUrl}monthly-bills`;
 
+   private billByHospital = `${this.baseUrl}monthly-bills/by-hospital`;
+
+
+
 
   constructor(private http: HttpClient) {}
 
@@ -25,7 +29,9 @@ export class MonthBillService {
 //   addMonthBill(data: FormData) {
 //   return this.http.post(`${this.baseUrl}/month-bills`, data); // no headers here
 // }
-
+ public getMonthBillByHospital(id: any) {
+    return this.http.get<any>(`${this.billByHospital}/${id}`);
+  }
 
 
   public getMonthBillById(id: any) {

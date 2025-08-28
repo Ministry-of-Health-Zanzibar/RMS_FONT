@@ -22,90 +22,83 @@
         </div>
       </div>
 
-      <div class="border dark:border-inverse rounded-lg overflow-hidden mt-4">
-        <table mat-table [dataSource]="dataSource" class="not-prose">
-          <!-- Position Column -->
-          <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef class="text-neutral-500 dark:text-neutral-400"> No. </th>
-            <td mat-cell *matCellDef="let element,let i = index"> {{i+1}} </td>
-          </ng-container>
+    <div class="border dark:border-inverse rounded-lg overflow-hidden mt-4">
+  <table mat-table [dataSource]="dataSource" class="not-prose">
 
-          <!-- Name Column -->
-          <ng-container matColumnDef="current_bill">
-            <th mat-header-cell *matHeaderCellDef class="text-neutral-500 dark:text-neutral-400">Current Month Bill </th>
-            <td mat-cell *matCellDef="let element,"> {{element.current_monthly_bill_amount}} </td>
-          </ng-container>
-            <ng-container matColumnDef="hospital">
-            <th mat-header-cell *matHeaderCellDef class="text-neutral-500 dark:text-neutral-400"> Hospital Name </th>
-            <td mat-cell *matCellDef="let element,"> {{element.hospital_name}} </td>
-          </ng-container>
-          <ng-container matColumnDef="bill_date">
-            <th mat-header-cell *matHeaderCellDef class="text-neutral-500 dark:text-neutral-400"> Bill Date </th>
-            <td mat-cell *matCellDef="let element,"> {{element.bill_date}} </td>
-          </ng-container>
-           <ng-container matColumnDef="bill_file">
-        <th mat-header-cell *matHeaderCellDef>View PDF</th>
-        <td mat-cell *matCellDef="let element">
-          <ng-container *ngIf="element.bill_file?.endsWith('.pdf')">
-            <a [href]="'http://127.0.0.1:8000/storage/' + element.bill_file"
-               target="_blank"
-               class="inline-flex items-center gap-1 text-indigo-600 hover:text-indigo-800">
-              <mat-icon>picture_as_pdf</mat-icon>
-              View PDF
-            </a>
-          </ng-container>
-        </td>
-      </ng-container>
+    <!-- Position Column -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef class="text-neutral-500 dark:text-neutral-400"> No. </th>
+      <td mat-cell *matCellDef="let element; let i = index"> {{i + 1}} </td>
+    </ng-container>
 
+    <!-- Hospital Name -->
+    <ng-container matColumnDef="hospital_name">
+      <th mat-header-cell *matHeaderCellDef class="text-neutral-500 dark:text-neutral-400"> Hospital Name </th>
+      <td mat-cell *matCellDef="let element"> {{element.hospital_name}} </td>
+    </ng-container>
 
-           <!-- Name Column -->
-           <ng-container matColumnDef="after_audit">
-            <th mat-header-cell *matHeaderCellDef class="text-neutral-500 dark:text-neutral-400"> Current Month Bill After Audit </th>
-            <td mat-cell *matCellDef="let element,"> {{element.after_audit_monthly_bill_amount}} </td>
-          </ng-container>
+    <!-- Total Current Bill -->
+    <ng-container matColumnDef="total_monthly_bill">
+      <th mat-header-cell *matHeaderCellDef class="text-neutral-500 dark:text-neutral-400"> Total Monthly Bill </th>
+      <td mat-cell *matCellDef="let element"> {{element.total_monthly_bill | number}} </td>
+    </ng-container>
 
+    <!-- Total After Audit -->
+    <ng-container matColumnDef="total_after_audit_monthly_bill">
+      <th mat-header-cell *matHeaderCellDef class="text-neutral-500 dark:text-neutral-400"> Total After Audit Bill </th>
+      <td mat-cell *matCellDef="let element"> {{element.total_after_audit_monthly_bill | number}} </td>
+    </ng-container>
 
-
-          <!-- Weight Column -->
-          <ng-container matColumnDef="action">
-            <th mat-header-cell *matHeaderCellDef class="text-neutral-500 dark:text-neutral-400" style="text-align: center;"> Action </th>
+      <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef class="text-neutral-500 dark:text-neutral-400">
+              Action
+            </th>
             <td mat-cell *matCellDef="let element">
-              <emr-segmented theme="simple" class="-mx-2">
-                <emr-segmented-button value="edit_squareData">
-                  <span class="size-9 rounded-full border bg-surface flex items-center justify-center" (click)="updateMonthBill(element)" *ngIf="permission.parmissionMatched(['Update Monthly Bill'])" matTooltip="Edit">
-                    <mat-icon class="font-icon edit_squareData">edit_square</mat-icon>
-                  </span>
-                </emr-segmented-button>
+              <div class="flex space-x-2">
+                <!-- View Button -->
+                <span
+                  class="size-9 rounded-full border bg-surface flex items-center justify-center cursor-pointer"
+                  (click)="displayMoreData(element)"
+                  matTooltip="View"
+                >
+                  <mat-icon class="font-icon">visibility</mat-icon>
+                </span>
 
-                <!-- <emr-segmented-button value="edit_squareData">
-                  <mat-slide-toggle
-                    [checked]="!element.deleted_at"
-                    (toggleChange)="confirmBlock(element)"
-                    color="primary">
-                  </mat-slide-toggle>
-                </emr-segmented-button> -->
-
-
-              </emr-segmented>
-
-
-
+              </div>
             </td>
           </ng-container>
 
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    <!-- Action Column -->
+    <!-- <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef class="text-neutral-500 dark:text-neutral-400" style="text-align: center;"> Action </th>
+      <td mat-cell *matCellDef="let element">
+        <emr-segmented theme="simple" class="-mx-2">
+          <emr-segmented-button value="edit_squareData">
+            <span class="size-9 rounded-full border bg-surface flex items-center justify-center"
+                  (click)="updateMonthBill(element)"
+                  *ngIf="permission.parmissionMatched(['Update Monthly Bill'])"
+                  matTooltip="Edit">
+              <mat-icon class="font-icon edit_squareData">edit_square</mat-icon>
+            </span>
+          </emr-segmented-button>
+        </emr-segmented>
+      </td>
+    </ng-container> -->
 
-          <!-- Row shown when there is no matching data. -->
-          <tr class="mat-row" *matNoDataRow>
-            <td class="mat-cell tablefoter" colspan="10" >No data matching the filter " {{input.value}} "</td>
-          </tr>
-        </table>
-        <mat-paginator [pageSizeOptions]="[10, 20]"
-                       showFirstLastButtons
-                       aria-label="Select page of permission" class="pt-3">
-        </mat-paginator>
-      </div>
+    <!-- Header & Row Definitions -->
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    <!-- Empty Row -->
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell tablefoter" colspan="10">No data matching the filter "{{input.value}}"</td>
+    </tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[10, 20]" showFirstLastButtons aria-label="Select page of permission" class="pt-3">
+  </mat-paginator>
+</div>
+
     </div>
   </div>
 

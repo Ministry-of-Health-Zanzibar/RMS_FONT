@@ -10,14 +10,26 @@ export class PartientService {
 
   private baseUrl: string = `${environment.baseUrl}`;
   private href = `${this.baseUrl}patients`;
+  private href_bodylist = `${this.baseUrl}patient-lists`;
   private href_insurances = `${this.baseUrl}insurances`;
   private href_patientInsurance = `${this.baseUrl}patients-withinsurance`;
 
   constructor(private http: HttpClient) {}
+  //body list
+   public getAllBodyList(): Observable<any> {
+    return this.http.get<any>(this.href_bodylist);
+  }
+
+    public addBodyList(Partient: any): Observable<any> {
+    return this.http.post(this.href_bodylist, Partient);
+  }
+
+  //end body list services
 
   public getAllPartients(): Observable<any> {
     return this.http.get<any>(this.href);
   }
+
 
   public addPartient(Partient: any): Observable<any> {
     return this.http.post(this.href, Partient);

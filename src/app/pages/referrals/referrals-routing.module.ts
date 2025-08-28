@@ -40,6 +40,11 @@ const routes: Routes = [
   {
     path:'monthbill00998778',
     loadComponent:()=>import('./month-bill/month-bill.component').then(c=>c.MonthBillComponent)
+  },
+  {
+    path:'monthbill/:id',
+    loadComponent:()=>import('./more-month-bill/more-month-bill.component').then(c=>c.MoreMonthBillComponent)
+
   }
 
 ];
