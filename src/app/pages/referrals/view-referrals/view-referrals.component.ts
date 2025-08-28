@@ -56,7 +56,7 @@ export class ViewReferralsComponent implements OnInit,OnDestroy{
 
       displayedColumns: string[] =
       ['id', 'patient_name', 'referral_type_name',
-      'hospital_name', 'referral_reason_name','start_date', 'end_date', 'status', 'action'];
+     'referral_reason_name', 'status', 'action'];
       dataSource: MatTableDataSource<any> = new MatTableDataSource();
 
       @ViewChild(MatPaginator) paginator!: MatPaginator;
