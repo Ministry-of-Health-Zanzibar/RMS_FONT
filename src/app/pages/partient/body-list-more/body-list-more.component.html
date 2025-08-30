@@ -70,22 +70,24 @@
     <thead class="bg-gray-100">
       <tr>
         <th class="border border-gray-300 p-2 text-center">#</th>
-        <th class="border border-gray-300 p-2">Patient ID</th>
         <th class="border border-gray-300 p-2">Name</th>
+         <th class="border border-gray-300 p-2">Gender</th>
+         <th class="border border-gray-300 p-2">Phone</th>
         <th class="border border-gray-300 p-2">Date of Birth</th>
-        <th class="border border-gray-300 p-2">Gender</th>
-        <th class="border border-gray-300 p-2">Phone</th>
+        <th class="border border-gray-300 p-2">Address</th>
+
+
       </tr>
     </thead>
 
     <tbody>
       <tr *ngFor="let patient of patients.data; let i = index;" class="hover:bg-gray-50">
         <td class="border border-gray-300 p-2 text-center">{{ i + 1 }}</td>
-        <td class="border border-gray-300 p-2">{{ patient.patient_id }}</td>
-        <td class="border border-gray-300 p-2 font-medium text-gray-700">{{ patient.name }}</td>
+        <td class="border border-gray-300 p-2 font-medium text-gray-700">{{ patient.name | uppercase }}</td>
+         <td class="border border-gray-300 p-2">{{ patient.gender | uppercase}}</td>
+          <td class="border border-gray-300 p-2">{{ patient.phone || '-' }}</td>
         <td class="border border-gray-300 p-2">{{ patient.date_of_birth }}</td>
-        <td class="border border-gray-300 p-2">{{ patient.gender }}</td>
-        <td class="border border-gray-300 p-2">{{ patient.phone || '-' }}</td>
+        <td class="border border-gray-300 p-2">{{ patient.location | uppercase}}</td>
       </tr>
     </tbody>
   </table>

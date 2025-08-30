@@ -65,34 +65,38 @@ export class BodyListMoreComponent implements OnInit {
     return this.getUserRole() === 'ROLE STAFF';
   }
 
-  getFeedbackById() {
-    this.loading = true;
+ getFeedbackById() {
+  this.loading = true;
 
-    this.userService.getBodyListById(this.bodyListId).subscribe(
-      (response: any) => {
-        this.loading = false;
+  this.userService.getBodyListById(this.bodyListId).subscribe(
+    (response: any) => {
+      this.loading = false;
 
-        const responseData = response?.data;
-        if (responseData && responseData.length > 0) {
-          this.patients = { data: responseData };
+      const responseData = response?.data;
+      if (responseData) {
+        // ✅ patient list info (title + file)
+        this.patientListInfo = {
+          id: responseData.patient_list_id,
+          title: responseData.patient_list_title,
+          file: responseData.patient_list_file
+        };
 
-          // ✅ Extract patient_list_title & file from the first record
-          this.patientListInfo = {
-            id: responseData[0].patient_list_id,
-            title: responseData[0].patient_list_title,
-            file: responseData[0].patient_list_file
-          };
-        } else {
-          this.patients = { data: [] };
-          this.patientListInfo = null;
-        }
-      },
-      (error) => {
-        this.loading = false;
-        console.error('Error fetching patients details:', error);
+        // ✅ patients list
+        this.patients = {
+          data: responseData.patients || []
+        };
+      } else {
+        this.patientListInfo = null;
+        this.patients = { data: [] };
       }
-    );
-  }
+    },
+    (error) => {
+      this.loading = false;
+      console.error('Error fetching patients details:', error);
+    }
+  );
+}
+
 
     getPatient(id:any){
        console.log("hiiii",id);
