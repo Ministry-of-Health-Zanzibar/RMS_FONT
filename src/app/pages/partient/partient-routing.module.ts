@@ -28,6 +28,10 @@ const routes: Routes = [
     path: 'bodylist',
     loadComponent:()=>import('./bodyform-list/bodyform-list.component').then(c=>c.BodyformListComponent)
 
+  },
+  {
+    path:'bodylist/:id',
+    loadComponent:()=>import('./body-list-more/body-list-more.component').then(c=>c.BodyListMoreComponent)
   }
 ];
 

@@ -25,10 +25,10 @@ import Swal from 'sweetalert2';
     MatFormFieldModule,
     MatLabel,
     MatDialogModule,
-    MatCheckbox,
+
     MatError,
     ReactiveFormsModule,
-    HDividerComponent,
+
     MatAutocompleteModule,
     MatSelect,
     MatDatepickerModule,

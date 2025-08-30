@@ -207,7 +207,8 @@ export class SidebarComponent {
           link: '/pages/patient/bodylist',
           permission: 'View Patient List',
 
-        }
+        },
+        
       ]
     },
     {

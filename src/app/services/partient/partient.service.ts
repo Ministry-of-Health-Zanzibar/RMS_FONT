@@ -28,6 +28,22 @@ export class PartientService {
     return this.http.post(this.href, patient);
   }
 
+    public deletePatientList(id:any): Observable<any>{
+    return this.http.delete(`${this.href_bodylist}/${id}`);
+  }
+
+  public updatePartientList(patient:any, id:any): Observable<any>{
+    return this.http.post(`${this.href_bodylist}/update/${id}`,patient)
+  }
+
+  public unblockPatientList(data: any, id:any): Observable<any>{
+    return this.http.patch(`${this.href_bodylist}/body-form/${id}`,data)
+  }
+
+  public getBodyListById(id: any) {
+    return this.http.get<any>(`${this.href_bodylist}/body-form/${id}`);
+  }
+
   //end body list services
 
   public getAllPartients(): Observable<any> {

@@ -17,7 +17,7 @@
         </div>
         <div>
           <button mat-flat-button (click)="addPatient()" *ngIf="permission.parmissionMatched(['Create Patient List'])">
-            <mat-icon class="font-icon">add</mat-icon>Add Patient
+            <mat-icon class="font-icon">add</mat-icon>Add BodyForm
           </button>
         </div>
       </div>
@@ -94,11 +94,26 @@
        >
                  <mat-icon>add_patient</mat-icon>
               </span>
+
+               <span
+                  class="size-9 rounded-full border bg-surface flex items-center justify-center cursor-pointer"
+                  (click)="displayMoreData(element)"
+                  matTooltip="View"
+                >
+                  <mat-icon class="font-icon">visibility</mat-icon>
+                </span>
               </emr-segmented-button>
+
 
               </emr-segmented>
 
-              <!---->
+
+
+
+
+
+
+
 
             </td>
           </ng-container>

@@ -160,7 +160,7 @@ export class BodyformListComponent {
 
   blockPatient(data: any, deleted: any): void{
     if(deleted){
-      this.userService.unblockPatient(data, data?.patient_id).subscribe(response=>{
+      this.userService.unblockPatient(data, data?.patient_list_id).subscribe(response=>{
         if(response.statusCode == 200){
           Swal.fire({
             title: "Success",
@@ -181,7 +181,7 @@ export class BodyformListComponent {
         }
       })
     }else{
-      this.userService.deletePatient(data?.patient_id).subscribe(response=>{
+      this.userService.deletePatient(data?.patient_list_id).subscribe(response=>{
         if(response.statusCode == 200){
           Swal.fire({
             title: "Success",
@@ -224,9 +224,10 @@ export class BodyformListComponent {
 
   displayMoreData(data: any) {
 
-    const id = data.patient_id;
-     this.router.navigate(['/pages/patient/more', id]); // Navigate to the new page with complain_id
+    const id = data.patient_list_id;
+     this.router.navigate(['/pages/patient/bodylist', id]); // Navigate to the new page with complain_id
    }
+ 
 
 
 
