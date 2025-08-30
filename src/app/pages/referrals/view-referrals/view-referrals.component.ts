@@ -55,7 +55,7 @@ export class ViewReferralsComponent implements OnInit,OnDestroy{
 
 
       displayedColumns: string[] =
-      ['id', 'patient_name', 'referral_type_name',
+      ['id', 'patient_name', 
      'referral_reason_name', 'status', 'action'];
       dataSource: MatTableDataSource<any> = new MatTableDataSource();
 
