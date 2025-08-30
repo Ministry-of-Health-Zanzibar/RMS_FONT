@@ -1,15 +1,28 @@
-
 <div>
   <div class="w-full">
-    <div class="relative h-full rounded-lg  group  p-6">
-      <div *ngIf="!hospitalData" class="font-semibold ">ADD NEW HOSPITAL</div>
-      <div *ngIf="hospitalData" class="font-semibold ">ADD HOSPITAL</div>
+    <div class="relative h-full rounded-lg group p-6">
+      <div *ngIf="!hospitalData" class="font-semibold">ADD NEW HOSPITAL</div>
+      <div *ngIf="hospitalData" class="font-semibold">ADD HOSPITAL</div>
       <form [formGroup]="hospitalForm">
         <mat-form-field class="w-full mt-6">
           <mat-label>Hospital Name: </mat-label>
-          <input matInput placeholder="Ex. LUMUMBA HOSPITAL" formControlName="hospital_name" type="text">
-          <mat-error class="error-message" *ngIf="hospitalForm.controls['hospital_name'].touched && hospitalForm.controls['hospital_name'].invalid">
-            <span *ngIf="hospitalForm.controls['hospital_name'].errors?.['required']">This field is mandatory</span>
+          <input
+            matInput
+            placeholder="Ex. LUMUMBA HOSPITAL"
+            formControlName="hospital_name"
+            type="text"
+          />
+          <mat-error
+            class="error-message"
+            *ngIf="
+              hospitalForm.controls['hospital_name'].touched &&
+              hospitalForm.controls['hospital_name'].invalid
+            "
+          >
+            <span
+              *ngIf="hospitalForm.controls['hospital_name'].errors?.['required']"
+              >This field is mandatory</span
+            >
           </mat-error>
         </mat-form-field>
 
@@ -24,29 +37,106 @@
 
         <mat-form-field class="w-full mt-4">
           <mat-label>Hospital Address:</mat-label>
-          <input matInput placeholder="Ex. KAWE " formControlName="hospital_address" type="text">
-          <mat-error class="error-message" *ngIf="hospitalForm.controls['hospital_address'].touched && hospitalForm.controls['hospital_address'].invalid">
-            <span *ngIf="hospitalForm.controls['hospital_address'].errors?.['required']">This field is mandatory</span>
-            <span *ngIf="hospitalForm.controls['hospital_address'].errors?.['pattern']">This field is invalid (must be contain alpharbetical only)</span>
+          <input
+            matInput
+            placeholder="Ex. KAWE "
+            formControlName="hospital_address"
+            type="text"
+          />
+          <mat-error
+            class="error-message"
+            *ngIf="
+              hospitalForm.controls['hospital_address'].touched &&
+              hospitalForm.controls['hospital_address'].invalid
+            "
+          >
+            <span
+              *ngIf="hospitalForm.controls['hospital_address'].errors?.['required']"
+              >This field is mandatory</span
+            >
+            <span
+              *ngIf="hospitalForm.controls['hospital_address'].errors?.['pattern']"
+              >This field is invalid (must be contain alpharbetical only)</span
+            >
           </mat-error>
         </mat-form-field>
 
         <mat-form-field class="w-full mt-4">
           <mat-label>Hospital Email:</mat-label>
-          <input matInput placeholder="Ex. hosp@info.go.tz" formControlName="hospital_email" type="text">
-          <mat-error class="error-message" *ngIf="hospitalForm.controls['hospital_email'].touched && hospitalForm.controls['hospital_email'].invalid">
-            <span *ngIf="hospitalForm.controls['hospital_email'].errors?.['required']">This field is mandatory</span>
-            <span *ngIf="hospitalForm.controls['hospital_email'].errors?.['pattern']">This field is invalid (must be contain alpharbetical only)</span>
+          <input
+            matInput
+            placeholder="Ex. hosp@info.go.tz"
+            formControlName="hospital_email"
+            type="text"
+          />
+          <mat-error
+            class="error-message"
+            *ngIf="
+              hospitalForm.controls['hospital_email'].touched &&
+              hospitalForm.controls['hospital_email'].invalid
+            "
+          >
+            <span
+              *ngIf="hospitalForm.controls['hospital_email'].errors?.['required']"
+              >This field is mandatory</span
+            >
+            <span
+              *ngIf="hospitalForm.controls['hospital_email'].errors?.['pattern']"
+              >This field is invalid (must be contain alpharbetical only)</span
+            >
           </mat-error>
         </mat-form-field>
 
         <mat-form-field class="w-full mt-4">
           <mat-label>Hospital Phone:</mat-label>
-          <input matInput placeholder="Ex. +255 777-783455" formControlName="contact_number" type="text">
-          <mat-error class="error-message" *ngIf="hospitalForm.controls['contact_number'].touched && hospitalForm.controls['contact_number'].invalid">
-            <span *ngIf="hospitalForm.controls['contact_number'].errors?.['required']">This field is mandatory</span>
-            <span *ngIf="hospitalForm.controls['contact_number'].errors?.['pattern']">This field is invalid (must be contain alpharbetical only)</span>
+          <input
+            matInput
+            placeholder="Ex. +255 777-783455"
+            formControlName="contact_number"
+            type="text"
+          />
+          <mat-error
+            class="error-message"
+            *ngIf="
+              hospitalForm.controls['contact_number'].touched &&
+              hospitalForm.controls['contact_number'].invalid
+            "
+          >
+            <span
+              *ngIf="hospitalForm.controls['contact_number'].errors?.['required']"
+              >This field is mandatory</span
+            >
+            <span
+              *ngIf="hospitalForm.controls['contact_number'].errors?.['pattern']"
+              >This field is invalid (must be contain alpharbetical only)</span
+            >
           </mat-error>
+        </mat-form-field>
+
+        <!-- <div class="form-row">
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Referral Type</mat-label>
+            <mat-select formControlName="referral_type_id">
+              <mat-option
+                *ngFor="let type of referralTypes"
+                [value]="type.referral_type_id"
+              >
+                {{ type.referral_type_name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div> -->
+
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Referral Type</mat-label>
+          <mat-select formControlName="referral_type_id">
+            <mat-option
+              *ngFor="let type of referralTypes"
+              [value]="type.referral_type_id"
+            >
+              {{ type.referral_type_name }}
+            </mat-option>
+          </mat-select>
         </mat-form-field>
       </form>
     </div>
@@ -54,8 +144,25 @@
 
   <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close>Cancel</button>
-    <button *ngIf="!hospitalData" mat-flat-button [mat-dialog-close]="true" cdkFocusInitial [disabled]="hospitalForm.invalid" (click)="saveHospital()">Save Data</button>
-    <button *ngIf="hospitalData" mat-flat-button [mat-dialog-close]="true" cdkFocusInitial [disabled]="hospitalForm.invalid" (click)="updateHospital()">Update Data</button>
+    <button
+      *ngIf="!hospitalData"
+      mat-flat-button
+      [mat-dialog-close]="true"
+      cdkFocusInitial
+      [disabled]="hospitalForm.invalid"
+      (click)="saveHospital()"
+    >
+      Save Data
+    </button>
+    <button
+      *ngIf="hospitalData"
+      mat-flat-button
+      [mat-dialog-close]="true"
+      cdkFocusInitial
+      [disabled]="hospitalForm.invalid"
+      (click)="updateHospital()"
+    >
+      Update Data
+    </button>
   </mat-dialog-actions>
 </div>
-
