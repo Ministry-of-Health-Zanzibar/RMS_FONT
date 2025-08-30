@@ -205,4 +205,5 @@ export class ViewhospitalComponent implements OnInit,OnDestroy{
     }
   }
 
+
 }

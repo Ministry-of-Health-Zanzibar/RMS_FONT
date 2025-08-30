@@ -115,7 +115,6 @@ export class AddReferralsComponent {
   configForm() {
     this.referralsForm = new FormGroup({
       patient_id: new FormControl(null, Validators.required),
-
       referral_type_id: new FormControl(null, Validators.required),
       reason_id: new FormControl(null, Validators.required),
     });
