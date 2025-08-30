@@ -42,7 +42,7 @@
 
           <mat-form-field class="form-field">
             <mat-label>Phone Number</mat-label>
-            <input matInput placeholder="Ex. +255 777000000" formControlName="phone" type="text">
+            <input matInput placeholder="Ex. 0777000000" formControlName="phone" type="text">
             <mat-error *ngIf="patientForm.get('phone')?.invalid && patientForm.get('phone')?.touched">
               <span *ngIf="patientForm.get('phone')?.errors?.['required']">This field is mandatory</span>
             </mat-error>
@@ -61,7 +61,7 @@
 
           <mat-form-field class="form-field">
             <mat-label>Position</mat-label>
-            <input matInput placeholder="Ex. Head" formControlName="position" type="text">
+            <input matInput placeholder="Ex. HeadMaster" formControlName="position" type="text">
             <mat-error *ngIf="patientForm.get('position')?.invalid && patientForm.get('position')?.touched">
               <span *ngIf="patientForm.get('position')?.errors?.['required']">This field is mandatory</span>
             </mat-error>

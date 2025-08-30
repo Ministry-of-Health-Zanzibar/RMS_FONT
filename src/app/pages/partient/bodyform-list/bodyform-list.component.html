@@ -1,11 +1,11 @@
 <div class="p-10 space-y-8" *ngIf="permission.parmissionMatched(['View Patient List'])">
   <div class="flex items-center justify-between">
-    <h1 class="text-lg font-bold">Patient</h1>
+    <h1 class="text-lg font-bold">Body Form</h1>
   </div>
   <div class="w-full">
 
     <div class="relative h-full rounded-lg border group dark:border-inverse p-4">
-      <div class="font-semibold pb-2.5 border-b-2 border-b-secondary-400">View Patient List</div>
+      <div class="font-semibold pb-2.5 border-b-2 border-b-secondary-400">View Body Information List</div>
       <div class="mt-4 flex items-center justify-between">
         <div class="flex items-center gap-1.5">
           <div class="size-9 rounded-full border bg-surface flex flex items-center justify-center" (click)="renew()" matTooltip="Refresh">
@@ -56,11 +56,11 @@
 
           <!-- Weight Column -->
           <ng-container matColumnDef="action">
-            <th mat-header-cell *matHeaderCellDef class="text-neutral-500 dark:text-neutral-400" style="text-align: center;"> Action </th>
+            <th mat-header-cell *matHeaderCellDef class="text-neutral-500 dark:text-neutral-400"> Action </th>
             <td mat-cell *matCellDef="let element">
               <emr-segmented theme="simple" class="-mx-2">
                 <emr-segmented-button value="edit_squareData">
-                  <span class="size-9 rounded-full border bg-surface flex items-center justify-center" (click)="updatePatient(element)" *ngIf="permission.parmissionMatched(['Update Patient'])" matTooltip="Edit">
+                  <span class="size-9 rounded-full border bg-surface flex items-center justify-center" (click)="updatePatient(element)" *ngIf="permission.parmissionMatched(['Update Patient List'])" matTooltip="Edit">
                     <mat-icon class="font-icon edit_squareData">edit_square</mat-icon>
                   </span>
                 </emr-segmented-button>
@@ -81,7 +81,7 @@
             </td>
           </ng-container>
             <ng-container matColumnDef="action2">
-            <th mat-header-cell *matHeaderCellDef class="text-neutral-500 dark:text-neutral-400" style="text-align: center;"> Insurance </th>
+            <th mat-header-cell *matHeaderCellDef class="text-neutral-500 dark:text-neutral-400"> View </th>
             <td mat-cell *matCellDef="let element">
               <emr-segmented theme="simple" class="-mx-2">
 

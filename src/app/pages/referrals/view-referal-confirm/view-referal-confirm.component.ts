@@ -53,7 +53,7 @@ export class ViewReferalConfirmComponent implements OnInit,OnDestroy{
 
 
       displayedColumns: string[] =
-      ['id', 'patient_name', 'referral_type_name',
+      ['id', 'patient_name',
       'hospital_name', 'referral_reason_name','start_date', 'end_date', 'status', 'action'];
       dataSource: MatTableDataSource<any> = new MatTableDataSource();
 
