@@ -223,9 +223,8 @@ export class BodyformListComponent {
   }
 
   displayMoreData(data: any) {
-
     const id = data.patient_list_id;
-     this.router.navigate(['/pages/patient/bodylist', id]); // Navigate to the new page with complain_id
+     this.router.navigate(['/pages/patient/bodylist', id]); 
    }
  
 

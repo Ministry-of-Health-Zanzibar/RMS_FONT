@@ -1,0 +1,113 @@
+<div class="form-container">
+  <div class="w-full">
+    <div class="relative h-full rounded-lg group p-6">
+      <!-- Title -->
+      <div class="font-semibold" *ngIf="!billData">CREATE NEW BILL FILE</div>
+      <div class="font-semibold" *ngIf="billData">UPDATE BILL FILE</div>
+
+      <!-- Form -->
+      <form [formGroup]="billForm" class="horizontal-form" enctype="multipart/form-data">
+
+        <!-- Bill Title -->
+        <div class="form-row">
+          <mat-form-field class="form-field w-full">
+            <mat-label>Bill Title</mat-label>
+            <input matInput placeholder="Ex. Lumumba Hospital Bill August 2025" formControlName="bill_file_title" type="text">
+            <mat-error *ngIf="billForm.get('bill_file_title')?.invalid && billForm.get('bill_file_title')?.touched">
+              This field is required 
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Bill Amount -->
+        <div class="form-row">
+          <mat-form-field class="form-field w-full">
+            <mat-label>Bill Amount</mat-label>
+            <input matInput placeholder="Ex. 250000" formControlName="bill_file_amount" type="text">
+            <mat-error *ngIf="billForm.get('bill_file_amount')?.invalid && billForm.get('bill_file_amount')?.touched">
+              This field is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Hospital Dropdown -->
+        <div class="form-row">
+          <mat-form-field class="form-field w-full">
+            <mat-label>Select Hospital</mat-label>
+            <mat-select formControlName="hospital_id">
+
+              <!-- Search box inside dropdown -->
+              <mat-option>
+                <input
+                  matInput
+                  [(ngModel)]="hospitalSearch"
+                  placeholder="Search hospital..."
+                  (ngModelChange)="onHospitalSearchChange()"
+                  (click)="$event.stopPropagation()"
+                  (keydown)="$event.stopPropagation()"
+                />
+              </mat-option>
+
+              <!-- Filtered hospitals -->
+              <mat-option
+                *ngFor="let hospital of filteredHospitals"
+                [value]="hospital.hospital_id"
+              >
+                {{ hospital.hospital_name }}
+              </mat-option>
+
+              <!-- No hospitals found -->
+              <mat-option *ngIf="filteredHospitals.length === 0" disabled>
+                No hospitals found
+              </mat-option>
+
+            </mat-select>
+            <mat-error *ngIf="billForm.get('hospital_id')?.invalid && billForm.get('hospital_id')?.touched">
+              Hospital is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- File Upload -->
+        <div class="form-row">
+          <mat-form-field class="form-field w-full">
+            <mat-label>Upload File</mat-label>
+            <input
+              matInput
+              type="text"
+              formControlName="bill_file"
+              readonly
+              placeholder="No file chosen"
+              (click)="fileInput.click()"
+            />
+            <input
+              type="file"
+              accept=".pdf,.doc,.docx,.jpg,.png"
+              hidden
+              #fileInput
+              (change)="onAttachmentSelected($event)"
+            />
+            <mat-icon matSuffix style="cursor: pointer;" (click)="fileInput.click()">attach_file</mat-icon>
+            <mat-error *ngIf="billForm.get('bill_file')?.invalid && billForm.get('bill_file')?.touched">
+              File is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+      </form>
+
+      <!-- Actions -->
+      <mat-dialog-actions align="end">
+        <button mat-button (click)="onClose()">Cancel</button>
+        <button
+          mat-flat-button
+          color="primary"
+          [disabled]="billForm.invalid"
+          (click)="billData ? updateBill() : saveBill()"
+        >
+          {{ billData ? 'Update' : 'Save' }}
+        </button>
+      </mat-dialog-actions>
+    </div>
+  </div>
+</div>

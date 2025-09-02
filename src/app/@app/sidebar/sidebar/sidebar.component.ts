@@ -16,8 +16,7 @@ export interface NavItem {
   id?: string | number;
   link?: string;
   children?: NavItem[];
-  permission: string | string[];  // Add this line to include the permission property
-
+  permission: string | string[]; // Add this line to include the permission property
 }
 
 @Component({
@@ -30,13 +29,13 @@ export interface NavItem {
     MatRipple,
     ToolbarComponent,
     OrderByPipe,
-    HDividerComponent
+    HDividerComponent,
   ],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.scss',
   host: {
-    'class': 'sidebar'
-  }
+    class: 'sidebar',
+  },
 })
 export class SidebarComponent {
   router = inject(Router);
@@ -47,25 +46,23 @@ export class SidebarComponent {
   navigation!: any;
 
   navItems: NavItem[] = [
-     {
+    {
       id: 'dashboard',
-      type: 'Single',  // Changed from 'group' to 'link'
+      type: 'Single', // Changed from 'group' to 'link'
       name: 'Dashboard',
       icon: 'dashboard',
       permission: 'View Dashboard',
-      link: '/pages/dashboard/basic'
+      link: '/pages/dashboard/basic',
     },
 
     {
       id: 'dashboard1',
-      type: 'Single',  // Changed from 'group' to 'link'
+      type: 'Single', // Changed from 'group' to 'link'
       name: 'Dashboard',
       icon: 'dashboard',
       permission: 'View Referral Dashboard',
-      link: '/pages/dashboard/finance'
+      link: '/pages/dashboard/finance',
     },
-
-
 
     // {
     //   id: 'dashboard',
@@ -91,29 +88,25 @@ export class SidebarComponent {
       icon: 'person',
       permission: ['View User', 'View Permission', 'View Role'],
       children: [
-
         {
           type: 'link',
           name: 'Manage Users',
           link: '/pages/users',
           permission: 'View User',
-
         },
         {
           type: 'link',
           name: 'Manage Roles',
           link: '/pages/users/role-permission',
           permission: 'View Role',
-
         },
         {
           type: 'link',
           name: 'Permission',
           link: '/pages/users/permission',
           permission: 'View Permission',
-
         },
-      ]
+      ],
     },
     {
       id: 'configid',
@@ -158,26 +151,22 @@ export class SidebarComponent {
           name: 'Hospital',
           link: '/pages/config/hospital',
           permission: 'View Hospital',
-
         },
-
 
         {
           type: 'link',
           name: 'Referral Type',
           link: '/pages/config/referal-type',
           permission: 'View ReferralType',
-
         },
-
 
         {
           type: 'link',
           name: 'Reason',
           link: '/pages/config/reasons',
           permission: 'View Reason',
-        }
-      ]
+        },
+      ],
     },
 
     {
@@ -192,24 +181,20 @@ export class SidebarComponent {
           name: 'Patient',
           link: '/pages/patient',
           permission: 'View Patient',
-
         },
-         {
+        {
           type: 'link',
           name: 'Insurances',
           link: '/pages/patient/insurances0000011111',
           permission: 'View Patient',
-
         },
         {
           type: 'link',
           name: 'Patient List',
           link: '/pages/patient/bodylist',
           permission: 'View Patient List',
-
         },
-        
-      ]
+      ],
     },
     {
       id: 'referral',
@@ -231,8 +216,6 @@ export class SidebarComponent {
           permission: 'View Referral',
         },
 
-
-
         //  {
         //   type: 'link',
         //   name: 'Range Report',
@@ -241,57 +224,48 @@ export class SidebarComponent {
         //   permission: 'View Monthly Bill',
 
         // }
-      ]
+      ],
     },
     {
-           id: 'bills',
-           type: 'Single',
-          name: 'View Bill',
-          icon:'bill',
-          link: '/pages/config/referrals/bill',
-          permission: 'View Referral',
-
-        },
-         {
-          id: 'payment',
-          type: 'Single',
-          name: 'Payment',
-          icon:'payment',
-          link: '/pages/config/referrals/billpayment2222200000',
-          permission: 'View Referral',
-
-        },
-         {
-          id: 'months1',
-          type: 'Single',
-          name: 'Month Bill',
-          icon:'month',
-          link: '/pages/config/referrals/monthbill00998778',
-          permission: 'View Monthly Bill',
-
-        },
-     {
+      id: 'bills',
+      type: 'Single',
+      name: 'Month Bills',
+      icon: 'bill',
+      link: '/pages/config/referrals/bill-file-list',
+      permission: 'View Referral',
+    },
+    {
+      id: 'payment',
+      type: 'Single',
+      name: 'Payment',
+      icon: 'payment',
+      link: '/pages/config/referrals/billpayment2222200000',
+      permission: 'View Referral',
+    },
+    {
+      id: 'months1',
+      type: 'Single',
+      name: 'Month Bill',
+      icon: 'month',
+      link: '/pages/config/referrals/monthbill00998778',
+      permission: 'View Monthly Bill',
+    },
+    {
       id: 'report3',
-      type: 'Single',  // Changed from 'group' to 'link'
+      type: 'Single', // Changed from 'group' to 'link'
       name: 'Range Report',
       icon: 'report',
       permission: 'View Monthly Bill',
       link: '/pages/patient/referralreport0990',
-
     },
-     {
+    {
       id: 'report4',
-      type: 'Single',  // Changed from 'group' to 'link'
+      type: 'Single', // Changed from 'group' to 'link'
       name: 'Search Report',
       icon: 'search',
       permission: 'View Monthly Bill',
       link: '/pages/patient/searchreport99990000',
-
     },
-
-
-
-
 
     {
       id: 'accountant',
@@ -306,36 +280,31 @@ export class SidebarComponent {
           name: 'Sources',
           link: '/pages/accounts/source',
           permission: 'Accountant Module',
-
         },
         {
           type: 'link',
           name: 'Source Type',
           link: '/pages/accounts/sourceType',
           permission: 'Accountant Module',
-
         },
         {
           type: 'link',
           name: 'Category',
           link: '/pages/accounts/category',
           permission: 'Accountant Module',
-
         },
         {
           type: 'link',
           name: 'Document Type',
           link: '/pages/accounts/documentCategory',
           permission: 'Accountant Module',
-
         },
-
-      ]
+      ],
     },
 
-     {
+    {
       id: 'dodument1',
-      type: 'Single',  // Changed from 'group' to 'link'
+      type: 'Single', // Changed from 'group' to 'link'
       name: 'Document',
       icon: 'document',
       permission: 'View Document Form',
@@ -349,24 +318,20 @@ export class SidebarComponent {
       icon: 'report',
       permission: 'View Report',
       children: [
-
         {
           type: 'link',
           name: 'Range Report',
           link: '/pages/accounts/report',
           permission: 'View Report',
-
         },
         {
           type: 'link',
           name: 'Search Report',
           link: '/pages/accounts/parameter-report',
           permission: 'View Report',
-
         },
-      ]
+      ],
     },
-
   ];
   navItemLinks: NavItem[] = [];
   activeLinkId: any = '/';
@@ -405,7 +370,6 @@ export class SidebarComponent {
     }
   }
 
-
   //====================================== code zangu mwanzo hapa ============================
 
   // Function to check if the user has permission for a specific action
@@ -438,9 +402,7 @@ export class SidebarComponent {
             : [],
         };
       })
-      .filter(
-        (group) => group !== null && group.id !== null
-      ) as NavItem[];
+      .filter((group) => group !== null && group.id !== null) as NavItem[];
   }
 
   // Recursive function to filter children based on permissions
@@ -490,16 +452,14 @@ export class SidebarComponent {
     this.navItems = this.filterMenuByPermissions(this.navItems);
   }
 
-           // USER ROLES
-           public getUserRole(): any {
-            return localStorage.getItem('roles');
+  // USER ROLES
+  public getUserRole(): any {
+    return localStorage.getItem('roles');
+  }
 
-          }
-
-          public get isStaff(): boolean {
-            return this.getUserRole() === 'ROLE STAFF';
-          }
-
+  public get isStaff(): boolean {
+    return this.getUserRole() === 'ROLE STAFF';
+  }
 
   //====================================== code zangu mwisho hapa ============================
 }

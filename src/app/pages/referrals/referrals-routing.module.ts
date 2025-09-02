@@ -16,6 +16,20 @@ const routes: Routes = [
     loadComponent:()=>import('./referralwithbills/referralwithbills.component').then(c=>c.ReferralwithbillsComponent)
 
   },
+
+   {
+    path:'bill-file-list',
+    loadComponent:()=>import('./bill/bill-file-list/bill-file-list.component').then(c=>c.BillFileListComponent)
+
+  },
+
+   {
+    path:'more-bill-file/:id',
+    loadComponent:()=>import('./bill/bill-file-by-id/bill-file-by-id.component').then(c=>c.BillFileByIdComponent)
+  },
+
+
+
   {
     path:'more/:id',
     loadComponent:()=>import('./referral-details/referral-details.component').then(c=>c.ReferralDetailsComponent)

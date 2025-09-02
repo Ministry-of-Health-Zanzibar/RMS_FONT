@@ -1,0 +1,105 @@
+<div class="p-6 max-w-2xl">
+  <h2 class="text-2xl font-bold text-gray-800 mb-2">Add New Bill</h2>
+  <p class="text-gray-600 mb-6">
+    Create a new bill for <strong>{{ data.billTitle }}</strong>
+  </p>
+
+  <form [formGroup]="billForm" (ngSubmit)="onSubmit()" class="space-y-4">
+    <!-- Referral Selection -->
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Select Referral</mat-label>
+      <mat-select formControlName="referral_id">
+        <mat-option
+          *ngFor="let referral of referrals"
+          [value]="referral.referral_id"
+        >
+          {{ referral.referral_number }} - {{ referral.patient_name }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="billForm.get('referral_id')?.hasError('required')">
+        Referral is required
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Show empty state -->
+    <div *ngIf="referrals.length === 0" class="text-sm text-gray-500 mb-2">
+      No referrals available for this hospital
+    </div>
+
+    <!-- Total Amount -->
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Total Amount</mat-label>
+      <input
+        matInput
+        type="number"
+        formControlName="total_amount"
+        placeholder="Enter total amount"
+        min="0"
+        step="0.01"
+      />
+      <span matPrefix>TZS&nbsp;</span>
+      <mat-icon matSuffix>attach_money</mat-icon>
+      <mat-error *ngIf="billForm.get('total_amount')?.hasError('required')">
+        Total amount is required
+      </mat-error>
+      <mat-error *ngIf="billForm.get('total_amount')?.hasError('min')">
+        Amount must be positive
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Bill Period Start -->
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Bill Period Start</mat-label>
+      <input
+        matInput
+        [matDatepicker]="startPicker"
+        formControlName="bill_period_start"
+        (dateChange)="onStartDateChange()"
+        [min]="minDate"
+        [max]="maxDate"
+      />
+      <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+      <mat-datepicker #startPicker></mat-datepicker>
+      <mat-error *ngIf="billForm.get('bill_period_start')?.hasError('required')">
+        Start date is required
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Bill Period End -->
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Bill Period End</mat-label>
+      <input
+        matInput
+        [matDatepicker]="endPicker"
+        formControlName="bill_period_end"
+        [min]="billForm.get('bill_period_start')?.value || minDate"
+        [max]="maxDate"
+      />
+      <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+      <mat-datepicker #endPicker></mat-datepicker>
+      <mat-error *ngIf="billForm.get('bill_period_end')?.hasError('required')">
+        End date is required
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Hidden bill_file_id field -->
+    <input type="hidden" formControlName="bill_file_id" />
+
+    <!-- Form Actions -->
+    <div class="flex justify-end space-x-3 pt-4">
+      <button mat-button type="button" (click)="onCancel()">Cancel</button>
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="!billForm.valid || loading"
+      >
+        <span *ngIf="loading" class="flex items-center">
+          <mat-spinner diameter="20" class="mr-2"></mat-spinner>
+          Processing...
+        </span>
+        <span *ngIf="!loading">Create Bill</span>
+      </button>
+    </div>
+  </form>
+</div>
