@@ -97,11 +97,16 @@
       <mat-icon class="text-gray-600 align-middle">home</mat-icon>
       Address
     </th>
+     <th class="border border-gray-300 p-2 text-center">
+      <mat-icon class="text-gray-600 align-middle">insert_drive_file</mat-icon>
+
+      Patient File
+    </th>
   </tr>
 </thead>
 
 
-   <tbody>
+ <tbody>
   <tr *ngFor="let patient of patients.data; let i = index;" class="hover:bg-gray-50">
     <td class="border border-gray-300 p-2 text-center">{{ i + 1 }}</td>
     <td class="border border-gray-300 p-2 text-center font-medium text-gray-700">
@@ -117,10 +122,25 @@
       {{ patient.date_of_birth }}
     </td>
     <td class="border border-gray-300 p-2 text-center">
-      {{ patient.location | uppercase }}
+      {{ patient.location ? (patient.location | uppercase) : '-' }}
+    </td>
+    <td class="border border-gray-300 p-3 text-center">
+      <!-- ✅ Check if files exist -->
+      <ng-container *ngIf="patient.files?.length > 0; else noFile">
+        <a [href]="'http://127.0.0.1:8000/storage/' + patient.files[0].file_path"
+           target="_blank"
+           class="inline-flex items-center gap-1 text-indigo-600 hover:text-indigo-800 justify-center">
+          <mat-icon>picture_as_pdf</mat-icon>
+          View PDF
+        </a>
+      </ng-container>
+      <ng-template #noFile>
+        <span class="text-gray-400">No File</span>
+      </ng-template>
     </td>
   </tr>
 </tbody>
+
 
   </table>
 
