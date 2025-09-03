@@ -8,7 +8,7 @@ import { environment } from '../../../environments/environment.prod';
 })
 export class BillFileService {
   private baseUrl: string = `${environment.baseUrl}bill-files`;
-  private baseUrls: string = `${environment.baseUrl}`;
+  private baseUrlss: string = `${environment.baseUrl}bills-by-bill-file`;
 
 
   constructor(private http: HttpClient) {}
@@ -41,9 +41,10 @@ export class BillFileService {
     return this.http.patch(`${this.baseUrl}/unBlock/${id}`, {});
   }
 
-   getReferralsByHospital(hospitalId: number): Observable<any> {
-    return this.http.get<any>(
-      `${this.baseUrls}referrals-by-hospital/${hospitalId}`
-    );
-  }
+   
+
+  public getbillsBybillFile(bill_file_id: any): Observable<any> {
+  return this.http.get<any>(`${this.baseUrlss}/${bill_file_id}`);
+}
+
 }

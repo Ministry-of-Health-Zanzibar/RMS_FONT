@@ -1,16 +1,7 @@
 import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-  ReactiveFormsModule,
-  FormBuilder,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
-import {
-  MatDialogRef,
-  MAT_DIALOG_DATA,
-  MatDialogModule,
-} from '@angular/material/dialog';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -19,20 +10,15 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { BillFileService } from '../../../../services/Bills/bill-file.service';
 import { Subject, takeUntil } from 'rxjs';
 import Swal from 'sweetalert2';
 
-export interface BillData {
-  referral_id: number;
-  total_amount: number;
-  bill_period_start: string;
-  bill_period_end: string;
-  bill_file_id: number;
-}
+import { BillService } from '../../../../services/system-configuration/bill.service';
+import { ReferralService } from '../../../../services/Referral/referral.service';
 
 export interface AddBillDialogData {
   billFileId: number;
+  hospitalId: number;
   billTitle: string;
   referralOptions: any[];
 }
@@ -66,11 +52,11 @@ export class AddBillsComponent implements OnInit, OnDestroy {
 
   constructor(
     private fb: FormBuilder,
-    private hospitalService: BillFileService,
+    private billsService: BillService,
+    private referralService: ReferralService,
     public dialogRef: MatDialogRef<AddBillsComponent>,
     @Inject(MAT_DIALOG_DATA) public data: AddBillDialogData
   ) {
-    // Set date constraints (current year only)
     const currentYear = new Date().getFullYear();
     this.minDate = new Date(currentYear, 0, 1);
     this.maxDate = new Date(currentYear, 11, 31);
@@ -85,8 +71,8 @@ export class AddBillsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    if (this.data.billFileId) {
-      this.loadReferrals(this.data.billFileId);
+    if (this.data.hospitalId && this.data.billFileId) {
+      this.loadReferrals(this.data.hospitalId, this.data.billFileId);
     }
   }
 
@@ -95,13 +81,18 @@ export class AddBillsComponent implements OnInit, OnDestroy {
     this.onDestroy$.complete();
   }
 
-  private loadReferrals(hospitalId: number) {
-    this.hospitalService
-      .getReferralsByHospital(hospitalId)
+  private loadReferrals(hospitalId: number, billFileId: number) {
+    this.billsService
+      .getReferralsByHospital(hospitalId, billFileId)
       .pipe(takeUntil(this.onDestroy$))
       .subscribe({
         next: (res) => {
-          this.referrals = res.data || [];
+          if (res?.data) {
+            this.referrals = res.data;
+          } else {
+            this.referrals = [];
+            Swal.fire('Error', res.message || 'No referrals found', 'error');
+          }
         },
         error: () => {
           this.referrals = [];
@@ -118,16 +109,12 @@ export class AddBillsComponent implements OnInit, OnDestroy {
     if (this.billForm.valid) {
       this.loading = true;
 
-      // Format dates to YYYY-MM-DD
       const formValue = {
         ...this.billForm.value,
-        bill_period_start: this.formatDate(
-          this.billForm.value.bill_period_start
-        ),
+        bill_period_start: this.formatDate(this.billForm.value.bill_period_start),
         bill_period_end: this.formatDate(this.billForm.value.bill_period_end),
       };
 
-      // Simulate API call
       setTimeout(() => {
         this.loading = false;
         this.dialogRef.close(formValue);
@@ -145,7 +132,6 @@ export class AddBillsComponent implements OnInit, OnDestroy {
     return `${year}-${month}-${day}`;
   }
 
-  // Helper method to ensure end date is not before start date
   onStartDateChange(): void {
     const startDate = this.billForm.get('bill_period_start')?.value;
     const endDate = this.billForm.get('bill_period_end')?.value;

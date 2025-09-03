@@ -22,6 +22,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { BillFileService } from '../../../../services/Bills/bill-file.service';
 import Swal from 'sweetalert2';
 import { HospitalService } from '../../../../services/system-configuration/hospital.service';
+import { response } from 'express';
 
 @Component({
   selector: 'app-bill-file-form',
@@ -66,12 +67,14 @@ export class BillFileFormComponent {
       this.billData = this.data.data;
       this.billForm.patchValue(this.billData);
     }
-   this.getHospital();
-  this.billForm.get('hospital_id')?.valueChanges
-    .pipe(takeUntil(this.onDestroy))
-    .subscribe((hospitalId) => {
-      this.onHospitalSelected(hospitalId);
-    });
+
+    this.fetchAllHospitals();
+    //  this.getHospital();
+    // this.billForm.get('hospital_id')?.valueChanges
+    //   .pipe(takeUntil(this.onDestroy))
+    //   .subscribe((hospitalId) => {
+    //     this.onHospitalSelected(hospitalId);
+    //   });
   }
 
   ngOnDestroy(): void {
@@ -79,24 +82,14 @@ export class BillFileFormComponent {
     this.onDestroy.complete();
   }
 
-  onHospitalSelected(hospitalId: number) {
-    if (!hospitalId) return;
 
-    this.billService.getReferralsByHospital(hospitalId).subscribe(
-      (response: any) => {
-        if (response.statusCode === 200) {
-          this.referrals = response.data;
-        } else {
-          this.referrals = [];
-          Swal.fire('Error', response.message, 'error');
-        }
-      },
-      (error) => {
-        console.error('Failed to fetch referrals:', error);
-        this.referrals = [];
-      }
-    );
-  }
+  fetchAllHospitals() {
+  this.hospitalService.getAllHospital().subscribe(response => {
+    this.hospitals = response.data;
+  }, error => {
+    console.error('Failed to fetch hospitals', error);
+  });
+}
 
   onClose() {
     this.dialogRef.close(false);

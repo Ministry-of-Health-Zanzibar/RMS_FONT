@@ -39,16 +39,16 @@ import { ReferralService } from '../../../../services/Referral/referral.service'
 export class BillFileByIdComponent implements OnInit {
   public bills: any[] = [];
   public billsList: any[] = [];
-  public loading: boolean = false;
-  public isLoading: boolean = false;
+  public loading = false;
   public bill_id: string | null = null;
+  public bill_file_id: number | null = null;
 
   constructor(
     private route: ActivatedRoute,
     public permission: PermissionService,
     private billService: BillService,
     private billFileService: BillFileService,
-    private referralService:ReferralService,
+    private referralService: ReferralService,
     private dialog: MatDialog,
     private datePipe: DatePipe
   ) {}
@@ -56,69 +56,82 @@ export class BillFileByIdComponent implements OnInit {
   ngOnInit(): void {
     this.bill_id = this.route.snapshot.paramMap.get('id');
     if (this.bill_id) {
-      this.getBillFiles();
-      this.getBillsByFileId();
+      this.getBillFileAndBills(this.bill_id);
     }
   }
 
-  getBillFiles() {
+  private getBillFileAndBills(billId: string) {
     this.loading = true;
-    this.billFileService.getbillFilesById(this.bill_id).subscribe(
-      (response: any) => {
+
+    this.billFileService.getbillFilesById(billId).subscribe({
+      next: (response: any) => {
         this.loading = false;
-        this.bills = response?.data ? [response.data] : [];
+
+        if (response?.data) {
+          this.bills = [response.data];
+          this.bill_file_id = response.data.bill_file_id;
+
+          if (this.bill_file_id) {
+            this.loadBillsByBillFileId(this.bill_file_id);
+          }
+        } else {
+          this.bills = [];
+          this.billsList = [];
+        }
       },
-      (error) => {
+      error: (error) => {
         this.loading = false;
         console.error('Error fetching bill file:', error);
         Swal.fire('Error', 'Failed to fetch bill file', 'error');
-      }
-    );
-  }
-
-  getBillsByFileId(): void {
-    if (!this.bill_id) return;
-
-    this.isLoading = true;
-    this.billsList = [];
-
-    this.billService.getBillById(this.bill_id).subscribe({
-      next: (res: any) => {
-        const responseData = res?.data;
-        if (responseData && Array.isArray(responseData)) {
-          console.log(" hii", responseData)
-          this.billsList = responseData.map((bill: any) => ({
-          
-            id: bill.bill_id,
-            referralId: bill.referral_id,
-            totalAmount: bill.total_amount,
-            billPeriodStart: bill.bill_period_start,
-            billPeriodEnd: bill.bill_period_end,
-            sentDate: bill.sent_date,
-            billFile: bill.bill_file,
-            createdBy: bill.created_by,
-            createdAt: bill.created_at,
-            updatedAt: bill.updated_at,
-            deletedAt: bill.deleted_at,
-          }));
-        } else {
-          this.billsList = [];
-        }
-        this.isLoading = false;
-      },
-      error: (err: any) => {
-        console.error('Error fetching bills:', err);
-        this.isLoading = false;
       },
     });
   }
 
-  /** ✅ Open Add Patient to Bill Dialog */
+  private loadBillsByBillFileId(bill_file_id: number) {
+    this.loading = true;
+    this.billsList = [];
+
+    this.billFileService.getbillsBybillFile(bill_file_id).subscribe({
+      next: (res: any) => {
+        this.loading = false;
+
+        const responseData = res?.data;
+        if (responseData) {
+          this.billsList = Array.isArray(responseData)
+            ? responseData.map((bill: any) => this.formatBill(bill))
+            : [this.formatBill(responseData)];
+        }
+      },
+      error: (err: any) => {
+        this.loading = false;
+        console.error('Error fetching bills by file id:', err);
+        Swal.fire('Error', 'Failed to fetch bills', 'error');
+      },
+    });
+  }
+
+  private formatBill(bill: any) {
+    return {
+      bill_id: bill.bill_id,
+      referral_id: bill.referral_id,
+      total_amount: bill.total_amount,
+      bill_period_start: bill.bill_period_start,
+      bill_period_end: bill.bill_period_end,
+      bill_status: bill.bill_status,
+      bill_file: bill.bill_file,
+      created_by: bill.created_by,
+      created_at: bill.created_at,
+      updated_at: bill.updated_at,
+      deleted_at: bill.deleted_at,
+    };
+  }
+
   addPatientToBill(billFileId: number) {
     const dialogData: AddBillDialogData = {
       billFileId,
+      hospitalId: this.bills[0]?.hospital_id,
       billTitle: this.bills[0]?.bill_file_title || 'Bill',
-      referralOptions: [], // TODO: populate actual referrals
+      referralOptions: [],
     };
 
     const dialogRef = this.dialog.open(AddBillsComponent, {
@@ -133,14 +146,13 @@ export class BillFileByIdComponent implements OnInit {
     });
   }
 
-  /** ✅ Create new Bill */
   private createBill(billData: any) {
     this.loading = true;
     this.billService.addBill(billData).subscribe(
       (response: any) => {
         this.loading = false;
         if (response.data) {
-          this.billsList.push(response.data);
+          this.billsList.push(this.formatBill(response.data));
         }
 
         Swal.fire({
@@ -174,7 +186,7 @@ export class BillFileByIdComponent implements OnInit {
         this.billService.deleteBill(billId).subscribe(
           () => {
             this.billsList = this.billsList.filter(
-              (bill) => bill.id !== billId
+              (bill) => bill.bill_id !== billId
             );
             this.loading = false;
             Swal.fire('Deleted!', 'The bill has been deleted.', 'success');
@@ -189,7 +201,6 @@ export class BillFileByIdComponent implements OnInit {
     });
   }
 
-  /** ✅ Extract filename from file URL */
   extractFileName(url: string): string {
     const parts = url.split('/');
     return parts[parts.length - 1] || '';

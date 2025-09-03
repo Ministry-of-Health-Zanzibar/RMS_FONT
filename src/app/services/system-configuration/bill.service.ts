@@ -10,6 +10,7 @@ export class BillService {
 
   private baseUrl: string = `${environment.baseUrl}`;
   private href = `${this.baseUrl}bills`;
+  private baseUrls: string = `${environment.baseUrl}`;
   private bill_payment = `${this.baseUrl}bills/getPatientBillAndPaymentByBillId`;
   private href_payment = `${this.baseUrl}payments`;
 
@@ -46,5 +47,12 @@ export class BillService {
   public addPayment(payment: any): Observable<any> {
     return this.http.post(this.href_payment,payment);
   }
+
+  getReferralsByHospital(hospitalId: number,billFileId: number): Observable<any> {
+    return this.http.get<any>(
+      `${this.baseUrls}referrals-by-hospital/${hospitalId}/${billFileId}`
+    );
+  }
+
 
 }
