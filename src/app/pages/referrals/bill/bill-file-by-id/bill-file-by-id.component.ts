@@ -133,7 +133,7 @@ export class BillFileByIdComponent implements OnInit {
       hospitalId: this.bills[0]?.hospital_id,
       billTitle: this.bills[0]?.bill_file_title || 'Bill',
       referralOptions: [],
-      referralOptions: [],
+     
     };
 
     const dialogRef = this.dialog.open(AddBillsComponent, {
