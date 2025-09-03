@@ -55,6 +55,7 @@ export class BillFileByIdComponent implements OnInit {
 
   ngOnInit(): void {
     this.bill_id = this.route.snapshot.paramMap.get('id');
+
     if (this.bill_id) {
       this.getBillFileAndBills(this.bill_id);
     }
@@ -132,6 +133,7 @@ export class BillFileByIdComponent implements OnInit {
       hospitalId: this.bills[0]?.hospital_id,
       billTitle: this.bills[0]?.bill_file_title || 'Bill',
       referralOptions: [],
+      referralOptions: [],
     };
 
     const dialogRef = this.dialog.open(AddBillsComponent, {
@@ -170,7 +172,6 @@ export class BillFileByIdComponent implements OnInit {
     );
   }
 
-  /** ✅ Delete Bill */
   deleteBill(billId: number) {
     Swal.fire({
       title: 'Are you sure?',
