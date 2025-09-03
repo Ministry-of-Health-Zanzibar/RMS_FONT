@@ -28,6 +28,12 @@ const routes: Routes = [
     loadComponent:()=>import('./bill/bill-file-by-id/bill-file-by-id.component').then(c=>c.BillFileByIdComponent)
   },
 
+  {
+    path: 'bills-details/:id',
+    loadComponent:()=>import('./bill/bills-details/bills-details.component').then(c=>c.BillsDetailsComponent)
+   
+  },
+
 
 
   {

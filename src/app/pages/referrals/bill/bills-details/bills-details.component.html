@@ -1,0 +1,89 @@
+<div class="container my-5" *ngIf="billData">
+  <!-- Bill Header -->
+  <div class="card shadow mb-4">
+    <div class="card-header d-flex justify-content-between align-items-center bg-light">
+      <h5 class="mb-0">Bill Details - ID: {{ billData.bill_id }}</h5>
+      <span
+        class="badge"
+        [ngClass]="{
+          'bg-warning text-dark': billData.bill_status === 'Pending',
+          'bg-success': billData.bill_status === 'Paid',
+          'bg-danger': billData.bill_status === 'Rejected'
+        }"
+      >
+        {{ billData.bill_status }}
+      </span>
+    </div>
+
+    <div class="card-body">
+
+      <!-- Basic Info -->
+      <div class="card mb-3 border-light shadow-sm">
+        <div class="card-header bg-secondary text-white">Basic Info</div>
+        <div class="card-body row">
+          <div class="col-md-6 mb-2"><strong>Total Amount:</strong> {{ billData.total_amount | currency:'TZS ' }}</div>
+          <div class="col-md-6 mb-2"><strong>Period:</strong> {{ billData.bill_period_start | date:'shortDate' }} - {{ billData.bill_period_end | date:'shortDate' }}</div>
+          <div class="col-md-6 mb-2"><strong>Created By:</strong> {{ billData.created_by }}</div>
+          <div class="col-md-6 mb-2"><strong>Created At:</strong> {{ billData.created_at | date:'short' }}</div>
+        </div>
+      </div>
+
+      <!-- Bill File -->
+      <div class="card mb-3 border-light shadow-sm">
+        <div class="card-header bg-secondary text-white">Bill File</div>
+        <div class="card-body">
+          <p><strong>Title:</strong> {{ billData.bill_file?.bill_file_title }}</p>
+          <p><strong>Amount:</strong> {{ billData.bill_file?.bill_file_amount | currency:'TZS ' }}</p>
+          <p>
+            <strong>File:</strong>
+            <a [href]="billData.bill_file?.bill_file" target="_blank" class="btn btn-sm btn-primary">Download</a>
+          </p>
+        </div>
+      </div>
+
+      <!-- Referral & Patient -->
+      <div class="card mb-3 border-light shadow-sm">
+        <div class="card-header bg-secondary text-white">Referral & Patient</div>
+        <div class="card-body row">
+          <div class="col-md-6 mb-2">
+            <p><strong>Referral Number:</strong> {{ billData.referral?.referral_number }}</p>
+            <p><strong>Referral Status:</strong> {{ billData.referral?.status }}</p>
+            <p><strong>Reason:</strong> {{ billData.referral?.reason?.referral_reason_name }}</p>
+          </div>
+          <div class="col-md-6 mb-2">
+            <p><strong>Patient Name:</strong> {{ billData.referral?.patient?.name }}</p>
+            <p><strong>DOB:</strong> {{ billData.referral?.patient?.date_of_birth | date:'shortDate' }}</p>
+            <p><strong>Gender:</strong> {{ billData.referral?.patient?.gender }}</p>
+            <p><strong>Phone:</strong> {{ billData.referral?.patient?.phone }}</p>
+            <p><strong>Location:</strong> {{ billData.referral?.patient?.location }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hospital -->
+      <div class="card mb-3 border-light shadow-sm">
+        <div class="card-header bg-secondary text-white">Hospital</div>
+        <div class="card-body">
+          <p><strong>Name:</strong> {{ billData.referral?.hospital?.hospital_name }}</p>
+          <p><strong>Code:</strong> {{ billData.referral?.hospital?.hospital_code }}</p>
+          <p><strong>Address:</strong> {{ billData.referral?.hospital?.hospital_address }}</p>
+          <p><strong>Contact:</strong> {{ billData.referral?.hospital?.contact_number }}</p>
+          <p><strong>Email:</strong> {{ billData.referral?.hospital?.hospital_email }}</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Loading Spinner -->
+<div *ngIf="loading" class="text-center my-5">
+  <div class="spinner-border text-primary" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</div>
+
+<!-- Empty State -->
+<div *ngIf="!loading && !billData" class="text-center my-5 text-muted">
+  No bill details found.
+</div>
