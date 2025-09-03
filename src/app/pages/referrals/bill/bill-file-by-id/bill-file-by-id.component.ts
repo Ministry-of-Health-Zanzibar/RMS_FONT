@@ -42,19 +42,21 @@ export class BillFileByIdComponent implements OnInit {
   public loading: boolean = false;
   public isLoading: boolean = false;
   public bill_id: string | null = null;
+  public bill_file_id!: number;
 
   constructor(
     private route: ActivatedRoute,
     public permission: PermissionService,
     private billService: BillService,
     private billFileService: BillFileService,
-    private referralService:ReferralService,
+    private referralService: ReferralService,
     private dialog: MatDialog,
     private datePipe: DatePipe
   ) {}
 
   ngOnInit(): void {
     this.bill_id = this.route.snapshot.paramMap.get('id');
+
     if (this.bill_id) {
       this.getBillFiles();
       this.getBillsByFileId();
@@ -66,12 +68,33 @@ export class BillFileByIdComponent implements OnInit {
     this.billFileService.getbillFilesById(this.bill_id).subscribe(
       (response: any) => {
         this.loading = false;
-        this.bills = response?.data ? [response.data] : [];
+        if (response?.data) {
+          this.bills = [response.data];
+
+          this.bill_file_id = response.data.bill_file_id;
+
+          this.getBillsByBillFileId(this.bill_file_id);
+        } else {
+          this.bills = [];
+        }
       },
       (error) => {
         this.loading = false;
         console.error('Error fetching bill file:', error);
         Swal.fire('Error', 'Failed to fetch bill file', 'error');
+      }
+    );
+  }
+
+  public getBillsByBillFileId(bill_file_id: number) {
+    this.billFileService.getbillsBybillFile(bill_file_id).subscribe(
+      (data) => {
+        console.log('Bills by Bill File ID:', data);
+        this.billsList = Array.isArray(data) ? data : data?.data || [];
+      },
+      (error) => {
+        console.error('Error fetching bills by bill file:', error);
+        Swal.fire('Error', 'Failed to fetch bills by bill file', 'error');
       }
     );
   }
@@ -86,9 +109,8 @@ export class BillFileByIdComponent implements OnInit {
       next: (res: any) => {
         const responseData = res?.data;
         if (responseData && Array.isArray(responseData)) {
-          console.log(" hii", responseData)
+          console.log('Bills by Bill ID:', responseData);
           this.billsList = responseData.map((bill: any) => ({
-          
             id: bill.bill_id,
             referralId: bill.referral_id,
             totalAmount: bill.total_amount,
@@ -113,12 +135,11 @@ export class BillFileByIdComponent implements OnInit {
     });
   }
 
-  /** ✅ Open Add Patient to Bill Dialog */
   addPatientToBill(billFileId: number) {
     const dialogData: AddBillDialogData = {
       billFileId,
       billTitle: this.bills[0]?.bill_file_title || 'Bill',
-      referralOptions: [], // TODO: populate actual referrals
+      referralOptions: [],
     };
 
     const dialogRef = this.dialog.open(AddBillsComponent, {
@@ -133,7 +154,6 @@ export class BillFileByIdComponent implements OnInit {
     });
   }
 
-  /** ✅ Create new Bill */
   private createBill(billData: any) {
     this.loading = true;
     this.billService.addBill(billData).subscribe(
@@ -158,7 +178,6 @@ export class BillFileByIdComponent implements OnInit {
     );
   }
 
-  /** ✅ Delete Bill */
   deleteBill(billId: number) {
     Swal.fire({
       title: 'Are you sure?',
@@ -189,7 +208,6 @@ export class BillFileByIdComponent implements OnInit {
     });
   }
 
-  /** ✅ Extract filename from file URL */
   extractFileName(url: string): string {
     const parts = url.split('/');
     return parts[parts.length - 1] || '';

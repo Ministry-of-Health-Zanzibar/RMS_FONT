@@ -6,36 +6,16 @@
       <div class="font-semibold" *ngIf="billData">UPDATE BILL FILE</div>
 
       <!-- Form -->
-      <form [formGroup]="billForm" class="horizontal-form" enctype="multipart/form-data">
-
-        <!-- Bill Title -->
-        <div class="form-row">
-          <mat-form-field class="form-field w-full">
-            <mat-label>Bill Title</mat-label>
-            <input matInput placeholder="Ex. Lumumba Hospital Bill August 2025" formControlName="bill_file_title" type="text">
-            <mat-error *ngIf="billForm.get('bill_file_title')?.invalid && billForm.get('bill_file_title')?.touched">
-              This field is required 
-            </mat-error>
-          </mat-form-field>
-        </div>
-
-        <!-- Bill Amount -->
-        <div class="form-row">
-          <mat-form-field class="form-field w-full">
-            <mat-label>Bill Amount</mat-label>
-            <input matInput placeholder="Ex. 250000" formControlName="bill_file_amount" type="text">
-            <mat-error *ngIf="billForm.get('bill_file_amount')?.invalid && billForm.get('bill_file_amount')?.touched">
-              This field is required
-            </mat-error>
-          </mat-form-field>
-        </div>
-
+      <form
+        [formGroup]="billForm"
+        class="horizontal-form"
+        enctype="multipart/form-data"
+      >
         <!-- Hospital Dropdown -->
         <div class="form-row">
           <mat-form-field class="form-field w-full">
             <mat-label>Select Hospital</mat-label>
             <mat-select formControlName="hospital_id">
-
               <!-- Search box inside dropdown -->
               <mat-option>
                 <input
@@ -60,10 +40,56 @@
               <mat-option *ngIf="filteredHospitals.length === 0" disabled>
                 No hospitals found
               </mat-option>
-
             </mat-select>
-            <mat-error *ngIf="billForm.get('hospital_id')?.invalid && billForm.get('hospital_id')?.touched">
+            <mat-error
+              *ngIf="
+                billForm.get('hospital_id')?.invalid &&
+                billForm.get('hospital_id')?.touched
+              "
+            >
               Hospital is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Bill Title -->
+        <div class="form-row">
+          <mat-form-field class="form-field w-full">
+            <mat-label>Bill Title</mat-label>
+            <input
+              matInput
+              placeholder="Ex. Lumumba Hospital Bill August 2025"
+              formControlName="bill_file_title"
+              type="text"
+            />
+            <mat-error
+              *ngIf="
+                billForm.get('bill_file_title')?.invalid &&
+                billForm.get('bill_file_title')?.touched
+              "
+            >
+              This field is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Bill Amount -->
+        <div class="form-row">
+          <mat-form-field class="form-field w-full">
+            <mat-label>Bill Amount</mat-label>
+            <input
+              matInput
+              placeholder="Ex. 250000"
+              formControlName="bill_file_amount"
+              type="text"
+            />
+            <mat-error
+              *ngIf="
+                billForm.get('bill_file_amount')?.invalid &&
+                billForm.get('bill_file_amount')?.touched
+              "
+            >
+              This field is required
             </mat-error>
           </mat-form-field>
         </div>
@@ -87,13 +113,22 @@
               #fileInput
               (change)="onAttachmentSelected($event)"
             />
-            <mat-icon matSuffix style="cursor: pointer;" (click)="fileInput.click()">attach_file</mat-icon>
-            <mat-error *ngIf="billForm.get('bill_file')?.invalid && billForm.get('bill_file')?.touched">
+            <mat-icon
+              matSuffix
+              style="cursor: pointer"
+              (click)="fileInput.click()"
+              >attach_file</mat-icon
+            >
+            <mat-error
+              *ngIf="
+                billForm.get('bill_file')?.invalid &&
+                billForm.get('bill_file')?.touched
+              "
+            >
               File is required
             </mat-error>
           </mat-form-field>
         </div>
-
       </form>
 
       <!-- Actions -->
@@ -105,7 +140,7 @@
           [disabled]="billForm.invalid"
           (click)="billData ? updateBill() : saveBill()"
         >
-          {{ billData ? 'Update' : 'Save' }}
+          {{ billData ? "Update" : "Save" }}
         </button>
       </mat-dialog-actions>
     </div>
