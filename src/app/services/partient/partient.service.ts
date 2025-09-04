@@ -10,6 +10,7 @@ export class PartientService {
 
   private baseUrl: string = `${environment.baseUrl}`;
   private href = `${this.baseUrl}patients`;
+  private hrefee = `${this.baseUrl}patients/patients-for-referral`;
   private href_bodylist = `${this.baseUrl}patient-lists`;
   private href_insurances = `${this.baseUrl}insurances`;
   private href_patientInsurance = `${this.baseUrl}patients-withinsurance`;
@@ -49,6 +50,12 @@ export class PartientService {
   public getAllPartients(): Observable<any> {
     return this.http.get<any>(this.href);
   }
+
+
+   public getAllPartientsForReferal(): Observable<any> {
+    return this.http.get<any>(this.hrefee);
+  }
+
 
 
   public addPartient(Partient: any): Observable<any> {
