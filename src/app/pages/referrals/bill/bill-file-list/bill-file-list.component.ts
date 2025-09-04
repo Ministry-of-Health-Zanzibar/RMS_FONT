@@ -57,7 +57,7 @@ export class BillFileListComponent {
   private readonly onDestroy = new Subject<void>();
   loading: boolean = false;
 
-  displayedColumns: string[] = ['id', 'title', 'pdf', 'amount', 'action'];
+  displayedColumns: string[] = ['id', 'title','hospital_name', 'pdf', 'amount', 'action'];
   dataSource: MatTableDataSource<any> = new MatTableDataSource();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;

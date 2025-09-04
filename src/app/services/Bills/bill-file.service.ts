@@ -8,6 +8,8 @@ import { environment } from '../../../environments/environment.prod';
 })
 export class BillFileService {
   private baseUrl: string = `${environment.baseUrl}bill-files`;
+  private baseUrls: string = `${environment.baseUrl}hospitals/reffered-hospitals`;
+
   private baseUrlss: string = `${environment.baseUrl}bills-by-bill-file`;
 
 
@@ -19,6 +21,10 @@ export class BillFileService {
 
   public getAllBillFiles(): Observable<any> {
     return this.http.get<any>(this.baseUrl);
+  }
+
+  public getAllHospital(): Observable<any> {
+    return this.http.get<any>(this.baseUrls);
   }
 
   public getbillFilesById(id: any): Observable<any> {
