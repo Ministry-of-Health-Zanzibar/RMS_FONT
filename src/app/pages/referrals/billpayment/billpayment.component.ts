@@ -131,4 +131,9 @@ export class BillpaymentComponent implements OnInit, OnDestroy, AfterViewInit {
     config.disableClose = false;
     this.dialog.open(BillComponent, config).afterClosed().subscribe(() => this.getPayments());
   }
+
+   displayMoreData(data: any) {
+    const id = data.payment_id;
+    this.router.navigate(['/pages/config/referrals/payment-details', id]);
+  }
 }

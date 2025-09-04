@@ -1,7 +1,7 @@
 <div class="mx-auto my-6 p-6 bg-white rounded-lg shadow-md space-y-6">
   <!-- Bill Details -->
   <div *ngIf="bill" class="space-y-2">
-    <h2 class="text-xl font-bold text-gray-800 border-b pb-1">Bill Details</h2>
+    <h2 class="text-xl font-bold text-gray-800 border-b pb-1">Payment Details</h2>
 
     <div class="text-2xl font-bold text-gray-900">
       {{ bill.amount | currency : "TZS" : "symbol" : "1.0-0" }}

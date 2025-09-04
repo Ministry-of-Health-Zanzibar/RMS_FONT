@@ -1,0 +1,64 @@
+<div class="container mt-5 my-6" *ngIf="!loading && paymentData">
+  <mat-card class="shadow-lg rounded-xl">
+    <mat-card-header class="bg-primary text-white rounded-t-xl p-4">
+        <span class="h4 mx-2">Bill Payment Details</span>
+      <mat-card-title class="text-xl font-bold flex items-center gap-2">
+        <mat-icon>payments</mat-icon>
+      </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content class="p-6 space-y-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <p class="font-semibold">Payer:</p>
+          <p>{{ paymentData.payer }}</p>
+        </div>
+        <div>
+          <p class="font-semibold">Amount Paid:</p>
+          <p>{{ paymentData.amount_paid | currency:paymentData.currency }}</p>
+        </div>
+        <div>
+          <p class="font-semibold">Currency:</p>
+          <p>{{ paymentData.currency }}</p>
+        </div>
+        <div>
+          <p class="font-semibold">Payment Method:</p>
+          <p>{{ paymentData.payment_method }}</p>
+        </div>
+        <div>
+          <p class="font-semibold">Reference Number:</p>
+          <p>{{ paymentData.reference_number }}</p>
+        </div>
+        <div>
+          <p class="font-semibold">Voucher Number:</p>
+          <p>{{ paymentData.voucher_number }}</p>
+        </div>
+        <div>
+          <p class="font-semibold">Payment Date:</p>
+          <p>{{ paymentData.payment_date | date:'medium' }}</p>
+        </div>
+        <div>
+          <p class="font-semibold">Created By:</p>
+          <p>{{ paymentData.created_by }}</p>
+        </div>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+        <div>
+          <p class="font-semibold">Created At:</p>
+          <p>{{ paymentData.created_at | date:'medium' }}</p>
+        </div>
+        <div>
+          <p class="font-semibold">Updated At:</p>
+          <p>{{ paymentData.updated_at | date:'medium' }}</p>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<div class="flex justify-center items-center h-64" *ngIf="loading">
+  <mat-icon class="animate-spin text-4xl text-gray-500">autorenew</mat-icon>
+</div>

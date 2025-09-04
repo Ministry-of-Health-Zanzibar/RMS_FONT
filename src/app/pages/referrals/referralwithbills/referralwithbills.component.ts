@@ -7,7 +7,12 @@ import { Subject, takeUntil } from 'rxjs';
 
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { MatMiniFabButton, MatIconButton, MatAnchor, MatButton } from '@angular/material/button';
+import {
+  MatMiniFabButton,
+  MatIconButton,
+  MatAnchor,
+  MatButton,
+} from '@angular/material/button';
 import { MatDivider } from '@angular/material/divider';
 import { MatIcon } from '@angular/material/icon';
 import { EmrSegmentedModule, VDividerComponent } from '@elementar/components';
@@ -25,146 +30,146 @@ import { ReferralpaymentComponent } from '../referralpayment/referralpayment.com
   selector: 'app-referralwithbills',
   standalone: true,
   imports: [
-     CommonModule,
-        MatTableModule,
-        MatPaginatorModule,
-        MatDivider,
-        MatIcon,
-        MatMiniFabButton,
-        MatIconButton,
-        VDividerComponent,
-        MatTooltip,
-        MatSlideToggleModule,
-        FormsModule,
-        MatAnchor,
-        MatButton,
-        RouterLink,
-        EmrSegmentedModule
+    CommonModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatDivider,
+    MatIcon,
+    MatMiniFabButton,
+    MatIconButton,
+    VDividerComponent,
+    MatTooltip,
+    MatSlideToggleModule,
+    FormsModule,
+    MatAnchor,
+    MatButton,
+    RouterLink,
+    EmrSegmentedModule,
   ],
   templateUrl: './referralwithbills.component.html',
-  styleUrl: './referralwithbills.component.scss'
+  styleUrl: './referralwithbills.component.scss',
 })
-export class ReferralwithbillsComponent implements OnInit,OnDestroy{
+export class ReferralwithbillsComponent implements OnInit, OnDestroy {
+  private readonly onDestroy = new Subject<void>();
+  loading: boolean = false;
 
+  displayedColumns: string[] = [
+    'id',
+    'patient_name',
+    'referral_type_name',
+    'hospital_name',
+    'referral_reason_name',
+    'start_date',
+    'end_date',
+    'status',
+    'action',
+  ];
+  dataSource: MatTableDataSource<any> = new MatTableDataSource();
 
-   private readonly onDestroy = new Subject<void>()
-   loading: boolean = false;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
+  constructor(
+    public permission: PermissionService,
+    public referralService: ReferralService,
+    private router: Router,
+    private dialog: MatDialog
+  ) {}
 
-      displayedColumns: string[] =
-      ['id', 'patient_name', 'referral_type_name',
-      'hospital_name', 'referral_reason_name','start_date', 'end_date', 'status', 'action'];
-      dataSource: MatTableDataSource<any> = new MatTableDataSource();
+  ngOnInit(): void {
+    this.getReferrals();
+  }
+  ngOnDestroy(): void {
+    this.onDestroy.next();
+  }
+  renew() {
+    this.getReferrals();
+  }
 
-      @ViewChild(MatPaginator) paginator!: MatPaginator;
-      @ViewChild(MatSort) sort!: MatSort;
-
-
-      constructor(public permission: PermissionService,
-        public referralService:ReferralService,
-        private router:Router,
-        private dialog: MatDialog
-        ){}
-
-      ngOnInit(): void {
-        this.getReferrals();
-      }
-      ngOnDestroy(): void {
-        this.onDestroy.next()
-      }
-      renew(){
-        this.getReferrals();
-      }
-
-
-     getReferrals() {
-  this.loading = true;
-  this.referralService.getReferralwithBills()
-    .pipe(takeUntil(this.onDestroy))
-    .subscribe(
-      (response: any) => {
-        this.loading = false;
-        if (response.statusCode === 200) {
-          const filtered = response.data.filter((item: { status: string; bill_status: string; }) =>
-            item.status === 'Confirmed' && (item.bill_status === null || item.bill_status === 'Pending')
-          );
-          this.dataSource = new MatTableDataSource(filtered);
-          this.dataSource.paginator = this.paginator;
-          this.dataSource.sort = this.sort;
-        } else if (response.statusCode === 401) {
-          this.router.navigateByUrl("/");
+  getReferrals() {
+    this.loading = true;
+    this.referralService
+      .getReferralwithBills()
+      .pipe(takeUntil(this.onDestroy))
+      .subscribe(
+        (response: any) => {
+          this.loading = false;
+          if (response.statusCode === 200) {
+            const filtered = response.data.filter(
+              (item: { status: string; bill_status: string }) =>
+                item.status === 'Confirmed' &&
+                (item.bill_status === null || item.bill_status === 'Pending')
+            );
+            this.dataSource = new MatTableDataSource(filtered);
+            this.dataSource.paginator = this.paginator;
+            this.dataSource.sort = this.sort;
+          } else if (response.statusCode === 401) {
+            this.router.navigateByUrl('/');
+          }
+        },
+        (error) => {
+          this.loading = false;
+          this.router.navigateByUrl('/');
         }
-      },
-      error => {
-        this.loading = false;
-        this.router.navigateByUrl("/");
-      }
-    );
+      );
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+
+  getBills(id: any) {
+    //  console.log("hiiii",id);
+    let config = new MatDialogConfig();
+    config.disableClose = false;
+    config.role = 'dialog';
+    config.maxWidth = '100vw';
+    config.maxHeight = '100vh';
+    config.width = '850px';
+    config.panelClass = 'full-screen-modal';
+    config.data = { id: id };
+
+    const dialogRef = this.dialog.open(BillComponent, config);
+
+    dialogRef.afterClosed().subscribe((result) => {
+      this.getReferrals();
+    });
+  }
+
+  getPayment(id: any) {
+    console.log('hiiii bill', id);
+    let config = new MatDialogConfig();
+    config.disableClose = false;
+    config.role = 'dialog';
+    config.maxWidth = '100vw';
+    config.maxHeight = '100vh';
+    config.width = '850px';
+    config.panelClass = 'full-screen-modal';
+    config.data = { id: id };
+
+    const dialogRef = this.dialog.open(ReferralpaymentComponent, config);
+
+    dialogRef.afterClosed().subscribe((result) => {
+      this.getReferrals();
+    });
+  }
+
+  displayMoreData(data: any) {
+    const id = data.referral_id;
+    this.router.navigate(['/pages/config/payment-details/more', id]);
+  }
+
+  // USER ROLES
+  public getUserRole(): any {
+    return localStorage.getItem('roles');
+  }
+
+  public get isStaff(): boolean {
+    return this.getUserRole() === 'ROLE STAFF';
+  }
 }
-
-      applyFilter(event: Event) {
-        const filterValue = (event.target as HTMLInputElement).value;
-        this.dataSource.filter = filterValue.trim().toLowerCase();
-
-        if (this.dataSource.paginator) {
-          this.dataSource.paginator.firstPage();
-        }
-      }
-
-
-
-
-          getBills(id:any){
-            //  console.log("hiiii",id);
-             let config = new MatDialogConfig()
-             config.disableClose = false
-             config.role = 'dialog'
-             config.maxWidth ='100vw'
-             config.maxHeight = '100vh'
-             config.width = '850px'
-             config.panelClass = 'full-screen-modal'
-             config.data = {id: id}
-
-             const dialogRef = this.dialog.open(BillComponent,config);
-
-             dialogRef.afterClosed().subscribe(result => {
-               this.getReferrals();
-             });
-           }
-
-           getPayment(id:any){
-              console.log("hiiii bill",id);
-             let config = new MatDialogConfig()
-             config.disableClose = false
-             config.role = 'dialog'
-             config.maxWidth ='100vw'
-             config.maxHeight = '100vh'
-             config.width = '850px'
-             config.panelClass = 'full-screen-modal'
-             config.data = {id: id}
-
-             const dialogRef = this.dialog.open(ReferralpaymentComponent,config);
-
-             dialogRef.afterClosed().subscribe(result => {
-               this.getReferrals();
-             });
-
-           }
-
-           displayMoreData(data: any) {
-
-            const id = data.referral_id;
-             this.router.navigate(['/pages/config/referrals/more', id]); // Navigate to the new page with complain_id
-           }
-
-            // USER ROLES
-    public getUserRole(): any {
-      return localStorage.getItem('roles');
-
-    }
-
-    public get isStaff(): boolean {
-      return this.getUserRole() === 'ROLE STAFF';
-    }
-
-      }
