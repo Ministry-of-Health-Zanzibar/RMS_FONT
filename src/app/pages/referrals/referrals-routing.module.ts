@@ -8,69 +8,106 @@ const routes: Routes = [
   // }
 
   {
-    path:'',
-    loadComponent:()=>import('./view-referrals/view-referrals.component').then(c=>c.ViewReferralsComponent)
+    path: '',
+    loadComponent: () =>
+      import('./view-referrals/view-referrals.component').then(
+        (c) => c.ViewReferralsComponent
+      ),
   },
   {
-    path:'bill',
-    loadComponent:()=>import('./referralwithbills/referralwithbills.component').then(c=>c.ReferralwithbillsComponent)
-
+    path: 'bill',
+    loadComponent: () =>
+      import('./referralwithbills/referralwithbills.component').then(
+        (c) => c.ReferralwithbillsComponent
+      ),
   },
 
-   {
-    path:'bill-file-list',
-    loadComponent:()=>import('./bill/bill-file-list/bill-file-list.component').then(c=>c.BillFileListComponent)
-
+  {
+    path: 'bill-file-list',
+    loadComponent: () =>
+      import('./bill/bill-file-list/bill-file-list.component').then(
+        (c) => c.BillFileListComponent
+      ),
   },
 
-   {
-    path:'more-bill-file/:id',
-    loadComponent:()=>import('./bill/bill-file-by-id/bill-file-by-id.component').then(c=>c.BillFileByIdComponent)
+  {
+    path: 'more-bill-file/:id',
+    loadComponent: () =>
+      import('./bill/bill-file-by-id/bill-file-by-id.component').then(
+        (c) => c.BillFileByIdComponent
+      ),
   },
 
   {
     path: 'bills-details/:id',
-    loadComponent:()=>import('./bill/bills-details/bills-details.component').then(c=>c.BillsDetailsComponent)
-   
-  },
-
-
-
-  {
-    path:'more/:id',
-    loadComponent:()=>import('./referral-details/referral-details.component').then(c=>c.ReferralDetailsComponent)
-  },
-  {
-    path:'dialog',
-    loadComponent:()=>import('./referral-status-dialog/referral-status-dialog.component').then(c=>c.ReferralStatusDialogComponent)
+    loadComponent: () =>
+      import('./bill/bills-details/bills-details.component').then(
+        (c) => c.BillsDetailsComponent
+      ),
   },
 
   {
-    path:'referralsLetter',
-    loadComponent:()=>import('./referrals-letter/referrals-letter.component').then(c=>c.ReferralsLetterComponent)
+    path: 'more/:id',
+    loadComponent: () =>
+      import('./referral-details/referral-details.component').then(
+        (c) => c.ReferralDetailsComponent
+      ),
   },
   {
-    path:'confirm0000111101',
-    loadComponent:()=>import('./view-referal-confirm/view-referal-confirm.component').then(c=>c.ViewReferalConfirmComponent)
+    path: 'dialog',
+    loadComponent: () =>
+      import('./referral-status-dialog/referral-status-dialog.component').then(
+        (c) => c.ReferralStatusDialogComponent
+      ),
   },
-  {
-    path:'billpayment2222200000',
-    loadComponent:()=>import('./billpayment/billpayment.component').then(c=>c.BillpaymentComponent)
-  },
-  {
-    path:'monthbill00998778',
-    loadComponent:()=>import('./month-bill/month-bill.component').then(c=>c.MonthBillComponent)
-  },
-  {
-    path:'monthbill/:id',
-    loadComponent:()=>import('./more-month-bill/more-month-bill.component').then(c=>c.MoreMonthBillComponent)
 
-  }
+  {
+    path: 'referralsLetter',
+    loadComponent: () =>
+      import('./referrals-letter/referrals-letter.component').then(
+        (c) => c.ReferralsLetterComponent
+      ),
+  },
+  {
+    path: 'confirm0000111101',
+    loadComponent: () =>
+      import('./view-referal-confirm/view-referal-confirm.component').then(
+        (c) => c.ViewReferalConfirmComponent
+      ),
+  },
+  {
+    path: 'billpayment2222200000',
+    loadComponent: () =>
+      import('./billpayment/billpayment.component').then(
+        (c) => c.BillpaymentComponent
+      ),
+  },
+  {
+    path: 'monthbill00998778',
+    loadComponent: () =>
+      import('./month-bill/month-bill.component').then(
+        (c) => c.MonthBillComponent
+      ),
+  },
+  {
+    path: 'monthbill/:id',
+    loadComponent: () =>
+      import('./more-month-bill/more-month-bill.component').then(
+        (c) => c.MoreMonthBillComponent
+      ),
+  },
 
+  {
+    path: 'payment-details/:id',
+    loadComponent: () =>
+      import('./payment-details/payment-details.component').then(
+        (c) => c.PaymentDetailsComponent
+      ),
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class ReferralsRoutingModule { }
+export class ReferralsRoutingModule {}
