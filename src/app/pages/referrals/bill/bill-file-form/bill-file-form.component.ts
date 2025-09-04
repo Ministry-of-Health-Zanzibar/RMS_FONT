@@ -22,7 +22,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { BillFileService } from '../../../../services/Bills/bill-file.service';
 import Swal from 'sweetalert2';
 import { HospitalService } from '../../../../services/system-configuration/hospital.service';
-import { response } from 'express';
+
 
 @Component({
   selector: 'app-bill-file-form',
@@ -82,14 +82,16 @@ export class BillFileFormComponent {
     this.onDestroy.complete();
   }
 
-
   fetchAllHospitals() {
-  this.hospitalService.getAllHospital().subscribe(response => {
-    this.hospitals = response.data;
-  }, error => {
-    console.error('Failed to fetch hospitals', error);
-  });
-}
+    this.billService.getAllHospital().subscribe(
+      (response) => {
+        this.hospitals = response.data;
+      },
+      (error) => {
+        console.error('Failed to fetch hospitals', error);
+      }
+    );
+  }
 
   onClose() {
     this.dialogRef.close(false);

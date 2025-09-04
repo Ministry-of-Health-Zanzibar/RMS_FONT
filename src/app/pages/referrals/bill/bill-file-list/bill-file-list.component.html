@@ -57,6 +57,13 @@
           </td>
         </ng-container>
 
+        <ng-container matColumnDef="hospital_name">
+          <th mat-header-cell *matHeaderCellDef>Hospital name</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.hospital.hospital_name }}
+          </td>
+        </ng-container>
+
         <ng-container matColumnDef="pdf">
           <th mat-header-cell *matHeaderCellDef>View PDF</th>
           <td mat-cell *matCellDef="let element">

@@ -1,89 +1,159 @@
 <div class="container my-5" *ngIf="billData">
-  <!-- Bill Header -->
-  <div class="card shadow mb-4">
-    <div class="card-header d-flex justify-content-between align-items-center bg-light">
-      <h5 class="mb-0">Bill Details - ID: {{ billData.bill_id }}</h5>
-      <span
-        class="badge"
-        [ngClass]="{
-          'bg-warning text-dark': billData.bill_status === 'Pending',
-          'bg-success': billData.bill_status === 'Paid',
-          'bg-danger': billData.bill_status === 'Rejected'
-        }"
-      >
-        {{ billData.bill_status }}
-      </span>
+  <!-- Page Title -->
+  <div class="text-center mb-5">
+    <h2 class="fw-bold text-primary">
+      <i class="bi bi-receipt"></i> Bill Details
+    </h2>
+    <p class="text-muted">Comprehensive overview of your billing information</p>
+  </div>
+
+  <div class="row g-4 mx-5">
+    <!-- Basic Info -->
+    <div class="col-lg-6">
+      <div class="card shadow-sm border-primary h-100">
+        <div class="card-header bg-primary text-white fw-bold">Basic Info</div>
+        <div class="card-body">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <strong>Bill ID:</strong> {{ billData.bill_id }}
+            </li>
+            <li class="list-group-item">
+              <strong>Total Amount:</strong>
+              {{ billData.total_amount | currency : "TZS " }}
+            </li>
+            <li class="list-group-item">
+              <strong>Period:</strong>
+              {{ billData.bill_period_start | date : "dd/MM/yyyy" }} -
+              {{ billData.bill_period_end | date : "dd/MM/yyyy" }}
+            </li>
+            <li class="list-group-item">
+              <strong>Created By:</strong> {{ billData.created_by }}
+            </li>
+            <li class="list-group-item">
+              <strong>Created At:</strong>
+              {{ billData.created_at | date : "short" }}
+            </li>
+            <li class="list-group-item">
+              <strong>Status:</strong>
+              <span
+                class="badge status-badge {{
+                  billData.bill_status | lowercase
+                }}"
+              >
+                {{ billData.bill_status }}
+              </span>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
 
-    <div class="card-body">
-
-      <!-- Basic Info -->
-      <div class="card mb-3 border-light shadow-sm">
-        <div class="card-header bg-secondary text-white">Basic Info</div>
-        <div class="card-body row">
-          <div class="col-md-6 mb-2"><strong>Total Amount:</strong> {{ billData.total_amount | currency:'TZS ' }}</div>
-          <div class="col-md-6 mb-2"><strong>Period:</strong> {{ billData.bill_period_start | date:'shortDate' }} - {{ billData.bill_period_end | date:'shortDate' }}</div>
-          <div class="col-md-6 mb-2"><strong>Created By:</strong> {{ billData.created_by }}</div>
-          <div class="col-md-6 mb-2"><strong>Created At:</strong> {{ billData.created_at | date:'short' }}</div>
-        </div>
-      </div>
-
-      <!-- Bill File -->
-      <div class="card mb-3 border-light shadow-sm">
-        <div class="card-header bg-secondary text-white">Bill File</div>
+    <!-- Bill File -->
+    <div class="col-lg-6">
+      <div class="card shadow-sm border-info h-100">
+        <div class="card-header bg-info text-white fw-bold">Bill File</div>
         <div class="card-body">
-          <p><strong>Title:</strong> {{ billData.bill_file?.bill_file_title }}</p>
-          <p><strong>Amount:</strong> {{ billData.bill_file?.bill_file_amount | currency:'TZS ' }}</p>
-          <p>
-            <strong>File:</strong>
-            <a [href]="billData.bill_file?.bill_file" target="_blank" class="btn btn-sm btn-primary">Download</a>
-          </p>
+          <ul class="list-group list-group-flush mb-3">
+            <li class="list-group-item">
+              <strong>Title:</strong> {{ billData.bill_file?.bill_file_title }}
+            </li>
+            <li class="list-group-item">
+              <strong>Amount:</strong>
+              {{ billData.bill_file?.bill_file_amount | currency : "TZS " }}
+            </li>
+          </ul>
+          <a
+            [href]="billData.bill_file?.bill_file"
+            target="_blank"
+            class="btn btn-outline-info btn-sm"
+          >
+            <i class="bi bi-download me-1"></i> Download File
+          </a>
         </div>
       </div>
+    </div>
 
-      <!-- Referral & Patient -->
-      <div class="card mb-3 border-light shadow-sm">
-        <div class="card-header bg-secondary text-white">Referral & Patient</div>
-        <div class="card-body row">
-          <div class="col-md-6 mb-2">
-            <p><strong>Referral Number:</strong> {{ billData.referral?.referral_number }}</p>
-            <p><strong>Referral Status:</strong> {{ billData.referral?.status }}</p>
-            <p><strong>Reason:</strong> {{ billData.referral?.reason?.referral_reason_name }}</p>
-          </div>
-          <div class="col-md-6 mb-2">
-            <p><strong>Patient Name:</strong> {{ billData.referral?.patient?.name }}</p>
-            <p><strong>DOB:</strong> {{ billData.referral?.patient?.date_of_birth | date:'shortDate' }}</p>
-            <p><strong>Gender:</strong> {{ billData.referral?.patient?.gender }}</p>
-            <p><strong>Phone:</strong> {{ billData.referral?.patient?.phone }}</p>
-            <p><strong>Location:</strong> {{ billData.referral?.patient?.location }}</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Hospital -->
-      <div class="card mb-3 border-light shadow-sm">
-        <div class="card-header bg-secondary text-white">Hospital</div>
+    <!-- Referral -->
+    <div class="col-lg-6">
+      <div class="card shadow-sm border-secondary h-100">
+        <div class="card-header bg-secondary text-white fw-bold">Referral</div>
         <div class="card-body">
-          <p><strong>Name:</strong> {{ billData.referral?.hospital?.hospital_name }}</p>
-          <p><strong>Code:</strong> {{ billData.referral?.hospital?.hospital_code }}</p>
-          <p><strong>Address:</strong> {{ billData.referral?.hospital?.hospital_address }}</p>
-          <p><strong>Contact:</strong> {{ billData.referral?.hospital?.contact_number }}</p>
-          <p><strong>Email:</strong> {{ billData.referral?.hospital?.hospital_email }}</p>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <strong>Referral Number:</strong>
+              {{ billData.referral?.referral_number }}
+            </li>
+            <li class="list-group-item">
+              <strong>Status:</strong> {{ billData.referral?.status }}
+            </li>
+            <li class="list-group-item">
+              <strong>Reason:</strong>
+              {{ billData.referral?.reason?.referral_reason_name }}
+            </li>
+          </ul>
         </div>
       </div>
+    </div>
 
+    <!-- Patient Info -->
+    <div class="col-lg-6">
+      <div class="card shadow-sm border-success h-100">
+        <div class="card-header bg-success text-white fw-bold">Patient</div>
+        <div class="card-body">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <strong>Name:</strong> {{ billData.referral?.patient?.name }}
+            </li>
+            <li class="list-group-item">
+              <strong>DOB:</strong>
+              {{
+                billData.referral?.patient?.date_of_birth | date : "dd/MM/yyyy"
+              }}
+            </li>
+            <li class="list-group-item">
+              <strong>Gender:</strong> {{ billData.referral?.patient?.gender }}
+            </li>
+            <li class="list-group-item">
+              <strong>Phone:</strong> {{ billData.referral?.patient?.phone }}
+            </li>
+            <li class="list-group-item">
+              <strong>Location:</strong>
+              {{ billData.referral?.patient?.location }}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hospital Info -->
+    <div class="col-12">
+      <div class="card shadow-sm border-dark">
+        <div class="card-header bg-dark text-white fw-bold">Hospital</div>
+        <div class="card-body">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <strong>Name:</strong>
+              {{ billData.referral?.hospital?.hospital_name }}
+            </li>
+            <li class="list-group-item">
+              <strong>Code:</strong>
+              {{ billData.referral?.hospital?.hospital_code }}
+            </li>
+            <li class="list-group-item">
+              <strong>Address:</strong>
+              {{ billData.referral?.hospital?.hospital_address }}
+            </li>
+            <li class="list-group-item">
+              <strong>Contact:</strong>
+              {{ billData.referral?.hospital?.contact_number }}
+            </li>
+            <li class="list-group-item">
+              <strong>Email:</strong>
+              {{ billData.referral?.hospital?.hospital_email }}
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
-</div>
-
-<!-- Loading Spinner -->
-<div *ngIf="loading" class="text-center my-5">
-  <div class="spinner-border text-primary" role="status">
-    <span class="visually-hidden">Loading...</span>
-  </div>
-</div>
-
-<!-- Empty State -->
-<div *ngIf="!loading && !billData" class="text-center my-5 text-muted">
-  No bill details found.
 </div>

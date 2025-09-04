@@ -60,6 +60,7 @@ export class ViewReferralsComponent implements OnInit, OnDestroy {
     'id',
     'patient_name',
     'referral_reason_name',
+    'hospital_name',
     'status',
     'action',
   ];
