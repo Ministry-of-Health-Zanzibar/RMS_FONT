@@ -92,6 +92,7 @@ export class BillItermDetailsComponent implements OnInit, AfterViewInit {
           this.dataSource.data = response.data;
         } else {
           Swal.fire('Not Found', 'No bill items found', 'warning');
+          this.dataSource.data = [];
         }
       },
       error: (error) => {
@@ -100,7 +101,7 @@ export class BillItermDetailsComponent implements OnInit, AfterViewInit {
         Swal.fire('Error', 'Failed to fetch bill items', 'error');
       },
     });
-  }
+  } 
 
   backToBills() {
     this.router.navigate(['/pages/config/referrals/more-bill-file']);
@@ -133,9 +134,10 @@ export class BillItermDetailsComponent implements OnInit, AfterViewInit {
     this.billService.addbillIterms(payload).subscribe({
       next: (response) => {
         Swal.fire('Success', 'Bill item added successfully', 'success');
-        if (response?.data?.length) {
-          const newItem = response.data[0];
-          this.dataSource.data = [...this.dataSource.data, newItem];
+
+        // Refresh table from backend to ensure consistency
+        if (payload.bill_id) {
+          this.getBillItemsByBillId(payload.bill_id.toString());
         }
       },
       error: (error) => {
