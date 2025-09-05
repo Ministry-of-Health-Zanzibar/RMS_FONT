@@ -145,8 +145,14 @@
           <mat-menu #billMenu="matMenu">
             <button mat-menu-item (click)="displayBillDetails(bill)">
               <mat-icon>visibility</mat-icon>
-              <span>View</span>
+              <span>Bill details</span>
             </button>
+
+            <button mat-menu-item (click)="billFileIterm(bill)">
+              <mat-icon>visibility</mat-icon>
+              <span>Bill iterms</span>
+            </button>
+
             <button mat-menu-item (click)="deleteBill(bill.bill_id)">
               <mat-icon color="warn">delete</mat-icon>
               <span>Delete</span>

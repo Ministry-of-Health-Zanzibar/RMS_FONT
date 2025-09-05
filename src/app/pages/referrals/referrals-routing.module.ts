@@ -104,6 +104,30 @@ const routes: Routes = [
         (c) => c.PaymentDetailsComponent
       ),
   },
+
+   {
+    path: 'bill-iterm-list',
+    loadComponent: () =>
+      import('./bill/bill-items-list/bill-items-list.component').then(
+        (c) => c.BillItemsListComponent
+      ),
+  },
+
+    {
+    path: 'bill-iterm-form',
+    loadComponent: () =>
+      import('./bill/bill-iterm-form/bill-iterm-form.component').then(
+        (c) => c.BillItermFormComponent
+      ),
+  },
+
+    {
+    path: 'bill-iterm-details/:id',
+    loadComponent: () =>
+      import('./bill/bill-iterm-details/bill-iterm-details.component').then(
+        (c) => c.BillItermDetailsComponent
+      ),
+  },
 ];
 
 @NgModule({

@@ -162,7 +162,7 @@ export class AddReferralsComponent {
   }
 
   getPatient() {
-    this.patientService.getAllPartientsForReferal().subscribe((response) => {
+    this.patientService.getAllPartients().subscribe((response) => {
       this.patients = response.data;
     });
   }

@@ -54,7 +54,7 @@ export class ViewReferalConfirmComponent implements OnInit,OnDestroy{
 
       displayedColumns: string[] =
       ['id', 'patient_name',
-      'hospital_name', 'referral_reason_name','start_date', 'end_date', 'status', 'action'];
+      'hospital_name', 'referral_reason_name', 'status', 'action'];
       dataSource: MatTableDataSource<any> = new MatTableDataSource();
 
       @ViewChild(MatPaginator) paginator!: MatPaginator;

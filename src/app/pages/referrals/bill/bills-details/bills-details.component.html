@@ -7,39 +7,33 @@
     <p class="text-muted">Comprehensive overview of your billing information</p>
   </div>
 
-  <div class="row g-4 mx-5">
+  <div class="row g-4">
     <!-- Basic Info -->
-    <div class="col-lg-6">
+    <div class="col-lg-6 col-md-12">
       <div class="card shadow-sm border-primary h-100">
         <div class="card-header bg-primary text-white fw-bold">Basic Info</div>
         <div class="card-body">
           <ul class="list-group list-group-flush">
-            <li class="list-group-item">
-              <strong>Bill ID:</strong> {{ billData.bill_id }}
+            <li class="list-group-item d-flex justify-content-between">
+              <span>Bill ID:</span> <span>{{ billData.bill_id }}</span>
             </li>
-            <li class="list-group-item">
-              <strong>Total Amount:</strong>
-              {{ billData.total_amount | currency : "TZS " }}
+            <li class="list-group-item d-flex justify-content-between">
+              <span>Total Amount:</span> 
+              <span>{{ billData.total_amount | currency:"TZS " }}</span>
             </li>
-            <li class="list-group-item">
-              <strong>Period:</strong>
-              {{ billData.bill_period_start | date : "dd/MM/yyyy" }} -
-              {{ billData.bill_period_end | date : "dd/MM/yyyy" }}
+            <li class="list-group-item d-flex justify-content-between">
+              <span>Period:</span> 
+              <span>{{ billData.bill_period_start | date:"dd/MM/yyyy" }} - {{ billData.bill_period_end | date:"dd/MM/yyyy" }}</span>
             </li>
-            <li class="list-group-item">
-              <strong>Created By:</strong> {{ billData.created_by }}
+            <li class="list-group-item d-flex justify-content-between">
+              <span>Created By:</span> <span>{{ billData.created_by }}</span>
             </li>
-            <li class="list-group-item">
-              <strong>Created At:</strong>
-              {{ billData.created_at | date : "short" }}
+            <li class="list-group-item d-flex justify-content-between">
+              <span>Created At:</span> <span>{{ billData.created_at | date:"short" }}</span>
             </li>
-            <li class="list-group-item">
-              <strong>Status:</strong>
-              <span
-                class="badge status-badge {{
-                  billData.bill_status | lowercase
-                }}"
-              >
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span>Status:</span>
+              <span class="badge status-badge {{ billData.bill_status | lowercase }}">
                 {{ billData.bill_status }}
               </span>
             </li>
@@ -49,24 +43,19 @@
     </div>
 
     <!-- Bill File -->
-    <div class="col-lg-6">
+    <div class="col-lg-6 col-md-12">
       <div class="card shadow-sm border-info h-100">
         <div class="card-header bg-info text-white fw-bold">Bill File</div>
         <div class="card-body">
           <ul class="list-group list-group-flush mb-3">
-            <li class="list-group-item">
-              <strong>Title:</strong> {{ billData.bill_file?.bill_file_title }}
+            <li class="list-group-item d-flex justify-content-between">
+              <span>Title:</span> <span>{{ billData.bill_file?.bill_file_title }}</span>
             </li>
-            <li class="list-group-item">
-              <strong>Amount:</strong>
-              {{ billData.bill_file?.bill_file_amount | currency : "TZS " }}
+            <li class="list-group-item d-flex justify-content-between">
+              <span>Amount:</span> <span>{{ billData.bill_file?.bill_file_amount | currency:"TZS " }}</span>
             </li>
           </ul>
-          <a
-            [href]="billData.bill_file?.bill_file"
-            target="_blank"
-            class="btn btn-outline-info btn-sm"
-          >
+          <a [href]="billData.bill_file?.bill_file" target="_blank" class="btn btn-outline-info btn-sm">
             <i class="bi bi-download me-1"></i> Download File
           </a>
         </div>
@@ -74,21 +63,19 @@
     </div>
 
     <!-- Referral -->
-    <div class="col-lg-6">
+    <div class="col-lg-6 col-md-12">
       <div class="card shadow-sm border-secondary h-100">
         <div class="card-header bg-secondary text-white fw-bold">Referral</div>
         <div class="card-body">
           <ul class="list-group list-group-flush">
-            <li class="list-group-item">
-              <strong>Referral Number:</strong>
-              {{ billData.referral?.referral_number }}
+            <li class="list-group-item d-flex justify-content-between">
+              <span>Referral Number:</span> <span>{{ billData.referral?.referral_number }}</span>
             </li>
-            <li class="list-group-item">
-              <strong>Status:</strong> {{ billData.referral?.status }}
+            <li class="list-group-item d-flex justify-content-between">
+              <span>Status:</span> <span>{{ billData.referral?.status }}</span>
             </li>
-            <li class="list-group-item">
-              <strong>Reason:</strong>
-              {{ billData.referral?.reason?.referral_reason_name }}
+            <li class="list-group-item d-flex justify-content-between">
+              <span>Reason:</span> <span>{{ billData.referral?.reason?.referral_reason_name }}</span>
             </li>
           </ul>
         </div>
@@ -96,29 +83,25 @@
     </div>
 
     <!-- Patient Info -->
-    <div class="col-lg-6">
+    <div class="col-lg-6 col-md-12">
       <div class="card shadow-sm border-success h-100">
         <div class="card-header bg-success text-white fw-bold">Patient</div>
         <div class="card-body">
           <ul class="list-group list-group-flush">
-            <li class="list-group-item">
-              <strong>Name:</strong> {{ billData.referral?.patient?.name }}
+            <li class="list-group-item d-flex justify-content-between">
+              <span>Name:</span> <span>{{ billData.referral?.patient?.name }}</span>
             </li>
-            <li class="list-group-item">
-              <strong>DOB:</strong>
-              {{
-                billData.referral?.patient?.date_of_birth | date : "dd/MM/yyyy"
-              }}
+            <li class="list-group-item d-flex justify-content-between">
+              <span>DOB:</span> <span>{{ billData.referral?.patient?.date_of_birth | date:"dd/MM/yyyy" }}</span>
             </li>
-            <li class="list-group-item">
-              <strong>Gender:</strong> {{ billData.referral?.patient?.gender }}
+            <li class="list-group-item d-flex justify-content-between">
+              <span>Gender:</span> <span>{{ billData.referral?.patient?.gender }}</span>
             </li>
-            <li class="list-group-item">
-              <strong>Phone:</strong> {{ billData.referral?.patient?.phone }}
+            <li class="list-group-item d-flex justify-content-between">
+              <span>Phone:</span> <span>{{ billData.referral?.patient?.phone }}</span>
             </li>
-            <li class="list-group-item">
-              <strong>Location:</strong>
-              {{ billData.referral?.patient?.location }}
+            <li class="list-group-item d-flex justify-content-between">
+              <span>Location:</span> <span>{{ billData.referral?.patient?.location }}</span>
             </li>
           </ul>
         </div>
@@ -131,25 +114,20 @@
         <div class="card-header bg-dark text-white fw-bold">Hospital</div>
         <div class="card-body">
           <ul class="list-group list-group-flush">
-            <li class="list-group-item">
-              <strong>Name:</strong>
-              {{ billData.referral?.hospital?.hospital_name }}
+            <li class="list-group-item d-flex justify-content-between">
+              <span>Name:</span> <span>{{ billData.referral?.hospital?.hospital_name }}</span>
             </li>
-            <li class="list-group-item">
-              <strong>Code:</strong>
-              {{ billData.referral?.hospital?.hospital_code }}
+            <li class="list-group-item d-flex justify-content-between">
+              <span>Code:</span> <span>{{ billData.referral?.hospital?.hospital_code }}</span>
             </li>
-            <li class="list-group-item">
-              <strong>Address:</strong>
-              {{ billData.referral?.hospital?.hospital_address }}
+            <li class="list-group-item d-flex justify-content-between">
+              <span>Address:</span> <span>{{ billData.referral?.hospital?.hospital_address }}</span>
             </li>
-            <li class="list-group-item">
-              <strong>Contact:</strong>
-              {{ billData.referral?.hospital?.contact_number }}
+            <li class="list-group-item d-flex justify-content-between">
+              <span>Contact:</span> <span>{{ billData.referral?.hospital?.contact_number }}</span>
             </li>
-            <li class="list-group-item">
-              <strong>Email:</strong>
-              {{ billData.referral?.hospital?.hospital_email }}
+            <li class="list-group-item d-flex justify-content-between">
+              <span>Email:</span> <span>{{ billData.referral?.hospital?.hospital_email }}</span>
             </li>
           </ul>
         </div>
@@ -157,3 +135,11 @@
     </div>
   </div>
 </div>
+
+<!-- CSS for Status Badge -->
+<style>
+  .status-badge.pending { background-color: #ffc107; color: #212529; }
+  .status-badge.paid { background-color: #28a745; color: #fff; }
+  .status-badge.rejected { background-color: #dc3545; color: #fff; }
+  .status-badge.default { background-color: #6c757d; color: #fff; }
+</style>

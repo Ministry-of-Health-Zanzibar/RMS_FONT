@@ -17,7 +17,10 @@ import Swal from 'sweetalert2';
 import { PermissionService } from '../../../../services/authentication/permission.service';
 import { BillFileService } from '../../../../services/Bills/bill-file.service';
 import { BillService } from '../../../../services/system-configuration/bill.service';
-import { AddBillDialogData, AddBillsComponent } from '../add-bills/add-bills.component';
+import {
+  AddBillDialogData,
+  AddBillsComponent,
+} from '../add-bills/add-bills.component';
 import { ReferralService } from '../../../../services/Referral/referral.service';
 
 interface BillFile {
@@ -54,11 +57,11 @@ interface Bill {
     MatInputModule,
     MatTooltipModule,
     ReactiveFormsModule,
-    MatMenuModule
+    MatMenuModule,
   ],
   templateUrl: './bill-file-by-id.component.html',
   styleUrls: ['./bill-file-by-id.component.scss'],
-  providers: [DatePipe]
+  providers: [DatePipe],
 })
 export class BillFileByIdComponent implements OnInit, AfterViewInit {
   public bills: BillFile[] = [];
@@ -66,8 +69,14 @@ export class BillFileByIdComponent implements OnInit, AfterViewInit {
   public bill_id: string | null = null;
   public bill_file_id: number | null = null;
 
-  displayedBillFileColumns: string[] = ['bill_file_title', 'bill_file', 'bill_file_amount', 'actions'];
-  billFileDataSource: MatTableDataSource<BillFile> = new MatTableDataSource<BillFile>();
+  displayedBillFileColumns: string[] = [
+    'bill_file_title',
+    'bill_file',
+    'bill_file_amount',
+    'actions',
+  ];
+  billFileDataSource: MatTableDataSource<BillFile> =
+    new MatTableDataSource<BillFile>();
 
   displayedBillColumns: string[] = [
     'bill_id',
@@ -77,7 +86,7 @@ export class BillFileByIdComponent implements OnInit, AfterViewInit {
     'total_amount',
     'bill_period',
     'bill_status',
-    'actions'
+    'actions',
   ];
   billDataSource: MatTableDataSource<Bill> = new MatTableDataSource<Bill>();
 
@@ -85,7 +94,7 @@ export class BillFileByIdComponent implements OnInit, AfterViewInit {
   @ViewChild('billFileSort') billFileSort!: MatSort;
   @ViewChild('billPaginator') billPaginator!: MatPaginator;
   @ViewChild('billSort') billSort!: MatSort;
-element: any;
+  element: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -93,7 +102,7 @@ element: any;
     private billService: BillService,
     private billFileService: BillFileService,
     private referralService: ReferralService,
-    private router:Router,
+    private router: Router,
     private dialog: MatDialog,
     private datePipe: DatePipe
   ) {}
@@ -145,7 +154,7 @@ element: any;
         this.loading = false;
         console.error('Error fetching bill file:', error);
         Swal.fire('Error', 'Failed to fetch bill file', 'error');
-      }
+      },
     });
   }
 
@@ -156,14 +165,16 @@ element: any;
         this.loading = false;
         const responseData = res?.data;
         this.billDataSource.data = responseData
-          ? (Array.isArray(responseData) ? responseData.map(bill => this.formatBill(bill)) : [this.formatBill(responseData)])
+          ? Array.isArray(responseData)
+            ? responseData.map((bill) => this.formatBill(bill))
+            : [this.formatBill(responseData)]
           : [];
       },
       error: (err: any) => {
         this.loading = false;
         console.error('Error fetching bills:', err);
         Swal.fire('Error', 'Failed to fetch bills', 'error');
-      }
+      },
     });
   }
 
@@ -177,7 +188,7 @@ element: any;
       total_amount: bill.total_amount,
       bill_period_start: bill.bill_period_start,
       bill_period_end: bill.bill_period_end,
-      bill_status: bill.bill_status
+      bill_status: bill.bill_status,
     };
   }
 
@@ -186,15 +197,15 @@ element: any;
       billFileId,
       hospitalId: this.bills[0]?.hospital_id,
       billTitle: this.bills[0]?.bill_file_title || 'Bill',
-      referralOptions: []
+      referralOptions: [],
     };
 
     const dialogRef = this.dialog.open(AddBillsComponent, {
       width: '600px',
-      data: dialogData
+      data: dialogData,
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.createBill(result);
       }
@@ -207,15 +218,22 @@ element: any;
       next: (response: any) => {
         this.loading = false;
         if (response.data) {
-          this.billDataSource.data = [...this.billDataSource.data, this.formatBill(response.data)];
+          this.billDataSource.data = [
+            ...this.billDataSource.data,
+            this.formatBill(response.data),
+          ];
         }
-        Swal.fire('Success', response.message || 'Bill created successfully', 'success');
+        Swal.fire(
+          'Success',
+          response.message || 'Bill created successfully',
+          'success'
+        );
       },
       error: (error) => {
         this.loading = false;
         console.error('Error creating bill:', error);
         Swal.fire('Error', 'Failed to create bill', 'error');
-      }
+      },
     });
   }
 
@@ -227,13 +245,15 @@ element: any;
       showCancelButton: true,
       confirmButtonColor: '#d33',
       cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Yes, delete it!'
-    }).then(result => {
+      confirmButtonText: 'Yes, delete it!',
+    }).then((result) => {
       if (result.isConfirmed) {
         this.loading = true;
         this.billService.deleteBill(billId).subscribe({
           next: () => {
-            this.billDataSource.data = this.billDataSource.data.filter(b => b.bill_id !== billId);
+            this.billDataSource.data = this.billDataSource.data.filter(
+              (b) => b.bill_id !== billId
+            );
             this.loading = false;
             Swal.fire('Deleted!', 'The bill has been deleted.', 'success');
           },
@@ -241,14 +261,18 @@ element: any;
             this.loading = false;
             console.error('Error deleting bill:', error);
             Swal.fire('Error', 'Failed to delete bill', 'error');
-          }
+          },
         });
       }
     });
   }
- displayBillDetails(data: any) {
-  const id = data.bill_id; 
-  this.router.navigate(['/pages/config/referrals/bills-details', id]);
-}
+  displayBillDetails(data: any) {
+    const id = data.bill_id;
+    this.router.navigate(['/pages/config/referrals/bills-details', id]);
+  }
 
+  billFileIterm(data: any) {
+    const id = data.bill_id;
+    this.router.navigate(['/pages/config/referrals/bill-iterm-details', id]);
+  }
 }

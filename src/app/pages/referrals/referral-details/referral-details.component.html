@@ -18,11 +18,11 @@
       </thead>
       <tbody class="text-sm divide-y divide-gray-200">
         <tr class="hover:bg-gray-50 transition">
-          <td class="px-4 py-3">{{ referral.patient_name }}</td>
-          <td class="px-4 py-3">{{ referral.date_of_birth }}</td>
-          <td class="px-4 py-3">{{ referral.phone }}</td>
-          <td class="px-4 py-3">{{ referral.gender }}</td>
-          <td class="px-4 py-3">{{ referral.referral_reason_name }}</td>
+          <td class="px-4 py-3">{{ referral.patient.name }}</td>
+          <td class="px-4 py-3">{{ referral.patient.date_of_birth }}</td>
+          <td class="px-4 py-3">{{ referral.patient.phone }}</td>
+          <td class="px-4 py-3">{{ referral.patient.gender }}</td>
+          <td class="px-4 py-3">{{ referral.reason.referral_reason_name }}</td>
           <td class="px-4 py-3">
             <span
               class="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full text-white"

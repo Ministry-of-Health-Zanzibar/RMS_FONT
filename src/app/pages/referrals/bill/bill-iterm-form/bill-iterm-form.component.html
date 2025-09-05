@@ -1,0 +1,56 @@
+
+<div mat-dialog-content>
+  <h2 mat-dialog-title>Add Bill Item</h2>
+
+  <form [formGroup]="billForm">
+    <div mat-dialog-content>
+      <!-- Description -->
+      <mat-form-field class="w-full" appearance="outline">
+        <mat-label>Description</mat-label>
+        <input
+          matInput
+          formControlName="description"
+          placeholder="Enter item description"
+        />
+        <mat-error
+          *ngIf="
+            billForm.get('description')?.invalid &&
+            billForm.get('description')?.touched
+          "
+        >
+          Description is required
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Amount -->
+      <mat-form-field class="w-full" appearance="outline">
+        <mat-label>Amount</mat-label>
+        <input
+          matInput
+          type="number"
+          formControlName="amount"
+          placeholder="Enter amount"
+        />
+        <mat-error
+          *ngIf="
+            billForm.get('amount')?.invalid && billForm.get('amount')?.touched
+          "
+        >
+          Amount is required and must be positive
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div mat-dialog-actions align="end">
+      <button mat-button (click)="onCancel()">Cancel</button>
+      <button
+        mat-flat-button
+        color="primary"
+        [disabled]="billForm.invalid"
+        (click)="onSave()"
+      >
+        Save
+      </button>
+    </div>
+  </form>
+</div>
