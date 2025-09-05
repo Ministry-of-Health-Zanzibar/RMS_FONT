@@ -35,10 +35,10 @@
         <div class="form-row">
           <mat-form-field class="form-field">
             <mat-label>Address</mat-label>
-            <input matInput placeholder="Ex. MWERA" formControlName="location" type="text">
-            <mat-error *ngIf="patientForm.get('location')?.invalid && patientForm.get('location')?.touched">
-              <span *ngIf="patientForm.get('location')?.errors?.['required']">This field is mandatory</span>
-              <span *ngIf="patientForm.get('location')?.errors?.['pattern']">Must contain alphabetical characters only</span>
+            <input matInput placeholder="Ex. MWERA" formControlName="location_id" type="text">
+            <mat-error *ngIf="patientForm.get('location_id')?.invalid && patientForm.get('location_id')?.touched">
+              <span *ngIf="patientForm.get('location_id')?.errors?.['required']">This field is mandatory</span>
+              <span *ngIf="patientForm.get('location_id')?.errors?.['pattern']">Must contain alphabetical characters only</span>
             </mat-error>
           </mat-form-field>
 

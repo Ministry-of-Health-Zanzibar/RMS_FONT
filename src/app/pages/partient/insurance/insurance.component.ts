@@ -90,7 +90,7 @@ export class InsuranceComponent {
 
           name: new FormControl(null, [Validators.required]),
            gender: new FormControl(null, Validators.required),
-           location: new FormControl(null, ),
+           location_id: new FormControl(null, ),
           //  location: new FormControl(null, Validators.required),
            phone: new FormControl(null, Validators.required),
            job: new FormControl(null,),
@@ -139,12 +139,14 @@ saveClient() {
   if (this.patientForm.valid) {
     const formData = new FormData();
 
-    // append normal form values except patient_file
-    Object.keys(this.patientForm.value).forEach(key => {
-      if (key !== 'patient_file') {
-        formData.append(key, this.patientForm.value[key]);
-      }
-    });
+   Object.keys(this.patientForm.value).forEach(key => {
+  if (key === 'location_id' && this.patientForm.value[key]) {
+    formData.append('location_id', this.patientForm.value[key].location_id);
+  } else if (key !== 'patient_file') {
+    formData.append(key, this.patientForm.value[key]);
+  }
+});
+
 
     // ✅ append the actual file
     if (this.selectedAttachement) {
@@ -178,34 +180,7 @@ saveClient() {
 
 
 
-  // saveClient() {
-  //   if (this.patientForm.valid) {
-  //     const formData = {
-  //       ...this.patientForm.value,
-  //       patient_list_id: this.id  // override in case it was not set in form
-  //     };
 
-  //     this.insurance.addPatientfromBodyList(formData).subscribe(response => {
-  //       if (response.statusCode === 201) {
-  //         Swal.fire({
-  //           title: "Success",
-  //           text: response.message,
-  //           icon: "success",
-  //           confirmButtonColor: "#4690eb",
-  //           confirmButtonText: "Continue"
-  //         });
-  //       } else {
-  //         Swal.fire({
-  //           title: "Error",
-  //           text: response.message,
-  //           icon: "error",
-  //           confirmButtonColor: "#4690eb",
-  //           confirmButtonText: "Close"
-  //         });
-  //       }
-  //     });
-  //   }
-  // }
 
 
 

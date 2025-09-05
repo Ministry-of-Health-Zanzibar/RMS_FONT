@@ -73,7 +73,7 @@ export class AddpartientComponent implements OnInit, OnDestroy {
     this.patientForm = new FormGroup({
       name: new FormControl(null, [Validators.required, Validators.pattern(GlobalConstants.nameRegexOnly)]),
       gender: new FormControl(null, Validators.required),
-      location: new FormControl(null, Validators.required),
+      location_id: new FormControl(null, Validators.required),
       phone: new FormControl(null, Validators.required),
       job: new FormControl(null, Validators.required),
       position: new FormControl(null, Validators.required),

@@ -33,7 +33,7 @@
         <div class="form-row">
           <mat-form-field class="form-field">
             <mat-label>Location</mat-label>
-            <input type="text" matInput placeholder="public" formControlName="location" [matAutocomplete]="auto">
+            <input type="text" matInput placeholder="public" formControlName="location_id" [matAutocomplete]="auto">
             <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
               <mat-option *ngFor="let option of filteredOptions | async; trackBy: trackById" [value]="option">
                 {{ option.location_name }}
