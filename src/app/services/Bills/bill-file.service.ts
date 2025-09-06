@@ -11,6 +11,8 @@ export class BillFileService {
   private baseUrls: string = `${environment.baseUrl}hospitals/reffered-hospitals`;
 
   private baseUrlss: string = `${environment.baseUrl}bills-by-bill-file`;
+  private baseUrlForPayment: string = `${environment.baseUrl}bill-files/bill-files-for-payment/payment`;
+
 
 
   constructor(private http: HttpClient) {}
@@ -21,6 +23,10 @@ export class BillFileService {
 
   public getAllBillFiles(): Observable<any> {
     return this.http.get<any>(this.baseUrl);
+  }
+
+  public getAllBillFilesForPayment(): Observable<any> {
+    return this.http.get<any>(this.baseUrlForPayment);
   }
 
   public getAllHospital(): Observable<any> {

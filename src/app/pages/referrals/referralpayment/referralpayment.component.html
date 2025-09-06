@@ -1,117 +1,165 @@
-<div class="mx-auto my-6 p-6 bg-white rounded-lg shadow-md space-y-6">
-  <!-- Bill Details -->
-  <div *ngIf="bill" class="space-y-2">
-    <h2 class="text-xl font-bold text-gray-800 border-b pb-1">Payment Details</h2>
-
-    <div class="text-2xl font-bold text-gray-900">
-      {{ bill.amount | currency : "TZS" : "symbol" : "1.0-0" }}
+<div class="w-full">
+  <div class="relative h-full rounded-lg group p-6">
+    <div *ngIf="id" class="font-semibold text-center text-black text-2xl mb-4">
+      ADD PAYMENT
     </div>
 
-    <ul class="text-gray-700 text-sm space-y-1">
-      <li>
-        Payer: <span class="font-medium">{{ bill.payer || "N/A" }}</span>
-      </li>
-      <li>
-        Date: <span class="font-medium">{{ bill.sent_date | date }}</span>
-      </li>
-      <li>
-        Status:
-        <span
-          class="inline-block px-2 py-0.5 rounded-full text-xs font-semibold"
-          [ngClass]="{
-            'bg-yellow-100 text-yellow-800': bill.bill_status === 'Pending',
-            'bg-green-100 text-green-800': bill.bill_status === 'Paid',
-            'bg-blue-100 text-blue-800': bill.bill_status === 'Partially Paid'
-          }"
-        >
-          {{ bill.bill_status || "N/A" }}
-        </span>
-      </li>
-    </ul>
-  </div>
+    <form [formGroup]="clientForm">
+      <div class="row">
+        <!-- Bill File -->
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Bill File</mat-label>
+          <mat-select formControlName="bill_file_id" required>
+            <mat-option
+              *ngFor="let file of billFile"
+              [value]="file.bill_file_id"
+            >
+              {{ file.bill_file_title }} - {{ file.hospital.hospital_name }} -
+              {{
+                file.bill_file_amount | currency : "TZS" : "symbol" : "1.0-0"
+              }}
+            </mat-option>
+          </mat-select>
+          <mat-error
+            *ngIf="
+              clientForm.controls['bill_file_id'].touched &&
+              clientForm.controls['bill_file_id'].invalid
+            "
+          >
+            Bill file is required
+          </mat-error>
+        </mat-form-field>
 
-  <!-- Add Payment Form -->
-  <div *ngIf="id" class="space-y-2">
-    <h2 class="text-lg font-semibold text-gray-800 border-b pb-1">
-      Add Payment
-    </h2>
+        <!-- Amount Paid -->
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Amount Paid</mat-label>
+          <input
+            matInput
+            type="number"
+            formControlName="amount_paid"
+            placeholder="e.g. 500000"
+          />
+          <mat-error
+            *ngIf="
+              clientForm.controls['amount_paid'].touched &&
+              clientForm.controls['amount_paid'].invalid
+            "
+          >
+            <span
+              *ngIf="clientForm.controls['amount_paid'].errors?.['required']"
+            >
+              This field is mandatory
+            </span>
+            <span *ngIf="clientForm.controls['amount_paid'].errors?.['min']">
+              Amount must be greater than 0
+            </span>
+          </mat-error>
+        </mat-form-field>
 
-    <form [formGroup]="clientForm" class="space-y-3">
-      <mat-form-field appearance="outline" class="w-full dense-field">
-        <mat-label>Bill File</mat-label>
-        <mat-select formControlName="bill_file_id" required>
-          <mat-option *ngFor="let file of billFile" [value]="file.bill_file_id">
-            {{ file.bill_file_title }} - {{ file.hospital.hospital_name }} -
-            {{ file.bill_file_amount | currency : "TZS" : "symbol" : "1.0-0" }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+        <!-- Payer -->
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Payer</mat-label>
+          <input matInput formControlName="payer" placeholder="e.g. John Doe" />
+          <mat-error
+            *ngIf="
+              clientForm.controls['payer'].touched &&
+              clientForm.controls['payer'].invalid
+            "
+          >
+            Payer is required
+          </mat-error>
+        </mat-form-field>
 
-      <mat-form-field appearance="outline" class="w-full dense-field">
-        <mat-label>Amount Paid</mat-label>
-        <input
-          matInput
-          formControlName="amount_paid"
-          type="number"
-          placeholder="e.g. 500000"
-        />
-      </mat-form-field>
+        <!-- Payment Method -->
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Payment Method</mat-label>
+          <mat-select formControlName="payment_method" required>
+            <mat-option value="Cash">Cash</mat-option>
+            <mat-option value="Bank Transfer / Wire Transfer"
+              >Bank Transfer / Wire Transfer</mat-option
+            >
+            <mat-option value="Mobile Money">Mobile Money</mat-option>
+            <mat-option value="Credit Card">Credit Card</mat-option>
+            <mat-option value="Debit Card">Debit Card</mat-option>
+            <mat-option value="Cheque / Check">Cheque / Check</mat-option>
+            <mat-option value="Online Payment Platforms"
+              >Online Payment Platforms</mat-option
+            >
+            <mat-option value="Cryptocurrency">Cryptocurrency</mat-option>
+            <mat-option value="Gift Card / Voucher"
+              >Gift Card / Voucher</mat-option
+            >
+            <mat-option value="Direct Debit / Standing Order"
+              >Direct Debit / Standing Order</mat-option
+            >
+          </mat-select>
 
-      <mat-form-field appearance="outline" class="w-full dense-field">
-        <mat-label>Payer</mat-label>
-        <input matInput formControlName="payer" placeholder="e.g. John Doe" />
-      </mat-form-field>
+          <mat-error
+            *ngIf="
+              clientForm.controls['payment_method'].touched &&
+              clientForm.controls['payment_method'].invalid
+            "
+          >
+            Payment method is required
+          </mat-error>
+        </mat-form-field>
 
-      <mat-form-field appearance="outline" class="w-full dense-field">
-        <mat-label>Payment Method</mat-label>
-        <mat-select formControlName="payment_method" required>
-          <mat-option value="Bank Transfer">Bank Transfer</mat-option>
-          <mat-option value="CRDB">CRDB</mat-option>
-          <mat-option value="Mobile Money">Mobile Money</mat-option>
-        </mat-select>
-      </mat-form-field>
+        <!-- Reference Number -->
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Reference Number</mat-label>
+          <input
+            matInput
+            formControlName="reference_number"
+            placeholder="e.g. REF12345"
+          />
+        </mat-form-field>
 
-      <mat-form-field appearance="outline" class="w-full dense-field">
-        <mat-label>Reference Number</mat-label>
-        <input
-          matInput
-          formControlName="reference_number"
-          placeholder="e.g. REF12345"
-        />
-      </mat-form-field>
+        <!-- Voucher Number -->
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Voucher Number</mat-label>
+          <input
+            matInput
+            formControlName="voucher_number"
+            placeholder="e.g. VCH98765"
+          />
+        </mat-form-field>
 
-      <mat-form-field appearance="outline" class="w-full dense-field">
-        <mat-label>Voucher Number</mat-label>
-        <input
-          matInput
-          formControlName="voucher_number"
-          placeholder="e.g. VCH98765"
-        />
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="w-full dense-field">
-        <mat-label>Payment Date</mat-label>
-        <input
-          matInput
-          [matDatepicker]="picker"
-          formControlName="payment_date"
-          placeholder="Select date"
-        />
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-      </mat-form-field>
+        <!-- Payment Date -->
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Payment Date</mat-label>
+          <input
+            matInput
+            [matDatepicker]="picker"
+            formControlName="payment_date"
+            placeholder="Select date"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error
+            *ngIf="
+              clientForm.controls['payment_date'].touched &&
+              clientForm.controls['payment_date'].invalid
+            "
+          >
+            Payment date is required
+          </mat-error>
+        </mat-form-field>
+      </div>
     </form>
 
     <!-- Actions -->
     <mat-dialog-actions align="end" class="mt-4 space-x-3">
-      <button mat-stroked-button mat-dialog-close>Cancel</button>
+      <button mat-button mat-dialog-close>Cancel</button>
       <button
         mat-flat-button
         color="primary"
-        [disabled]="clientForm.invalid"
+        [disabled]="!(clientForm.valid && clientForm.dirty)"
         (click)="savePayment()"
       >
-        Add Payment
+        {{ id ? "Update" : "Add" }} Payment
       </button>
     </mat-dialog-actions>
   </div>
