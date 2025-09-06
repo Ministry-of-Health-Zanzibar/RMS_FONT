@@ -83,7 +83,8 @@
           <span
             class="px-3 py-1 rounded-full text-xs font-semibold"
             [ngClass]="{
-              'bg-green-100 text-green-700': element.status === 'Partially Paid',
+              'bg-green-100 text-green-700':
+                element.status === 'Partially Paid',
               'bg-red-100 text-red-700': element.status === 'Denied',
               'bg-yellow-100 text-yellow-700': element.status === 'Pending'
             }"
@@ -105,9 +106,10 @@
               <mat-icon color="primary">add</mat-icon>
               <span>Add Payment</span>
             </button>
-            <button mat-menu-item (click)="getBills(file.bill_file_id)">
-              <mat-icon color="accent">receipt</mat-icon>
-              <span>View Bills</span>
+
+            <button mat-menu-item (click)="displayMoreData(file)">
+              <mat-icon class="font-icon">visibility</mat-icon>
+              <span>View Bill pyment</span>
             </button>
           </mat-menu>
         </td>
