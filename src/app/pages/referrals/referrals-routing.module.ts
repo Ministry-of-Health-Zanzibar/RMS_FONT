@@ -37,6 +37,12 @@ const routes: Routes = [
         (c) => c.BillFileByIdComponent
       ),
   },
+  {
+    path: 'view-follow-up/:id',
+    loadComponent:() =>
+      import('./followup/view-follow-up/view-follow-up.component').then(c=>c.ViewFollowUpComponent)
+
+  },
 
   {
     path: 'bills-details/:id',

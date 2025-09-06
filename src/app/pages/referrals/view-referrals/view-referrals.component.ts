@@ -273,6 +273,11 @@ export class ViewReferralsComponent implements OnInit, OnDestroy {
     this.router.navigate(['/pages/config/referrals/more', id]);
   }
 
+   viewfollowup(data: any) {
+  const id = data.referral_id
+  this.router.navigate(['/pages/config/referrals/view-follow-up', id]);
+}
+
   // USER ROLES
   public getUserRole(): any {
     return localStorage.getItem('roles');
