@@ -15,6 +15,7 @@ import Swal from 'sweetalert2';
 
 import { BillItermService } from '../../../../services/Bills/bill-iterm.service';
 import { BillItermFormComponent } from '../bill-iterm-form/bill-iterm-form.component';
+import { Console } from 'console';
 
 interface BillItem {
   bill_item_id: number;
@@ -91,17 +92,18 @@ export class BillItermDetailsComponent implements OnInit, AfterViewInit {
         if (response?.data) {
           this.dataSource.data = response.data;
         } else {
-          Swal.fire('Not Found', 'No bill items found', 'warning');
-          this.dataSource.data = [];
+          console.log("data hamna")
+          // Swal.fire('Not Found', 'No bill items found', 'warning');
+          // this.dataSource.data = [];
         }
       },
       error: (error) => {
         this.loading = false;
         console.error('Error fetching bill items:', error);
-        Swal.fire('Error', 'Failed to fetch bill items', 'error');
+        // Swal.fire('Error', 'Failed to fetch bill items', 'error');
       },
     });
-  } 
+  }
 
   backToBills() {
     this.router.navigate(['/pages/config/referrals/more-bill-file']);

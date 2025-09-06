@@ -121,9 +121,10 @@
     <td class="border border-gray-300 p-2 text-center">
       {{ patient.date_of_birth }}
     </td>
-    <td class="border border-gray-300 p-2 text-center">
-      {{ patient.location ? (patient.location | uppercase) : '-' }}
-    </td>
+  <td class="border border-gray-300 p-2 text-center">
+  {{ patient.geographical_location?.location_name || '-' }}
+</td>
+
     <td class="border border-gray-300 p-3 text-center">
       <!-- ✅ Check if files exist -->
       <ng-container *ngIf="patient.files?.length > 0; else noFile">

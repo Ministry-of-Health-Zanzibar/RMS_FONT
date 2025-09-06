@@ -1,145 +1,138 @@
 <div class="container my-5" *ngIf="billData">
   <!-- Page Title -->
   <div class="text-center mb-5">
-    <h2 class="fw-bold text-primary">
+    <h2 class="fw-bold text-gradient">
       <i class="bi bi-receipt"></i> Bill Details
     </h2>
     <p class="text-muted">Comprehensive overview of your billing information</p>
   </div>
 
-  <div class="row g-4">
-    <!-- Basic Info -->
-    <div class="col-lg-6 col-md-12">
-      <div class="card shadow-sm border-primary h-100">
-        <div class="card-header bg-primary text-white fw-bold">Basic Info</div>
-        <div class="card-body">
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item d-flex justify-content-between">
-              <span>Bill ID:</span> <span>{{ billData.bill_id }}</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between">
-              <span>Total Amount:</span> 
-              <span>{{ billData.total_amount | currency:"TZS " }}</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between">
-              <span>Period:</span> 
-              <span>{{ billData.bill_period_start | date:"dd/MM/yyyy" }} - {{ billData.bill_period_end | date:"dd/MM/yyyy" }}</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between">
-              <span>Created By:</span> <span>{{ billData.created_by }}</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between">
-              <span>Created At:</span> <span>{{ billData.created_at | date:"short" }}</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              <span>Status:</span>
+  <!-- Basic Info -->
+  <div class="card shadow-sm mb-4">
+    <div class="card-header bg-light fw-bold text-primary">
+      <i class="bi bi-info-circle me-2"></i> Basic Info
+    </div>
+    <div class="table-responsive">
+      <table class="table table-striped table-borderless mb-0">
+        <tbody>
+          <tr><th>Bill ID</th><td>{{ billData.bill_id }}</td></tr>
+          <tr><th>Total Amount</th><td>{{ billData.total_amount | currency:"TZS " }}</td></tr>
+          <tr>
+            <th>Period</th>
+            <td>{{ billData.bill_period_start | date:"dd/MM/yyyy" }} - {{ billData.bill_period_end | date:"dd/MM/yyyy" }}</td>
+          </tr>
+          <tr><th>Created By</th><td>{{ billData.created_by }}</td></tr>
+          <tr><th>Created At</th><td>{{ billData.created_at | date:"short" }}</td></tr>
+          <tr>
+            <th>Status</th>
+            <td>
               <span class="badge status-badge {{ billData.bill_status | lowercase }}">
                 {{ billData.bill_status }}
               </span>
-            </li>
-          </ul>
-        </div>
-      </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
+  </div>
 
-    <!-- Bill File -->
-    <div class="col-lg-6 col-md-12">
-      <div class="card shadow-sm border-info h-100">
-        <div class="card-header bg-info text-white fw-bold">Bill File</div>
-        <div class="card-body">
-          <ul class="list-group list-group-flush mb-3">
-            <li class="list-group-item d-flex justify-content-between">
-              <span>Title:</span> <span>{{ billData.bill_file?.bill_file_title }}</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between">
-              <span>Amount:</span> <span>{{ billData.bill_file?.bill_file_amount | currency:"TZS " }}</span>
-            </li>
-          </ul>
-          <a [href]="billData.bill_file?.bill_file" target="_blank" class="btn btn-outline-info btn-sm">
-            <i class="bi bi-download me-1"></i> Download File
-          </a>
-        </div>
-      </div>
+  <!-- Bill File -->
+  <div class="card shadow-sm mb-4">
+    <div class="card-header bg-light fw-bold text-info">
+      <i class="bi bi-file-earmark-text me-2"></i> Bill File
     </div>
-
-    <!-- Referral -->
-    <div class="col-lg-6 col-md-12">
-      <div class="card shadow-sm border-secondary h-100">
-        <div class="card-header bg-secondary text-white fw-bold">Referral</div>
-        <div class="card-body">
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item d-flex justify-content-between">
-              <span>Referral Number:</span> <span>{{ billData.referral?.referral_number }}</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between">
-              <span>Status:</span> <span>{{ billData.referral?.status }}</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between">
-              <span>Reason:</span> <span>{{ billData.referral?.reason?.referral_reason_name }}</span>
-            </li>
-          </ul>
-        </div>
-      </div>
+    <div class="table-responsive">
+      <table class="table table-striped table-borderless mb-0">
+        <tbody>
+          <tr><th>Title</th><td>{{ billData.bill_file?.bill_file_title }}</td></tr>
+          <tr><th>Amount</th><td>{{ billData.bill_file?.bill_file_amount | currency:"TZS " }}</td></tr>
+          <tr>
+            <th>Download</th>
+            <td>
+              <a [href]="billData.bill_file?.bill_file" target="_blank" class="btn btn-outline-info btn-sm">
+                <i class="bi bi-download me-1"></i> Download File
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
+  </div>
 
-    <!-- Patient Info -->
-    <div class="col-lg-6 col-md-12">
-      <div class="card shadow-sm border-success h-100">
-        <div class="card-header bg-success text-white fw-bold">Patient</div>
-        <div class="card-body">
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item d-flex justify-content-between">
-              <span>Name:</span> <span>{{ billData.referral?.patient?.name }}</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between">
-              <span>DOB:</span> <span>{{ billData.referral?.patient?.date_of_birth | date:"dd/MM/yyyy" }}</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between">
-              <span>Gender:</span> <span>{{ billData.referral?.patient?.gender }}</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between">
-              <span>Phone:</span> <span>{{ billData.referral?.patient?.phone }}</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between">
-              <span>Location:</span> <span>{{ billData.referral?.patient?.location }}</span>
-            </li>
-          </ul>
-        </div>
-      </div>
+  <!-- Referral -->
+  <div class="card shadow-sm mb-4">
+    <div class="card-header bg-light fw-bold text-secondary">
+      <i class="bi bi-arrow-left-right me-2"></i> Referral
     </div>
+    <div class="table-responsive">
+      <table class="table table-striped table-borderless mb-0">
+        <tbody>
+          <tr><th>Referral Number</th><td>{{ billData.referral?.referral_number }}</td></tr>
+          <tr><th>Status</th><td>{{ billData.referral?.status }}</td></tr>
+          <tr><th>Reason</th><td>{{ billData.referral?.reason?.referral_reason_name }}</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 
-    <!-- Hospital Info -->
-    <div class="col-12">
-      <div class="card shadow-sm border-dark">
-        <div class="card-header bg-dark text-white fw-bold">Hospital</div>
-        <div class="card-body">
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item d-flex justify-content-between">
-              <span>Name:</span> <span>{{ billData.referral?.hospital?.hospital_name }}</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between">
-              <span>Code:</span> <span>{{ billData.referral?.hospital?.hospital_code }}</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between">
-              <span>Address:</span> <span>{{ billData.referral?.hospital?.hospital_address }}</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between">
-              <span>Contact:</span> <span>{{ billData.referral?.hospital?.contact_number }}</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between">
-              <span>Email:</span> <span>{{ billData.referral?.hospital?.hospital_email }}</span>
-            </li>
-          </ul>
-        </div>
-      </div>
+  <!-- Patient -->
+  <div class="card shadow-sm mb-4">
+    <div class="card-header bg-light fw-bold text-success">
+      <i class="bi bi-person-heart me-2"></i> Patient
+    </div>
+    <div class="table-responsive">
+      <table class="table table-striped table-borderless mb-0">
+        <tbody>
+          <tr><th>Name</th><td>{{ billData.referral?.patient?.name }}</td></tr>
+          <tr><th>DOB</th><td>{{ billData.referral?.patient?.date_of_birth | date:"dd/MM/yyyy" }}</td></tr>
+          <tr><th>Gender</th><td>{{ billData.referral?.patient?.gender }}</td></tr>
+          <tr><th>Phone</th><td>{{ billData.referral?.patient?.phone }}</td></tr>
+          <tr><th>Location</th><td>{{ billData.referral?.patient?.geographical_location?.location_name }}</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Hospital -->
+  <div class="card shadow-sm mb-4">
+    <div class="card-header bg-light fw-bold text-dark">
+      <i class="bi bi-hospital me-2"></i> Hospital
+    </div>
+    <div class="table-responsive">
+      <table class="table table-striped table-borderless mb-0">
+        <tbody>
+          <tr><th>Name</th><td>{{ billData.referral?.hospital?.hospital_name }}</td></tr>
+          <tr><th>Code</th><td>{{ billData.referral?.hospital?.hospital_code }}</td></tr>
+          <tr><th>Address</th><td>{{ billData.referral?.hospital?.hospital_address }}</td></tr>
+          <tr><th>Contact</th><td>{{ billData.referral?.hospital?.contact_number }}</td></tr>
+          <tr><th>Email</th><td>{{ billData.referral?.hospital?.hospital_email }}</td></tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>
 
-<!-- CSS for Status Badge -->
+<!-- CSS -->
 <style>
+  .text-gradient {
+    background: linear-gradient(90deg, #007bff, #6610f2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
   .status-badge.pending { background-color: #ffc107; color: #212529; }
   .status-badge.paid { background-color: #28a745; color: #fff; }
   .status-badge.rejected { background-color: #dc3545; color: #fff; }
   .status-badge.default { background-color: #6c757d; color: #fff; }
+  table th {
+    width: 30%;
+    font-weight: 600;
+    background-color: #f9f9f9;
+  }
+  table td {
+    background-color: #fff;
+  }
+  .card-header {
+    font-size: 1rem;
+    border-bottom: 2px solid #eee;
+  }
 </style>
