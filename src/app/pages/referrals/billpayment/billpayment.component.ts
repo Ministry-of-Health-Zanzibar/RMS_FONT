@@ -1,4 +1,10 @@
-import { Component, OnDestroy, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+  AfterViewInit,
+} from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -20,6 +26,9 @@ import { PaymentsService } from '../../../services/payments.service';
 import { ReferralpaymentComponent } from '../referralpayment/referralpayment.component';
 import { BillComponent } from '../bill/bill.component';
 import { PermissionService } from '../../../services/authentication/permission.service';
+import { BillFileService } from '../../../services/Bills/bill-file.service';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatChipsModule } from '@angular/material/chips';
 
 @Component({
   selector: 'app-billpayment',
@@ -34,6 +43,8 @@ import { PermissionService } from '../../../services/authentication/permission.s
     MatButtonModule,
     MatIconModule,
     MatTooltipModule,
+    MatMenuModule,
+    MatChipsModule,
   ],
   templateUrl: './billpayment.component.html',
   styleUrls: ['./billpayment.component.scss'],
@@ -43,16 +54,17 @@ export class BillpaymentComponent implements OnInit, OnDestroy, AfterViewInit {
   loading = false;
 
   displayedColumns: string[] = [
-    'id',
-    'payer',
-    'amount_paid',
-    'currency',
-    'payment_method',
-    'reference_number',
-    'voucher_number',
-    'payment_date',
-    'action',
+    'bill_file_id',
+    'hospital_name',
+    'bill_file_title',
+    'pdf',
+    'bill_file_amount',
+    'paid_amount',
+    'balance',
+    'status',
+    'actions',
   ];
+
   dataSource = new MatTableDataSource<any>([]);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -60,6 +72,7 @@ export class BillpaymentComponent implements OnInit, OnDestroy, AfterViewInit {
 
   constructor(
     private paymentsService: PaymentsService,
+    private billiiFileService: BillFileService,
     private router: Router,
     private dialog: MatDialog,
     public permission: PermissionService
@@ -85,8 +98,8 @@ export class BillpaymentComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getPayments() {
     this.loading = true;
-    this.paymentsService
-      .getAllPayments()
+    this.billiiFileService
+      .getAllBillFilesForPayment()
       .pipe(takeUntil(this.onDestroy))
       .subscribe({
         next: (res: any) => {
@@ -110,10 +123,14 @@ export class BillpaymentComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.dataSource.paginator) this.dataSource.paginator.firstPage();
   }
 
-  
+  viewPDF(element: any) {
+    const url = 'http://127.0.0.1:8000/storage/' + element.bill_file;
+    window.open(url, '_blank');
+  }
+
   getPayment(id: number) {
     const config = new MatDialogConfig();
-    config.data = { id }; 
+    config.data = { id };
     config.width = '950px';
     config.height = '1000px';
     config.disableClose = false;
@@ -123,17 +140,26 @@ export class BillpaymentComponent implements OnInit, OnDestroy, AfterViewInit {
       .subscribe(() => this.getPayments());
   }
 
-  
   getBills(id: number) {
     const config = new MatDialogConfig();
-    config.data = { id }; 
+    config.data = { id };
     config.width = '850px';
     config.disableClose = false;
-    this.dialog.open(BillComponent, config).afterClosed().subscribe(() => this.getPayments());
+    this.dialog
+      .open(BillComponent, config)
+      .afterClosed()
+      .subscribe(() => this.getPayments());
   }
 
-   displayMoreData(data: any) {
-    const id = data.payment_id;
-    this.router.navigate(['/pages/config/referrals/payment-details', id]);
+  //  displayMoreData(data: any) {
+  //   const id = data.bill_file_id;
+  //   this.router.navigate(['/pages/config/referrals/payment-details', id]);
+  // }
+
+  displayMoreData(data: any) {
+    const id = data.bill_file_id;
+    this.router.navigate(['/pages/config/referrals/more-bill-file', id]);
   }
+
+
 }

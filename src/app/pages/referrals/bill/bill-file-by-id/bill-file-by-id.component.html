@@ -1,73 +1,73 @@
 <div class="max-w-7xl mx-auto p-6">
   <!-- Bill File Table -->
-  <div class="bg-white shadow-xl rounded-2xl p-6 mb-6">
-    <div class="flex justify-between items-center mb-4">
-      <h2 class="text-xl font-semibold">Bill File Info</h2>
-      <mat-form-field appearance="fill">
-        <mat-label>Filter Bill File</mat-label>
-        <input
-          matInput
-          (keyup)="applyBillFileFilter($event)"
-          placeholder="Filter..."
-        />
-      </mat-form-field>
-    </div>
+<div *ngIf="billFileDataSource" class="bg-white shadow-xl rounded-2xl overflow-hidden p-6 mb-6">
+  <div class="flex justify-between items-center mb-4">
+    <h2 class="text-xl font-semibold">Bill File Info</h2>
+    <!-- <mat-form-field appearance="fill">
+      <mat-label>Filter Bill File</mat-label>
+      <input
+        matInput
+        (keyup)="applyBillFileFilter($event)"
+        placeholder="Filter..."
+      />
+    </mat-form-field> -->
+  </div>
 
-    <table
-      mat-table
-      [dataSource]="billFileDataSource"
-      matSort
-      class="min-w-full"
-    >
-      <ng-container matColumnDef="bill_file_title">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Bill Title</th>
-        <td mat-cell *matCellDef="let file">{{ file.bill_file_title }}</td>
-      </ng-container>
+  <table class="w-full table-auto border-collapse">
+    <thead class="bg-gray-200 text-gray-700">
+      <tr>
+        <th class="border border-gray-300 p-3 text-center">Bill Title</th>
+        <th class="border border-gray-300 p-3 text-center">File</th>
+        <th class="border border-gray-300 p-3 text-center">Amount</th>
+        <th class="border border-gray-300 p-3 text-center">Actions</th>
+      </tr>
+    </thead>
 
-      <ng-container matColumnDef="bill_file">
-        <th mat-header-cell *matHeaderCellDef>File</th>
-        <td mat-cell *matCellDef="let file">
+    <tbody>
+      <tr *ngFor="let file of billFileDataSource.filteredData">
+        <!-- Bill Title -->
+        <td class="border border-gray-300 p-3 text-center font-medium text-gray-700">
+          {{ file.bill_file_title }}
+        </td>
+
+        <!-- PDF Link -->
+        <td class="border border-gray-300 p-3 text-center">
           <a
             [href]="'http://127.0.0.1:8000/storage/' + file.bill_file"
             target="_blank"
+            class="inline-flex items-center gap-1 text-indigo-600 hover:text-indigo-800 justify-center"
           >
             <mat-icon>picture_as_pdf</mat-icon> View PDF
           </a>
         </td>
-      </ng-container>
 
-      <ng-container matColumnDef="bill_file_amount">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Amount</th>
-        <td mat-cell *matCellDef="let file">
+        <!-- Amount -->
+        <td class="border border-gray-300 p-3 text-center">
           {{ file.bill_file_amount | currency : "TZS " }}
         </td>
-      </ng-container>
 
-      <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef>Actions</th>
-        <td mat-cell *matCellDef="let file">
-          <button mat-icon-button [matMenuTriggerFor]="billFileMenu">
-            <mat-icon>more_vert</mat-icon>
-          </button>
-          <mat-menu #billFileMenu="matMenu">
-            <button mat-menu-item (click)="addPatientToBill(file.bill_file_id)">
-              <mat-icon color="primary">add</mat-icon>
-              <span>Add Bill</span>
-            </button>
-          </mat-menu>
+        <!-- Action Button -->
+        <td class="border border-gray-300 p-3 text-center">
+          <span
+            (click)="addPatientToBill(file.bill_file_id)"
+            *ngIf="permission.parmissionMatched(['View Patient List'])"
+            matTooltip="Add Bill"
+            class="cursor-pointer w-10 h-10 flex items-center justify-center text-white bg-blue-600 rounded-full hover:bg-blue-700 transition-all mx-auto"
+          >
+            <mat-icon>person_add</mat-icon>
+          </span>
         </td>
-      </ng-container>
+      </tr>
 
-      <tr mat-header-row *matHeaderRowDef="displayedBillFileColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedBillFileColumns"></tr>
-    </table>
-
-    <mat-paginator
-      #billFilePaginator
-      [pageSizeOptions]="[5, 10]"
-      showFirstLastButtons
-    ></mat-paginator>
-  </div>
+      <!-- No Data Row -->
+      <tr *ngIf="billFileDataSource.filteredData.length === 0">
+        <td colspan="4" class="border border-gray-300 p-3 text-center text-gray-500">
+          No Bill Files Available
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
   <!-- Bills List Table -->
   <div class="bg-white shadow-xl rounded-2xl p-6 mb-6">
