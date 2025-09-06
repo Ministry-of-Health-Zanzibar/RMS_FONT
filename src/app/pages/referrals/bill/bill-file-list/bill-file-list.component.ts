@@ -79,7 +79,6 @@ export class BillFileListComponent {
     this.onDestroy.next();
   }
 
-  // Load bills
   loadBills() {
     this.loading = true;
     this.billService
