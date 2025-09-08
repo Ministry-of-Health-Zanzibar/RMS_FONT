@@ -84,7 +84,7 @@ getFeedbackById() {
 
 
 
-    getPatient(id:any){
+    addFollow(id:any){
        console.log("hiiii",id);
       let config = new MatDialogConfig()
       config.disableClose = false

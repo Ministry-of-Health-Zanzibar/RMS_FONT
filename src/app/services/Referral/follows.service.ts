@@ -24,8 +24,9 @@ constructor(private http: HttpClient) {}
     return this.http.post(this.href, Partient);
   }
 
-    public addPatientfromBodyList(patient: any): Observable<any> {
-    return this.http.post(this.href, patient);
+
+    public addFollowform(follow: any): Observable<any> {
+    return this.http.post(this.href, follow);
   }
 
     public deletePatientList(id:any): Observable<any>{

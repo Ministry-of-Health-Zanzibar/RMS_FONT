@@ -1,1 +1,84 @@
-<p>add-follow-up works!</p>
+
+<div>
+  <div class="w-full">
+    <div class="relative h-full rounded-lg  group  p-6">
+
+      <div *ngIf="id" class="font-semibold ">ADD FOLLOW UP FORM</div>
+      <form [formGroup]="patientForm" class="horizontal-form" enctype="multipart/form-data">
+
+        <!-- Row 1: Full Name, Gender -->
+        <div class="form-row">
+          <mat-form-field class="form-field">
+            <mat-label>Content Summary</mat-label>
+            <input matInput placeholder="Ex. Content Summary" formControlName="content_summary" type="text">
+            <mat-error *ngIf="patientForm.get('content_summary')?.invalid && patientForm.get('content_summary')?.touched">
+              <span *ngIf="patientForm.get('content_summary')?.errors?.['required']">This field is mandatory</span>
+              <span *ngIf="patientForm.get('content_summary')?.errors?.['pattern']">Must contain alphabetical characters only</span>
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="form-field">
+            <mat-label>Gender</mat-label>
+            <mat-select formControlName="gender">
+              <mat-option value="Male">Male</mat-option>
+              <mat-option value="Female">Female</mat-option>
+            </mat-select>
+            <mat-error *ngIf="patientForm.get('gender')?.invalid && patientForm.get('gender')?.touched">
+              This field is mandatory
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+
+
+
+
+        <!-- Row 4: Date of Birth, File Upload -->
+        <div class="form-row">
+          <mat-form-field class="form-field">
+            <mat-label>Date of Birth</mat-label>
+            <input matInput type="date" formControlName="date_of_birth">
+            <mat-error *ngIf="patientForm.get('date_of_birth')?.invalid && patientForm.get('date_of_birth')?.touched">
+              This field is mandatory
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="form-field">
+            <mat-label>Upload File</mat-label>
+            <input
+              matInput
+              type="text"
+              formControlName="patient_file"
+              readonly
+              placeholder="No file chosen"
+              (click)="fileInput.click()"
+            />
+            <input
+              type="file"
+              accept=".pdf,.doc,.docx,.jpg,.png"
+              hidden
+              #fileInput
+              (change)="onAttachmentSelected($event)"
+            />
+            <mat-icon matSuffix style="cursor: pointer;" (click)="fileInput.click()">attach_file</mat-icon>
+            <mat-error *ngIf="patientForm.get('patient_file')?.invalid && patientForm.get('patient_file')?.touched">
+              File is required
+            </mat-error>
+          </mat-form-field>
+
+
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <mat-dialog-actions align ="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button *ngIf="id" mat-flat-button [mat-dialog-close]="true" cdkFocusInitial [disabled]="patientForm.invalid" (click)="saveClient()">Add Patient</button>
+  </mat-dialog-actions>
+</div>
+
+
+
+
