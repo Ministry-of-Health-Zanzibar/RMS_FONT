@@ -1,0 +1,25 @@
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+
+  th, td {
+    text-align: left;
+    padding: 8px 12px;
+    border-bottom: 1px solid rgba(0,0,0,0.12);
+  }
+
+  th {
+    font-weight: 600;
+    color: rgba(0,0,0,0.87);
+    width: 40%;
+  }
+
+  td {
+    color: rgba(0,0,0,0.87);
+  }
+}
+
+mat-card {
+  background: #fff;
+}

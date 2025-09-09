@@ -1,34 +1,21 @@
-import {
-  Component,
-  OnDestroy,
-  OnInit,
-  ViewChild,
-  AfterViewInit,
-} from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import { Subject, takeUntil } from 'rxjs';
-
 import { CommonModule } from '@angular/common';
+import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatIconModule } from '@angular/material/icon';
-import { MatDividerModule } from '@angular/material/divider';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatSortModule } from '@angular/material/sort';
-import { MatTableModule } from '@angular/material/table';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { Router } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { Subject, takeUntil } from 'rxjs';
+import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
-import { PaymentsService } from '../../../services/payments.service';
-import { ReferralpaymentComponent } from '../referralpayment/referralpayment.component';
-import { BillComponent } from '../bill/bill.component';
 import { PermissionService } from '../../../services/authentication/permission.service';
 import { BillFileService } from '../../../services/Bills/bill-file.service';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatChipsModule } from '@angular/material/chips';
+import { ReferralpaymentComponent } from '../referralpayment/referralpayment.component';
+import { EmrSegmentedModule } from '@elementar/components';
 
 @Component({
   selector: 'app-billpayment',
@@ -39,52 +26,33 @@ import { MatChipsModule } from '@angular/material/chips';
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    MatDividerModule,
-    MatButtonModule,
     MatIconModule,
     MatTooltipModule,
-    MatMenuModule,
-    MatChipsModule,
+    MatButtonModule,
+    EmrSegmentedModule,
   ],
   templateUrl: './billpayment.component.html',
   styleUrls: ['./billpayment.component.scss'],
 })
-export class BillpaymentComponent implements OnInit, OnDestroy, AfterViewInit {
+export class BillpaymentComponent implements OnInit, OnDestroy {
   private readonly onDestroy = new Subject<void>();
   loading = false;
 
-  displayedColumns: string[] = [
-    'bill_file_id',
-    'hospital_name',
-    'bill_file_title',
-    'pdf',
-    'bill_file_amount',
-    'paid_amount',
-    'balance',
-    'status',
-    'actions',
-  ];
-
+  displayedColumns: string[] = ['id', 'title', 'hospital_name', 'pdf', 'amount', 'action'];
   dataSource = new MatTableDataSource<any>([]);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
   constructor(
-    private paymentsService: PaymentsService,
-    private billiiFileService: BillFileService,
-    private router: Router,
+    public permission: PermissionService,
+    private billFileService: BillFileService,
     private dialog: MatDialog,
-    public permission: PermissionService
+    private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.getPayments();
-  }
-
-  ngAfterViewInit(): void {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    this.loadBillPayments();
   }
 
   ngOnDestroy(): void {
@@ -92,22 +60,18 @@ export class BillpaymentComponent implements OnInit, OnDestroy, AfterViewInit {
     this.onDestroy.complete();
   }
 
-  renew() {
-    this.getPayments();
-  }
-
-  getPayments() {
+  loadBillPayments() {
     this.loading = true;
-    this.billiiFileService
+    this.billFileService
       .getAllBillFilesForPayment()
       .pipe(takeUntil(this.onDestroy))
       .subscribe({
         next: (res: any) => {
           this.loading = false;
           if (res.statusCode === 200) {
-            this.dataSource.data = res.data;
-          } else if (res.statusCode === 401) {
-            this.router.navigateByUrl('/');
+            this.dataSource = new MatTableDataSource(res.data);
+            this.dataSource.paginator = this.paginator;
+            this.dataSource.sort = this.sort;
           }
         },
         error: (err) => {
@@ -128,38 +92,42 @@ export class BillpaymentComponent implements OnInit, OnDestroy, AfterViewInit {
     window.open(url, '_blank');
   }
 
-  getPayment(id: number) {
+  addPayment(id: number) {
     const config = new MatDialogConfig();
     config.data = { id };
     config.width = '950px';
     config.height = '1000px';
-    config.disableClose = false;
-    this.dialog
-      .open(ReferralpaymentComponent, config)
-      .afterClosed()
-      .subscribe(() => this.getPayments());
+    this.dialog.open(ReferralpaymentComponent, config).afterClosed().subscribe(() => this.loadBillPayments());
   }
 
-  getBills(id: number) {
-    const config = new MatDialogConfig();
-    config.data = { id };
-    config.width = '850px';
-    config.disableClose = false;
-    this.dialog
-      .open(BillComponent, config)
-      .afterClosed()
-      .subscribe(() => this.getPayments());
-  }
-
-  //  displayMoreData(data: any) {
-  //   const id = data.bill_file_id;
-  //   this.router.navigate(['/pages/config/referrals/payment-details', id]);
-  // }
-
-  displayMoreData(data: any) {
-    const id = data.bill_file_id;
+  displayMoreData(element: any) {
+    const id = element.bill_file_id;
     this.router.navigate(['/pages/config/referrals/more-bill-file', id]);
   }
 
+  confirmDelete(element: any) {
+    Swal.fire({
+      title: 'Confirm',
+      text: `Are you sure you want to delete "${element.bill_file_title}"?`,
+      icon: 'warning',
+      confirmButtonText: 'Yes, delete',
+      cancelButtonText: 'Cancel',
+      showCancelButton: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.deleteBill(element.bill_file_id);
+      }
+    });
+  }
 
+  deleteBill(id: number) {
+    this.billFileService.deletebillFiles(id).subscribe((res) => {
+      if (res.statusCode === 200) {
+        Swal.fire('Deleted!', res.message, 'success');
+        this.loadBillPayments();
+      } else {
+        Swal.fire('Error', res.message, 'error');
+      }
+    });
+  }
 }

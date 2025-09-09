@@ -134,6 +134,14 @@ const routes: Routes = [
         (c) => c.BillItermDetailsComponent
       ),
   },
+
+   {
+    path: 'bill-iterm-by-id/:id',
+    loadComponent: () =>
+      import('./bill/bill-iterm-by-id/bill-iterm-by-id.component').then(
+        (c) => c.BillItermByIdComponent
+      ),
+  },
 ];
 
 @NgModule({
