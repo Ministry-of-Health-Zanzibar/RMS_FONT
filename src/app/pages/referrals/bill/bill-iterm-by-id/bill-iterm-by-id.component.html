@@ -1,0 +1,35 @@
+<mat-card class="p-6 max-w-md mx-auto mat-elevation-z2 mt-5">
+  <h2 class="text-lg font-bold mb-4">Bill Item Details</h2>
+
+  <!-- Loading Spinner -->
+  <div *ngIf="loading" class="flex justify-center my-5">
+    <mat-spinner diameter="50"></mat-spinner>
+  </div>
+
+  <!-- Static Table for Single Bill Item -->
+  <table *ngIf="!loading && billItem" class="w-full mat-elevation-z1">
+    <tbody>
+      <tr>
+        <th>Description</th>
+        <td>{{ billItem.description }}</td>
+      </tr>
+      <tr>
+        <th>Amount</th>
+        <td>{{ billItem.amount | number:'1.2-2' }} TZS</td>
+      </tr>
+      <tr>
+        <th>Created At</th>
+        <td>{{ billItem.created_at | date:'medium' }}</td>
+      </tr>
+      <tr>
+        <th>Updated At</th>
+        <td>{{ billItem.updated_at | date:'medium' }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- No Data Message -->
+  <div *ngIf="!loading && !billItem" class="text-center text-gray-500 mt-4">
+    No bill item found.
+  </div>
+</mat-card>

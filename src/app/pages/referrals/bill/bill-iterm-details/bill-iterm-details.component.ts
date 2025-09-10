@@ -15,7 +15,7 @@ import Swal from 'sweetalert2';
 
 import { BillItermService } from '../../../../services/Bills/bill-iterm.service';
 import { BillItermFormComponent } from '../bill-iterm-form/bill-iterm-form.component';
-import { Console } from 'console';
+import { VDividerComponent, EmrSegmentedModule } from '@elementar/components';
 
 interface BillItem {
   bill_item_id: number;
@@ -42,6 +42,8 @@ interface BillItem {
     MatInputModule,
     MatTooltipModule,
     MatMenuModule,
+    VDividerComponent,
+    EmrSegmentedModule,
   ],
   templateUrl: './bill-iterm-details.component.html',
   styleUrls: ['./bill-iterm-details.component.scss'],
@@ -55,8 +57,6 @@ export class BillItermDetailsComponent implements OnInit, AfterViewInit {
     'bill_item_id',
     'description',
     'amount',
-    'created_at',
-    'updated_at',
     'actions',
   ];
   dataSource: MatTableDataSource<BillItem> = new MatTableDataSource<BillItem>();
@@ -84,6 +84,15 @@ export class BillItermDetailsComponent implements OnInit, AfterViewInit {
     this.dataSource.sort = this.sort;
   }
 
+  applyFilter(event: KeyboardEvent) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+
   private getBillItemsByBillId(billId: string) {
     this.loading = true;
     this.billService.getbillItermByBillId(billId).subscribe({
@@ -92,15 +101,14 @@ export class BillItermDetailsComponent implements OnInit, AfterViewInit {
         if (response?.data) {
           this.dataSource.data = response.data;
         } else {
-          console.log("data hamna")
-          // Swal.fire('Not Found', 'No bill items found', 'warning');
-          // this.dataSource.data = [];
+          console.log('No data found');
+          this.dataSource.data = [];
         }
       },
       error: (error) => {
         this.loading = false;
         console.error('Error fetching bill items:', error);
-        // Swal.fire('Error', 'Failed to fetch bill items', 'error');
+        Swal.fire('Error', 'Failed to fetch bill items', 'error');
       },
     });
   }
@@ -136,8 +144,6 @@ export class BillItermDetailsComponent implements OnInit, AfterViewInit {
     this.billService.addbillIterms(payload).subscribe({
       next: (response) => {
         Swal.fire('Success', 'Bill item added successfully', 'success');
-
-        // Refresh table from backend to ensure consistency
         if (payload.bill_id) {
           this.getBillItemsByBillId(payload.bill_id.toString());
         }
@@ -148,4 +154,11 @@ export class BillItermDetailsComponent implements OnInit, AfterViewInit {
       },
     });
   }
+
+  displayMoreData(data: any) {
+    const id = data.bill_item_id;
+    this.router.navigate(['/pages/config/referrals/bill-iterm-by-id', id]);
+  }
+
+  
 }

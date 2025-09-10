@@ -1,21 +1,47 @@
-.status-badge {
-  padding: 0.35rem 0.75rem;
-  border-radius: 0.5rem;
-  color: #fff;           /* default text color */
+.text-gradient {
+  background: linear-gradient(90deg, #007bff, #6610f2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.mat-chip.pending {
+  background-color: #ffc107;
+  color: #212529;
+}
+
+.mat-chip.paid {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.mat-chip.rejected {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.full-width-table {
+  width: 100%;
+}
+
+mat-card {
+  margin-top: 8px;
+}
+
+.mat-chip {
   font-weight: 600;
-  display: inline-block;
+  color: #fff;
 }
 
-/* Status colors */
-.status-badge.pending {
-  background-color: #ffc107; /* yellow */
-  color: #212529;            /* dark text for contrast */
+.chip-confirmed {
+  background-color: #28a745 !important; 
 }
 
-.status-badge.paid {
-  background-color: #28a745; /* green */
+.chip-pending {
+  background-color: #ffc107 !important; 
+  color: #212529 !important;
 }
 
-.status-badge.rejected {
-  background-color: #dc3545; /* red */
+.chip-rejected {
+  background-color: #dc3545 !important; 
 }
+
