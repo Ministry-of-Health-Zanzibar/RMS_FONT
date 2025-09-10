@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import {
-  FormBuilder,
   FormControl,
   FormGroup,
   ReactiveFormsModule,
@@ -17,12 +16,11 @@ import {
 import {
   MatError,
   MatFormField,
-  MatInput,
   MatInputModule,
   MatLabel,
 } from '@angular/material/input';
 import { HDividerComponent } from '@elementar/components';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject } from 'rxjs';
 import Swal from 'sweetalert2';
 import { ReferralService } from '../../../services/Referral/referral.service';
 import { HospitalService } from '../../../services/system-configuration/hospital.service';
@@ -40,10 +38,8 @@ import { MatNativeDateModule } from '@angular/material/core';
     CommonModule,
     MatButtonModule,
     MatDialogModule,
-    MatInput,
     MatFormField,
     MatLabel,
-    MatDialogModule,
     MatCheckbox,
     MatError,
     ReactiveFormsModule,
@@ -54,26 +50,20 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatInputModule,
   ],
   templateUrl: './add-referrals.component.html',
-  styleUrl: './add-referrals.component.scss',
+  styleUrls: ['./add-referrals.component.scss'],
 })
-export class AddReferralsComponent {
+export class AddReferralsComponent implements OnInit, OnDestroy {
   readonly data = inject<any>(MAT_DIALOG_DATA);
   private readonly onDestroy = new Subject<void>();
-  public sidebarVisible: boolean = true;
 
-  referralsForm: FormGroup;
-  parent: any;
-  uploadProgress: number = 0;
-  uploading: boolean = false;
-  errorMessage: string | null = null;
-  id: any;
-  patients: any;
-  hospital: any;
-  referralTypes: any;
-  reason: any;
+  referralsForm!: FormGroup;
+  id: number | null = null;
+  patients: any[] = [];
+  hospital: any[] = [];
+  referralTypes: any[] = [];
+  reason: any[] = [];
 
   constructor(
-    private formBuilder: FormBuilder,
     private referralsService: ReferralService,
     private hostpitalService: HospitalService,
     private patientService: PartientService,
@@ -83,31 +73,23 @@ export class AddReferralsComponent {
   ) {}
 
   ngOnInit(): void {
+    this.configForm();
     this.getHospital();
     this.getPatient();
     this.getReferralType();
     this.getReason();
-    this.configForm();
-    if (this.data) {
-      this.id = this.data.id;
-      // this.getHospital(this.id);
-    }
 
-    if (this.data?.id) {
+    if (this.data?.id != null) {
       this.id = this.data.id;
-      this.getReferralDetails(this.id);
+      // this.getReferralDetails(this.id);
     }
   }
-
-  // getDepartm(id: any){
-  //   this.departmentService.getAllDepartmentById(id).subscribe(response=>{
-  //     this.departmentForm.patchValue(response.data[0])
-  //   })
-  // }
 
   ngOnDestroy(): void {
     this.onDestroy.next();
+    this.onDestroy.complete();
   }
+
   onClose() {
     this.dialogRef.close(false);
   }
@@ -119,27 +101,18 @@ export class AddReferralsComponent {
     });
   }
 
-  // getParent() {
-  //   this.departmentService.getAllDepartment().pipe(takeUntil(this.onDestroy)).subscribe((response: any) => {
-  //     this.parent = response.data;
-  //   });
-  // }
-
   saveReferrals() {
     if (this.referralsForm.valid) {
-      this.referralsService
-        .addReferral(this.referralsForm.value)
-        .subscribe((response) => {
-          if (response.statusCode == 201) {
+      this.referralsService.addReferral(this.referralsForm.value).subscribe(
+        (response) => {
+          if (response.statusCode === 201) {
             Swal.fire({
               title: 'Success',
               text: 'Data saved successfully',
               icon: 'success',
               confirmButtonColor: '#4690eb',
               confirmButtonText: 'Continue',
-            }).then(() => {
-              this.dialogRef.close(true);
-            });
+            }).then(() => this.dialogRef.close(true));
           } else {
             Swal.fire({
               title: 'Error',
@@ -149,7 +122,8 @@ export class AddReferralsComponent {
               confirmButtonText: 'Continue',
             });
           }
-        });
+        }
+      );
     } else {
       Swal.fire({
         title: 'Form Invalid',
@@ -161,41 +135,8 @@ export class AddReferralsComponent {
     }
   }
 
-  getPatient() {
-    this.patientService.getAllPartientforReferral().subscribe((response) => {
-      this.patients = response.data;
-      console.log("view refferal",this.patients);
-    });
-  }
-
-  getHospital() {
-    this.hostpitalService.getAllHospital().subscribe((response) => {
-      this.hospital = response.data;
-    });
-  }
-
-  getReferralType() {
-    this.referralsTypeService.getAllReferalType().subscribe((response) => {
-      this.referralTypes = response.data;
-    });
-  }
-
-  getReason() {
-    this.reasonService.getAllReasons().subscribe((response) => {
-      this.reason = response.data;
-    });
-  }
-
-  getReferralDetails(id: number) {
-    this.referralsService.getReferralById(id).subscribe((response) => {
-      if (response.statusCode === 200) {
-        this.referralsForm.patchValue(response.data);
-      }
-    });
-  }
-
   updateReferrals() {
-    if (this.referralsForm.valid) {
+    if (this.referralsForm.valid && this.id != null) {
       this.referralsService
         .updateReferral(this.referralsForm.value, this.id)
         .subscribe((response) => {
@@ -206,7 +147,7 @@ export class AddReferralsComponent {
               icon: 'success',
               confirmButtonColor: '#4690eb',
               confirmButtonText: 'Continue',
-            });
+            }).then(() => this.dialogRef.close(true));
           } else {
             Swal.fire({
               title: 'Error',
@@ -218,5 +159,45 @@ export class AddReferralsComponent {
           }
         });
     }
+  }
+
+  getPatient() {
+    this.patientService.getAllPartientforReferral().subscribe((response) => {
+      this.patients = response.data || [];
+    });
+  }
+
+  getHospital() {
+    this.hostpitalService.getAllHospital().subscribe((response) => {
+      this.hospital = response.data || [];
+    });
+  }
+
+  getReferralType() {
+    this.referralsTypeService.getAllReferalType().subscribe((response) => {
+      this.referralTypes = response.data || [];
+    });
+  }
+
+  getReason() {
+    this.reasonService.getAllReasons().subscribe((response) => {
+      this.reason = response.data || [];
+    });
+  }
+
+  getReferralDetails(id: number) {
+    this.referralsService.getReferralById(id).subscribe((response) => {
+      console.log('Referral API response:', response.data); // debug log
+      if (response.statusCode === 200 && response.data) {
+        const referral = response.data;
+
+        // Map API response to form controls
+        this.referralsForm.patchValue({
+          patient_id:
+            referral.patient_id ?? referral.patient?.patient_id ?? null,
+          reason_id: referral.reason_id ?? referral.reason?.reason_id ?? null,
+        });
+      }
+    });
   }
 }
