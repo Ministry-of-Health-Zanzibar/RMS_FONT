@@ -1,158 +1,122 @@
-<div *ngIf="patients" class="max-w-7xl mx-auto p-6">
-  <!-- Banner Header -->
-  <div class="relative bg-gradient-to-r from-blue-700 to-blue-500 text-white rounded-2xl shadow-lg p-10 mb-8 flex items-center justify-center overflow-hidden">
-
-    <!-- Left AI Image -->
-    <img src="../../../../assets/img/doctor.png"
-         alt="AI Left"
-         class="absolute left-4 top-1/2 transform -translate-y-1/2 w-28 h-28 opacity-80 rounded-full shadow-lg">
-
-    <!-- Center Text -->
-    <div class="text-center z-10">
-      <h1 class="text-4xl font-bold tracking-wide drop-shadow-md">Patient Records</h1>
-      <p class="mt-3 text-lg opacity-90">A complete list of registered patients and their details</p>
+<div class="max-w-7xl mx-auto p-6">
+  <!-- Body List Table -->
+  <div
+    *ngIf="bodyListDataSource"
+    class="bg-white shadow-xl rounded-2xl overflow-hidden p-6 mb-6"
+  >
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-xl font-semibold">Body List Info</h2>
     </div>
 
-    <!-- Right AI Image -->
-    <img src="../../../../assets/img/objective3.png"
-         alt="AI Right"
-         class="absolute right-4 top-1/2 transform -translate-y-1/2 w-28 h-28 opacity-80 rounded-full shadow-lg">
+    <table class="w-full table-auto border-collapse">
+      <thead class="bg-gray-200 text-gray-700">
+        <tr>
+          <th class="border border-gray-300 p-3 text-center">Body Title</th>
+          <th class="border border-gray-300 p-3 text-center">File</th>
+          <th class="border border-gray-300 p-3 text-center">Actions</th>
+        </tr>
+      </thead>
 
+      <tbody>
+        <tr *ngFor="let file of bodyListDataSource.filteredData">
+          <!-- Body Title -->
+          <td
+            class="border border-gray-300 p-3 text-center font-medium text-gray-700"
+          >
+            {{ file.patient_list_title }}
+          </td>
+
+          <!-- PDF Link -->
+          <td class="border border-gray-300 p-3 text-center">
+            <a
+              [href]="'http://127.0.0.1:8000/storage/' + file.patient_list_file"
+              target="_blank"
+              class="inline-flex items-center gap-1 text-indigo-600 hover:text-indigo-800 justify-center"
+            >
+              <mat-icon>picture_as_pdf</mat-icon> View PDF
+            </a>
+          </td>
+
+          <!-- Action Button -->
+          <td class="border border-gray-300 p-3 text-center">
+            <span
+              (click)="addPatient(file.patient_list_id)"
+              *ngIf="permission.parmissionMatched(['View Patient List'])"
+              matTooltip="Add Bill"
+              class="cursor-pointer w-10 h-10 flex items-center justify-center text-white bg-blue-600 rounded-full hover:bg-blue-700 transition-all mx-auto"
+            >
+              <mat-icon>person_add</mat-icon>
+            </span>
+          </td>
+        </tr>
+
+        <!-- No Data Row -->
+        <tr *ngIf="bodyListDataSource.filteredData.length === 0">
+          <td
+            colspan="4"
+            class="border border-gray-300 p-3 text-center text-gray-500"
+          >
+            No Body List Available
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 
-
-
-  <!-- Patient List Info Table -->
-<div *ngIf="patientListInfo" class="bg-white shadow-xl rounded-2xl overflow-hidden">
-  <table class="w-full table-auto border-collapse">
-    <thead class="bg-gray-200 text-gray-700">
-      <tr>
-        <th class="border border-gray-300 p-3">Patient List Title</th>
-        <th class="border border-gray-300 p-3">Patient List File</th>
-         <th class="border border-gray-300 p-3">Add Patient (+)</th>
-
-      </tr>
-    </thead>
-  <tbody>
-  <tr>
-    <!-- Patient list title centered -->
-    <td class="border border-gray-300 p-3 font-medium text-gray-700 text-center">
-      {{ patientListInfo.title }}
-    </td>
-
-    <!-- PDF link centered -->
-    <td class="border border-gray-300 p-3 text-center">
-      <a [href]="'http://127.0.0.1:8000/storage/' + patientListInfo.file"
-         target="_blank"
-         class="inline-flex items-center gap-1 text-indigo-600 hover:text-indigo-800 justify-center">
-        <mat-icon>picture_as_pdf</mat-icon>
-        View PDF
-      </a>
-    </td>
-
-    <!-- Action button centered -->
-   <td class="border border-gray-300 p-3 text-center">
-  <span
-    (click)="getPatient(patientListInfo.id)"
-    *ngIf="permission.parmissionMatched(['View Patient List'])"
-    matTooltip="Add Patients"
-    class="cursor-pointer w-10 h-10 flex items-center justify-center text-white bg-blue-600 rounded-full hover:bg-blue-700 transition-all mx-auto">
-    <mat-icon>person_add</mat-icon>
-  </span>
-</td>
-
-  </tr>
-</tbody>
-
-  </table>
-</div>
-
-  <!-- Patient Table -->
-  <div class="bg-white shadow-xl rounded-2xl overflow-hidden">
-    <table *ngIf="patients.data && patients.data.length > 0; else noPatients"
-         class="table-auto w-full border-collapse border border-gray-300 shadow-md rounded-lg overflow-hidden">
-<thead class="bg-gray-100">
-  <tr>
-    <th class="border border-gray-300 p-2 text-center">
-      <mat-icon class="text-gray-600 align-middle">tag</mat-icon>
-      #
-    </th>
-    <th class="border border-gray-300 p-2 text-center">
-      <mat-icon class="text-gray-600 align-middle">person</mat-icon>
-      Name
-    </th>
-    <th class="border border-gray-300 p-2 text-center">
-      <mat-icon class="text-gray-600 align-middle">wc</mat-icon>
-      Gender
-    </th>
-    <th class="border border-gray-300 p-2 text-center">
-      <mat-icon class="text-gray-600 align-middle">phone</mat-icon>
-      Phone
-    </th>
-    <th class="border border-gray-300 p-2 text-center">
-      <mat-icon class="text-gray-600 align-middle">calendar_today</mat-icon>
-      Date of Birth
-    </th>
-    <th class="border border-gray-300 p-2 text-center">
-      <mat-icon class="text-gray-600 align-middle">home</mat-icon>
-      Address
-    </th>
-     <th class="border border-gray-300 p-2 text-center">
-      <mat-icon class="text-gray-600 align-middle">insert_drive_file</mat-icon>
-
-      Patient File
-    </th>
-  </tr>
-</thead>
-
-
- <tbody>
-  <tr *ngFor="let patient of patients.data; let i = index;" class="hover:bg-gray-50">
-    <td class="border border-gray-300 p-2 text-center">{{ i + 1 }}</td>
-    <td class="border border-gray-300 p-2 text-center font-medium text-gray-700">
-      {{ patient.name | uppercase }}
-    </td>
-    <td class="border border-gray-300 p-2 text-center">
-      {{ patient.gender | uppercase }}
-    </td>
-    <td class="border border-gray-300 p-2 text-center">
-      {{ patient.phone || '-' }}
-    </td>
-    <td class="border border-gray-300 p-2 text-center">
-      {{ patient.date_of_birth }}
-    </td>
-  <td class="border border-gray-300 p-2 text-center">
-  {{ patient.geographical_location?.location_name || '-' }}
-</td>
-
-    <td class="border border-gray-300 p-3 text-center">
-      <!-- ✅ Check if files exist -->
-      <ng-container *ngIf="patient.files?.length > 0; else noFile">
-        <a [href]="'http://127.0.0.1:8000/storage/' + patient.files[0].file_path"
-           target="_blank"
-           class="inline-flex items-center gap-1 text-indigo-600 hover:text-indigo-800 justify-center">
-          <mat-icon>picture_as_pdf</mat-icon>
-          View PDF
-        </a>
-      </ng-container>
-      <ng-template #noFile>
-        <span class="text-gray-400">No File</span>
-      </ng-template>
-    </td>
-  </tr>
-</tbody>
-
-
-  </table>
-
-  <!-- Empty Message -->
-  <ng-template #noPatients>
-    <div class="text-center text-gray-500 p-6 bg-gray-50 rounded-lg shadow-md">
-      No patient records available.
+  <!-- Patients Table -->
+  <div class="bg-white shadow-xl rounded-2xl p-6 mb-6">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-xl font-semibold">Patients List</h2>
+      <mat-form-field appearance="fill">
+        <mat-label>Filter Patients</mat-label>
+        <input
+          matInput
+          (keyup)="applyPatientFilter($event)"
+          placeholder="Filter..."
+        />
+      </mat-form-field>
     </div>
-  </ng-template>
 
+    <table mat-table [dataSource]="patientDataSource" matSort class="min-w-full">
+      <!-- Patient ID -->
+      <ng-container matColumnDef="patient_id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Patient ID</th>
+        <td mat-cell *matCellDef="let p">{{ p.patient_id }}</td>
+      </ng-container>
+
+      <!-- Patient Name -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Patient Name</th>
+        <td mat-cell *matCellDef="let p">{{ p.name }}</td>
+      </ng-container>
+
+      <!-- Gender -->
+      <ng-container matColumnDef="gender">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Gender</th>
+        <td mat-cell *matCellDef="let p">{{ p.gender }}</td>
+      </ng-container>
+
+      <!-- Phone -->
+      <ng-container matColumnDef="phone">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Phone Number</th>
+        <td mat-cell *matCellDef="let p">{{ p.phone }}</td>
+      </ng-container>
+
+      <!-- Location -->
+      <ng-container matColumnDef="location">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Location</th>
+        <td mat-cell *matCellDef="let p">{{ p.location }}</td>
+      </ng-container>
+
+      <!-- Rows -->
+      <tr mat-header-row *matHeaderRowDef="displayedPatientColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedPatientColumns"></tr>
+    </table>
+
+    <mat-paginator
+      #patientPaginator
+      [pageSizeOptions]="[5, 10, 20]"
+      showFirstLastButtons
+    ></mat-paginator>
+  </div>
 </div>
-</div>
-
-

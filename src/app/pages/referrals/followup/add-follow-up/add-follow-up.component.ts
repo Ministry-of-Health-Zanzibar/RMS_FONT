@@ -63,15 +63,21 @@ export class AddFollowUpComponent {
 
   }
 
-  ngOnInit(): void {
-    this.configForm();
-    if(this.data){
-      this.id = this.data.id;
-   // console.log("partient   here  ",this.id);
-    }
- 
+ngOnInit(): void {
+  this.configForm();
 
+  // get referral_id from injected data
+  if (this.data && this.data.referral_id) {
+    this.id = this.data.referral_id;
+    console.log("Referral ID here:", this.id);
+
+    // update form control
+    if (this.patientForm) {
+      this.patientForm.patchValue({ referral_id: this.id });
+    }
   }
+}
+
 
 
 
@@ -93,6 +99,9 @@ export class AddFollowUpComponent {
            received_date: new FormControl(null, Validators.required),
            letter_file: new FormControl(null, Validators.required),
 
+           followup_date: new FormControl(null,),
+           notes: new FormControl(null,),
+
 
     });
   }
@@ -111,13 +120,20 @@ saveClient() {
   if (this.patientForm.valid) {
     const formData = new FormData();
 
-    // ✅ append the actual file
     if (this.selectedAttachement) {
       formData.append('letter_file', this.selectedAttachement, this.selectedAttachement.name);
     }
 
-    // append patient_list_id explicitly
-    formData.append('referral_id', this.id);
+    Object.keys(this.patientForm.controls).forEach(key => {
+      if (key !== 'letter_file') {
+        const value = this.patientForm.get(key)?.value;
+        if (value !== null && value !== undefined) {
+          formData.append(key, String(value));
+        }
+      }
+    });
+
+    formData.set('referral_id', String(this.id));
 
     this.followServices.addFollowform(formData).subscribe(response => {
       if (response.statusCode === 201) {
@@ -127,6 +143,12 @@ saveClient() {
           icon: "success",
           confirmButtonColor: "#4690eb",
           confirmButtonText: "Continue"
+        }).then(() => {
+          this.patientForm.reset();
+          this.selectedAttachement = null;
+
+          // ✅ Close dialog and trigger parent refresh
+          this.dialogRef.close(true);
         });
       } else {
         Swal.fire({
@@ -138,8 +160,17 @@ saveClient() {
         });
       }
     });
+  } else {
+    Swal.fire({
+      title: "Invalid Form",
+      text: "Please fill all required fields",
+      icon: "warning",
+      confirmButtonColor: "#4690eb",
+      confirmButtonText: "Ok"
+    });
   }
 }
+
 
 
 

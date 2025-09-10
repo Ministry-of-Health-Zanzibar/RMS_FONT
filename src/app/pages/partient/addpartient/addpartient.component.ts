@@ -1,158 +1,207 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AsyncPipe, CommonModule } from '@angular/common';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { HDividerComponent } from '@elementar/components';
-import { map, Observable, startWith, Subject } from 'rxjs';
-import Swal from 'sweetalert2';
-
-import { UserService } from './../../../services/users/user.service';
-import { RolePermissionService } from '../../../services/users/role-permission.service';
-import { PartientService } from '../../../services/partient/partient.service';
-import { GlobalConstants } from '@shared/global-constants';
 import { MatSelectModule } from '@angular/material/select';
-import { MatIconModule } from '@angular/material/icon';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { map, Observable, startWith, Subject, takeUntil } from 'rxjs';
+import Swal from 'sweetalert2';
+import { PartientService } from '../../../services/partient/partient.service';
+import { RolePermissionService } from '../../../services/users/role-permission.service';
+import { MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatCardSubtitle } from "@angular/material/card";
+import { LocationService } from '../../../services/system-configuration/location.service';
+import { MatAutocomplete } from "@angular/material/autocomplete";
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+
+export interface AddPatientDialogData {
+  patientFileId: number;
+
+  referralOptions: any[];
+}
 
 @Component({
   selector: 'app-addpartient',
   standalone: true,
   imports: [
-  CommonModule,
+    CommonModule,
     ReactiveFormsModule,
-    MatButtonModule,
+    MatAutocompleteModule,
     MatDialogModule,
+    MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
     MatDatepickerModule,
+    MatNativeDateModule,
     MatIconModule,
-    MatDatepickerModule,
-  ],
+    MatProgressSpinnerModule,
+    MatCard,
+    MatCardHeader,
+    MatCardTitle,
+    MatCardContent,
+    MatCardSubtitle,
+    MatAutocomplete
+],
   templateUrl: './addpartient.component.html',
   styleUrl: './addpartient.component.scss'
 })
 export class AddpartientComponent implements OnInit, OnDestroy {
+ patientForm: FormGroup;
+  loading = false;
+  selectedFile: File | null = null;
+  patient:any;
 
-  private readonly onDestroy = new Subject<void>();
-  readonly data = inject<any>(MAT_DIALOG_DATA);
+  locations: any[] = [];
+  options: any[] = [];
+  filteredOptions!: Observable<any[]>;
 
-  patientForm: FormGroup;
-  selectedAttachement: File | null = null;
-  patientData: any;
+  private onDestroy$ = new Subject<void>();
 
   constructor(
+    private fb: FormBuilder,
     private patientService: PartientService,
-    private roleService: RolePermissionService,
-    private dialogRef: MatDialogRef<AddpartientComponent>
-  ) {}
+    private locationService: LocationService,
+    public dialogRef: MatDialogRef<AddpartientComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: AddPatientDialogData
+  ) {
+    this.patientForm = this.fb.group({
+      name: ['', Validators.required],
+      phone: ['', Validators.required],
+      gender: ['', Validators.required],
+      job: [''],
+      position: [''],
+      date_of_birth: ['', Validators.required],
+      location_id: ['', Validators.required],
+      patient_list_id: [this.data.patientFileId, Validators.required],
+      patient_file: [null, Validators.required]
+    });
+  }
 
   ngOnInit(): void {
-    this.configForm();
-    if (this.data?.data) {
-      this.patientData = this.data.data;
-      this.patientForm.patchValue(this.patientData);
+     if ( this.data.patientFileId) {
+      this.ViewPatient(this.data.patientFileId);
     }
+    this.loadLocations();
   }
+
+
 
   ngOnDestroy(): void {
-    this.onDestroy.next();
-    this.onDestroy.complete();
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
   }
 
-  onClose() {
-    this.dialogRef.close(false);
-  }
+   private ViewPatient( patientFileId: number) {
+      this.patientService.getBodyListById(patientFileId)
+        .pipe(takeUntil(this.onDestroy$))
+        .subscribe({
+          next: (res) => {
+            if (res?.data) {
+              this.patient = res.data;
+            } else {
+              this.patient = [];
+              Swal.fire('Error', res.message || 'No patient found', 'error');
+            }
+          },
+          error: () => {
+            this.patient = [];
+            Swal.fire('Error', 'Failed to load referrals', 'error');
+          },
+        });
+    }
 
-  configForm() {
-    this.patientForm = new FormGroup({
-      name: new FormControl(null, [Validators.required, Validators.pattern(GlobalConstants.nameRegexOnly)]),
-      gender: new FormControl(null, Validators.required),
-      location_id: new FormControl(null, Validators.required),
-      phone: new FormControl(null, Validators.required),
-      job: new FormControl(null, Validators.required),
-      position: new FormControl(null, Validators.required),
-      date_of_birth: new FormControl(null, Validators.required),
-      referral_letter_file: new FormControl(null, Validators.required),
+
+  private loadLocations() {
+    this.locationService.getLocation().subscribe({
+      next: (res: any) => {
+        this.locations = res.data;
+        this.options = res.data;
+        this.filteredOptions = this.patientForm.get('location_id')!.valueChanges.pipe(
+          startWith(''),
+          map((value: any) => typeof value === 'string' ? value : value?.label),
+          map((name: string) => (name ? this._filter(name) : this.options.slice()))
+        );
+      },
+      error: (err) => console.error('Failed to load locations', err)
     });
   }
 
-  onAttachmentSelected(event: any): void {
-    const file = event.target.files?.[0] ?? null;
+  private _filter(value: string): any[] {
+    const filterValue = value.toLowerCase();
+    return this.options.filter(option => option.label.toLowerCase().includes(filterValue));
+  }
+
+  displayFn(option: any): string {
+    return option ? option.label : '';
+  }
+
+  trackById(index: number, option: any): any {
+    return option.location_id;
+  }
+
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
     if (file) {
-      this.patientForm.patchValue({ referral_letter_file: file.name });
-      this.selectedAttachement = file;
+      this.selectedFile = file;
+      this.patientForm.patchValue({ patient_file: file });
+      this.patientForm.get('patient_file')?.updateValueAndValidity();
     }
   }
 
-  savePatient() {
-    if (this.patientForm.invalid) return;
+  onCancel() {
+    this.dialogRef.close();
+  }
+  private formatDate(date: Date | string): string {
+  const d = new Date(date);
+  const year = d.getFullYear();
+  const month = (d.getMonth() + 1).toString().padStart(2, '0');
+  const day = d.getDate().toString().padStart(2, '0');
+  return `${year}-${month}-${day}`; // YYYY-MM-DD format
+}
 
-  const formValue: any = { ...this.patientForm.value };
 
+ onSubmit() {
+  if (this.patientForm.valid) {
+    this.loading = true;
 
-
+    const formValue = this.patientForm.value;
     const formData = new FormData();
-    Object.keys(this.patientForm.controls).forEach(key => {
-      if (key === 'referral_letter_file') {
-        if (this.selectedAttachement) {
-          formData.append('referral_letter_file', this.selectedAttachement);
-        }
-      } else {
-        const value = this.patientForm.get(key)?.value;
-        formData.append(key, value ?? '');
-      }
-    });
 
-    this.patientService.addPartient(formData).subscribe(response => {
-      if (response.statusCode === 201) {
-        Swal.fire({
-          title: "Success",
-          text: response.message,
-          icon: "success",
-          confirmButtonColor: "#4690eb",
-          confirmButtonText: "Close"
-        });
-        this.dialogRef.close(true);
-      } else {
-        Swal.fire({
-          title: "Error",
-          text: response.message,
-          icon: "error",
-          confirmButtonColor: "#4690eb",
-          confirmButtonText: "Close"
-        });
-      }
-    });
-  }
+    formData.append('name', formValue.name);
+    formData.append('phone', formValue.phone);
+    formData.append('gender', formValue.gender);
+    formData.append('job', formValue.job || '');
+    formData.append('position', formValue.position || '');
+    formData.append('patient_list_id', formValue.patient_list_id);
 
-  updatePatient() {
-    if (this.patientForm.invalid) return;
+    // Format DOB
+    formData.append('date_of_birth', this.formatDate(formValue.date_of_birth));
 
-    this.patientService.updatePartient(this.patientForm.value, this.patientData.patient_id).subscribe(response => {
-      if (response.statusCode === 200) {
-        Swal.fire({
-          title: "Success",
-          text: response.message,
-          icon: "success",
-          confirmButtonColor: "#4690eb",
-          confirmButtonText: "Close"
-        });
-        this.dialogRef.close(true);
-      } else {
-        Swal.fire({
-          title: "Error",
-          text: response.message,
-          icon: "error",
-          confirmButtonColor: "#4690eb",
-          confirmButtonText: "Close"
-        });
+    const location = formValue.location_id;
+    formData.append('location_id', typeof location === 'object' ? location.location_id : location);
+
+    if (this.selectedFile) {
+      formData.append('patient_file', this.selectedFile, this.selectedFile.name);
+    }
+
+    this.patientService.addPartient(formData).subscribe({
+      next: (res) => {
+        this.loading = false;
+        Swal.fire('Success', 'Patient saved successfully', 'success');
+        this.dialogRef.close(res);
+      },
+      error: (err) => {
+        this.loading = false;
+        Swal.fire('Error', err.error?.message || 'Failed to save patient', 'error');
       }
     });
   }
+}
+
 }

@@ -37,7 +37,8 @@ export class ViewFollowUpComponent implements OnInit {
   public displayRoleForm!: FormGroup;
   loading: boolean = false;
   followListId: string | null = null;
-  follow: any = null;
+  follow: any = { data: [] };
+  referralId: number | null = null;
   feedback: any = null;
   userRole: string | null = null;
   patientListInfo: any = null;   // ✅ to hold title + file
@@ -66,13 +67,15 @@ getFeedbackById() {
     (response: any) => {
       this.loading = false;
 
-      // ✅ Use response.data directly
       if (response?.data) {
-        this.follow = {
-          data: response.data
-        };
+        this.follow = { data: response.data };
+
+        // ✅ Get referralId from first record
+        this.referralId = this.follow.data[0]?.referral_id;
+        console.log("Referral ID:", this.referralId);
       } else {
         this.follow = { data: [] };
+        this.referralId = null;
       }
     },
     (error) => {
@@ -82,25 +85,25 @@ getFeedbackById() {
   );
 }
 
+addFollow(referral_id: any) {
+  console.log("Add follow for referral ID:", referral_id);
+  let config = new MatDialogConfig();
+  config.disableClose = false;
+  config.role = 'dialog';
+  config.maxWidth = '100vw';
+  config.maxHeight = '100vh';
+  config.width = '850px';
+  config.panelClass = 'full-screen-modal';
+  config.data = { referral_id };
 
-
-    addFollow(id:any){
-       console.log("hiiii",id);
-      let config = new MatDialogConfig()
-      config.disableClose = false
-      config.role = 'dialog'
-      config.maxWidth ='100vw'
-      config.maxHeight = '100vh'
-      config.width = '850px'
-      config.panelClass = 'full-screen-modal'
-      config.data = {id: id}
-
-      const dialogRef = this.dialog.open(AddFollowUpComponent,config);
-
-      dialogRef.afterClosed().subscribe(result => {
-        this.getFeedbackById();
-      });
+  const dialogRef = this.dialog.open(AddFollowUpComponent, config);
+ dialogRef.afterClosed().subscribe(result => {
+    if (result === true) {   // only refresh if dialog was saved successfully
+      this.getFeedbackById();
     }
+  });
+}
+
 
   extractFileName(url: string): string {
     const parts = url.split('/');
