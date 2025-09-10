@@ -7,7 +7,7 @@
     <form [formGroup]="clientForm">
       <div class="row">
         <!-- Bill File -->
-        <mat-form-field appearance="outline" class="w-full">
+        <!-- <mat-form-field appearance="outline" class="w-full">
           <mat-label>Bill File</mat-label>
           <mat-select formControlName="bill_file_id" required>
             <mat-option
@@ -28,6 +28,16 @@
           >
             Bill file is required
           </mat-error>
+        </mat-form-field> -->
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Bill File</mat-label>
+          <mat-select formControlName="bill_file_id">
+            <mat-option *ngIf="billFile" [value]="billFile.bill_file_id">
+              {{ billFile?.bill_file_title }} -
+              {{ billFile?.hospital_name }} - 
+              {{billFile?.bill_file_amount | currency : "TZS" }}
+            </mat-option>
+          </mat-select>
         </mat-form-field>
 
         <!-- Amount Paid -->

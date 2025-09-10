@@ -38,7 +38,17 @@ export class BillpaymentComponent implements OnInit, OnDestroy {
   private readonly onDestroy = new Subject<void>();
   loading = false;
 
-  displayedColumns: string[] = ['id', 'title', 'hospital_name', 'pdf', 'amount', 'action'];
+  displayedColumns: string[] = [
+    'id',
+    'title',
+    'hospital_name',
+    'pdf',
+    'amount',
+    'paid_amount',
+    'balance',
+    'status',
+    'action',
+  ];
   dataSource = new MatTableDataSource<any>([]);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -92,12 +102,25 @@ export class BillpaymentComponent implements OnInit, OnDestroy {
     window.open(url, '_blank');
   }
 
-  addPayment(id: number) {
+  // addPayment(id: number) {
+  //   const config = new MatDialogConfig();
+  //   config.data = { id };
+  //   config.width = '950px';
+  //   config.height = '1000px';
+  //   this.dialog.open(ReferralpaymentComponent, config).afterClosed().subscribe(() => this.loadBillPayments());
+  // }
+
+  addPayment(bill: any) {
     const config = new MatDialogConfig();
-    config.data = { id };
+    console.log('Element sent to dialog:', bill);
+    config.data = bill;
     config.width = '950px';
     config.height = '1000px';
-    this.dialog.open(ReferralpaymentComponent, config).afterClosed().subscribe(() => this.loadBillPayments());
+
+    this.dialog
+      .open(ReferralpaymentComponent, config)
+      .afterClosed()
+      .subscribe(() => this.loadBillPayments());
   }
 
   displayMoreData(element: any) {
