@@ -37,8 +37,11 @@ export class ViewFollowUpComponent implements OnInit {
   public displayRoleForm!: FormGroup;
   loading: boolean = false;
   followListId: string | null = null;
-  follow: any = { data: [] };
-  referralId: number | null = null;
+ public follow: any = null;
+public hospitalLetters: any[] = [];
+public referralId: number | null = null;
+
+
   feedback: any = null;
   userRole: string | null = null;
   patientListInfo: any = null;   // ✅ to hold title + file
@@ -58,8 +61,6 @@ export class ViewFollowUpComponent implements OnInit {
     }
   }
 
-
-
 getFeedbackById() {
   this.loading = true;
 
@@ -68,13 +69,18 @@ getFeedbackById() {
       this.loading = false;
 
       if (response?.data) {
-        this.follow = { data: response.data };
+        // Referral info
+        this.follow = response.data;
 
-        // ✅ Get referralId from first record
-        this.referralId = this.follow.data[0]?.referral_id;
+        // ✅ Extract referralId
+        this.referralId = this.follow.referral_id;
         console.log("Referral ID:", this.referralId);
+
+        // ✅ Hospital letters (array for table)
+        this.hospitalLetters = this.follow.hospital_letters || [];
       } else {
-        this.follow = { data: [] };
+        this.follow = null;
+        this.hospitalLetters = [];
         this.referralId = null;
       }
     },
@@ -84,6 +90,32 @@ getFeedbackById() {
     }
   );
 }
+
+
+// getFeedbackById() {
+//   this.loading = true;
+
+//   this.followService.getFollowListById(this.followListId).subscribe(
+//     (response: any) => {
+//       this.loading = false;
+
+//       if (response?.data) {
+//         this.follow = { data: response.data };
+
+//         // ✅ Get referralId from first record
+//         this.referralId = this.follow.data[0]?.referral_id;
+//         console.log("Referral ID:", this.referralId);
+//       } else {
+//         this.follow = { data: [] };
+//         this.referralId = null;
+//       }
+//     },
+//     (error) => {
+//       this.loading = false;
+//       console.error('Error fetching follow details:', error);
+//     }
+//   );
+// }
 
 addFollow(referral_id: any) {
   console.log("Add follow for referral ID:", referral_id);

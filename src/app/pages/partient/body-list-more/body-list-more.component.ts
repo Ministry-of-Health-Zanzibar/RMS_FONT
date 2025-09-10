@@ -144,7 +144,7 @@ export class BodyListMoreComponent implements OnInit, AfterViewInit {
   const dialogData: AddPatientDialogData = { patientFileId, referralOptions: [] };
 
   const dialogRef = this.dialog.open(AddpartientComponent, {
-    width: '600px',
+    width: '1000px',
     data: dialogData,
   });
 
