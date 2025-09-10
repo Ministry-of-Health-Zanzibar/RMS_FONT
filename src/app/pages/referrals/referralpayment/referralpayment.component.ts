@@ -78,17 +78,31 @@ export class ReferralpaymentComponent {
     private dialogRef: MatDialogRef<ReferralpaymentComponent>
   ) {}
 
+  // ngOnInit(): void {
+  //   this.configForm();
+  //   if (this.data) {
+  //     this.id = this.data.id;
+  //     console.log('bill ID   here  ', this.id);
+
+  //   }
+
+  //   this.loadBills();
+  //   this.getBillByIds();
+
+  // }
   ngOnInit(): void {
     this.configForm();
-    if (this.data) {
-      this.id = this.data.id;
-      console.log('bill ID   here  ', this.id);
-      // console.log("bill amount   here  ",this.data);
-    }
 
-    this.loadBills();
-    this.getBillByIds();
-    // this.viewUser();
+    if (this.data) {
+      this.id = Number(this.data.bill_file_id);
+      console.log('Bill File data:', this.data);
+
+      this.clientForm.patchValue({
+        bill_file_id: this.id,
+      });
+
+      this.billFile = this.data;
+    }
   }
 
   ngOnDestroy(): void {
@@ -125,7 +139,7 @@ export class ReferralpaymentComponent {
     this.billServices.getBillById(this.id).subscribe(
       (response: any) => {
         if (response.statusCode === 200 && response.data) {
-          this.bill = response.data; // not an array – extract data directly
+          this.bill = response.data;
           console.log('Bill data:', this.bill);
         }
       },

@@ -1,0 +1,21 @@
+.status-badge {
+  display: inline-block;
+  padding: 2px 2px;
+  border-radius: 3px;
+  font-size: 12px;
+  font-weight: 600;
+  color: white;
+}
+
+.status-badge.paid {
+  background-color: var(--mat-primary, #1976d2); 
+}
+
+.status-badge.partial {
+  background-color: #16a34a;
+}
+
+.status-badge.pending {
+  background-color: #facc15;
+  color: #000;
+}

@@ -13,7 +13,7 @@ import { BillItermService } from '../../../../services/Bills/bill-iterm.service'
   imports: [CommonModule, MatCardModule, MatTableModule, MatProgressSpinnerModule],
   templateUrl: './bill-iterm-by-id.component.html',
   styleUrls: ['./bill-iterm-by-id.component.scss'],
-})
+})  
 export class BillItermByIdComponent implements OnInit {
   private readonly onDestroy = new Subject<void>();
 

@@ -298,4 +298,22 @@ export class ViewReferralsComponent implements OnInit, OnDestroy {
       console.log('The dialog was closed');
     });
   }
+
+
+  editReferral(data: any) {
+      let config = new MatDialogConfig()
+      config.disableClose = false
+      config.role = 'dialog'
+      config.maxWidth ='100vw'
+      config.maxHeight = '100vh'
+      config.height = '600px'
+      config.width = '850px'
+      config.panelClass = 'full-screen-modal'
+      config.data = {data: data}
+  
+      const dialogRef = this.dialog.open(AddReferralsComponent, config);
+      dialogRef.afterClosed().subscribe(result => {
+        this.getReferrals();
+      });
+    }
 }
