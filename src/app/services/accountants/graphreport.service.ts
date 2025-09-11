@@ -4,28 +4,44 @@ import { environment } from '../../../environments/environment.prod';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class GraphreportService {
-
   private baseUrl: string = `${environment.baseUrl}`;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   public getDocumentPerWeekReport(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}accountant/reports/reportPerWeekly`);
+    return this.http.get<any>(
+      `${this.baseUrl}accountant/reports/reportPerWeekly`
+    );
   }
 
   public getDocumentPerMonthReport(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}accountant/reports/reportPerMonthly`);
+    return this.http.get<any>(
+      `${this.baseUrl}accountant/reports/reportPerMonthly`
+    );
   }
 
   public getSourceReport(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}accountant/reports/reportBySourceType`);
+    return this.http.get<any>(
+      `${this.baseUrl}accountant/reports/reportBySourceType`
+    );
   }
 
   public getDocumentTypeReport(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}accountant/reports/reportPerDocumentType`);
+    return this.http.get<any>(
+      `${this.baseUrl}accountant/reports/reportPerDocumentType`
+    );
   }
+
+  public getReportreferralByHospital(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}reports/referralByHospital`);
+  }
+
+  public getReportreferralreferralsByReason(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}reports/referralsByReason`);
+  }
+
 
 }
