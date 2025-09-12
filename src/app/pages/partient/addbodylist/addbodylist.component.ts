@@ -101,7 +101,7 @@ export class AddbodylistComponent implements OnInit, OnDestroy {
     });
 
     this.patientService.addBodyList(formData).subscribe(response => {
-      if (response.statusCode === 201) {
+      if (response.statusCode === 200) {
         Swal.fire({
           title: "Success",
           text: response.message,

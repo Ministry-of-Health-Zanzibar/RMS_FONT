@@ -10,7 +10,7 @@ export class ReferralreportService {
 
   private baseUrl: string = `${environment.baseUrl}`;
   private href_parameter = `${this.baseUrl}reports/searchReferralReport`;
-  private href_final = `${this.baseUrl}reports/getBillsBetweenDates`;
+  private href_final = `${this.baseUrl}reports/range`;
 
   constructor(private http: HttpClient) {}
 

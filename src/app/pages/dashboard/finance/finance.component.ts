@@ -101,7 +101,7 @@ export class FinanceComponent implements OnInit {
 
   pieChart: ApexChart = {
     type: 'pie',
-    height: 350, 
+    height: 350,
     width: 700,
   };
 
@@ -112,7 +112,7 @@ export class FinanceComponent implements OnInit {
     {
       breakpoint: 480,
       options: {
-        chart: { width: 300 }, 
+        chart: { width: 300 },
         legend: { position: 'bottom' },
       },
     },

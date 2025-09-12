@@ -64,7 +64,7 @@ export class ReferralsearchreportComponent implements OnInit, OnDestroy {
   private readonly onDestroy = new Subject<void>();
 
   reportForm: FormGroup;
-  displayedColumns: string[] = ['no', 'name', 'hospital_name', 'hospital_address', 'referral_type_name','referral_reason_name','insurance_provider_name'];
+  displayedColumns: string[] = ['no', 'name', 'hospital_name', 'hospital_address','referral_reason_name'];
   dataSource = new MatTableDataSource<any>();
 
   documents: any[] = [];
@@ -139,7 +139,7 @@ export class ReferralsearchreportComponent implements OnInit, OnDestroy {
   getHospital(): void {
     this.hospitalServices.getAllHospital().subscribe(response => {
       this.hospital = response.data;
-      console.log("hospitali hiziii",response.data)
+      //console.log("hospitali hiziii",response.data)
     });
   }
 
@@ -194,15 +194,14 @@ export class ReferralsearchreportComponent implements OnInit, OnDestroy {
     doc.text('Report Data', 10, 10);
 
     autoTable(doc, {
-      head: [['no', 'name', 'hospital_name', 'hospital_address', 'referral_type_name','referral_reason_name','insurance_provider_name']],
+      head: [['no', 'name', 'hospital_name', 'hospital_address','referral_reason_name']],
       body: this.dataSource.data.map((element, index) => [
         index + 1,
         element.patient_name,
         element.hospital_name,
         element.hospital_address,
-        element.referral_type_name,
         element.referral_reason_name,
-        element.insurance_provider_name,
+
 
       ]),
     });

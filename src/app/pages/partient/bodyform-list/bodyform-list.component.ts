@@ -98,13 +98,19 @@ export class BodyformListComponent {
     }
   }
 
+    viewPDF(element: any) {
+    const url = 'http://127.0.0.1:8000/storage/' + element.patient_list_file;
+    window.open(url, '_blank');
+  }
+
+
   addPatient() {
     let config = new MatDialogConfig()
     config.disableClose = false
     config.role = 'dialog'
     config.maxWidth ='100vw'
     config.maxHeight = '100vh'
-    config.height = '600px'
+    // config.height = '600px'
     config.width = '850px'
     config.panelClass = 'full-screen-modal'
 
@@ -224,9 +230,9 @@ export class BodyformListComponent {
 
   displayMoreData(data: any) {
     const id = data.patient_list_id;
-     this.router.navigate(['/pages/patient/bodylist', id]); 
+     this.router.navigate(['/pages/patient/bodylist', id]);
    }
- 
+
 
 
 

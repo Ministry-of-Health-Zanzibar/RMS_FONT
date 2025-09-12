@@ -40,14 +40,15 @@
            <ng-container matColumnDef="pdf">
         <th mat-header-cell *matHeaderCellDef>View PDF</th>
         <td mat-cell *matCellDef="let element">
-          <ng-container *ngIf="element.patient_list_file?.endsWith('.pdf')">
-            <a [href]="'http://127.0.0.1:8000/storage/' + element.patient_list_file"
-               target="_blank"
-               class="inline-flex items-center gap-1 text-indigo-600 hover:text-indigo-800">
-              <mat-icon>picture_as_pdf</mat-icon>
-              View PDF
+
+             <a
+              *ngIf="element.patient_list_file?.endsWith('.pdf')"
+              (click)="viewPDF(element)"
+              class="inline-flex items-center gap-1 text-indigo-600 hover:text-indigo-800 cursor-pointer"
+            >
+              <mat-icon>picture_as_pdf</mat-icon> View PDF
             </a>
-          </ng-container>
+          
         </td>
       </ng-container>
 

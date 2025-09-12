@@ -11,8 +11,8 @@
         <!-- Row 1: Full Name, Gender -->
         <div class="form-row">
           <mat-form-field class="form-field">
-            <mat-label>Patient Body</mat-label>
-            <input matInput placeholder="Ex. Ali Juma Ali" formControlName="patient_list_title" type="text">
+            <mat-label>Body No:</mat-label>
+            <input matInput placeholder="Ex. BODY NO" formControlName="patient_list_title" type="text">
             <mat-error *ngIf="patientForm.get('patient_list_title')?.invalid && patientForm.get('patient_list_title')?.touched">
               <span *ngIf="patientForm.get('patient_list_title')?.errors?.['required']">This field is mandatory</span>
               <span *ngIf="patientForm.get('patient_list_title')?.errors?.['pattern']">Must contain alphabetical characters only</span>
