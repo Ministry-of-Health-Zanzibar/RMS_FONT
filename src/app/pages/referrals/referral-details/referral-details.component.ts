@@ -11,6 +11,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ReferralService } from '../../../services/Referral/referral.service';
 import { ReferralStatusDialogComponent } from '../referral-status-dialog/referral-status-dialog.component';
 import Swal from 'sweetalert2';
+import { MatCardModule } from '@angular/material/card';
+import { ReferralsLetterComponent } from '../referrals-letter/referrals-letter.component';
 
 @Component({
   selector: 'app-referral-details',
@@ -25,6 +27,7 @@ import Swal from 'sweetalert2';
     ReactiveFormsModule,
     MatIcon,
     MatDialogModule,
+    MatCardModule,
   ],
   templateUrl: './referral-details.component.html',
   styleUrl: './referral-details.component.scss',
@@ -86,8 +89,20 @@ export class ReferralDetailsComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.referral.status = result.status;
+        this.getMoreData();
       }
+    });
+  }
+
+  referralsLetterPopup(data: any): void {
+    const dialogRef = this.dialog.open(ReferralsLetterComponent, {
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      data: data,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log('The dialog was closed');
     });
   }
 }

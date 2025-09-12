@@ -6,48 +6,6 @@
 
     <form [formGroup]="statusForm">
      
-      <!-- Hospital Selection -->
-      <mat-form-field appearance="outline" class="w-full">
-        <mat-label>Select Hospital</mat-label>
-        <mat-select formControlName="hospital_id">
-          <mat-option
-            *ngFor="let hospital of hospitals"
-            [value]="hospital.hospital_id"
-          >
-            {{ hospital.hospital_name }}
-          </mat-option>
-        </mat-select>
-        <mat-error
-          *ngIf="
-            statusForm.controls['hospital_id'].touched &&
-            statusForm.controls['hospital_id'].invalid
-          "
-        >
-          Hospital is required
-        </mat-error>
-      </mat-form-field>
-
-      <!-- Letter Text -->
-      <mat-form-field appearance="outline" class="w-full">
-        <mat-label>Description</mat-label>
-        <textarea
-          formControlName="letter_text"
-          matInput
-          rows="5"
-          class="text-black"
-          placeholder="Enter confirmation letter text"
-        ></textarea>
-        <mat-error
-          *ngIf="
-            statusForm.controls['letter_text'].touched &&
-            statusForm.controls['letter_text'].invalid
-          "
-        >
-          This field is mandatory
-        </mat-error>
-      </mat-form-field>
-
-      <!-- Status -->
       <mat-form-field appearance="outline" class="w-full">
         <mat-label>Status</mat-label>
         <mat-select formControlName="status">
@@ -64,55 +22,114 @@
         </mat-error>
       </mat-form-field>
 
-      <!-- Start Date -->
-      <mat-form-field appearance="outline" class="w-full">
-        <mat-label>Start Date</mat-label>
-        <input
-          matInput
-          formControlName="start_date"
-          [matDatepicker]="picker1"
-          placeholder="Choose start date"
-        />
-        <mat-datepicker-toggle
-          matSuffix
-          [for]="picker1"
-        ></mat-datepicker-toggle>
-        <mat-datepicker #picker1></mat-datepicker>
-        <mat-error
-          *ngIf="
-            statusForm.controls['start_date'].touched &&
-            statusForm.controls['start_date'].invalid
-          "
-        >
-          Start Date is required
-        </mat-error>
-      </mat-form-field>
+      <ng-container *ngIf="statusForm.get('status')?.value === 'Cancelled'">
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Description</mat-label>
+          <textarea
+            formControlName="letter_text"
+            matInput
+            rows="5"
+            class="text-black"
+            placeholder="Enter reason for cancellation"
+          ></textarea>
+          <mat-error
+            *ngIf="
+              statusForm.controls['letter_text'].touched &&
+              statusForm.controls['letter_text'].invalid
+            "
+          >
+            Description is required when status is Cancelled
+          </mat-error>
+        </mat-form-field>
+      </ng-container>
 
-      <!-- End Date -->
-      <mat-form-field appearance="outline" class="w-full">
-        <mat-label>End Date</mat-label>
-        <input
-          matInput
-          formControlName="end_date"
-          [matDatepicker]="picker2"
-          placeholder="Choose end date"
-        />
-        <mat-datepicker-toggle
-          matSuffix
-          [for]="picker2"
-        ></mat-datepicker-toggle>
-        <mat-datepicker #picker2></mat-datepicker>
-        <mat-error
-          *ngIf="
-            statusForm.controls['end_date'].touched &&
-            statusForm.controls['end_date'].invalid
-          "
-        >
-          End Date is required
-        </mat-error>
-      </mat-form-field>
+      <ng-container *ngIf="statusForm.get('status')?.value === 'Confirmed'">
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Select Hospital</mat-label>
+          <mat-select formControlName="hospital_id">
+            <mat-option
+              *ngFor="let hospital of hospitals"
+              [value]="hospital.hospital_id"
+            >
+              {{ hospital.hospital_name }}
+            </mat-option>
+          </mat-select>
+          <mat-error
+            *ngIf="
+              statusForm.controls['hospital_id'].touched &&
+              statusForm.controls['hospital_id'].invalid
+            "
+          >
+            Hospital is required
+          </mat-error>
+        </mat-form-field>
 
-      <!-- Action Buttons -->
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Description</mat-label>
+          <textarea
+            formControlName="letter_text"
+            matInput
+            rows="5"
+            class="text-black"
+            placeholder="Enter confirmation letter text"
+          ></textarea>
+          <mat-error
+            *ngIf="
+              statusForm.controls['letter_text'].touched &&
+              statusForm.controls['letter_text'].invalid
+            "
+          >
+            This field is mandatory
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Start Date</mat-label>
+          <input
+            matInput
+            formControlName="start_date"
+            [matDatepicker]="picker1"
+            placeholder="Choose start date"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker1"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker1></mat-datepicker>
+          <mat-error
+            *ngIf="
+              statusForm.controls['start_date'].touched &&
+              statusForm.controls['start_date'].invalid
+            "
+          >
+            Start Date is required
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>End Date</mat-label>
+          <input
+            matInput
+            formControlName="end_date"
+            [matDatepicker]="picker2"
+            placeholder="Choose end date"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker2"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker2></mat-datepicker>
+          <mat-error
+            *ngIf="
+              statusForm.controls['end_date'].touched &&
+              statusForm.controls['end_date'].invalid
+            "
+          >
+            End Date is required
+          </mat-error>
+        </mat-form-field>
+      </ng-container>
+
       <div class="flex justify-end gap-6 pt-4">
         <button mat-button mat-dialog-close>Cancel</button>
         <button

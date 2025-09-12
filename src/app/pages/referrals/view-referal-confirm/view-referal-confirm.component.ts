@@ -86,7 +86,7 @@ export class ViewReferalConfirmComponent implements OnInit,OnDestroy{
       (response: any) => {
         this.loading = false;
         if (response.statusCode === 200) {
-          // Filter data to include only items with status === 'Pending'
+  
           const pending = response.data.filter((item: { status: string; }) => item.status === 'Confirmed');
           this.dataSource = new MatTableDataSource(pending);
           this.dataSource.paginator = this.paginator;
