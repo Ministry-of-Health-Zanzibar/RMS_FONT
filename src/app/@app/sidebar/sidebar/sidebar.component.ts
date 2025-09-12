@@ -61,7 +61,7 @@ export class SidebarComponent {
       name: 'Dashboard',
       icon: 'dashboard',
       permission: 'View Referral Dashboard',
-      link: '/pages/dashboard/finance',
+      link: '/pages/dashboard',
     },
 
     // {
@@ -209,12 +209,13 @@ export class SidebarComponent {
           link: '/pages/config/referrals',
           permission: 'View Referral',
         },
-        {
-          type: 'link',
-          name: 'Confirmed Referral',
-          link: '/pages/config/referrals/confirm0000111101',
-          permission: 'View Referral',
-        },
+        
+        // {
+        //   type: 'link',
+        //   name: 'Confirmed Referral',
+        //   link: '/pages/config/referrals/confirm0000111101',
+        //   permission: 'View Referral',
+        // },
 
         //  {
         //   type: 'link',
@@ -229,7 +230,7 @@ export class SidebarComponent {
     {
       id: 'bills',
       type: 'Single',
-      name: 'Month Bills',
+      name: 'Month Bill',
       icon: 'bill',
       link: '/pages/config/referrals/bill-file-list',
       permission: 'View Referral',
@@ -242,14 +243,14 @@ export class SidebarComponent {
       link: '/pages/config/referrals/billpayment2222200000',
       permission: 'View Referral',
     },
-    {
-      id: 'months1',
-      type: 'Single',
-      name: 'Month Bill',
-      icon: 'month',
-      link: '/pages/config/referrals/monthbill00998778',
-      permission: 'View Monthly Bill',
-    },
+    // {
+    //   id: 'months1',
+    //   type: 'Single',
+    //   name: 'Month Bill',
+    //   icon: 'month',
+    //   link: '/pages/config/referrals/monthbill00998778',
+    //   permission: 'View Monthly Bill',
+    // },
     {
       id: 'report3',
       type: 'Single', // Changed from 'group' to 'link'
