@@ -12,6 +12,7 @@ import { PermissionService } from '../../../../services/authentication/permissio
 import { PartientService } from '../../../../services/partient/partient.service';
 import { FollowsService } from '../../../../services/Referral/follows.service';
 import { AddFollowUpComponent } from '../add-follow-up/add-follow-up.component';
+import { PrintfollowupComponent } from '../printfollowup/printfollowup.component';
 
 
 
@@ -135,6 +136,19 @@ addFollow(referral_id: any) {
     }
   });
 }
+
+ printFollowUp(data: any): void {
+    const dialogRef = this.dialog.open(PrintfollowupComponent, {
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      data: data,
+    });
+    console.log("napata data",data)
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log('The dialog was closed');
+    });
+  }
 
 
   extractFileName(url: string): string {
