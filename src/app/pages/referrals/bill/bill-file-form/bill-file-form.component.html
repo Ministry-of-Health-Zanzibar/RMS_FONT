@@ -129,6 +129,58 @@
             </mat-error>
           </mat-form-field>
         </div>
+
+        <!-- Bill Start Date -->
+        <div class="form-row">
+          <mat-form-field class="form-field w-full">
+            <mat-label>Bill Start Date</mat-label>
+            <input
+              matInput
+              [matDatepicker]="pickerStart"
+              placeholder="Select start date"
+              formControlName="bill_start"
+            />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="pickerStart"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #pickerStart></mat-datepicker>
+            <mat-error
+              *ngIf="
+                billForm.get('bill_start')?.invalid &&
+                billForm.get('bill_start')?.touched
+              "
+            >
+              Start date is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Bill End Date -->
+        <div class="form-row">
+          <mat-form-field class="form-field w-full">
+            <mat-label>Bill End Date</mat-label>
+            <input
+              matInput
+              [matDatepicker]="pickerEnd"
+              placeholder="Select end date"
+              formControlName="bill_end"
+            />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="pickerEnd"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #pickerEnd></mat-datepicker>
+            <mat-error
+              *ngIf="
+                billForm.get('bill_end')?.invalid &&
+                billForm.get('bill_end')?.touched
+              "
+            >
+              End date is required
+            </mat-error>
+          </mat-form-field>
+        </div>
       </form>
 
       <!-- Actions -->
