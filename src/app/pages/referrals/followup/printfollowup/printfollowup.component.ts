@@ -10,6 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import Swal from 'sweetalert2';
 import { FollowsService } from '../../../../services/Referral/follows.service';
+import { ReferralService } from '../../../../services/Referral/referral.service';
 
 @Component({
   selector: 'app-printfollowup',
@@ -33,6 +34,7 @@ export class PrintfollowupComponent implements OnInit {
 
   constructor(
     private printService: FollowsService,
+    private referralsService: ReferralService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
@@ -46,7 +48,7 @@ export class PrintfollowupComponent implements OnInit {
   }
 
   getReferralData(): void {
-    this.printService.getFollowListById(this.referralID!).subscribe(
+    this.referralsService.getReferralById(this.referralID!).subscribe(
       (response: any) => {
         this.referral = response.data ? response.data : response;
       },

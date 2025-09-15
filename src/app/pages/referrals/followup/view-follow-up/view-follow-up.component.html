@@ -105,19 +105,14 @@
           <span class="text-gray-400">No Follow-ups</span>
         </ng-template>
       </td>
-      <td>
-         <button
-    mat-raised-button
-    color="accent"
-    class="bg-indigo-600 hover:bg-indigo-700 text-white px-10 py-3 rounded-2xl shadow-lg transition transform hover:scale-105"
-    (click)="printFollowUp(letter)"
-
-
-  >
-    <mat-icon class="mr-2">print</mat-icon>
-    Print
-  </button>
-      </td>
+     <td class="border border-gray-300 p-2 text-center">
+      <mat-icon
+        class="cursor-pointer text-indigo-600 hover:text-indigo-800 transition"
+        (click)="printFollowUp(follow)"
+        matTooltip="Print Follow-up">
+        print
+      </mat-icon>
+    </td>
     </tr>
   </tbody>
 </table>

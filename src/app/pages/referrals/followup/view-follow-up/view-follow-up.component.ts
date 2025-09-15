@@ -146,7 +146,7 @@ addFollow(referral_id: any) {
     console.log("napata data",data)
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed');
+
     });
   }
 
