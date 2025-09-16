@@ -72,12 +72,13 @@ export class AddpartientComponent implements OnInit, OnDestroy {
   ) {
     this.patientForm = this.fb.group({
       name: ['', Validators.required],
-      phone: ['', Validators.required],
+      phone: ['',[ Validators.required,Validators.pattern(/^[0-9]{10}$/)]],
       gender: ['', Validators.required],
       job: [''],
       position: [''],
       date_of_birth: ['', Validators.required],
       location_id: ['', Validators.required],
+      matibabu_card:['', [Validators.required,Validators.pattern(/^[0-9]{12}$/)]],
       patient_list_id: [this.data.patientFileId, Validators.required],
       patient_file: [null, Validators.required]
     });
@@ -178,6 +179,7 @@ export class AddpartientComponent implements OnInit, OnDestroy {
     formData.append('gender', formValue.gender);
     formData.append('job', formValue.job || '');
     formData.append('position', formValue.position || '');
+    formData.append('matibabu_card', formValue.matibabu_card || '');
     formData.append('patient_list_id', formValue.patient_list_id);
 
     // Format DOB

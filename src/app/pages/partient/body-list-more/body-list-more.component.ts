@@ -136,7 +136,7 @@ export class BodyListMoreComponent implements OnInit, AfterViewInit {
       name: patien?.name || 'N/A',
       phone: patien?.phone || 'N/A',
       gender: patien?.gender || 'N/A',
-      location: patien?.location_id || 'N/A', // you can map location name if needed
+      location: patien.geographical_location?.label || 'N/A', // you can map location name if needed
     };
   }
 

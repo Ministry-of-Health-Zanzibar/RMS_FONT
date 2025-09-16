@@ -16,11 +16,27 @@
         </mat-form-field>
 
         <!-- Phone -->
-        <mat-form-field appearance="outline" class="w-full">
-          <mat-label>Phone</mat-label>
-          <input matInput type="tel" formControlName="phone" placeholder="Enter phone number" />
-          <mat-error *ngIf="patientForm.get('phone')?.hasError('required')">Phone is required</mat-error>
-        </mat-form-field>
+       <mat-form-field appearance="outline" class="w-full">
+  <mat-label>Phone</mat-label>
+  <input
+    matInput
+    type="tel"
+    formControlName="phone"
+    maxlength="10"
+    placeholder="Enter 10-digit phone number"
+  />
+
+  <!-- Required error -->
+  <mat-error *ngIf="patientForm.get('phone')?.hasError('required')">
+    Phone number is required
+  </mat-error>
+
+  <!-- Pattern error (not 10 digits) -->
+      <mat-error *ngIf="patientForm.get('phone')?.hasError('pattern')">
+        Phone number must be exactly 10 digits
+      </mat-error>
+     </mat-form-field>
+
 
         <!-- Gender -->
         <mat-form-field appearance="outline" class="w-full">
@@ -54,7 +70,7 @@
         </mat-form-field>
 
         <!-- Location -->
-        <mat-form-field appearance="outline" class="w-full md:col-span-2">
+        <mat-form-field appearance="outline" class="w-full">
           <mat-label>Location</mat-label>
           <input matInput placeholder="Search location" formControlName="location_id" [matAutocomplete]="auto" />
           <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" [panelWidth]="'auto'">
@@ -64,6 +80,27 @@
           </mat-autocomplete>
           <mat-error *ngIf="patientForm.get('location_id')?.hasError('required')">Location is required</mat-error>
         </mat-form-field>
+
+       <mat-form-field appearance="outline" class="w-full">
+  <mat-label>Matibabu Card</mat-label>
+  <input
+    matInput
+    formControlName="matibabu_card"
+    maxlength="12"
+    placeholder="Enter 12-digit Matibabu Card Number"
+  />
+
+  <!-- Required error -->
+  <mat-error *ngIf="patientForm.get('matibabu_card')?.hasError('required')">
+    Matibabu Card is required
+  </mat-error>
+
+  <!-- Pattern error (not exactly 12 digits) -->
+  <mat-error *ngIf="patientForm.get('matibabu_card')?.hasError('pattern')">
+    Matibabu Card must be exactly 12 digits
+  </mat-error>
+</mat-form-field>
+
 
         <!-- Patient File Upload -->
         <div class="w-full md:col-span-2">
