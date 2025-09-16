@@ -64,7 +64,7 @@ export class ReferralsLetterComponent implements OnInit {
       document.body.innerHTML = printContents;
       window.print();
       document.body.innerHTML = originalContents;
-      window.location.reload(); // Optional: to restore Angular functionality
+      window.location.reload(); 
     }
   }
   

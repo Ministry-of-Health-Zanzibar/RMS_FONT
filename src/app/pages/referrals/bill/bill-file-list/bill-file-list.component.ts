@@ -57,7 +57,15 @@ export class BillFileListComponent {
   private readonly onDestroy = new Subject<void>();
   loading: boolean = false;
 
-  displayedColumns: string[] = ['id', 'title','hospital_name', 'pdf', 'amount', 'action'];
+  displayedColumns: string[] = [
+    'id',
+    'title',
+    'hospital_name',
+    'pdf',
+    'amount',
+    'details',
+    'action',
+  ];
   dataSource: MatTableDataSource<any> = new MatTableDataSource();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -72,7 +80,6 @@ export class BillFileListComponent {
 
   ngOnInit(): void {
     this.loadBills();
-   
   }
 
   ngOnDestroy(): void {
@@ -160,12 +167,8 @@ export class BillFileListComponent {
     });
   }
 
- displayMoreData(data: any) {
-  const id = data.bill_file_id; 
-  this.router.navigate(['/pages/config/referrals/more-bill-file', id]);
-}
-
-
-
-
+  displayMoreData(data: any) {
+    const id = data.bill_file_id;
+    this.router.navigate(['/pages/config/referrals/more-bill-file', id]);
+  }
 }

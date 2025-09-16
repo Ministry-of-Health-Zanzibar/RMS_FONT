@@ -23,7 +23,6 @@ import { BillFileService } from '../../../../services/Bills/bill-file.service';
 import Swal from 'sweetalert2';
 import { HospitalService } from '../../../../services/system-configuration/hospital.service';
 
-
 @Component({
   selector: 'app-bill-file-form',
   standalone: true,
@@ -103,6 +102,8 @@ export class BillFileFormComponent {
       bill_file: new FormControl(null, Validators.required),
       bill_file_amount: new FormControl(null, [Validators.required]),
       hospital_id: new FormControl(null, [Validators.required]),
+      bill_start: new FormControl(null, [Validators.required]),
+      bill_end: new FormControl(null, [Validators.required]),
     });
   }
 
