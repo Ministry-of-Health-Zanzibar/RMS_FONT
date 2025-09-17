@@ -261,7 +261,7 @@ export class ViewReferalConfirmComponent implements OnInit,OnDestroy{
               const dialogRef = this.dialog.open(ReferralsLetterComponent, {
                 maxWidth: '100vw',
                 maxHeight: '100vh',
-                 data: data  // pass referral data to the dialog
+                 data: data  
               });
 
               dialogRef.afterClosed().subscribe(result => {
