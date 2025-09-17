@@ -176,18 +176,7 @@ export class SidebarComponent {
       icon: 'menu',
       permission: 'View Patient',
       children: [
-        {
-          type: 'link',
-          name: 'Patient',
-          link: '/pages/patient',
-          permission: 'View Patient',
-        },
-        {
-          type: 'link',
-          name: 'Insurances',
-          link: '/pages/patient/insurances0000011111',
-          permission: 'View Patient',
-        },
+       
         {
           type: 'link',
           name: 'Patient List',
@@ -209,7 +198,7 @@ export class SidebarComponent {
           link: '/pages/config/referrals',
           permission: 'View Referral',
         },
-        
+
         // {
         //   type: 'link',
         //   name: 'Confirmed Referral',

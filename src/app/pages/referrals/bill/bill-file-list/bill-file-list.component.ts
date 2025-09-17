@@ -59,7 +59,6 @@ export class BillFileListComponent {
 
   displayedColumns: string[] = [
     'id',
-    'title',
     'hospital_name',
     'pdf',
     'amount',
@@ -118,7 +117,7 @@ export class BillFileListComponent {
 
   // Open PDF
   viewPDF(element: any) {
-    const url = 'http://127.0.0.1:8000/storage/' + element.bill_file;
+    const url = 'http://127.0.0.1:8000/public/uploads/billFiles/' + element.bill_file;
     window.open(url, '_blank');
   }
 

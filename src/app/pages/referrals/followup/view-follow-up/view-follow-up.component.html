@@ -31,14 +31,15 @@
       Follow-up Records
     </h3>
 
-   <button
+  <button
   (click)="addFollow(referralId)"
-  *ngIf="referralId && permission.parmissionMatched(['View Patient List'])"
+  *ngIf="referralId && permission.parmissionMatched(['View Patient List']) && follow?.status !== 'Closed'"
   matTooltip="Add Follow-up"
   class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-all">
   <mat-icon>add_circle</mat-icon>
   Add Follow-up
 </button>
+
   </div>
 
   <!-- Table -->
@@ -49,6 +50,14 @@
     <tr>
       <th class="border border-gray-300 p-2 text-center">#</th>
       <th class="border border-gray-300 p-2 text-center">
+        <mat-icon class="text-gray-600 align-middle">person</mat-icon>
+        Patient Name
+      </th>
+         <th class="border border-gray-300 p-2 text-center">
+        <mat-icon class="text-gray-600 align-middle">card</mat-icon>
+        Matibabu Card No
+      </th>
+         <th class="border border-gray-300 p-2 text-center">
         <mat-icon class="text-gray-600 align-middle">description</mat-icon>
         Content Summary
       </th>
@@ -64,10 +73,10 @@
         <mat-icon class="text-gray-600 align-middle">insert_drive_file</mat-icon>
         Letter File
       </th>
-      <th class="border border-gray-300 p-2 text-center">
+      <!-- <th class="border border-gray-300 p-2 text-center">
         <mat-icon class="text-gray-600 align-middle">history</mat-icon>
         Follow-ups
-      </th>
+      </th> -->
       <th class="border border-gray-300 p-2 text-center">
         <mat-icon class="text-gray-600 align-middle">print</mat-icon>
         Print
@@ -78,8 +87,13 @@
   <tbody>
     <tr *ngFor="let letter of hospitalLetters; let i = index;" class="hover:bg-gray-50">
       <td class="border border-gray-300 p-2 text-center">{{ i + 1 }}</td>
-      <td class="border border-gray-300 p-2 text-center">{{ letter.content_summary }}</td>
-      <td class="border border-gray-300 p-2 text-center">{{ letter.next_appointment_date }}</td>
+      <td class="border border-gray-300 p-2 text-center">{{ follow.patient?.name }}</td>
+       <td class="border border-gray-300 p-2 text-center">{{ follow.patient?.matibabu_card }}</td>
+        <td class="border border-gray-300 p-2 text-center">{{ letter.content_summary }}</td>
+     <td  class="border border-gray-300 p-2 text-center">
+  {{ letter.next_appointment_date || '' }}
+</td>
+
       <td class="border border-gray-300 p-2 text-center">{{ letter.outcome }}</td>
       <td class="border border-gray-300 p-2 text-center">
         <ng-container *ngIf="letter.letter_file; else noFile">
@@ -94,7 +108,7 @@
           <span class="text-gray-400">No File</span>
         </ng-template>
       </td>
-      <td class="border border-gray-300 p-2 text-center">
+      <!-- <td class="border border-gray-300 p-2 text-center">
         <ul *ngIf="letter.followups && letter.followups.length > 0; else noFollowups"
             class="list-disc list-inside text-left text-sm text-gray-600">
           <li *ngFor="let f of letter.followups">
@@ -104,7 +118,7 @@
         <ng-template #noFollowups>
           <span class="text-gray-400">No Follow-ups</span>
         </ng-template>
-      </td>
+      </td> -->
      <td class="border border-gray-300 p-2 text-center">
       <mat-icon
         class="cursor-pointer text-indigo-600 hover:text-indigo-800 transition"

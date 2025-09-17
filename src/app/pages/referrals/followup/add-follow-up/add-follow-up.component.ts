@@ -94,13 +94,12 @@ ngOnInit(): void {
           referral_id: new FormControl(this.id),
 
           content_summary: new FormControl(null, [Validators.required]),
-           next_appointment_date: new FormControl(null, Validators.required),
+           next_appointment_date: new FormControl(null,),
            outcome: new FormControl(null, Validators.required),
-           received_date: new FormControl(null, Validators.required),
            letter_file: new FormControl(null, Validators.required),
 
            followup_date: new FormControl(null,),
-           notes: new FormControl(null,),
+
 
 
     });

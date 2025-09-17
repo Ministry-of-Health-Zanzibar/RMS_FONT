@@ -53,25 +53,7 @@
         </div>
 
         <!-- Bill Title -->
-        <div class="form-row">
-          <mat-form-field class="form-field w-full">
-            <mat-label>Bill Title</mat-label>
-            <input
-              matInput
-              placeholder="Ex. Lumumba Hospital Bill August 2025"
-              formControlName="bill_file_title"
-              type="text"
-            />
-            <mat-error
-              *ngIf="
-                billForm.get('bill_file_title')?.invalid &&
-                billForm.get('bill_file_title')?.touched
-              "
-            >
-              This field is required
-            </mat-error>
-          </mat-form-field>
-        </div>
+       
 
         <!-- Bill Amount -->
         <div class="form-row">

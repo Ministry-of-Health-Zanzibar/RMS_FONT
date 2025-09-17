@@ -22,6 +22,8 @@
             <mat-select formControlName="outcome">
               <mat-option value="Follow-up">Follow-up</mat-option>
               <mat-option value="Finished">Finished</mat-option>
+              <mat-option value="Transferred">Transferred</mat-option>
+              <mat-option value="Death">Death</mat-option>
             </mat-select>
             <mat-error *ngIf="patientForm.get('outcome')?.invalid && patientForm.get('outcome')?.touched">
               This field is mandatory
@@ -30,22 +32,7 @@
         </div>
 
        <div class="form-row" *ngIf="patientForm.get('outcome')?.value === 'Follow-up'">
-  <mat-form-field class="form-field">
-    <mat-label>Note</mat-label>
-    <input matInput placeholder="Ex. Notes" formControlName="notes" type="text">
-  </mat-form-field>
 
-  <mat-form-field class="form-field">
-    <mat-label>Follow up Date</mat-label>
-    <input matInput type="date" formControlName="followup_date">
-    <mat-error *ngIf="patientForm.get('followup_date')?.invalid && patientForm.get('followup_date')?.touched">
-      This field is mandatory
-    </mat-error>
-  </mat-form-field>
-</div>
-
-
-          <div class="form-row">
 
            <mat-form-field class="form-field">
             <mat-label>Next Appoitment Date</mat-label>
@@ -55,17 +42,21 @@
             </mat-error>
           </mat-form-field>
 
-          </div>
+
+     </div>
+
+
+
 
         <!-- Row 4: Date of Birth, File Upload -->
         <div class="form-row">
-          <mat-form-field class="form-field">
-            <mat-label>Received Date</mat-label>
-            <input matInput type="date" formControlName="received_date">
-            <mat-error *ngIf="patientForm.get('received_date')?.invalid && patientForm.get('received_date')?.touched">
-              This field is mandatory
-            </mat-error>
-          </mat-form-field>
+         <mat-form-field class="form-field">
+    <mat-label>Follow up Date</mat-label>
+    <input matInput type="date" formControlName="followup_date">
+    <mat-error *ngIf="patientForm.get('followup_date')?.invalid && patientForm.get('followup_date')?.touched">
+      This field is mandatory
+    </mat-error>
+  </mat-form-field>
 
           <mat-form-field class="form-field">
             <mat-label>Upload File</mat-label>

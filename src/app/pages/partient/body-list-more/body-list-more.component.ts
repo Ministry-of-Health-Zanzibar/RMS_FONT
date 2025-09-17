@@ -25,7 +25,7 @@ interface BodyList {
 }
 
 interface Patient {
-  patient_id: number;
+  matibabu_card: number;
   name?: string;
   gender?: string;
   phone?: string;
@@ -61,7 +61,7 @@ export class BodyListMoreComponent implements OnInit, AfterViewInit {
   displayedBodyListColumns: string[] = ['patient_list_title', 'patient_list_file', 'actions'];
   bodyListDataSource: MatTableDataSource<BodyList> = new MatTableDataSource<BodyList>();
 
-  displayedPatientColumns: string[] = ['patient_id', 'name', 'gender', 'phone', 'location'];
+  displayedPatientColumns: string[] = ['matibabu_card', 'name', 'gender', 'phone', 'location'];
   patientDataSource: MatTableDataSource<Patient> = new MatTableDataSource<Patient>();
 
   @ViewChild('bodyListPaginator') bodyListPaginator!: MatPaginator;
@@ -132,7 +132,7 @@ export class BodyListMoreComponent implements OnInit, AfterViewInit {
 
   private formatPatient(patien: any): Patient {
     return {
-      patient_id: patien?.patient_id,
+      matibabu_card: patien?.matibabu_card,
       name: patien?.name || 'N/A',
       phone: patien?.phone || 'N/A',
       gender: patien?.gender || 'N/A',

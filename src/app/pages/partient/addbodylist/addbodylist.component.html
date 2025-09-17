@@ -2,8 +2,8 @@
   <div class="w-full">
     <div class="relative h-full rounded-lg group p-6">
       <!-- Title -->
-      <div class="font-semibold" *ngIf="!patientData">CREATE NEW MEDICAL BODY  DOCUMENT</div>
-      <div class="font-semibold" *ngIf="patientData">UPDATE BODY LIST DOCUMENT</div>
+      <div class="font-semibold" *ngIf="!patientData">CREATE NEW MEDICAL BOARD DOCUMENT</div>
+      <div class="font-semibold" *ngIf="patientData">UPDATE BOARD LIST DOCUMENT</div>
 
       <!-- Form -->
       <form [formGroup]="patientForm" class="horizontal-form" enctype="multipart/form-data">
@@ -11,8 +11,8 @@
         <!-- Row 1: Full Name, Gender -->
         <div class="form-row">
           <mat-form-field class="form-field">
-            <mat-label>Medical Body No:</mat-label>
-            <input matInput placeholder="Ex. BODY NO" formControlName="patient_list_title" type="text">
+            <mat-label>Medical Board No:</mat-label>
+            <input matInput placeholder="Ex. BOARD NO" formControlName="patient_list_title" type="text">
             <mat-error *ngIf="patientForm.get('patient_list_title')?.invalid && patientForm.get('patient_list_title')?.touched">
               <span *ngIf="patientForm.get('patient_list_title')?.errors?.['required']">This field is mandatory</span>
               <span *ngIf="patientForm.get('patient_list_title')?.errors?.['pattern']">Must contain alphabetical characters only</span>

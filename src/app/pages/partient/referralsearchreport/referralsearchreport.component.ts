@@ -5,7 +5,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
-import { MatOptionModule } from '@angular/material/core';
+import { MatNativeDateModule, MatOptionModule } from '@angular/material/core';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 
@@ -36,12 +36,13 @@ import { ReferralreportService } from '../../../services/Referral/referralreport
 import { HospitalService } from '../../../services/system-configuration/hospital.service';
 import { ReasonsService } from '../../../services/system-configuration/reasons.service';
 import { ReferalTypeService } from '../../../services/system-configuration/referal-type.service';
+import { MatDatepicker, MatDatepickerModule } from "@angular/material/datepicker";
 
 @Component({
   selector: 'app-referralsearchreport',
   standalone: true,
   imports: [
-     CommonModule,
+    CommonModule,
     FormsModule,
     ReactiveFormsModule,
     MatButtonModule,
@@ -53,8 +54,12 @@ import { ReferalTypeService } from '../../../services/system-configuration/refer
     MatInput,
     MatIcon,
     MatFormFieldModule,
-    EmrSegmentedModule
-  ],
+    EmrSegmentedModule,
+
+
+    MatDatepickerModule,
+    MatNativeDateModule,
+],
   templateUrl: './referralsearchreport.component.html',
   styleUrl: './referralsearchreport.component.scss'
 })
@@ -120,7 +125,9 @@ export class ReferralsearchreportComponent implements OnInit, OnDestroy {
       hospital_name: new FormControl(null),
       referral_reason_name: new FormControl(null),
       referral_type_name: new FormControl(null),
-       patient_name: new FormControl(null),
+      patient_name: new FormControl(null),
+      start_date: new FormControl(null),
+      end_date: new FormControl(null),
       // category_name: new FormControl(null),
 
     });
@@ -143,9 +150,20 @@ export class ReferralsearchreportComponent implements OnInit, OnDestroy {
     });
   }
 
- searchReport(): void {
+searchReport(): void {
   this.loading = true;
-  this.reportService.generateReport(this.reportForm.value).subscribe({
+
+  const formData = { ...this.reportForm.value };
+
+  // format dates if they exist
+  if (formData.start_date) {
+    formData.start_date = new Date(formData.start_date).toISOString().split('T')[0];
+  }
+  if (formData.end_date) {
+    formData.end_date = new Date(formData.end_date).toISOString().split('T')[0];
+  }
+
+  this.reportService.generateReport(formData).subscribe({
     next: response => {
       this.loading = false;
       this.dataSource.data = response.data;
@@ -154,7 +172,7 @@ export class ReferralsearchreportComponent implements OnInit, OnDestroy {
     error: err => {
       this.loading = false;
       if (err.status === 404) {
-        this.dataSource.data = [];  // Clear previous data
+        this.dataSource.data = [];
         this.noResults = true;
       } else {
         this.errorMessage = 'Error fetching reports';
@@ -162,6 +180,7 @@ export class ReferralsearchreportComponent implements OnInit, OnDestroy {
     }
   });
 }
+
 
 
   // Fix: Improve search filter to work across all columns

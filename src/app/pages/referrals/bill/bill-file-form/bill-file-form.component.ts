@@ -98,7 +98,6 @@ export class BillFileFormComponent {
 
   configForm() {
     this.billForm = new FormGroup({
-      bill_file_title: new FormControl(null, [Validators.required]),
       bill_file: new FormControl(null, Validators.required),
       bill_file_amount: new FormControl(null, [Validators.required]),
       hospital_id: new FormControl(null, [Validators.required]),
