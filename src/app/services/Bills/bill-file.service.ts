@@ -9,9 +9,10 @@ import { environment } from '../../../environments/environment.prod';
 export class BillFileService {
   private baseUrl: string = `${environment.baseUrl}bill-files`;
   private baseUrls: string = `${environment.baseUrl}hospitals/reffered-hospitals`;
-
   private baseUrlss: string = `${environment.baseUrl}bills-by-bill-file`;
   private baseUrlForPayment: string = `${environment.baseUrl}bill-files/bill-files-for-payment/payment`;
+  private baseUrlBillFileByHospital: string = `${environment.baseUrl}bill-files/hospital-bills/hospitals`;
+
 
 
 
@@ -58,5 +59,11 @@ export class BillFileService {
   public getbillsBybillFile(bill_file_id: any): Observable<any> {
   return this.http.get<any>(`${this.baseUrlss}/${bill_file_id}`);
 }
+
+
+
+public getAllBillFilesByHospital(): Observable<any> {
+    return this.http.get<any>(this.baseUrlBillFileByHospital);
+  }
 
 }

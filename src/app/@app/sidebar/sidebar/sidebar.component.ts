@@ -128,6 +128,7 @@ export class SidebarComponent {
           link: '/pages/config/location',
           permission: 'Setup Management',
         },
+
         // {
         //   type: 'link',
         //   name: 'Employer',
@@ -169,6 +170,7 @@ export class SidebarComponent {
       ],
     },
 
+    
     {
       id: 'PID',
       type: 'group',
@@ -240,7 +242,7 @@ export class SidebarComponent {
       type: 'Single',
       name: 'Payment',
       icon: 'payment',
-      link: '/pages/config/referrals/billpayment2222200000',
+      link: '/pages/config/referrals/bill-by-hospital',
       permission: 'View Referral',
     },
     // {
