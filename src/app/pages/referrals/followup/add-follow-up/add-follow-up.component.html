@@ -45,7 +45,16 @@
 
      </div>
 
-
+    <div class="form-row" *ngIf="patientForm.get('outcome')?.value === 'Transferred'">
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Hospital</mat-label>
+            <mat-select formControlName="hospital_id">
+              <mat-option *ngFor="let r of hospital" [value]="r.hospital_id">
+                {{ r.hospital_name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
 
 
         <!-- Row 4: Date of Birth, File Upload -->

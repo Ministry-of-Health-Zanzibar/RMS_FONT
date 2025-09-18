@@ -146,10 +146,10 @@
                   </span>
 
 
-                  <span
+                  <span *ngIf="element.status !== 'Pending'"
                     class="size-9 rounded-full border bg-surface flex items-center justify-center cursor-pointer"
                     (click)="viewfollowup(element)"
-                    matTooltip="View"
+                    matTooltip="View Follow-Up"
                   >
                      <mat-icon class="font-icon">event_note</mat-icon>
                   </span>

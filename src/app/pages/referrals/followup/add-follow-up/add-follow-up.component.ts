@@ -14,6 +14,9 @@ import { HDividerComponent } from '@elementar/components';
 import { map, Observable, startWith, Subject } from 'rxjs';
 import Swal from 'sweetalert2';
 import { FollowsService } from '../../../../services/Referral/follows.service';
+import { HospitalService } from '../../../../services/system-configuration/hospital.service';
+import { subscribe } from 'diagnostics_channel';
+import { response } from 'express';
 
 @Component({
   selector: 'app-add-follow-up',
@@ -46,6 +49,7 @@ export class AddFollowUpComponent {
   patientForm: FormGroup;
   user: any;
   id: any;
+  hospital:any;
    locations: any;
    options: any[] = [];
   myControl = new FormControl('');
@@ -57,6 +61,7 @@ export class AddFollowUpComponent {
   constructor(
 
     private followServices:FollowsService,
+    private hospitalServices:HospitalService,
 
     private dialogRef: MatDialogRef<AddFollowUpComponent>)
     {
@@ -76,9 +81,15 @@ ngOnInit(): void {
       this.patientForm.patchValue({ referral_id: this.id });
     }
   }
+  this.getHospital();
 }
 
+ getHospital(){
+  this.hospitalServices.getAllHospital().subscribe((response)=>{
+    this.hospital=response.data;
+  })
 
+ }
 
 
   ngOnDestroy(): void {
@@ -95,8 +106,10 @@ ngOnInit(): void {
 
           content_summary: new FormControl(null, [Validators.required]),
            next_appointment_date: new FormControl(null,),
+           hospital_id: new FormControl(null,),
            outcome: new FormControl(null, Validators.required),
            letter_file: new FormControl(null, Validators.required),
+
 
            followup_date: new FormControl(null,),
 

@@ -269,12 +269,18 @@ export class ViewReferralsComponent implements OnInit, OnDestroy {
   }
 
   displayMoreData(data: any) {
-    const id = data.referral_id;
-    this.router.navigate(['/pages/config/referrals/more', id]);
-  }
+  const id = data.referrals[0]?.referral_id; // safe access
+  this.router.navigate(['/pages/config/referrals/more', id]);
+}
+
+
+  // displayMoreData(data: any) {
+  //   const id = data.referral_id;
+  //   this.router.navigate(['/pages/config/referrals/more', id]);
+  // }
 
    viewfollowup(data: any) {
-  const id = data.referral_id
+  const id = data.referrals[0]?.referral_id;
   this.router.navigate(['/pages/config/referrals/view-follow-up', id]);
 }
 
@@ -310,7 +316,7 @@ export class ViewReferralsComponent implements OnInit, OnDestroy {
       config.width = '850px'
       config.panelClass = 'full-screen-modal'
       config.data = {data: data}
-  
+
       const dialogRef = this.dialog.open(AddReferralsComponent, config);
       dialogRef.afterClosed().subscribe(result => {
         this.getReferrals();
