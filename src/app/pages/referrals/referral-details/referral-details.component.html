@@ -15,7 +15,7 @@
           <span class="font-semibold w-32 inline-block">Name:</span>
           {{ referral.patient?.name || "N/A" }}
         </p>
-         <p>
+        <p>
           <span class="font-semibold w-32 inline-block">Matibabu Card:</span>
           {{ referral.patient?.matibabu_card || "N/A" }}
         </p>
@@ -80,6 +80,32 @@
       </p>
     </div>
 
+    <!-- Bill file info -->
+    <div
+      class="bg-green-50 p-6 rounded-2xl shadow-inner flex flex-col space-y-2"
+    >
+      <h3 class="text-2xl font-semibold text-green-700 mb-2">
+        Medical board Info
+      </h3>
+      <p>
+        <span class="font-semibold w-32">Reference number: </span>
+        {{ referral.referral_number || "N/A" }}
+      </p>
+      <p>
+        <span class="font-semibold w-32 inline-block">Medical board:</span>
+        {{ referral.patient?.patient_list?.patient_list_title || "N/A" }}
+      </p>
+
+      <p *ngIf="referral.patient?.patient_list?.patient_list_file">
+        <a
+          (click)="viewPatientListPDF(referral)"
+          class="inline-flex items-center gap-1 text-indigo-600 hover:text-indigo-800 cursor-pointer"
+        >
+          <mat-icon>picture_as_pdf</mat-icon> View Patient List PDF
+        </a>
+      </p>
+    </div>
+
     <!-- Status -->
     <div class="flex items-center space-x-4">
       <h3 class="text-2xl font-semibold text-gray-700">Status:</h3>
@@ -105,9 +131,8 @@
       <div class="flex flex-col space-y-2">
         <a
           *ngFor="let file of referral.patient.files"
-          [href]="'http://127.0.0.1:8000/storage/' + file.file_path"
-          target="_blank"
-          class="flex items-center space-x-3 text-purple-800 hover:text-purple-600 hover:underline transition"
+          (click)="viewFile(file)"
+          class="flex items-center space-x-3 text-purple-800 hover:text-purple-600 hover:underline transition cursor-pointer"
         >
           <mat-icon class="text-purple-700">description</mat-icon>
           <span>{{ file.file_name || "N/A" }}</span>
