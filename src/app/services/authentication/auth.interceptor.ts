@@ -38,7 +38,9 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
       }
 
       refresh = false;
-      return throwError(err.status);
+
+      return throwError(() => err);
+      // return throwError(err.status);
     })
   );
 };

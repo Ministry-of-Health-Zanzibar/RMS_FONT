@@ -57,11 +57,7 @@ export class AddReferralTypeComponent {
         this.configForm();
       }
     
-      // getDepartm(id: any){
-      //   this.departmentService.getAllDepartmentById(id).subscribe(response=>{
-      //     this.departmentForm.patchValue(response.data[0])
-      //   })
-      // }
+      
     
       ngOnDestroy(): void {
         this.onDestroy.next()

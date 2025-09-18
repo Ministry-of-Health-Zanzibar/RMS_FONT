@@ -42,8 +42,6 @@ export class BillpaymentComponent implements OnInit, OnDestroy {
 
   displayedColumns: string[] = [
     'id',
-    'title',
-    'hospital_name',
     'pdf',
     'amount',
     'paid_amount',

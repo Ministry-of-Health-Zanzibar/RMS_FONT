@@ -150,7 +150,14 @@ export class BillItermDetailsComponent implements OnInit, AfterViewInit {
       },
       error: (error) => {
         console.error('Error creating bill item:', error);
-        Swal.fire('Error', 'Failed to add bill item', 'error');
+
+        let errorMessage = 'Failed to add bill item. Please try again.';
+
+        if (error.status === 422 && error.error?.message) {
+          errorMessage = error.error.message;
+        }
+
+        Swal.fire('Error', errorMessage, 'error');
       },
     });
   }
@@ -159,6 +166,4 @@ export class BillItermDetailsComponent implements OnInit, AfterViewInit {
     const id = data.bill_item_id;
     this.router.navigate(['/pages/config/referrals/bill-iterm-by-id', id]);
   }
-
-  
 }

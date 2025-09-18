@@ -13,6 +13,7 @@ import { ReferralStatusDialogComponent } from '../referral-status-dialog/referra
 import Swal from 'sweetalert2';
 import { MatCardModule } from '@angular/material/card';
 import { ReferralsLetterComponent } from '../referrals-letter/referrals-letter.component';
+import { environment } from '../../../../environments/environment.prod';
 
 @Component({
   selector: 'app-referral-details',
@@ -38,6 +39,7 @@ export class ReferralDetailsComponent {
   referral: any = null;
   insurance: any = null;
   userRole: string | null;
+  public documentUrl = environment.fileUrl;
 
   constructor(
     private route: ActivatedRoute,
@@ -105,4 +107,18 @@ export class ReferralDetailsComponent {
       console.log('The dialog was closed');
     });
   }
+
+  viewPatientListPDF(referral: any) {
+  if (referral?.patient?.patient_list?.patient_list_file) {
+    const url = this.documentUrl + referral.patient.patient_list.patient_list_file;
+    window.open(url, '_blank');
+  }
+}
+
+viewFile(file: any) {
+  if (file?.file_path) {
+    const url = this.documentUrl + file.file_path; 
+    window.open(url, '_blank');
+  }
+}
 }

@@ -220,10 +220,7 @@ export class BillFileByIdComponent implements OnInit, AfterViewInit {
       next: (response: any) => {
         this.loading = false;
         if (response.data) {
-          this.billDataSource.data = [
-            ...this.billDataSource.data,
-            this.formatBill(response.data),
-          ];
+          this.loadBillsByBillFileId(this.bill_file_id!);
         }
         Swal.fire(
           'Success',
@@ -234,7 +231,11 @@ export class BillFileByIdComponent implements OnInit, AfterViewInit {
       error: (error) => {
         this.loading = false;
         console.error('Error creating bill:', error);
-        Swal.fire('Error', 'Failed to create bill', 'error');
+        let errorMessage = 'Failed to create bill. Please try again.';
+        if (error.status === 422 && error.error?.message) {
+          errorMessage = error.error.message;
+        }
+        Swal.fire('Error', errorMessage, 'error');
       },
     });
   }
@@ -278,12 +279,10 @@ export class BillFileByIdComponent implements OnInit, AfterViewInit {
     this.router.navigate(['/pages/config/referrals/bill-iterm-details', id]);
   }
 
- viewPDF(file: any) {
-  if (file?.bill_file) {
-    const url = this.documentUrl + file.bill_file; 
-    window.open(url, '_blank');
+  viewPDF(file: any) {
+    if (file?.bill_file) {
+      const url = this.documentUrl + file.bill_file;
+      window.open(url, '_blank');
+    }
   }
-}
-
-
 }
