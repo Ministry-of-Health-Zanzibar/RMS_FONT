@@ -92,7 +92,7 @@ const routes: Routes = [
       ),
   },
   {
-    path: 'billpayment2222200000',
+    path: 'billpayments/:id',
     loadComponent: () =>
       import('./billpayment/billpayment.component').then(
         (c) => c.BillpaymentComponent

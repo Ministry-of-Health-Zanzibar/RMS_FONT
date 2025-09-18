@@ -12,9 +12,7 @@ export class BillFileService {
   private baseUrlss: string = `${environment.baseUrl}bills-by-bill-file`;
   private baseUrlForPayment: string = `${environment.baseUrl}bill-files/bill-files-for-payment/payment`;
   private baseUrlBillFileByHospital: string = `${environment.baseUrl}bill-files/hospital-bills/hospitals`;
-
-
-
+  private baseUrlForPayments = 'http://localhost:8000/api/bill-files/hospitals';
 
   constructor(private http: HttpClient) {}
 
@@ -28,6 +26,11 @@ export class BillFileService {
 
   public getAllBillFilesForPayment(): Observable<any> {
     return this.http.get<any>(this.baseUrlForPayment);
+  }
+
+  public getAllBillFilesForPaymentById(hospitalId: number): Observable<any> {
+    const url = `${this.baseUrlForPayments}/${hospitalId}`;
+    return this.http.get<any>(url);
   }
 
   public getAllHospital(): Observable<any> {
@@ -54,16 +57,11 @@ export class BillFileService {
     return this.http.patch(`${this.baseUrl}/unBlock/${id}`, {});
   }
 
-   
-
   public getbillsBybillFile(bill_file_id: any): Observable<any> {
-  return this.http.get<any>(`${this.baseUrlss}/${bill_file_id}`);
-}
-
-
-
-public getAllBillFilesByHospital(): Observable<any> {
-    return this.http.get<any>(this.baseUrlBillFileByHospital);
+    return this.http.get<any>(`${this.baseUrlss}/${bill_file_id}`);
   }
 
+  public getAllBillFilesByHospital(): Observable<any> {
+    return this.http.get<any>(this.baseUrlBillFileByHospital);
+  }
 }
