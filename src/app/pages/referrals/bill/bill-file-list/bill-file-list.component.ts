@@ -24,6 +24,7 @@ import { AddEmployerTypeComponent } from '../../../system-config/employer-type/a
 import { BillFileFormComponent } from '../bill-file-form/bill-file-form.component';
 import { Router } from '@angular/router';
 import { HospitalService } from '../../../../services/system-configuration/hospital.service';
+import { environment } from '../../../../../environments/environment.prod';
 
 // import { AddBillFileComponent } from '../add-bill-file/add-bill-file.component';
 
@@ -54,6 +55,8 @@ export class BillFileListComponent {
     throw new Error('Method not implemented.');
   }
 
+   public documentUrl = environment.fileUrl;
+
   private readonly onDestroy = new Subject<void>();
   loading: boolean = false;
 
@@ -69,7 +72,6 @@ export class BillFileListComponent {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-
   constructor(
     public permission: PermissionService,
     private billService: BillFileService,
@@ -115,13 +117,14 @@ export class BillFileListComponent {
     }
   }
 
-  // Open PDF
-  viewPDF(element: any) {
-    const url = 'http://127.0.0.1:8000/public/uploads/billFiles/' + element.bill_file;
+
+ viewPDF(element: any) {
+  if (element?.bill_file) {
+    const url = this.documentUrl + element.bill_file; 
     window.open(url, '_blank');
   }
+}
 
-  // Add bill
   addBill() {
     let config = new MatDialogConfig();
     config.disableClose = false;

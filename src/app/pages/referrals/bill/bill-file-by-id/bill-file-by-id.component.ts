@@ -22,6 +22,7 @@ import {
   AddBillsComponent,
 } from '../add-bills/add-bills.component';
 import { ReferralService } from '../../../../services/Referral/referral.service';
+import { environment } from '../../../../../environments/environment.prod';
 
 interface BillFile {
   bill_file_id: number;
@@ -68,6 +69,7 @@ export class BillFileByIdComponent implements OnInit, AfterViewInit {
   public loading = false;
   public bill_id: string | null = null;
   public bill_file_id: number | null = null;
+  public documentUrl = environment.fileUrl;
 
   displayedBillFileColumns: string[] = [
     'bill_file_title',
@@ -275,4 +277,13 @@ export class BillFileByIdComponent implements OnInit, AfterViewInit {
     const id = data.bill_id;
     this.router.navigate(['/pages/config/referrals/bill-iterm-details', id]);
   }
+
+ viewPDF(file: any) {
+  if (file?.bill_file) {
+    const url = this.documentUrl + file.bill_file; 
+    window.open(url, '_blank');
+  }
+}
+
+
 }

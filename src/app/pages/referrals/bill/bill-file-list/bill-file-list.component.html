@@ -50,7 +50,6 @@
           <td mat-cell *matCellDef="let element; let i = index">{{ i + 1 }}</td>
         </ng-container>
 
-
         <ng-container matColumnDef="hospital_name">
           <th mat-header-cell *matHeaderCellDef>Hospital name</th>
           <td mat-cell *matCellDef="let element">
@@ -58,11 +57,24 @@
           </td>
         </ng-container>
 
-        <ng-container matColumnDef="pdf">
+        <!-- <ng-container matColumnDef="pdf">
           <th mat-header-cell *matHeaderCellDef>View PDF</th>
           <td mat-cell *matCellDef="let element">
             <a
               *ngIf="element.bill_file?.endsWith('.pdf')"
+              (click)="viewPDF(element)"
+              class="inline-flex items-center gap-1 text-indigo-600 hover:text-indigo-800 cursor-pointer"
+            >
+              <mat-icon>picture_as_pdf</mat-icon> View PDF
+            </a>
+          </td>
+        </ng-container> -->
+
+        <ng-container matColumnDef="pdf">
+          <th mat-header-cell *matHeaderCellDef>View PDF</th>
+          <td mat-cell *matCellDef="let element">
+            <a
+              *ngIf="element?.bill_file"
               (click)="viewPDF(element)"
               class="inline-flex items-center gap-1 text-indigo-600 hover:text-indigo-800 cursor-pointer"
             >
