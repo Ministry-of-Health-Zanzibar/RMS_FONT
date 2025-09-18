@@ -37,11 +37,21 @@ const routes: Routes = [
         (c) => c.BillFileByIdComponent
       ),
   },
+
+  {
+    path: 'bill-by-hospital',
+    loadComponent: () =>
+      import(
+        './bill/bill-fill-by-hospital/bill-fill-by-hospital.component'
+      ).then((c) => c.BillFillByHospitalComponent),
+  },
+
   {
     path: 'view-follow-up/:id',
-    loadComponent:() =>
-      import('./followup/view-follow-up/view-follow-up.component').then(c=>c.ViewFollowUpComponent)
-
+    loadComponent: () =>
+      import('./followup/view-follow-up/view-follow-up.component').then(
+        (c) => c.ViewFollowUpComponent
+      ),
   },
 
   {
@@ -82,7 +92,7 @@ const routes: Routes = [
       ),
   },
   {
-    path: 'billpayment2222200000',
+    path: 'billpayments/:id',
     loadComponent: () =>
       import('./billpayment/billpayment.component').then(
         (c) => c.BillpaymentComponent
@@ -111,7 +121,7 @@ const routes: Routes = [
       ),
   },
 
-   {
+  {
     path: 'bill-iterm-list',
     loadComponent: () =>
       import('./bill/bill-items-list/bill-items-list.component').then(
@@ -119,7 +129,7 @@ const routes: Routes = [
       ),
   },
 
-    {
+  {
     path: 'bill-iterm-form',
     loadComponent: () =>
       import('./bill/bill-iterm-form/bill-iterm-form.component').then(
@@ -127,7 +137,7 @@ const routes: Routes = [
       ),
   },
 
-    {
+  {
     path: 'bill-iterm-details/:id',
     loadComponent: () =>
       import('./bill/bill-iterm-details/bill-iterm-details.component').then(
@@ -135,7 +145,7 @@ const routes: Routes = [
       ),
   },
 
-   {
+  {
     path: 'bill-iterm-by-id/:id',
     loadComponent: () =>
       import('./bill/bill-iterm-by-id/bill-iterm-by-id.component').then(

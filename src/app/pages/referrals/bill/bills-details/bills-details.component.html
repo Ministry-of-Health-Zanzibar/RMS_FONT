@@ -30,7 +30,6 @@
                 ' - ' +
                 (billData.bill_period_end | date : 'dd/MM/yyyy')
             },
-
             { label: 'Status', value: billData.bill_status }
           ]"
           class="mat-elevation-z1 full-width-table"
@@ -45,8 +44,14 @@
             <td mat-cell *matCellDef="let row">
               <ng-container *ngIf="row.label === 'Status'; else normalValue">
                 <span
-                  class="mat-chip mat-elevation-z2"
-                  [ngClass]="row.value.toLowerCase()"
+                  [ngClass]="{
+                    'bg-green-100 text-green-600': row.value === 'Paid',
+                    'bg-yellow-100 text-yellow-600':
+                      row.value === 'Partially Paid',
+                    'bg-red-100 text-red-800': row.value === 'Pending',
+                    'bg-gray-200 text-gray-700': row.value === 'Summary'
+                  }"
+                  class="px-3 py-1 rounded-full text-xs font-medium inline-block"
                 >
                   {{ row.value }}
                 </span>
@@ -108,15 +113,19 @@
           >
           <mat-list-item>
             <strong>Status:</strong>&nbsp;
-            <mat-chip
+            <span
               [ngClass]="{
-                'chip-confirmed': billData.referral?.status === 'Confirmed',
-                'chip-pending': billData.referral?.status === 'Pending',
-                'chip-rejected': billData.referral?.status === 'Rejected'
+                'bg-green-100 text-green-600':
+                  billData.referral?.status === 'Confirmed',
+                'bg-yellow-100 text-yellow-600':
+                  billData.referral?.status === 'Pending',
+                'bg-red-100 text-red-800':
+                  billData.referral?.status === 'Rejected'
               }"
+              class="px-3 py-1 rounded-full text-xs font-medium"
             >
               {{ billData.referral?.status }}
-            </mat-chip>
+            </span>
           </mat-list-item>
 
           <mat-list-item

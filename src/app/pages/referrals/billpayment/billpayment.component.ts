@@ -10,12 +10,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Subject, takeUntil } from 'rxjs';
 import Swal from 'sweetalert2';
-import { Router } from '@angular/router';
-
+import { ActivatedRoute, Router } from '@angular/router';
 import { PermissionService } from '../../../services/authentication/permission.service';
 import { BillFileService } from '../../../services/Bills/bill-file.service';
 import { ReferralpaymentComponent } from '../referralpayment/referralpayment.component';
 import { EmrSegmentedModule } from '@elementar/components';
+import {MatDividerModule} from '@angular/material/divider';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-billpayment',
@@ -30,6 +31,7 @@ import { EmrSegmentedModule } from '@elementar/components';
     MatTooltipModule,
     MatButtonModule,
     EmrSegmentedModule,
+    MatCardModule
   ],
   templateUrl: './billpayment.component.html',
   styleUrls: ['./billpayment.component.scss'],
@@ -53,16 +55,49 @@ export class BillpaymentComponent implements OnInit, OnDestroy {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+  hospital_id: number | null;
+  payment: any[];
+  totals: any;
+  hospital_name: any;
 
   constructor(
     public permission: PermissionService,
     private billFileService: BillFileService,
     private dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    this.loadBillPayments();
+    this.hospital_id = Number(this.route.snapshot.paramMap.get('id'));
+    if (this.hospital_id) {
+      this.getAllPaymentByHospital(this.hospital_id);
+    }
+  }
+
+  public getAllPaymentByHospital(hospital_id: number) {
+    this.loading = true;
+    this.billFileService.getAllBillFilesForPaymentById(hospital_id).subscribe({
+      next: (response: any) => {
+        this.loading = false;
+        if (response?.data) {
+          this.hospital_id = response.data.hospital_id;
+          this.hospital_name = response.data.hospital_name;
+
+          this.dataSource.data = response.data.bill_files || [];
+
+          this.totals = response.data.totals || {};
+        } else {
+          this.dataSource.data = [];
+          this.totals = {};
+        }
+      },
+      error: (error) => {
+        this.loading = false;
+        console.error('Error fetching bill files:', error);
+        Swal.fire('Error', 'Failed to fetch bill files', 'error');
+      },
+    });
   }
 
   ngOnDestroy(): void {
@@ -70,26 +105,26 @@ export class BillpaymentComponent implements OnInit, OnDestroy {
     this.onDestroy.complete();
   }
 
-  loadBillPayments() {
-    this.loading = true;
-    this.billFileService
-      .getAllBillFilesForPayment()
-      .pipe(takeUntil(this.onDestroy))
-      .subscribe({
-        next: (res: any) => {
-          this.loading = false;
-          if (res.statusCode === 200) {
-            this.dataSource = new MatTableDataSource(res.data);
-            this.dataSource.paginator = this.paginator;
-            this.dataSource.sort = this.sort;
-          }
-        },
-        error: (err) => {
-          this.loading = false;
-          console.error(err);
-        },
-      });
-  }
+  // loadBillPayments() {
+  //   this.loading = true;
+  //   this.billFileService
+  //     .getAllBillFilesForPayment()
+  //     .pipe(takeUntil(this.onDestroy))
+  //     .subscribe({
+  //       next: (res: any) => {
+  //         this.loading = false;
+  //         if (res.statusCode === 200) {
+  //           this.dataSource = new MatTableDataSource(res.data);
+  //           this.dataSource.paginator = this.paginator;
+  //           this.dataSource.sort = this.sort;
+  //         }
+  //       },
+  //       error: (err) => {
+  //         this.loading = false;
+  //         console.error(err);
+  //       },
+  //     });
+  // }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -120,7 +155,7 @@ export class BillpaymentComponent implements OnInit, OnDestroy {
     this.dialog
       .open(ReferralpaymentComponent, config)
       .afterClosed()
-      .subscribe(() => this.loadBillPayments());
+      // .subscribe(() => this.getAllPaymentByHospital());
   }
 
   displayMoreData(element: any) {
@@ -147,7 +182,7 @@ export class BillpaymentComponent implements OnInit, OnDestroy {
     this.billFileService.deletebillFiles(id).subscribe((res) => {
       if (res.statusCode === 200) {
         Swal.fire('Deleted!', res.message, 'success');
-        this.loadBillPayments();
+        this.getAllPaymentByHospital(id);
       } else {
         Swal.fire('Error', res.message, 'error');
       }
