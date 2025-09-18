@@ -90,11 +90,6 @@
     placeholder="Enter 12-digit Matibabu Card Number"
   />
 
-  <!-- Required error -->
-  <mat-error *ngIf="patientForm.get('matibabu_card')?.hasError('required')">
-    Matibabu Card is required
-  </mat-error>
-
   <!-- Pattern error (not exactly 12 digits) -->
   <mat-error *ngIf="patientForm.get('matibabu_card')?.hasError('pattern')">
     Matibabu Card must be exactly 12 digits

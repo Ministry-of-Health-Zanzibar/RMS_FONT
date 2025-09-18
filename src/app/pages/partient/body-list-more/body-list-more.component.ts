@@ -17,6 +17,7 @@ import Swal from 'sweetalert2';
 import { PartientService } from '../../../services/partient/partient.service';
 import { PermissionService } from '../../../services/authentication/permission.service';
 import { AddPatientDialogData, AddpartientComponent } from '../addpartient/addpartient.component';
+import { environment } from '../../../../environments/environment.prod';
 
 interface BodyList {
   patient_list_id: number;
@@ -30,6 +31,12 @@ interface Patient {
   gender?: string;
   phone?: string;
   location?: string;
+   files?: {
+    file_id: number;
+    file_name: string;
+    file_path: string;
+    file_type: string;
+  }[];
 }
 
 @Component({
@@ -53,6 +60,7 @@ interface Patient {
   providers: [DatePipe],
 })
 export class BodyListMoreComponent implements OnInit, AfterViewInit {
+   public documentUrl = environment.fileUrl;
   public bodyList: BodyList[] = [];
   public loading = false;
   public patient_id: string | null = null;
@@ -61,7 +69,7 @@ export class BodyListMoreComponent implements OnInit, AfterViewInit {
   displayedBodyListColumns: string[] = ['patient_list_title', 'patient_list_file', 'actions'];
   bodyListDataSource: MatTableDataSource<BodyList> = new MatTableDataSource<BodyList>();
 
-  displayedPatientColumns: string[] = ['matibabu_card', 'name', 'gender', 'phone', 'location'];
+  displayedPatientColumns: string[] = ['matibabu_card', 'name', 'gender', 'phone', 'location','files'];
   patientDataSource: MatTableDataSource<Patient> = new MatTableDataSource<Patient>();
 
   @ViewChild('bodyListPaginator') bodyListPaginator!: MatPaginator;
@@ -136,7 +144,8 @@ export class BodyListMoreComponent implements OnInit, AfterViewInit {
       name: patien?.name || 'N/A',
       phone: patien?.phone || 'N/A',
       gender: patien?.gender || 'N/A',
-      location: patien.geographical_location?.label || 'N/A', // you can map location name if needed
+      location: patien.geographical_location?.label || 'N/A',
+       files: patien?.files || [] // you can map location name if needed
     };
   }
 
@@ -183,5 +192,12 @@ private refreshPatients(patientFileId: number) {
   extractFileName(url: string): string {
     const parts = url.split('/');
     return parts[parts.length - 1] || '';
+  }
+
+  viewPDF(element: any) {
+    if (element?.patient_list_file) {
+      const url = this.documentUrl + element.patient_list_file;
+      window.open(url, '_blank');
+    }
   }
 }

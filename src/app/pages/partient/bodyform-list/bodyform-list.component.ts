@@ -56,6 +56,7 @@ export class BodyformListComponent {
     public permission: PermissionService,
     private userService: PartientService,
     private dialog: MatDialog,
+
     private router: Router
   ) {}
 
@@ -106,9 +107,16 @@ export class BodyformListComponent {
     }
   }
 
+  // viewPDF(element: any) {
+  //   const url = 'http://127.0.0.1:8000/public/uploads' + element.patient_list_file;
+  //   window.open(url, '_blank');
+  // }
+
   viewPDF(element: any) {
-    const url = 'http://127.0.0.1:8000/public/uploads' + element.patient_list_file;
-    window.open(url, '_blank');
+    if (element?.patient_list_file) {
+      const url = this.documentUrl + element.patient_list_file;
+      window.open(url, '_blank');
+    }
   }
 
   addPatient() {

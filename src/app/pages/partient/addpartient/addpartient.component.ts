@@ -78,7 +78,7 @@ export class AddpartientComponent implements OnInit, OnDestroy {
       position: [''],
       date_of_birth: ['', Validators.required],
       location_id: ['', Validators.required],
-      matibabu_card:['', [Validators.required,Validators.pattern(/^[0-9]{12}$/)]],
+      matibabu_card:['', [Validators.pattern(/^[0-9]{12}$/)]],
       patient_list_id: [this.data.patientFileId, Validators.required],
       patient_file: [null, Validators.required]
     });
