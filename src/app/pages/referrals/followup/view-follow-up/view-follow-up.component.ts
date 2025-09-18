@@ -41,6 +41,7 @@ export class ViewFollowUpComponent implements OnInit {
  public follow: any = null;
 public hospitalLetters: any[] = [];
 public referralId: number | null = null;
+status:any;
 
 
   feedback: any = null;
@@ -70,14 +71,19 @@ getFeedbackById() {
       this.loading = false;
 
       if (response?.data) {
-        // Referral info
+        // Main follow-up object
         this.follow = response.data;
 
-        // ✅ Extract referralId
-        this.referralId = this.follow.referral_id;
-        console.log("Referral ID:", this.referralId);
+        // ✅ Extract referralId from referrals[0]
+        this.referralId = this.follow.referrals?.[0]?.referral_id || null;
 
-        // ✅ Hospital letters (array for table)
+        // ✅ Extract status
+        this.status = this.follow.status;
+
+        console.log("Referral ID:", this.referralId);
+        console.log("Status:", this.status);
+
+        // ✅ Extract hospital letters (array for table)
         this.hospitalLetters = this.follow.hospital_letters || [];
       } else {
         this.follow = null;
@@ -91,6 +97,7 @@ getFeedbackById() {
     }
   );
 }
+
 
 
 // getFeedbackById() {
