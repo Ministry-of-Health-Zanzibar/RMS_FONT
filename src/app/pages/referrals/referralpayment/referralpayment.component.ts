@@ -180,20 +180,30 @@ export class ReferralpaymentComponent {
   // }
 
   savePayment() {
-    if (this.clientForm.valid) {
-      const formData = {
-        ...this.clientForm.value,
-        payment_date: this.clientForm.value.payment_date.toISOString(),
-      };
+  if (this.clientForm.valid) {
+    const formData = {
+      ...this.clientForm.value,
+      payment_date: this.clientForm.value.payment_date.toISOString(),
+    };
 
-      this.paymentService.addPayment(formData).subscribe((response) => {
+    this.paymentService.addPayment(formData).subscribe({
+      next: (response: any) => {
         if (response.statusCode === 200) {
           Swal.fire('Success', response.message, 'success');
           this.dialogRef.close(true);
         } else {
-          Swal.fire('Error', response.message, 'error');
+          Swal.fire('Error', response.message || 'Something went wrong', 'error');
         }
-      });
-    }
+      },
+      error: (err) => {
+       
+        const errorMessage =
+          err.error?.message || 'An unexpected error occurred. Please try again.';
+
+        Swal.fire('Error', errorMessage, 'error');
+      },
+    });
   }
+}
+
 }

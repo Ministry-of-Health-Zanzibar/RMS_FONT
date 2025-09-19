@@ -6,41 +6,16 @@
 
     <form [formGroup]="clientForm">
       <div class="row">
-        <!-- Bill File -->
-        <!-- <mat-form-field appearance="outline" class="w-full">
-          <mat-label>Bill File</mat-label>
-          <mat-select formControlName="bill_file_id" required>
-            <mat-option
-              *ngFor="let file of billFile"
-              [value]="file.bill_file_id"
-            >
-              {{ file.bill_file_title }} - {{ file.hospital.hospital_name }} -
-              {{
-                file.bill_file_amount | currency : "TZS" : "symbol" : "1.0-0"
-              }}
-            </mat-option>
-          </mat-select>
-          <mat-error
-            *ngIf="
-              clientForm.controls['bill_file_id'].touched &&
-              clientForm.controls['bill_file_id'].invalid
-            "
-          >
-            Bill file is required
-          </mat-error>
-        </mat-form-field> -->
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>Bill File</mat-label>
           <mat-select formControlName="bill_file_id">
             <mat-option *ngIf="billFile" [value]="billFile.bill_file_id">
-              {{ billFile?.bill_file_title }} -
-              {{ billFile?.hospital_name }} - 
-              {{billFile?.bill_file_amount | currency : "TZS" }}
+              {{ billFile.hospital?.hospital_name }} 
+              {{ billFile?.bill_file_amount | currency : "TZS" }}
             </mat-option>
           </mat-select>
         </mat-form-field>
 
-        <!-- Amount Paid -->
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>Amount Paid</mat-label>
           <input
@@ -66,7 +41,6 @@
           </mat-error>
         </mat-form-field>
 
-        <!-- Payer -->
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>Payer</mat-label>
           <input matInput formControlName="payer" placeholder="e.g. John Doe" />
@@ -84,23 +58,8 @@
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>Payment Method</mat-label>
           <mat-select formControlName="payment_method" required>
-            <mat-option value="Cash">Cash</mat-option>
             <mat-option value="Bank Transfer / Wire Transfer"
               >Bank Transfer / Wire Transfer</mat-option
-            >
-            <mat-option value="Mobile Money">Mobile Money</mat-option>
-            <mat-option value="Credit Card">Credit Card</mat-option>
-            <mat-option value="Debit Card">Debit Card</mat-option>
-            <mat-option value="Cheque / Check">Cheque / Check</mat-option>
-            <mat-option value="Online Payment Platforms"
-              >Online Payment Platforms</mat-option
-            >
-            <mat-option value="Cryptocurrency">Cryptocurrency</mat-option>
-            <mat-option value="Gift Card / Voucher"
-              >Gift Card / Voucher</mat-option
-            >
-            <mat-option value="Direct Debit / Standing Order"
-              >Direct Debit / Standing Order</mat-option
             >
           </mat-select>
 
@@ -114,7 +73,6 @@
           </mat-error>
         </mat-form-field>
 
-        <!-- Reference Number -->
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>Reference Number</mat-label>
           <input
@@ -124,7 +82,6 @@
           />
         </mat-form-field>
 
-        <!-- Voucher Number -->
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>Voucher Number</mat-label>
           <input
@@ -134,7 +91,6 @@
           />
         </mat-form-field>
 
-        <!-- Payment Date -->
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>Payment Date</mat-label>
           <input
@@ -160,7 +116,6 @@
       </div>
     </form>
 
-    <!-- Actions -->
     <mat-dialog-actions align="end" class="mt-4 space-x-3">
       <button mat-button mat-dialog-close>Cancel</button>
       <button
@@ -169,7 +124,7 @@
         [disabled]="!(clientForm.valid && clientForm.dirty)"
         (click)="savePayment()"
       >
-        {{ id ? "Update" : "Add" }} Payment
+        {{ id ? "Add" : "Add" }} Payment
       </button>
     </mat-dialog-actions>
   </div>
