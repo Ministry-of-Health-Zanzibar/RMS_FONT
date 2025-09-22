@@ -185,6 +185,13 @@ export class SidebarComponent {
           link: '/pages/patient/bodylist',
           permission: 'View Patient List',
         },
+
+         {
+          type: 'link',
+          name: 'Patients',
+          link: '/pages/patient/partient',
+          permission: 'View Patient List',
+        },
       ],
     },
     {

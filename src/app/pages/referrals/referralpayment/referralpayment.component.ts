@@ -78,18 +78,7 @@ export class ReferralpaymentComponent {
     private dialogRef: MatDialogRef<ReferralpaymentComponent>
   ) {}
 
-  // ngOnInit(): void {
-  //   this.configForm();
-  //   if (this.data) {
-  //     this.id = this.data.id;
-  //     console.log('bill ID   here  ', this.id);
-
-  //   }
-
-  //   this.loadBills();
-  //   this.getBillByIds();
-
-  // }
+  
   ngOnInit(): void {
     this.configForm();
 
