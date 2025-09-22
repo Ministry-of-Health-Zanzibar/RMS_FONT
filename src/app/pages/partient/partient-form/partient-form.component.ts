@@ -5,11 +5,10 @@ import {
   FormGroup,
   FormBuilder,
   Validators,
+  FormsModule,
+  FormControl
 } from '@angular/forms';
-import {
-  MatAutocompleteModule,
-  MatAutocomplete,
-} from '@angular/material/autocomplete';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import {
   MatCard,
@@ -38,7 +37,6 @@ import {
   AddpartientComponent,
   AddPatientDialogData,
 } from '../addpartient/addpartient.component';
-import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-partient-form',
@@ -61,7 +59,7 @@ import { MatTableDataSource } from '@angular/material/table';
     MatCardTitle,
     MatCardContent,
     MatCardSubtitle,
-    MatAutocomplete,
+    FormsModule,
   ],
   templateUrl: './partient-form.component.html',
   styleUrl: './partient-form.component.scss',
@@ -70,15 +68,16 @@ export class PartientFormComponent {
   patientForm: FormGroup;
   loading = false;
   selectedFile: File | null = null;
-  patient: any;
 
   locations: any[] = [];
   options: any[] = [];
- boardList: any[] = [];
+  boardList: any[] = [];
+  filteredBoardList: any[] = [];
   filteredOptions!: Observable<any[]>;
 
+  boardSearchControl = new FormControl(''); // ✅ search box control
+
   private onDestroy$ = new Subject<void>();
-  dataSource: any;
 
   constructor(
     private fb: FormBuilder,
@@ -88,24 +87,32 @@ export class PartientFormComponent {
     @Inject(MAT_DIALOG_DATA) public data: AddPatientDialogData
   ) {
     this.patientForm = this.fb.group({
-  name: ['', Validators.required],
-  phone: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
-  gender: ['', Validators.required],
-  job: [''],
-  position: [''],
-  date_of_birth: ['', Validators.required],
-  location_id: ['', Validators.required],
-  matibabu_card: [''],
-  patient_file: [null, Validators.required],
-  patient_list_id: ['', Validators.required], 
-});
-
+      name: ['', Validators.required],
+      phone: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
+      gender: ['', Validators.required],
+      job: [''],
+      position: [''],
+      date_of_birth: ['', Validators.required],
+      location_id: ['', Validators.required],
+      matibabu_card: [''],
+      patient_file: [null, Validators.required],
+      patient_list_id: ['', Validators.required],
+    });
   }
 
   ngOnInit(): void {
     this.loadBoardList();
-
     this.loadLocations();
+
+    // listen for board search changes
+    this.boardSearchControl.valueChanges
+      .pipe(startWith(''))
+      .subscribe((value) => {
+        const filterValue = value ? value.toLowerCase() : '';
+        this.filteredBoardList = this.boardList.filter((board) =>
+          board.patient_list_title.toLowerCase().includes(filterValue)
+        );
+      });
   }
 
   ngOnDestroy(): void {
@@ -113,25 +120,29 @@ export class PartientFormComponent {
     this.onDestroy$.complete();
   }
 
-  loadBoardList() {
-  this.loading = true;
-  this.patientService.getAllBodyList().subscribe(
-    (response: any) => {
-      this.loading = false;
-      if (response.data) {
-        this.boardList = response.data; 
-      } else {
+  private loadBoardList() {
+    this.loading = true;
+    this.patientService.getAllBodyList().subscribe(
+      (response: any) => {
+        this.loading = false;
+        if (response.data) {
+          this.boardList = response.data;
+          this.filteredBoardList = [...this.boardList]; // ✅ init filtered list
+        } else {
+          this.boardList = [];
+          this.filteredBoardList = [];
+          console.log('No board list returned from API');
+        }
+      },
+      (error) => {
+        this.loading = false;
         this.boardList = [];
-        console.log('No board list returned from API');
+        this.filteredBoardList = [];
+        console.log('Failed to load board list', error);
       }
-    },
-    (error) => {
-      this.loading = false;
-      this.boardList = [];
-      console.log('Failed to load board list', error);
-    }
-  );
-}
+    );
+  }
+
   private loadLocations() {
     this.locationService.getLocation().subscribe({
       next: (res: any) => {
@@ -180,6 +191,7 @@ export class PartientFormComponent {
   onCancel() {
     this.dialogRef.close();
   }
+
   private formatDate(date: Date | string): string {
     const d = new Date(date);
     const year = d.getFullYear();
