@@ -29,6 +29,7 @@ export function initializeApp() {
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideHttpClient(withFetch()),
     provideRouter(routes, withViewTransitions()),
     provideClientHydration(),
     provideAnimationsAsync(),
