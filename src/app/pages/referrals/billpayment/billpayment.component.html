@@ -14,14 +14,14 @@
             Total Bill File Amount
           </h3>
           <p class="text-lg font-bold text-blue-700">
-            {{ totals.bill_file_amount | number : "1.2-2" }}
+            {{ totals?.bill_file_amount | number : "1.2-2" }}
           </p>
         </div>
 
         <div class="p-4 rounded-lg bg-green-50 text-center">
           <h3 class="text-sm font-medium text-gray-600">Paid amount</h3>
           <p class="text-lg font-bold text-green-700">
-            {{ totals.paid_amount | number : "1.2-2" }}
+            {{ totals?.paid_amount | number : "1.2-2" }}
           </p>
         </div>
 
