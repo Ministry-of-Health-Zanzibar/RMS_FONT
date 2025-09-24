@@ -32,15 +32,11 @@ import { environment } from '../../../../environments/environment.prod';
     CommonModule,
     MatTableModule,
     MatPaginatorModule,
-    MatDivider,
     MatIcon,
-    MatMiniFabButton,
-    MatIconButton,
     VDividerComponent,
     MatTooltip,
     MatSlideToggleModule,
     FormsModule,
-    MatAnchor,
     MatButton,
     EmrSegmentedModule,
   ],
@@ -107,10 +103,6 @@ export class BodyformListComponent {
     }
   }
 
-  // viewPDF(element: any) {
-  //   const url = 'http://127.0.0.1:8000/public/uploads' + element.patient_list_file;
-  //   window.open(url, '_blank');
-  // }
 
   viewPDF(element: any) {
     if (element?.patient_list_file) {

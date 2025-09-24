@@ -170,7 +170,7 @@ export class SidebarComponent {
       ],
     },
 
-    
+
     {
       id: 'PID',
       type: 'group',
@@ -178,10 +178,10 @@ export class SidebarComponent {
       icon: 'menu',
       permission: 'View Patient',
       children: [
-       
+
         {
           type: 'link',
-          name: 'Patient List',
+          name: 'Medical Board',
           link: '/pages/patient/bodylist',
           permission: 'View Patient List',
         },
