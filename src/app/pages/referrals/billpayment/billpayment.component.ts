@@ -17,6 +17,7 @@ import { ReferralpaymentComponent } from '../referralpayment/referralpayment.com
 import { EmrSegmentedModule } from '@elementar/components';
 import {MatDividerModule} from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
+import { environment } from '../../../../environments/environment.prod';
 
 @Component({
   selector: 'app-billpayment',
@@ -38,6 +39,8 @@ import { MatCardModule } from '@angular/material/card';
 })
 export class BillpaymentComponent implements OnInit, OnDestroy {
   private readonly onDestroy = new Subject<void>();
+    public documentUrl = environment.fileUrl;
+  
   loading = false;
 
   displayedColumns: string[] = [
@@ -131,7 +134,7 @@ export class BillpaymentComponent implements OnInit, OnDestroy {
   }
 
   viewPDF(element: any) {
-    const url = 'http://127.0.0.1:8000/storage/' + element.bill_file;
+    const url = this.documentUrl + element.bill_file;
     window.open(url, '_blank');
   }
 

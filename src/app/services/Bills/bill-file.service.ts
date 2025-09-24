@@ -12,7 +12,11 @@ export class BillFileService {
   private baseUrlss: string = `${environment.baseUrl}bills-by-bill-file`;
   private baseUrlForPayment: string = `${environment.baseUrl}bill-files/bill-files-for-payment/payment`;
   private baseUrlBillFileByHospital: string = `${environment.baseUrl}bill-files/hospital-bills/hospitals`;
-  private baseUrlForPayments = 'http://localhost:8000/api/bill-files/hospitals';
+  // private baseUrlForPayments: string = `${environment.baseUrl}bill-files/hospitals`;
+  // private baseUrlForPayments = 'http://localhost:8000/api/bill-files/hospitals';
+
+  // private baseUrlForPayments:  string = `${environment.baseUrl}bill-files/hospitals`;
+    private baseUrlForPayments: string = `${environment.baseUrl}bill-files/hospitals`;
 
   constructor(private http: HttpClient) {}
 
