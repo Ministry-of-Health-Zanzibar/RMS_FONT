@@ -18,6 +18,8 @@ import { MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatCardSubtitle }
 import { LocationService } from '../../../services/system-configuration/location.service';
 import { MatAutocomplete } from "@angular/material/autocomplete";
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatRadioModule } from '@angular/material/radio';
+
 
 export interface AddPatientDialogData {
   patientFileId: number;
@@ -36,6 +38,7 @@ export interface AddPatientDialogData {
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
+    MatButtonModule,
     MatSelectModule,
     MatDatepickerModule,
     MatNativeDateModule,
@@ -45,8 +48,12 @@ export interface AddPatientDialogData {
     MatCardHeader,
     MatCardTitle,
     MatCardContent,
+     MatDialogModule,
     MatCardSubtitle,
-    MatAutocomplete
+    MatAutocomplete,
+    MatRadioModule,
+
+
 ],
   templateUrl: './addpartient.component.html',
   styleUrl: './addpartient.component.scss'
@@ -76,7 +83,8 @@ export class AddpartientComponent implements OnInit, OnDestroy {
       gender: ['', Validators.required],
       job: [''],
       position: [''],
-      date_of_birth: ['', Validators.required],
+       dob_type: ['known'],         // default ni known
+      date_of_birth: [null],
       location_id: ['', Validators.required],
       matibabu_card:['', [Validators.pattern(/^[0-9]{12}$/)]],
       patient_list_id: [this.data.patientFileId, Validators.required],
@@ -158,19 +166,25 @@ export class AddpartientComponent implements OnInit, OnDestroy {
   onCancel() {
     this.dialogRef.close();
   }
-  private formatDate(date: Date | string): string {
-  const d = new Date(date);
-  const year = d.getFullYear();
-  const month = (d.getMonth() + 1).toString().padStart(2, '0');
-  const day = d.getDate().toString().padStart(2, '0');
-  return `${year}-${month}-${day}`; // YYYY-MM-DD format
+private formatDate(value: Date | string | number, dobType: string): string {
+  if (dobType === 'known') {
+    const d = new Date(value);
+    const year = d.getFullYear();
+    const month = (d.getMonth() + 1).toString().padStart(2, '0');
+    const day = d.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`; // YYYY-MM-DD format
+  } else if (dobType === 'unknown') {
+    // Estimated age saved as number string
+    return String(value);
+  }
+  return '';
 }
 
 
- onSubmit() {
+
+onSubmit() {
   if (this.patientForm.valid) {
     this.loading = true;
-
     const formValue = this.patientForm.value;
     const formData = new FormData();
 
@@ -182,8 +196,8 @@ export class AddpartientComponent implements OnInit, OnDestroy {
     formData.append('matibabu_card', formValue.matibabu_card || '');
     formData.append('patient_list_id', formValue.patient_list_id);
 
-    // Format DOB
-    formData.append('date_of_birth', this.formatDate(formValue.date_of_birth));
+    // Format DOB correctly
+    formData.append('date_of_birth', this.formatDate(formValue.date_of_birth, formValue.dob_type));
 
     const location = formValue.location_id;
     formData.append('location_id', typeof location === 'object' ? location.location_id : location);
@@ -205,5 +219,6 @@ export class AddpartientComponent implements OnInit, OnDestroy {
     });
   }
 }
+
 
 }

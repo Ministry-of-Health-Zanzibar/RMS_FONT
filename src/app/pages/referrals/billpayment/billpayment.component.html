@@ -80,7 +80,7 @@
           <td mat-cell *matCellDef="let element; let i = index">{{ i + 1 }}</td>
         </ng-container>
 
-      
+
 
         <ng-container matColumnDef="pdf">
           <th mat-header-cell *matHeaderCellDef>View PDF</th>
@@ -162,13 +162,7 @@
                 value="payment"
                 *ngIf="element.status !== 'Paid'"
               >
-                <!-- <span
-                  class="size-9 rounded-full border bg-surface flex items-center justify-center cursor-pointer"
-                 (click)="addPayment(element)"
-                  matTooltip="Add Payment"
-                >
-                  <mat-icon>add</mat-icon>
-                </span> -->
+              
                 <span
                   class="size-9 rounded-full border bg-surface flex items-center justify-center cursor-pointer"
                   (click)="addPayment(element)"

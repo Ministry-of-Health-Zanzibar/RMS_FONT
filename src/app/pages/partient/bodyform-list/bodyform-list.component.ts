@@ -111,21 +111,22 @@ export class BodyformListComponent {
     }
   }
 
-  addPatient() {
-    let config = new MatDialogConfig();
-    config.disableClose = false;
-    config.role = 'dialog';
-    config.maxWidth = '100vw';
-    config.maxHeight = '100vh';
-    // config.height = '600px'
-    config.width = '850px';
-    config.panelClass = 'full-screen-modal';
+addPatient() {
+  let config = new MatDialogConfig();
+  config.disableClose = false;
+  config.role = 'dialog';
+  config.width = '95vw';   // pana zaidi (95% ya screen width)
+  config.maxWidth = '100vw';
+  config.maxHeight = '100vh';
+  config.panelClass = 'wide-modal'; // class ya custom styling
 
-    const dialogRef = this.dialog.open(AddbodylistComponent, config);
-    dialogRef.afterClosed().subscribe((result) => {
-      this.userPetient();
-    });
-  }
+  const dialogRef = this.dialog.open(AddbodylistComponent, config);
+  dialogRef.afterClosed().subscribe((result) => {
+    this.userPetient();
+  });
+}
+
+
 
   updatePatient(data: any) {
     let config = new MatDialogConfig();
