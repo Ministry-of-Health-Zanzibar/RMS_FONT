@@ -25,6 +25,7 @@
     "@angular/platform-server": "^18.0.5",
     "@angular/router": "^18.0.5",
     "@angular/ssr": "^18.0.6",
+    "@fontsource/open-sans": "^5.2.7",
     "@ngrx/signals": "^18.0.0-beta.1",
     "@ngrx/store": "^18.0.0",
     "@tailwindcss/container-queries": "^0.1.1",
