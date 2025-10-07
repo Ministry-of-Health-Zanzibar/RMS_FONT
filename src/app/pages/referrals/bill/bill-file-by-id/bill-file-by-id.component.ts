@@ -23,6 +23,7 @@ import {
 } from '../add-bills/add-bills.component';
 import { ReferralService } from '../../../../services/Referral/referral.service';
 import { environment } from '../../../../../environments/environment.prod';
+import { MatDialogConfig } from '@angular/material/dialog';
 
 interface BillFile {
   bill_file_id: number;
@@ -68,7 +69,9 @@ export class BillFileByIdComponent implements OnInit, AfterViewInit {
   public bills: BillFile[] = [];
   public loading = false;
   public bill_id: string | null = null;
-  public bill_file_id: number | null = null;
+  // public bill_file_id: number | null = null;
+  public bill_file_id: number 
+
   public documentUrl = environment.fileUrl;
 
   displayedBillFileColumns: string[] = [
@@ -285,4 +288,24 @@ export class BillFileByIdComponent implements OnInit, AfterViewInit {
       window.open(url, '_blank');
     }
   }
+
+
+   updateBill(data: any) {
+        let config = new MatDialogConfig();
+        config.disableClose = false;
+        config.role = 'dialog';
+        config.maxWidth = '100vw';
+        config.maxHeight = '100vh';
+        config.height = '600px';
+        config.width = '850px';
+        config.panelClass = 'full-screen-modal';
+        config.data = { data: data };
+    
+        const dialogRef = this.dialog.open(BillFileFormComponent, config);
+        dialogRef.afterClosed().subscribe((result: any) => {
+          this.loadBillsByBillFileId(this.bill_file_id)
+        });
+      }
+
+
 }
