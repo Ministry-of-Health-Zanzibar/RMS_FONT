@@ -16,7 +16,7 @@ import { ReferralService } from '../../../../services/Referral/referral.service'
   selector: 'app-printfollowup',
   standalone: true,
   imports: [
-     CommonModule,
+    CommonModule,
     MatButtonModule,
     MatDialogModule,
     MatFormFieldModule,
@@ -26,11 +26,14 @@ import { ReferralService } from '../../../../services/Referral/referral.service'
     MatDividerModule
   ],
   templateUrl: './printfollowup.component.html',
-  styleUrl: './printfollowup.component.scss'
+  styleUrls: ['./printfollowup.component.scss']
 })
 export class PrintfollowupComponent implements OnInit {
   referralID: string | null = null;
   referral: any = null;
+
+  email = 'info@mohz.go.tz';
+  dg = 'dg@mohz.go.tz';
 
   constructor(
     private printService: FollowsService,
@@ -38,19 +41,32 @@ export class PrintfollowupComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
-
-  email = 'info@mohz.go.tz'
-  dg = 'dg@mohz.go.tz'
-
   ngOnInit(): void {
-  console.log("Injected dialog data:", this.data);
-  this.referral = this.data;
+    console.log('Injected dialog data:', this.data);
+
+    // ✅ Get the referral ID from dialog data
+    this.referralID = this.data?.referral_id || this.data?.id || null;
+
+    if (this.referralID) {
+      this.getReferralData();
+    } else {
+      console.warn('No referral ID provided in dialog data');
+      this.referral = this.data; // fallback
+    }
   }
 
   getReferralData(): void {
     this.referralsService.getReferralById(this.referralID!).subscribe(
       (response: any) => {
-        this.referral = response.data ? response.data : response;
+        console.log('Full API response:', response);
+
+        // ✅ Adjust this depending on your API structure
+        this.referral =
+          response.data?.referral ||
+          response.data ||
+          response;
+
+        console.log('Referral hospital:', this.referral?.hospital);
       },
       error => {
         console.error('Failed to load referral data:', error);
@@ -66,8 +82,7 @@ export class PrintfollowupComponent implements OnInit {
       document.body.innerHTML = printContents;
       window.print();
       document.body.innerHTML = originalContents;
-      window.location.reload(); // Optional: to restore Angular functionality
+      window.location.reload(); // Optional: restores Angular after print
     }
   }
-
 }

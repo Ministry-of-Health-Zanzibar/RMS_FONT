@@ -3,10 +3,12 @@
   *ngIf="referral"
   class="p-10 bg-white shadow-lg rounded-lg max-w-4xl mx-auto text-gray-900"
 >
+  <!-- Logo -->
   <div class="flex justify-center mb-4">
-    <img src="../../../../assets/img/smz.png" alt="" class="w-auto h-24" />
+    <img src="../../../../assets/img/smz.png" alt="SMZ Logo" class="w-auto h-24" />
   </div>
 
+  <!-- Header -->
   <div class="text-center space-y-1 mb-6">
     <p class="text-lg font-semibold">SERIKALI YA MAPINDUZI YA ZANZIBAR</p>
     <p class="text-lg font-semibold">WIZARA YA AFYA</p>
@@ -26,56 +28,64 @@
         <p>
           Barua pepe:
           <a
-            href="mailto:{{ email || 'N/A' }}"
+            [href]="'mailto:' + (email || 'info@mohz.go.tz')"
             class="text-blue-600 hover:underline"
           >
-            {{ email || "N/A" }}
+            {{ email || "info@mohz.go.tz" }}
           </a>
         </p>
       </div>
     </div>
   </div>
 
-  <hr />
+  <hr class="border-gray-300 my-4" />
 
+  <!-- Reference Info -->
   <div class="flex justify-between text-sm font-medium my-4">
     <p>KUMB: CDA.25/254/01</p>
-  <p class="font-semibold uppercase">
-  TAREHE: {{ referral.hospital_letters?.[0]?.next_appointment_date || 'N/A' }}
-</p>
-
+    <p class="font-semibold uppercase">
+      TAREHE:
+      {{ referral.hospital_letters?.[0]?.next_appointment_date || 'N/A' }}
+    </p>
   </div>
 
+  <!-- Hospital Information -->
   <div class="mb-6 space-y-1">
     <p class="font-semibold uppercase">MKURUGENZI MTENDAJI,</p>
     <p class="font-semibold uppercase">
-      {{ referral.hospital?.hospital_name || "N/A" }},
+      {{ referral.hospital?.hospital_name || "N/A" }}
     </p>
     <p class="font-semibold uppercase">
       {{ referral.hospital?.hospital_address || "N/A" }}
     </p>
+    <p class="font-semibold">
+      Simu: {{ referral.hospital?.contact_number || "N/A" }}
+    </p>
     <p class="font-semibold mt-2">ATT: MKURUGENZI FEDHA NA MIPANGO - MNH</p>
   </div>
 
+  <!-- Patient Information -->
   <div class="mb-4 text-center">
     <p class="font-semibold uppercase">
-      Kuh: KUMPATIA MATIBABU MGONJWA {{ referral.patient?.name || "N/A" }}
+      Kuh: KUMPATIA MATIBABU MGONJWA
+      {{ referral.patient?.name || "N/A" }}
     </p>
   </div>
 
-  <div class="space-y-3 text-sm">
+  <!-- Body Content -->
+  <div class="space-y-3 text-sm leading-relaxed">
     <p>Tafadhali naomba uhusike na mada ya hapo juu.</p>
     <p>
       Wizara ya Afya Zanzibar, inamleta kwa ajili ya kuendelea na matibabu zaidi
       mtajwa hapo juu.
     </p>
     <p>
-      Kwa barua hii, tunaomba mumpokee na kumpatia matibabu stahiki mgonjwa <b>{{referral.patient?.name || "N/A"}}</b> kama
-      tulivyokubaliana.
+      Kwa barua hii, tunaomba mumpokee na kumpatia matibabu stahiki mgonjwa
+      <b>{{ referral.patient?.name || "N/A" }}</b> kama tulivyokubaliana.
     </p>
     <p>
       Gharama za matibabu zitalipwa na Wizara ya Afya kwa mujibu wa Mkataba na
-      <b>{{referral.hospital?.hospital_name || "N/A"}}</b>
+      <b>{{ referral.hospital?.hospital_name || "N/A" }}</b>.
     </p>
     <p>
       Wizara ya Afya inaomba taarifa fupi za maendeleo ya matibabu kwa mhusika
@@ -90,6 +100,7 @@
     <p><strong>Ahsante,</strong></p>
   </div>
 
+  <!-- Signature -->
   <div class="mt-8">
     <p class="font-semibold">DKT. AMOUR S. MOHAMED</p>
     <p class="uppercase">MKURUGENZI MKUU</p>
@@ -98,21 +109,22 @@
 
   <mat-divider class="my-6"></mat-divider>
 
-  <div class="text-xs text-gray-600">
-    <p style="text-align: center;">
-      <em><strong>Kwa mawasiliano ya moja kwa moja:</strong></em>
-    </p>
-    <p style="text-align: center;">
+  <!-- Footer Info -->
+  <div class="text-xs text-gray-600 text-center">
+    <p><em><strong>Kwa mawasiliano ya moja kwa moja:</strong></em></p>
+    <p>
       Waziri ..........., Katibu Mkuu .........., Mkurugenzi Mkuu barua pepe:
-      <a href="mailto:dg@mohz.go.tz" class="text-blue-600 hover:underline">
-        {{ dg || "N/A" }}
+      <a [href]="'mailto:' + (dg || 'dg@mohz.go.tz')" class="text-blue-600 hover:underline">
+        {{ dg || "dg@mohz.go.tz" }}
       </a>
     </p>
   </div>
 
-  <div class="flex justify-end mb-4">
-    <button (click)="print()" mat-raised-button color="primary">
-      <mat-icon>print</mat-icon> print
+  <!-- Print Button -->
+  <div class="flex justify-end mt-8">
+    <button (click)="print()" mat-raised-button color="primary" class="flex items-center gap-1">
+      <mat-icon>print</mat-icon>
+      Print
     </button>
   </div>
 </div>

@@ -42,7 +42,7 @@ export class ReferralsLetterComponent implements OnInit {
 
   ngOnInit(): void {
   console.log("Injected dialog data:", this.data);
-  this.referral = this.data; 
+  this.referral = this.data;
   }
 
   getReferralData(): void {
@@ -56,6 +56,7 @@ export class ReferralsLetterComponent implements OnInit {
       }
     );
   }
+  
 
   print(): void {
     const printContents = document.getElementById('print-section')?.innerHTML;
@@ -64,8 +65,8 @@ export class ReferralsLetterComponent implements OnInit {
       document.body.innerHTML = printContents;
       window.print();
       document.body.innerHTML = originalContents;
-      window.location.reload(); 
+      window.location.reload();
     }
   }
-  
+
 }
