@@ -106,6 +106,13 @@ export class BillFileFormComponent {
     });
   }
 
+  endDateFilter = (d: Date | null): boolean => {
+    if (!d) return true;
+    const startDate = this.billForm.get('bill_start')?.value;
+    if (!startDate) return true; // no start date selected, allow all
+    return d >= startDate;
+  };
+
   onAttachmentSelected(event: any): void {
     const file = event.target.files?.[0] ?? null;
     if (file) {
