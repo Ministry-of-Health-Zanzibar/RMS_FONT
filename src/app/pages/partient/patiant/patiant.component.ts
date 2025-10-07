@@ -51,6 +51,7 @@ export class PatiantComponent {
     'date_of_birth',
     'gender',
     'phone',
+    'patient_file',
     'action',
   ];
   dataSource: MatTableDataSource<any> = new MatTableDataSource();
@@ -108,12 +109,13 @@ export class PatiantComponent {
     }
   }
 
-  viewPDF(patientList: any) {
-    if (patientList?.patient_list_file) {
-      const url = this.documentUrl + patientList.patient_list_file;
-      window.open(url, '_blank');
-    }
+viewPDF(file: any) {
+  if (file?.file_path) {
+    const url = this.documentUrl + file.file_path;
+    window.open(url, '_blank');
   }
+}
+
 
   addPatient() {
     const config = new MatDialogConfig();
@@ -168,7 +170,7 @@ export class PatiantComponent {
 
   blockPatient(data: any, deleted: any) {
     if (deleted) {
-      this.userService.unblockPatient(data, data?.patient_list_id).subscribe(
+      this.userService.unblockPatient(data, data?.patient_id).subscribe(
         (res: any) => {
           Swal.fire('Success', res.message, 'success');
           this.loadPatients();
@@ -178,7 +180,7 @@ export class PatiantComponent {
         }
       );
     } else {
-      this.userService.deletePatient(data?.patient_list_id).subscribe(
+      this.userService.deletePatient(data?.patient_id).subscribe(
         (res: any) => {
           Swal.fire('Success', res.message, 'success');
           this.loadPatients();
