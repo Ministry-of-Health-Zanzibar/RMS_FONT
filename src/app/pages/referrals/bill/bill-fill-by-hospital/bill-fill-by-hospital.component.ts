@@ -13,6 +13,8 @@ import { Subject, takeUntil } from 'rxjs';
 import { EmrSegmentedModule } from '@elementar/components';
 import {MatDividerModule} from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
+import { MatDialogConfig } from '@angular/material/dialog';
+import { AddbillComponent } from '../../../system-config/bill/addbill/addbill.component';
 
 @Component({
   selector: 'app-bill-fill-by-hospital',
@@ -105,4 +107,28 @@ export class BillFillByHospitalComponent {
     const id = data.hospital_id;
     this.router.navigate(['/pages/config/referrals/billpayments', id]);
   }
+
+
+  updateBill(data: any) {
+      let config = new MatDialogConfig();
+      config.disableClose = false;
+      config.role = 'dialog';
+      config.maxWidth = '100vw';
+      config.maxHeight = '100vh';
+      config.height = '600px';
+      config.width = '850px';
+      config.panelClass = 'full-screen-modal';
+      config.data = { data: data };
+  
+      const dialogRef = this.dialog.open(AddbillComponent, config);
+      dialogRef.afterClosed().subscribe((result: any) => {
+        this.loadBillsByHospital();
+      });
+    }
+  
+
+
+
+
+
 }
