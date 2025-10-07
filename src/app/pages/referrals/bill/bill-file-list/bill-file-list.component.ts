@@ -25,6 +25,7 @@ import { BillFileFormComponent } from '../bill-file-form/bill-file-form.componen
 import { Router } from '@angular/router';
 import { HospitalService } from '../../../../services/system-configuration/hospital.service';
 import { environment } from '../../../../../environments/environment.prod';
+import { AddbillComponent } from '../../../system-config/bill/addbill/addbill.component';
 
 // import { AddBillFileComponent } from '../add-bill-file/add-bill-file.component';
 
@@ -173,4 +174,24 @@ export class BillFileListComponent {
     const id = data.bill_file_id;
     this.router.navigate(['/pages/config/referrals/more-bill-file', id]);
   }
+
+  updateBill(data: any) {
+      let config = new MatDialogConfig();
+      config.disableClose = false;
+      config.role = 'dialog';
+      config.maxWidth = '100vw';
+      config.maxHeight = '100vh';
+      config.height = '600px';
+      config.width = '850px';
+      config.panelClass = 'full-screen-modal';
+      config.data = { data: data };
+  
+      const dialogRef = this.dialog.open(BillFileFormComponent, config);
+      dialogRef.afterClosed().subscribe((result: any) => {
+        this.loadBills();
+      });
+    }
+  
+
+
 }

@@ -64,7 +64,16 @@ export class BillFileFormComponent {
     this.configForm();
     if (this.data?.data) {
       this.billData = this.data.data;
-      this.billForm.patchValue(this.billData);
+
+      this.billForm.patchValue({
+        ...this.billData,
+        bill_start: this.billData.bill_start
+          ? new Date(this.billData.bill_start)
+          : null,
+        bill_end: this.billData.bill_end
+          ? new Date(this.billData.bill_end)
+          : null,
+      });
     }
 
     this.fetchAllHospitals();

@@ -54,7 +54,7 @@ export class BillFileService {
   }
 
   public updatebillFiles(billFile: any, id: any): Observable<any> {
-    return this.http.patch(`${this.baseUrl}/${id}`, billFile);
+    return this.http.post(`${this.baseUrl}/update/${id}`, billFile);
   }
 
   public unblockbillFiles(id: any): Observable<any> {
