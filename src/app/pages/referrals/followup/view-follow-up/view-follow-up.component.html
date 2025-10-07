@@ -95,14 +95,17 @@
 </td>
 
       <td class="border border-gray-300 p-2 text-center">{{ letter.outcome }}</td>
+
       <td class="border border-gray-300 p-2 text-center">
         <ng-container *ngIf="letter.letter_file; else noFile">
-          <a [href]="'http://127.0.0.1:8000/storage/' + letter.letter_file"
-             target="_blank"
-             class="inline-flex items-center gap-1 text-indigo-600 hover:text-indigo-800 justify-center">
-            <mat-icon>picture_as_pdf</mat-icon>
-            View PDF
-          </a>
+
+           <a
+                *ngIf="letter?.letter_file"
+                (click)="viewPDF(letter)"
+                class="inline-flex items-center gap-1 text-indigo-600 hover:text-indigo-800 cursor-pointer"
+              >
+                <mat-icon>picture_as_pdf</mat-icon> View PDF
+              </a>
         </ng-container>
         <ng-template #noFile>
           <span class="text-gray-400">No File</span>

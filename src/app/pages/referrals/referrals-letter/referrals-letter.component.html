@@ -69,12 +69,11 @@
       mtajwa hapo juu.
     </p>
     <p>
-      Kwa barua hii, tunaomba mumpokee na kumpatia matibabu stahiki kama
-      tulivyokubaliana.
+      Kwa barua hii, tunaomba mumpokee na kumpatia matibabu stahiki <b>{{ referral.patient?.name || "N/A" }}</b> kama tulivokubaliana.
     </p>
     <p>
       Gharama za matibabu zitalipwa na Wizara ya Afya kwa mujibu wa Mkataba na
-      Muhimbili National Hospital.
+      <b>{{ referral.hospital?.hospital_name || "N/A" }}</b>
     </p>
     <p>
       Wizara ya Afya inaomba taarifa fupi za maendeleo ya matibabu kwa mhusika
@@ -97,21 +96,22 @@
 
   <mat-divider class="my-6"></mat-divider>
 
-  <div class="text-xs text-gray-600">
-    <p>
-      <em><strong>Kwa mawasiliano ya moja kwa moja:</strong></em>
-    </p>
+  <!-- Footer Info -->
+  <div class="text-xs text-gray-600 text-center">
+    <p><em><strong>Kwa mawasiliano ya moja kwa moja:</strong></em></p>
     <p>
       Waziri ..........., Katibu Mkuu .........., Mkurugenzi Mkuu barua pepe:
-      <a href="mailto:dg@mohz.go.tz" class="text-blue-600 hover:underline">
-        {{ dg || "N/A" }}
+      <a [href]="'mailto:' + (dg || 'dg@mohz.go.tz')" class="text-blue-600 hover:underline">
+        {{ dg || "dg@mohz.go.tz" }}
       </a>
     </p>
   </div>
 
-  <div class="flex justify-end mb-4">
-    <button (click)="print()" mat-raised-button color="primary">
-      <mat-icon>print</mat-icon> print
+  <!-- Print Button -->
+  <div class="flex justify-end mt-8">
+    <button (click)="print()" mat-raised-button color="primary" class="flex items-center gap-1">
+      <mat-icon>print</mat-icon>
+      Print
     </button>
   </div>
 </div>

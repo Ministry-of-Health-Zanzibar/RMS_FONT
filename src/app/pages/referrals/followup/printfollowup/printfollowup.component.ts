@@ -42,47 +42,41 @@ export class PrintfollowupComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log('Injected dialog data:', this.data);
+   console.log("Injected dialog data:", this.data);
+   this.referral = this.data;
+   }
 
-    // ✅ Get the referral ID from dialog data
-    this.referralID = this.data?.referral_id || this.data?.id || null;
+   getReferralData(): void {
+     this.referralsService.getReferralById(this.referralID!).subscribe(
+       (response: any) => {
+         console.log('API response:', response);
 
-    if (this.referralID) {
-      this.getReferralData();
-    } else {
-      console.warn('No referral ID provided in dialog data');
-      this.referral = this.data; // fallback
-    }
-  }
+      this.referral = response.data;
 
-  getReferralData(): void {
-    this.referralsService.getReferralById(this.referralID!).subscribe(
-      (response: any) => {
-        console.log('Full API response:', response);
-
-        // ✅ Adjust this depending on your API structure
-        this.referral =
-          response.data?.referral ||
-          response.data ||
-          response;
-
-        console.log('Referral hospital:', this.referral?.hospital);
-      },
-      error => {
-        console.error('Failed to load referral data:', error);
-        Swal.fire('Error', 'Unable to fetch referral data', 'error');
+      // Pick first hospital from hospitals array
+      if (this.referral?.hospitals?.length > 0) {
+        this.referral.hospital = this.referral.hospitals[0];
       }
-    );
-  }
 
-  print(): void {
-    const printContents = document.getElementById('print-section')?.innerHTML;
-    if (printContents) {
-      const originalContents = document.body.innerHTML;
-      document.body.innerHTML = printContents;
-      window.print();
-      document.body.innerHTML = originalContents;
-      window.location.reload(); // Optional: restores Angular after print
-    }
-  }
-}
+      console.log('Referral hospital:', this.referral.hospital);
+       },
+       error => {
+         console.error('Failed to load referral data:', error);
+         Swal.fire('Error', 'Unable to fetch referral data', 'error');
+       }
+     );
+   }
+
+
+   print(): void {
+     const printContents = document.getElementById('print-section')?.innerHTML;
+     if (printContents) {
+       const originalContents = document.body.innerHTML;
+       document.body.innerHTML = printContents;
+       window.print();
+       document.body.innerHTML = originalContents;
+       window.location.reload();
+     }
+   }
+
+ }

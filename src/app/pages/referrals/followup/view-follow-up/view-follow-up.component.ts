@@ -13,6 +13,7 @@ import { PartientService } from '../../../../services/partient/partient.service'
 import { FollowsService } from '../../../../services/Referral/follows.service';
 import { AddFollowUpComponent } from '../add-follow-up/add-follow-up.component';
 import { PrintfollowupComponent } from '../printfollowup/printfollowup.component';
+import { environment } from '../../../../../environments/environment.prod';
 
 
 
@@ -35,6 +36,7 @@ import { PrintfollowupComponent } from '../printfollowup/printfollowup.component
 
 })
 export class ViewFollowUpComponent implements OnInit {
+   public documentUrl = environment.fileUrl;
   public displayRoleForm!: FormGroup;
   loading: boolean = false;
   followListId: string | null = null;
@@ -98,6 +100,12 @@ getFeedbackById() {
   );
 }
 
+ viewPDF(element: any) {
+    if (element?.letter_file) {
+      const url = this.documentUrl + element.letter_file;
+      window.open(url, '_blank');
+    }
+  }
 
 
 // getFeedbackById() {
