@@ -190,11 +190,11 @@ export class ViewpartientComponent {
   blockPatient(data: any, deleted: any): void {
     if (deleted) {
       this.userService
-        .unblockPatient(data, data?.patient_id)
+        .unblockPatient(data?.patient_id)
         .subscribe((response) => {
           if (response.statusCode == 200) {
             Swal.fire({
-              title: 'Success',
+              title: 'Success', 
               text: response.message,
               icon: 'success',
               confirmButtonColor: '#4690eb',
