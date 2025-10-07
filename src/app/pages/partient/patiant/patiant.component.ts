@@ -169,28 +169,28 @@ viewPDF(file: any) {
   }
 
   blockPatient(data: any, deleted: any) {
-    if (deleted) {
-      this.userService.unblockPatient(data, data?.patient_id).subscribe(
-        (res: any) => {
-          Swal.fire('Success', res.message, 'success');
-          this.loadPatients();
-        },
-        (err) => {
-          Swal.fire('Error', 'Failed to unblock patient', 'error');
-        }
-      );
-    } else {
-      this.userService.deletePatient(data?.patient_id).subscribe(
-        (res: any) => {
-          Swal.fire('Success', res.message, 'success');
-          this.loadPatients();
-        },
-        (err) => {
-          Swal.fire('Error', 'Failed to delete patient', 'error');
-        }
-      );
-    }
+  if (deleted) {
+    this.userService.unblockPatients(data, data?.patient_id).subscribe(
+      (res: any) => {
+        Swal.fire('Success', res.message, 'success');
+        this.loadPatients();
+      },
+      (err) => {
+        Swal.fire('Error', 'Failed to unblock patient', 'error');
+      }
+    );
+  } else {
+    this.userService.deletePatients(data?.patient_id).subscribe(
+      (res: any) => {
+        Swal.fire('Success', res.message, 'success');
+        this.loadPatients();
+      },
+      (err) => {
+        Swal.fire('Error', 'Failed to delete patient', 'error');
+      }
+    );
   }
+}
 
   displayMoreData(data: any) {
     const id = data.patient_list_id;

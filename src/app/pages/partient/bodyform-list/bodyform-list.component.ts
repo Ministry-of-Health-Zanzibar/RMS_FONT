@@ -44,7 +44,7 @@ import { environment } from '../../../../environments/environment.prod';
   styleUrl: './bodyform-list.component.scss',
 })
 export class BodyformListComponent {
- public documentUrl = environment.fileUrl;
+  public documentUrl = environment.fileUrl;
   private readonly onDestroy = new Subject<void>();
   loading: boolean = false;
 
@@ -103,7 +103,6 @@ export class BodyformListComponent {
     }
   }
 
-
   viewPDF(element: any) {
     if (element?.patient_list_file) {
       const url = this.documentUrl + element.patient_list_file;
@@ -111,22 +110,20 @@ export class BodyformListComponent {
     }
   }
 
-addPatient() {
-  let config = new MatDialogConfig();
-  config.disableClose = false;
-  config.role = 'dialog';
-  config.width = '95vw';   // pana zaidi (95% ya screen width)
-  config.maxWidth = '100vw';
-  config.maxHeight = '100vh';
-  config.panelClass = 'wide-modal'; // class ya custom styling
+  addPatient() {
+    let config = new MatDialogConfig();
+    config.disableClose = false;
+    config.role = 'dialog';
+    config.width = '95vw'; // pana zaidi (95% ya screen width)
+    config.maxWidth = '100vw';
+    config.maxHeight = '100vh';
+    config.panelClass = 'wide-modal'; // class ya custom styling
 
-  const dialogRef = this.dialog.open(AddbodylistComponent, config);
-  dialogRef.afterClosed().subscribe((result) => {
-    this.userPetient();
-  });
-}
-
-
+    const dialogRef = this.dialog.open(AddbodylistComponent, config);
+    dialogRef.afterClosed().subscribe((result) => {
+      this.userPetient();
+    });
+  }
 
   updatePatient(data: any) {
     let config = new MatDialogConfig();
@@ -145,80 +142,146 @@ addPatient() {
     });
   }
 
-  confirmBlock(data: any) {
-    var message;
-    if (data.deleted_at) {
-      message = 'Are you sure you want to unblock';
-    } else {
-      message = 'Are you sure you want to block';
-    }
+  // confirmBlock(data: any) {
+  //   var message;
+  //   if (data.deleted_at) {
+  //     message = 'Are you sure you want to unblock';
+  //   } else {
+  //     message = 'Are you sure you want to block';
+  //   }
+  //   Swal.fire({
+  //     title: 'Confirm',
+  //     html: message + ' <b> ' + data.name + ' </b> ',
+  //     icon: 'warning',
+  //     confirmButtonColor: '#4690eb',
+  //     confirmButtonText: 'Confirm',
+  //     cancelButtonColor: '#D5D8DC',
+  //     cancelButtonText: 'Cancel',
+  //     showCancelButton: true,
+  //   }).then((result) => {
+  //     if (result.isConfirmed) {
+  //       this.blockPatient(data, data.deleted_at);
+  //     } else {
+  //       this.userPetient();
+  //     }
+  //   });
+  // }
+
+  // blockPatient(data: any, deleted: any): void {
+  //   if (deleted) {
+  //     this.userService
+  //       .unblockPatient(data, data?.patient_list_id)
+  //       .subscribe((response) => {
+  //         if (response.statusCode == 200) {
+  //           Swal.fire({
+  //             title: 'Success',
+  //             text: response.message,
+  //             icon: 'success',
+  //             confirmButtonColor: '#4690eb',
+  //             confirmButtonText: 'Continue',
+  //           });
+  //           this.userPetient();
+  //         } else {
+  //           Swal.fire({
+  //             title: 'Error',
+  //             text: response.message,
+  //             icon: 'error',
+  //             confirmButtonColor: '#4690eb',
+  //             confirmButtonText: 'Continue',
+  //           });
+  //         }
+  //       });
+  //   } else {
+  //     this.userService
+  //       .deletePatient(data?.patient_list_id)
+  //       .subscribe((response) => {
+  //         if (response.statusCode == 200) {
+  //           Swal.fire({
+  //             title: 'Success',
+  //             text: response.message,
+  //             icon: 'success',
+  //             confirmButtonColor: '#4690eb',
+  //             confirmButtonText: 'Continue',
+  //           });
+  //           this.userPetient();
+  //         } else {
+  //           Swal.fire({
+  //             title: 'Error',
+  //             text: response.message,
+  //             icon: 'error',
+  //             confirmButtonColor: '#4690eb',
+  //             confirmButtonText: 'Continue',
+  //           });
+  //         }
+  //       });
+  //   }
+  // }
+
+  // Call this from the template on toggle
+  confirmBlock(patient: any) {
+    const isDeleted = !!patient.deleted_at; 
+    const action = isDeleted ? 'Unblock' : 'Delete';
+
     Swal.fire({
-      title: 'Confirm',
-      html: message + ' <b> ' + data.name + ' </b> ',
+      title: `Are you sure you want to ${action.toLowerCase()} this patient?`,
       icon: 'warning',
-      confirmButtonColor: '#4690eb',
-      confirmButtonText: 'Confirm',
-      cancelButtonColor: '#D5D8DC',
-      cancelButtonText: 'Cancel',
       showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: `Yes, ${action.toLowerCase()} it!`,
     }).then((result) => {
       if (result.isConfirmed) {
-        this.blockPatient(data, data.deleted_at);
-      } else {
-        this.userPetient();
+        this.blockPatient(patient, isDeleted);
       }
     });
   }
 
-  blockPatient(data: any, deleted: any): void {
-    if (deleted) {
-      this.userService
-        .unblockPatient(data, data?.patient_list_id)
-        .subscribe((response) => {
-          if (response.statusCode == 200) {
-            Swal.fire({
-              title: 'Success',
-              text: response.message,
-              icon: 'success',
-              confirmButtonColor: '#4690eb',
-              confirmButtonText: 'Continue',
-            });
-            this.userPetient();
-          } else {
-            Swal.fire({
-              title: 'Error',
-              text: response.message,
-              icon: 'error',
-              confirmButtonColor: '#4690eb',
-              confirmButtonText: 'Continue',
-            });
-          }
+ blockPatient(data: any, deleted: any): void {
+  if (deleted) {
+    this.userService.unblockPatient(data?.patient_list_id).subscribe((response) => {
+      if (response.statusCode == 200) {
+        Swal.fire({   
+          title: 'Success',
+          text: response.message,
+          icon: 'success',
+          confirmButtonColor: '#4690eb',
+          confirmButtonText: 'Continue',
         });
-    } else {
-      this.userService
-        .deletePatient(data?.patient_list_id)
-        .subscribe((response) => {
-          if (response.statusCode == 200) {
-            Swal.fire({
-              title: 'Success',
-              text: response.message,
-              icon: 'success',
-              confirmButtonColor: '#4690eb',
-              confirmButtonText: 'Continue',
-            });
-            this.userPetient();
-          } else {
-            Swal.fire({
-              title: 'Error',
-              text: response.message,
-              icon: 'error',
-              confirmButtonColor: '#4690eb',
-              confirmButtonText: 'Continue',
-            });
-          }
+        this.userPetient();
+      } else {
+        Swal.fire({
+          title: 'Error',
+          text: response.message,
+          icon: 'error',
+          confirmButtonColor: '#4690eb',
+          confirmButtonText: 'Continue',
         });
-    }
+      }
+    });
+  } else {
+ 
+    this.userService.deletePatient(data?.patient_list_id).subscribe((response) => {
+      if (response.statusCode == 200) {
+        Swal.fire({
+          title: 'Success',
+          text: response.message,
+          icon: 'success',
+          confirmButtonColor: '#4690eb',
+          confirmButtonText: 'Continue',
+        });
+        this.userPetient();
+      } else {
+        Swal.fire({
+          title: 'Error',
+          text: response.message,
+          icon: 'error',
+          confirmButtonColor: '#4690eb',
+          confirmButtonText: 'Continue',
+        });
+      }
+    });
   }
+}
 
   getPatient(id: any) {
     console.log('hiiii', id);

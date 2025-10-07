@@ -4,10 +4,9 @@ import { Observable, tap } from 'rxjs';
 import { environment } from '../../../environments/environment.prod';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PartientService {
-
   private baseUrl: string = `${environment.baseUrl}`;
   private href = `${this.baseUrl}patients`;
   private href_for_addreferral = `${this.baseUrl}patients/for-referral/allowed`;
@@ -19,28 +18,28 @@ export class PartientService {
 
   constructor(private http: HttpClient) {}
   //body list
-   public getAllBodyList(): Observable<any> {
+  public getAllBodyList(): Observable<any> {
     return this.http.get<any>(this.href_bodylist);
   }
 
-    public addBodyList(Partient: any): Observable<any> {
+  public addBodyList(Partient: any): Observable<any> {
     return this.http.post(this.href_bodylist, Partient);
   }
 
-    public addPatientfromBodyList(patient: any): Observable<any> {
+  public addPatientfromBodyList(patient: any): Observable<any> {
     return this.http.post(this.href, patient);
   }
 
-    public deletePatientList(id:any): Observable<any>{
+  public deletePatientList(id: any): Observable<any> {
     return this.http.delete(`${this.href_bodylist}/${id}`);
   }
 
-  public updatePartientList(patient:any, id:any): Observable<any>{
-    return this.http.post(`${this.href_bodylist}/update/${id}`,patient)
+  public updatePartientList(patient: any, id: any): Observable<any> {
+    return this.http.post(`${this.href_bodylist}/update/${id}`, patient);
   }
 
-  public unblockPatientList(data: any, id:any): Observable<any>{
-    return this.http.patch(`${this.href_bodylist}/body-form/${id}`,data)
+  public unblockPatientList(data: any, id: any): Observable<any> {
+    return this.http.patch(`${this.href_bodylist}/body-form/${id}`, data);
   }
 
   public getBodyListById(id: any) {
@@ -52,37 +51,39 @@ export class PartientService {
   public getAllPartients(): Observable<any> {
     return this.http.get<any>(this.href);
   }
-   public getAllPartientforReferral(): Observable<any> {
+  public getAllPartientforReferral(): Observable<any> {
     return this.http.get<any>(this.href_for_addreferral);
   }
 
-
-   public getAllPartientsForReferal(): Observable<any> {
+  public getAllPartientsForReferal(): Observable<any> {
     return this.http.get<any>(this.hrefee);
   }
-
-
 
   public addPartient(Partient: any): Observable<any> {
     return this.http.post(this.href, Partient);
   }
 
-
   public getPartientById(id: any) {
     return this.http.get<any>(`${this.href}/${id}`);
   }
 
-
-  public deletePatient(id:any): Observable<any>{
+  public deletePatients(id:any): Observable<any>{
     return this.http.delete(`${this.href}/${id}`);
   }
 
-  public updatePartient(patient:any, id:any): Observable<any>{
-    return this.http.post(`${this.href}/update/${id}`,patient)
+   public unblockPatients(data: any, id:any): Observable<any>{
+    return this.http.patch(`${this.baseUrl}patients/unBlock/${id}`, data);
   }
 
-  public unblockPatient(data: any, id:any): Observable<any>{
-    return this.http.patch(`${this.baseUrl}patients/unBlock/${id}`, data);
+  public deletePatient(id: any): Observable<any> {
+    return this.http.delete(`${this.baseUrl}patient-lists/${id}`);
+  }
+  public unblockPatient(id: any): Observable<any> {
+    return this.http.patch(`${this.baseUrl}patient-lists/unblock/${id}`, {});
+  }
+
+  public updatePartient(patient: any, id: any): Observable<any> {
+    return this.http.post(`${this.href}/update/${id}`, patient);
   }
 
   //insurances
@@ -92,20 +93,19 @@ export class PartientService {
 
   public uploadInsurances(insurance: any): Observable<any> {
     const req = new HttpRequest('POST', this.href_insurances, insurance, {
-      reportProgress: true // Enable progress tracking
+      reportProgress: true, // Enable progress tracking
     });
-    return this.http.request(req)
-      .pipe(
-        tap(event => {
-          if (event.type === HttpEventType.UploadProgress) {
-            // Calculate and log progress percentage
-            if (event.total) {
-              const percentDone = Math.round((100 * event.loaded) / event.total);
-            }
-          } else if (event.type === HttpEventType.Response) {
+    return this.http.request(req).pipe(
+      tap((event) => {
+        if (event.type === HttpEventType.UploadProgress) {
+          // Calculate and log progress percentage
+          if (event.total) {
+            const percentDone = Math.round((100 * event.loaded) / event.total);
           }
-        })
-      )
+        } else if (event.type === HttpEventType.Response) {
+        }
+      })
+    );
   }
   // public getPatientInsurances(): Observable<any> {
   //   return this.http.get<any>(this.href_patientInsurance);
@@ -113,10 +113,7 @@ export class PartientService {
   public getPatientInsurances(id: any) {
     return this.http.get<any>(`${this.href_patientInsurance}/${id}`); // adjust endpoint as needed
   }
-  public unblockPatientInsurances(data: any, id:any): Observable<any>{
+  public unblockPatientInsurances(data: any, id: any): Observable<any> {
     return this.http.patch(`${this.baseUrl}patients/unblock/${id}`, data);
   }
-
-
 }
-
