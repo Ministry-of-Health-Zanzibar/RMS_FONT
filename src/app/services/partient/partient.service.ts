@@ -9,6 +9,8 @@ import { environment } from '../../../environments/environment.prod';
 export class PartientService {
   private baseUrl: string = `${environment.baseUrl}`;
   private href = `${this.baseUrl}patients`;
+  private baseForBoard = `${this.baseUrl}patient-lists`;
+
   private href_for_addreferral = `${this.baseUrl}patients/for-referral/allowed`;
 
   private hrefee = `${this.baseUrl}patients/patients-for-referral`;
@@ -22,8 +24,8 @@ export class PartientService {
     return this.http.get<any>(this.href_bodylist);
   }
 
-  public addBodyList(Partient: any): Observable<any> {
-    return this.http.post(this.href_bodylist, Partient);
+  public addBodyList(formData:any): Observable<any> {
+    return this.http.post(this.href_bodylist, formData);
   }
 
   public addPatientfromBodyList(patient: any): Observable<any> {
@@ -67,11 +69,11 @@ export class PartientService {
     return this.http.get<any>(`${this.href}/${id}`);
   }
 
-  public deletePatients(id:any): Observable<any>{
+  public deletePatients(id: any): Observable<any> {
     return this.http.delete(`${this.href}/${id}`);
   }
 
-   public unblockPatients(data: any, id:any): Observable<any>{
+  public unblockPatients(data: any, id: any): Observable<any> {
     return this.http.patch(`${this.baseUrl}patients/unBlock/${id}`, data);
   }
 
@@ -84,6 +86,16 @@ export class PartientService {
 
   public updatePartient(patient: any, id: any): Observable<any> {
     return this.http.post(`${this.href}/update/${id}`, patient);
+  }
+
+  public updateMedicalBoard(
+    patient: any,
+    patient_list_id: any
+  ): Observable<any> {
+    return this.http.post(
+      `${this.baseForBoard}/update/${patient_list_id}`,
+      patient
+    );
   }
 
   //insurances
