@@ -46,14 +46,7 @@ export class SidebarComponent {
   navigation!: any;
 
   navItems: NavItem[] = [
-    {
-      id: 'dashboard',
-      type: 'Single', // Changed from 'group' to 'link'
-      name: 'Dashboard',
-      icon: 'dashboard',
-      permission: 'View Dashboard',
-      link: '/pages/dashboard/basic',
-    },
+   
 
     {
       id: 'dashboard1',
@@ -266,7 +259,7 @@ export class SidebarComponent {
       link: '/pages/patient/searchreport99990000',
     },
 
-   
+
   ];
   navItemLinks: NavItem[] = [];
   activeLinkId: any = '/';
