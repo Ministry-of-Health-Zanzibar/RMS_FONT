@@ -266,71 +266,7 @@ export class SidebarComponent {
       link: '/pages/patient/searchreport99990000',
     },
 
-    {
-      id: 'accountant',
-      type: 'group',
-      name: 'Accountant Setup',
-      icon: 'menu',
-      // permission: 'Accountant Module',
-      permission: 'Accountant Module',
-      children: [
-        {
-          type: 'link',
-          name: 'Sources',
-          link: '/pages/accounts/source',
-          permission: 'Accountant Module',
-        },
-        {
-          type: 'link',
-          name: 'Source Type',
-          link: '/pages/accounts/sourceType',
-          permission: 'Accountant Module',
-        },
-        {
-          type: 'link',
-          name: 'Category',
-          link: '/pages/accounts/category',
-          permission: 'Accountant Module',
-        },
-        {
-          type: 'link',
-          name: 'Document Type',
-          link: '/pages/accounts/documentCategory',
-          permission: 'Accountant Module',
-        },
-      ],
-    },
-
-    {
-      id: 'dodument1',
-      type: 'Single', // Changed from 'group' to 'link'
-      name: 'Document',
-      icon: 'document',
-      permission: 'View Document Form',
-      link: '/pages/accounts/documentForm',
-    },
-
-    {
-      id: 'report2',
-      type: 'group',
-      name: 'Report',
-      icon: 'report',
-      permission: 'View Report',
-      children: [
-        {
-          type: 'link',
-          name: 'Range Report',
-          link: '/pages/accounts/report',
-          permission: 'View Report',
-        },
-        {
-          type: 'link',
-          name: 'Search Report',
-          link: '/pages/accounts/parameter-report',
-          permission: 'View Report',
-        },
-      ],
-    },
+   
   ];
   navItemLinks: NavItem[] = [];
   activeLinkId: any = '/';
