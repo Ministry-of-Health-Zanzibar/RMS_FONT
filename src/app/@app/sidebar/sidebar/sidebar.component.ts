@@ -46,7 +46,7 @@ export class SidebarComponent {
   navigation!: any;
 
   navItems: NavItem[] = [
-   
+
 
     {
       id: 'dashboard1',
@@ -108,13 +108,7 @@ export class SidebarComponent {
       name: 'System Configuration',
       permission: 'Setup Management',
       children: [
-        // {
-        //   type: 'link',
-        //   name: 'View Country',
-        //   link: '/pages/config/country',
-        //   permission: 'Setup Management',
 
-        // },
         {
           type: 'link',
           name: 'Location',
@@ -122,24 +116,7 @@ export class SidebarComponent {
           permission: 'Setup Management',
         },
 
-        // {
-        //   type: 'link',
-        //   name: 'Employer',
-        //   link: '/pages/config/employer',
-        //   permission: 'Setup Management',
-        // },
-        // {
-        //   type: 'link',
-        //   name: 'Work Station',
-        //   link: '/pages/config/work-station',
-        //   permission: 'Setup Management',
-        // },
-        // {
-        //   type: 'link',
-        //   name: 'Employer Type',
-        //   link: '/pages/config/employer-type',
-        //   permission: 'View Employer Type',
-        // },
+
         {
           type: 'link',
           name: 'Hospital',
@@ -187,36 +164,14 @@ export class SidebarComponent {
         },
       ],
     },
-    {
+   
+     {
       id: 'referral',
-      type: 'group',
-      name: 'Referral Management',
+      type: 'Single',
+      name: 'Manage Referral',
       icon: 'call_split',
+      link: '/pages/config/referrals',
       permission: 'View Referral',
-      children: [
-        {
-          type: 'link',
-          name: 'View referral',
-          link: '/pages/config/referrals',
-          permission: 'View Referral',
-        },
-
-        // {
-        //   type: 'link',
-        //   name: 'Confirmed Referral',
-        //   link: '/pages/config/referrals/confirm0000111101',
-        //   permission: 'View Referral',
-        // },
-
-        //  {
-        //   type: 'link',
-        //   name: 'Range Report',
-        //  link: '/pages/config/referrals/referralreport0990',
-
-        //   permission: 'View Monthly Bill',
-
-        // }
-      ],
     },
     {
       id: 'bills',

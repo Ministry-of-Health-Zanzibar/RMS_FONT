@@ -1,180 +1,74 @@
 <div class="p-10 space-y-8">
-  <div class="flex items-center justify-between">
-    <h1 class="text-lg font-bold">Dashboard</h1>
+<div class="flex flex-col items-center">
+   <h1
+  class="text-5xl md:text-6xl font-extrabold text-center
+         bg-clip-text text-transparent
+         bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500
+         drop-shadow-lg tracking-wider uppercase"
+>
+  Dashboard
+</h1>
+    <!-- Line below title -->
+     <div class="w-full h-1 bg-blue-500 mt-2 rounded-full"></div>
+    <!-- Second line below the first -->
+    <div class="w-full h-0.5 bg-blue-300 mt-1 rounded-full"></div>
   </div>
-  <div class="container mx-auto px-4 py-6">
-    <h2 class="text-2xl font-bold text-center mb-6">Referral Reports</h2>
 
-    <!-- KPI Cards Grid -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      <!-- Total Referral Hospitals -->
-      <div
-        class="bg-white shadow rounded-lg p-6 flex items-center justify-between"
-      >
-        <div>
-          <h3 class="text-xl font-semibold">Total Referral Hospitals</h3>
-          <p class="mt-2 text-3xl font-bold" id="total-hospitals">12</p>
-        </div>
-        <div class="text-indigo-500">
-          <!-- Icon -->
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-12 w-12"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M9 12h6m2 0a2 2 0 100-4 2 2 0 000 4zm-8 0a2 2
-                     0 100-4 2 2 0 000 4z"
-            />
-          </svg>
-        </div>
-      </div>
-
-      <!-- Total Referral Reasons -->
-      <div
-        class="bg-white shadow rounded-lg p-6 flex items-center justify-between"
-      >
-        <div>
-          <h3 class="text-xl font-semibold">Total Referral Reasons</h3>
-          <p class="mt-2 text-3xl font-bold" id="total-reasons">8</p>
-        </div>
-        <div class="text-green-500">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-12 w-12"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M11 17a4 4 0 01-8 0m8 0a4 4 0 018 0m-8
-                     0V5a2 2 0 114 0v12"
-            />
-          </svg>
-        </div>
-      </div>
-
-      <!-- Total Referral Types -->
-      <div
-        class="bg-white shadow rounded-lg p-6 flex items-center justify-between"
-      >
-        <div>
-          <h3 class="text-xl font-semibold">Total Referral Types</h3>
-          <p class="mt-2 text-3xl font-bold" id="total-types">5</p>
-        </div>
-        <div class="text-yellow-500">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-12 w-12"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M5 13l4 4L19 7m0 0H7m12 0v12"
-            />
-          </svg>
-        </div>
-      </div>
+  <!-- Dashboard Info Cards -->
+ <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+   <!-- Card 2: Uploaded Files -->
+  <div
+    class="relative bg-gradient-to-r from-green-400 to-green-600 text-white rounded-xl p-6 flex flex-col items-center justify-center
+           shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
+  >
+    <div class="text-5xl mb-3 animate-bounce">
+      <mat-icon>file_upload</mat-icon>
     </div>
-
-    <div
-      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
-      style="margin-top: 15px"
-    >
-      <!-- Total Referral Hospitals -->
-      <div
-        class="bg-white shadow rounded-lg p-6 flex items-center justify-between"
-      >
-        <div>
-          <h3 class="text-xl font-semibold">Total Referral Hospitals</h3>
-          <p class="mt-2 text-3xl font-bold" id="total-hospitals">12</p>
-        </div>
-        <div class="text-indigo-500">
-          <!-- Icon -->
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-12 w-12"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M9 12h6m2 0a2 2 0 100-4 2 2 0 000 4zm-8 0a2 2
-                     0 100-4 2 2 0 000 4z"
-            />
-          </svg>
-        </div>
-      </div>
-
-      <!-- Total Referral Reasons -->
-      <div
-        class="bg-white shadow rounded-lg p-6 flex items-center justify-between"
-      >
-        <div>
-          <h3 class="text-xl font-semibold">Total Referral Reasons</h3>
-          <p class="mt-2 text-3xl font-bold" id="total-reasons">8</p>
-        </div>
-        <div class="text-green-500">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-12 w-12"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M11 17a4 4 0 01-8 0m8 0a4 4 0 018 0m-8
-                     0V5a2 2 0 114 0v12"
-            />
-          </svg>
-        </div>
-      </div>
-
-      <!-- Total Referral Types -->
-      <div
-        class="bg-white shadow rounded-lg p-6 flex items-center justify-between"
-      >
-        <div>
-          <h3 class="text-xl font-semibold">Total Referral Types</h3>
-          <p class="mt-2 text-3xl font-bold" id="total-types">5</p>
-        </div>
-        <div class="text-yellow-500">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-12 w-12"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M5 13l4 4L19 7m0 0H7m12 0v12"
-            />
-          </svg>
-        </div>
-      </div>
-    </div>
+    <div class="text-lg font-semibold">Medical Boards</div>
+    <div class="text-3xl font-bold mt-1">{{ referral?.data?.total_medical_boards }}</div>
+    <div class="absolute bottom-2 w-2/3 h-1 bg-white rounded-full opacity-30"></div>
   </div>
+  <!-- Card 1: Total Users -->
+  <div
+    class="relative bg-gradient-to-r from-blue-400 to-blue-600 text-white rounded-xl p-6 flex flex-col items-center justify-center
+           shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
+  >
+    <div class="text-5xl mb-3 animate-pulse">
+      <mat-icon>persons</mat-icon>
+    </div>
+    <div class="text-lg font-semibold">Total Patient</div>
+    <div class="text-3xl font-bold mt-1">{{ referral?.data?.total_patients }}</div>
+    <div class="absolute bottom-2 w-2/3 h-1 bg-white rounded-full opacity-30"></div>
+  </div>
+
+
+
+  <!-- Card 3: Reports Generated -->
+  <div
+    class="relative bg-gradient-to-r from-yellow-400 to-yellow-600 text-white rounded-xl p-6 flex flex-col items-center justify-center
+           shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
+  >
+    <div class="text-5xl mb-3 animate-spin-slow">
+      <mat-icon>report</mat-icon>
+    </div>
+    <div class="text-lg font-semibold">Total Referral</div>
+    <div class="text-3xl font-bold mt-1">{{ referral?.data?.total_referrals }}</div>
+    <div class="absolute bottom-2 w-2/3 h-1 bg-white rounded-full opacity-30"></div>
+  </div>
+
+  <!-- Card 4: Active Sessions -->
+  <div
+    class="relative bg-gradient-to-r from-red-400 to-red-600 text-white rounded-xl p-6 flex flex-col items-center justify-center
+           shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
+  >
+    <div class="text-5xl mb-3 animate-pulse">
+      <mat-icon>hospital</mat-icon>
+    </div>
+    <div class="text-lg font-semibold">Total Hospital</div>
+    <div class="text-3xl font-bold mt-1">{{ referral?.data?.total_hospitals }}</div>
+    <div class="absolute bottom-2 w-2/3 h-1 bg-white rounded-full opacity-30"></div>
+  </div>
+</div>
 
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
     <div class="bg-white shadow rounded-lg p-6">

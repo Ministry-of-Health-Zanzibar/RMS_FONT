@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class GraphreportService {
   private baseUrl: string = `${environment.baseUrl}`;
+   private href = `${this.baseUrl}dashboard/totals`;
 
   constructor(private http: HttpClient) {}
 
@@ -40,7 +41,11 @@ export class GraphreportService {
   }
 
   public getReportreferralreferralsByReason(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}reports/referralsByReason`);
+    return this.http.get<any>(`${this.baseUrl}reports/referralsByGender`);
+  }
+
+   public getCount(): Observable<any> {
+    return this.http.get<any>(this.href);
   }
 
 

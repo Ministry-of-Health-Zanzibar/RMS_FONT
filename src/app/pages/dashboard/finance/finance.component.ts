@@ -47,7 +47,8 @@ import {
   styleUrl: './finance.component.scss',
 })
 export class FinanceComponent implements OnInit {
-  complain: any = {};
+  referral: any = {};
+
   totalMaleComplain: any;
 
   constructor(
@@ -56,10 +57,22 @@ export class FinanceComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getSourceSummaryReport();
-    this.getDocumentTypeSummaryReport();
+    // this.getSourceSummaryReport();
+    // this.getDocumentTypeSummaryReport();
     this.getReferralSummary();
     this.getReferralSummaryByReason();
+    this.fetchData();
+  }
+  fetchData(): void {
+    this.reportService.getCount().subscribe(
+      (response) => {
+        this.referral = response;
+        console.log('Data fetched successfully:', this.referral);
+      },
+      (error) => {
+        console.error('Error fetching data:', error);
+      }
+    );
   }
 
   getReferralSummary(): void {
@@ -70,20 +83,18 @@ export class FinanceComponent implements OnInit {
           return;
         }
         const hospitalMap: { [key: string]: string } = {
-          totalReferralsByLumumba: 'Lumumba',
+
           totalReferralsByMuhimbiliOrthopaedicInstitute:
             'Muhimbili Orthopaedic Institute',
           totalReferralsByJakayaKikweteCardiacInstitute:
             'Jakaya Kikwete Cardiac Institute',
-          totalReferralsBySIMS: 'SIMS',
           totalReferralsByMuhimbiliNationalHospital:
             'Muhimbili National Hospital',
           totalReferralsByOceanRoadCancerInstitute:
             'Ocean Road Cancer Institute',
           totalReferralsByKilimanjaroChristianMedicalCentre:
             'Kilimanjaro Christian Medical Centre',
-          totalReferralsByMadrasInstituteOfOrthopaedicsAndTraumatology:
-            'Madras Institute Of Orthopaedics And Traumatology',
+
         };
         this.pieLabels = Object.keys(hospitalMap);
         this.pieLabels = this.pieLabels.map((key) => hospitalMap[key]);
@@ -102,7 +113,7 @@ export class FinanceComponent implements OnInit {
   pieChart: ApexChart = {
     type: 'pie',
     height: 350,
-    width: 700,
+    width: 600,
   };
 
   pieTitle: ApexTitleSubtitle = { text: 'Referrals by Hospitals' };
@@ -121,7 +132,7 @@ export class FinanceComponent implements OnInit {
   reasonSeries: ApexNonAxisChartSeries = [];
   reasonLabels: string[] = [];
   reasonChart: ApexChart = { type: 'pie', height: 350 };
-  reasonTitle: ApexTitleSubtitle = { text: 'Referrals by Reason' };
+  reasonTitle: ApexTitleSubtitle = { text: 'Referrals by Gender' };
   reasonLegend: ApexLegend = { position: 'right' };
   reasonResponsive: ApexResponsive[] = [
     {
@@ -142,12 +153,9 @@ export class FinanceComponent implements OnInit {
         }
 
         const reasonMap: { [key: string]: string } = {
-          totalReferralsByKufanyiwaUchunguzi: 'Kufanyiwa Uchunguzi',
-          totalReferralsByKupatiwaMatibabu: 'Kupatiwa Matibabu',
-          totalReferralsByUchunguziNaMatibabuZaidi:
-            'Uchunguzi Na Matibabu Zaidi',
-          totalReferralsByUchunguziNaMatibabu: 'Uchunguzi Na Matibabu',
-          totalReferralsByParsPlanaVitrotomy: 'Pars Plana Vitrotomy',
+          Male: 'Male',
+          Female: 'Female',
+
         };
 
         this.reasonLabels = Object.keys(reasonMap).map((key) => reasonMap[key]);
@@ -159,47 +167,47 @@ export class FinanceComponent implements OnInit {
     );
   }
 
-  public getSourceSummaryReport(): void {
-    this.dashboardService.getTypeCount().subscribe((data) => {
-      if (!data.sourceSummary) {
-        console.error('No sourceSummary data found');
-        return;
-      }
+  // public getSourceSummaryReport(): void {
+  //   this.dashboardService.getTypeCount().subscribe((data) => {
+  //     if (!data.sourceSummary) {
+  //       console.error('No sourceSummary data found');
+  //       return;
+  //     }
 
-      const labels = data.sourceSummary.map((item: any) => item.source_name);
-      const totals = data.sourceSummary.map((item: any) => item.total);
+  //     const labels = data.sourceSummary.map((item: any) => item.source_name);
+  //     const totals = data.sourceSummary.map((item: any) => item.total);
 
-      this.renderChart(
-        'sourcePieChart',
-        labels,
-        totals,
-        'pie',
-        'Documents by Source'
-      );
-    });
-  }
+  //     this.renderChart(
+  //       'sourcePieChart',
+  //       labels,
+  //       totals,
+  //       'pie',
+  //       'Documents by Source'
+  //     );
+  //   });
+  // }
 
-  public getDocumentTypeSummaryReport(): void {
-    this.reportService.getDocumentTypeReport().subscribe((data) => {
-      if (!data.documentTypeSummary) {
-        console.error('No documentTypeSummary data found');
-        return;
-      }
+  // public getDocumentTypeSummaryReport(): void {
+  //   this.reportService.getDocumentTypeReport().subscribe((data) => {
+  //     if (!data.documentTypeSummary) {
+  //       console.error('No documentTypeSummary data found');
+  //       return;
+  //     }
 
-      const labels = data.documentTypeSummary.map(
-        (item: any) => item.document_type_name
-      );
-      const totals = data.documentTypeSummary.map((item: any) => item.total);
+  //     const labels = data.documentTypeSummary.map(
+  //       (item: any) => item.document_type_name
+  //     );
+  //     const totals = data.documentTypeSummary.map((item: any) => item.total);
 
-      this.renderChart(
-        'documentTypeChart',
-        labels,
-        totals,
-        'pie',
-        'Documents by Type'
-      );
-    });
-  }
+  //     this.renderChart(
+  //       'documentTypeChart',
+  //       labels,
+  //       totals,
+  //       'pie',
+  //       'Documents by Type'
+  //     );
+  //   });
+  // }
 
   // With Months
   renderChart(

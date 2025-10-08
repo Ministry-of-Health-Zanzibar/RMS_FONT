@@ -1,6 +1,4 @@
 :host {
-  @apply block h-full p-0 rounded-e-xl;
-
   .inner {
     @apply h-full flex flex-col w-[300px] rounded-e-xl bg-neutral-100 overflow-y-auto overflow-x-hidden;
   }
@@ -20,4 +18,38 @@
 
 :host-context(html.dark) .inner {
   @apply bg-neutral-900;
+}
+
+
+.inner {
+  transition: width 0.3s ease;
+  overflow: hidden;
+
+  .body a[emr-navigation-item],
+  .emr-navigation-group-toggle {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #e2e4eb; // darker blue on hover
+      color: rgb(73, 12, 230);
+
+      mat-icon {
+        color: rgb(84, 21, 232);
+      }
+    }
+
+    mat-icon {
+      transition: all 0.2s ease;
+    }
+  }
+
+  .hidden {
+    display: none !important;
+  }
+  
 }

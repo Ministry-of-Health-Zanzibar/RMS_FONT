@@ -1,20 +1,26 @@
-<div class="h-20 w-full px-10 bg-background">
-  <div class="h-full flex items-center border-b dark:border-b-neutral-600 gap-7">
+<div
+  class="h-24 w-full px-10 bg-white dark:bg-gray-900 shadow-lg relative overflow-hidden"
+>
+  <!-- Background Image -->
+
+
+  <div
+    class="h-full flex items-center border-b border-gray-100 dark:border-gray-700 gap-7 relative z-10 transition-all duration-300 hover:border-blue-500"
+  >
+    <!-- Sidebar Toggle -->
     <div class="flex items-center gap-3 -ms-3">
-      <button mat-icon-button (click)="toggleSidebar()">
-        <mat-icon class="font-icon">menu</mat-icon>
+      <button
+        mat-icon-button
+        (click)="toggleSidebar()"
+        class="hover:bg-blue-100 dark:hover:bg-blue-700 transition-all rounded-full p-2"
+      >
+        <mat-icon class="font-icon text-gray-700 dark:text-gray-200 text-lg">menu</mat-icon>
       </button>
-      <app-assistant-search></app-assistant-search>
     </div>
+
+    <!-- Spacer / Right Side -->
     <div class="ms-auto flex items-center gap-3">
-      <!-- <button mat-icon-button [matMenuTriggerFor]="appsMenu" matTooltip="Applications">
-        <mat-icon class="font-icon">apps</mat-icon>
-      </button> -->
-      <button mat-icon-button matTooltip="Notifications"
-               position="below-end">
-        <mat-icon class="font-icon"
-                  matBadge="3" matBadgeColor="warn" matBadgeSize="small">notifications</mat-icon>
-      </button>
+
       <button mat-icon-button (click)="_themeManager.toggleColorScheme()" matTooltip="Color Theme"
               emrSoundEffect soundSrc="/assets/sound-effects/mouse-click.ogg">
         @if (isDark | async) {
@@ -29,117 +35,42 @@
   </div>
 </div>
 
-<!-- <mat-menu xPosition="before" #appsMenu="matMenu" class="max-h-[400px]">
-  <div class="w-80">
-    <a routerLink="/" mat-menu-item>
-      <div class="flex items-center gap-3 my-3">
-        <div class="w-14 h-14 border border-neutral-400 dark:border-inverse rounded-lg flex-none flex items-center justify-center">
-          <img src="assets/applications/file-storage.svg" alt="File Storage" class="w-8 h-8 dark:hidden">
-          <img src="assets/applications/file-storage-dark.svg" alt="File Storage" class="w-8 h-8 hidden dark:block">
-        </div>
-        <div class="-mt-0.5">
-          <div>File Storage</div>
-          <div class="text-xs text-neutral-500 dark:text-neutral-400">
-            Store, share, and access files across devices
-          </div>
-        </div>
-      </div>
-    </a>
-    <a routerLink="/" mat-menu-item>
-      <div class="flex items-center gap-3 my-3">
-        <div class="w-14 h-14 border border-neutral-400 dark:border-inverse rounded-lg flex-none flex items-center justify-center">
-          <img src="assets/applications/sign.svg" alt="Sign" class="w-8 h-8 dark:hidden">
-          <img src="assets/applications/sign-dark.svg" alt="Sign" class="w-8 h-8 hidden dark:block">
-        </div>
-        <div class="-mt-0.5">
-          <div>Sign</div>
-          <div class="text-xs text-neutral-500 dark:text-neutral-400">
-            Securely send any documents for electronic signature
-          </div>
-        </div>
-      </div>
-    </a>
-    <a routerLink="/" mat-menu-item>
-      <div class="flex items-center gap-3 my-3">
-        <div class="w-14 h-14 border border-neutral-400 dark:border-inverse rounded-lg flex-none flex items-center justify-center">
-          <img src="assets/applications/backup.svg" alt="Backup" class="w-8 h-8 dark:hidden">
-          <img src="assets/applications/backup-dark.svg" alt="Backup" class="w-8 h-8 hidden dark:block">
-        </div>
-        <div class="-mt-0.5">
-          <div>Backup</div>
-          <div class="text-xs text-neutral-500 dark:text-neutral-400">
-            Automatically back up all your devices
-          </div>
-        </div>
-      </div>
-    </a>
-    <div class="my-3">
-      <mat-divider></mat-divider>
-    </div>
-    <div class="text-base py-3 px-4">
-      See what other options there are
-    </div>
-    <a routerLink="/" mat-menu-item>
-      <div class="flex items-center gap-3 my-3">
-        <div class="w-14 h-14 border border-neutral-400 dark:border-inverse rounded-lg flex-none flex items-center justify-center">
-          <img src="assets/applications/passwords.svg" alt="Passwords" class="w-8 h-8 dark:hidden">
-          <img src="assets/applications/passwords-dark.svg" alt="Passwords" class="w-8 h-8 hidden dark:block">
-        </div>
-        <div class="-mt-0.5">
-          <div>Passwords</div>
-          <div class="text-xs text-neutral-500 dark:text-neutral-400">
-            Sync and save passwords across all your devices
-          </div>
-        </div>
-      </div>
-    </a>
-    <div class="my-3">
-      <mat-divider></mat-divider>
-    </div>
-    <a routerLink="/" mat-menu-item>
-      <div class="flex items-center gap-3 my-3">
-        <div class="w-14 h-14 border border-neutral-400 dark:border-inverse rounded-lg flex-none flex items-center justify-center">
-          <mat-icon class="font-icon !text-2xl !w-5 !h-8 relative -right-1">arrow_forward</mat-icon>
-        </div>
-        <div class="-mt-0.5">
-          <div>App Center</div>
-          <div class="text-xs text-neutral-500 dark:text-neutral-400">
-            Find apps in Elementar and connect them
-          </div>
-        </div>
-      </div>
-    </a>
-  </div>
-</mat-menu> -->
-
-<!-- <ng-template #notificationsPopover>
-  <emr-popover class="overflow-hidden">
-    <app-header-notification-list></app-header-notification-list>
-  </emr-popover>
-</ng-template> -->
-
-<mat-menu xPosition="before" #accountMenu="matMenu">
-  <div class="flex items-center px-4 pb-4 pt-2 gap-3">
-    <emr-avatar text="RIS" class="w-14 h-14"></emr-avatar>
+<!-- Account Menu -->
+<mat-menu xPosition="before" #accountMenu="matMenu" class="dark:bg-gray-800">
+  <div class="flex items-center px-4 py-2 gap-3">
+    <emr-avatar text="VS" class="w-14 h-14"></emr-avatar>
     <div class="-mt-0.5">
-      <div class="flex items-center gap-2">
-        {{fullName}}
+      <div class="flex items-center gap-2 font-semibold text-gray-900 dark:text-gray-100">
+        {{ fullName }}
       </div>
-      <div class="text-xs text-gray-500 mt-0.5 dark:text-gray-400">{{emails}}</div>
+      <div class="text-xs text-gray-500 mt-0.5 dark:text-gray-400">{{ emails }}</div>
     </div>
   </div>
-  <!-- <mat-divider></mat-divider>
-  <a mat-menu-item>
+
+  <mat-divider></mat-divider>
+  <a
+    mat-menu-item
+    class="hover:bg-blue-100 dark:hover:bg-blue-700 transition-all rounded"
+  >
     <mat-icon class="font-icon">question_mark</mat-icon>
     <span>Help Center</span>
-  </a> -->
-  <!-- <mat-divider></mat-divider>
-  <a mat-menu-item>
+  </a>
+
+  <mat-divider></mat-divider>
+  <a
+    mat-menu-item
+    class="hover:bg-blue-100 dark:hover:bg-blue-700 transition-all rounded"
+  >
     <mat-icon class="font-icon">translate</mat-icon>
     <span>Language</span>
-  </a> -->
+  </a>
+
   <mat-divider></mat-divider>
-  <a mat-menu-item (click)="logoutHead()">
+  <a
+    mat-menu-item
+    (click)="logoutHead()"
+    class="hover:bg-red-100 dark:hover:bg-red-700 transition-all rounded"
+  >
     <mat-icon class="font-icon">logout</mat-icon>
     <span>Logout</span>
   </a>
