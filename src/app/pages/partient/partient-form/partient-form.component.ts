@@ -37,6 +37,7 @@ import {
   AddpartientComponent,
   AddPatientDialogData,
 } from '../addpartient/addpartient.component';
+import { MatRadioModule } from '@angular/material/radio';
 
 @Component({
   selector: 'app-partient-form',
@@ -60,6 +61,7 @@ import {
     MatCardContent,
     MatCardSubtitle,
     FormsModule,
+    MatRadioModule,
   ],
   templateUrl: './partient-form.component.html',
   styleUrl: './partient-form.component.scss',
@@ -92,7 +94,9 @@ export class PartientFormComponent {
       gender: ['', Validators.required],
       job: [''],
       position: [''],
-      date_of_birth: ['', Validators.required],
+        dob_type: ['known'],         // default ni known
+      date_of_birth: [null],
+      // date_of_birth: ['', Validators.required],
       location_id: ['', Validators.required],
       matibabu_card: [''],
       patient_file: [null, Validators.required],
@@ -191,14 +195,27 @@ export class PartientFormComponent {
   onCancel() {
     this.dialogRef.close();
   }
-
-  private formatDate(date: Date | string): string {
-    const d = new Date(date);
+  private formatDate(value: Date | string | number, dobType: string): string {
+  if (dobType === 'known') {
+    const d = new Date(value);
     const year = d.getFullYear();
     const month = (d.getMonth() + 1).toString().padStart(2, '0');
     const day = d.getDate().toString().padStart(2, '0');
     return `${year}-${month}-${day}`; // YYYY-MM-DD format
+  } else if (dobType === 'unknown') {
+    // Estimated age saved as number string
+    return String(value);
   }
+  return '';
+}
+
+  // private formatDate(date: Date | string): string {
+  //   const d = new Date(date);
+  //   const year = d.getFullYear();
+  //   const month = (d.getMonth() + 1).toString().padStart(2, '0');
+  //   const day = d.getDate().toString().padStart(2, '0');
+  //   return `${year}-${month}-${day}`; // YYYY-MM-DD format
+  // }
 
   onSubmit() {
     if (this.patientForm.valid) {
@@ -216,10 +233,12 @@ export class PartientFormComponent {
       formData.append('patient_list_id', formValue.patient_list_id);
 
       // Format DOB
-      formData.append(
-        'date_of_birth',
-        this.formatDate(formValue.date_of_birth)
-      );
+       // Format DOB correctly
+    formData.append('date_of_birth', this.formatDate(formValue.date_of_birth, formValue.dob_type));
+      // formData.append(
+      //   'date_of_birth',
+      //   this.formatDate(formValue.date_of_birth)
+      // );
 
       const location = formValue.location_id;
       formData.append(

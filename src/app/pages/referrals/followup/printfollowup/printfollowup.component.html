@@ -45,7 +45,9 @@
     <p>KUMB: CDA.25/254/01</p>
     <p class="font-semibold uppercase">
       TAREHE:
-      {{ referral.hospital_letters?.[0]?.next_appointment_date || 'N/A' }}
+      {{ referral.hospital_letters?.[0]?.next_appointment_date | date:'dd-MM-yyyy' }}
+
+      <!-- {{ referral.hospital_letters?.[0]?.next_appointment_date || 'N/A' }} -->
     </p>
   </div>
 
@@ -59,10 +61,6 @@
     <p class="font-semibold uppercase">
       {{ referral.hospitals?.[0]?.hospital_address || "N/A" }}
     </p>
-    <p class="font-semibold">
-      Simu: {{ referral.hospitals?.[0]?.contact_number || "N/A" }}
-    </p>
-    <p class="font-semibold mt-2">ATT: MKURUGENZI FEDHA NA MIPANGO - MNH</p>
   </div>
 
   <!-- Patient Information -->
@@ -81,7 +79,7 @@
       mtajwa hapo juu.
     </p>
     <p>
-      Kwa barua hii, tunaomba mumpokee na kumpatia matibabu stahiki mgonjwa
+      Kwa barua hii, tunaomba muendelee kumpatia matibabu stahiki mgonjwa
       <b>{{ referral.patient?.name || "N/A" }}</b> kama tulivyokubaliana.
     </p>
     <p>

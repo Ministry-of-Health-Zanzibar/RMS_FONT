@@ -82,6 +82,14 @@ export class ReferralStatusDialogComponent implements OnInit, OnDestroy {
     });
   }
 
+    // Filter function to disable invalid end dates
+  endDateFilter = (d: Date | null): boolean => {
+    const startDate = this.statusForm.get('start_date')?.value;
+    if (!d || !startDate) return true;
+    // Allow only dates after or equal to start date
+    return d >= new Date(startDate);
+  };
+
   saveReferralLetter() {
     if (this.statusForm.valid) {
       const formData = {

@@ -41,7 +41,7 @@
   <div class="flex justify-between text-sm font-medium my-4">
     <p>KUMB: CDA.25/254/01</p>
     <p class="font-semibold uppercase">
-      TAREHE: {{ referral.referral_letter?.[0]?.start_date || 'N/A' }}
+      TAREHE: {{ referral.referral_letters?.start_date || 'N/A' | date:'dd-MM-yyyy' }}
     </p>
   </div>
 
@@ -53,7 +53,7 @@
     <p class="font-semibold uppercase">
       {{ referral.hospital?.hospital_address || "N/A" }}
     </p>
-    <p class="font-semibold mt-2">ATT: MKURUGENZI FEDHA NA MIPANGO - MNH</p>
+    
   </div>
 
   <div class="mb-4 text-center">

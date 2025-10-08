@@ -2,7 +2,7 @@
   <mat-card class="shadow-lg rounded-2xl">
     <mat-card-header>
       <mat-card-title class="text-2xl font-bold text-gray-800"
-        >Add New Patient</mat-card-title
+        >Add New Patients</mat-card-title
       >
       <mat-card-subtitle class="text-gray-600"
         >Please fill in all required details</mat-card-subtitle
@@ -89,8 +89,43 @@
           >
         </mat-form-field>
 
-        <!-- Date of Birth -->
+          <!-- Matibabu Card -->
         <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Matibabu Card</mat-label>
+          <input
+            matInput
+            formControlName="matibabu_card"
+            maxlength="12"
+            placeholder="Enter 12-digit Matibabu Card Number"
+          />
+          <mat-error
+            *ngIf="patientForm.get('matibabu_card')?.hasError('pattern')"
+            >Matibabu Card must be exactly 12 digits</mat-error
+          >
+        </mat-form-field>
+
+        <!-- Date of Birth -->
+         <mat-radio-group formControlName="dob_type">
+  <mat-radio-button value="known">Known Date</mat-radio-button>
+  <mat-radio-button value="unknown">Estimated Age</mat-radio-button>
+</mat-radio-group>
+
+<div *ngIf="patientForm.get('dob_type')?.value === 'known'">
+  <mat-form-field appearance="outline">
+    <mat-label>Date of Birth</mat-label>
+    <input matInput [matDatepicker]="dobPicker" formControlName="date_of_birth" />
+    <mat-datepicker-toggle matSuffix [for]="dobPicker"></mat-datepicker-toggle>
+    <mat-datepicker #dobPicker></mat-datepicker>
+  </mat-form-field>
+</div>
+
+<div *ngIf="patientForm.get('dob_type')?.value === 'unknown'">
+  <mat-form-field appearance="outline">
+    <mat-label>Estimated Age</mat-label>
+    <input matInput type="number" formControlName="date_of_birth" placeholder="Enter Age" />
+  </mat-form-field>
+</div>
+        <!-- <mat-form-field appearance="outline" class="w-full">
           <mat-label>Date of Birth</mat-label>
           <input
             matInput
@@ -106,7 +141,7 @@
             *ngIf="patientForm.get('date_of_birth')?.hasError('required')"
             >Date of Birth is required</mat-error
           >
-        </mat-form-field>
+        </mat-form-field> -->
 
         <!-- Job -->
         <mat-form-field appearance="outline" class="w-full">
@@ -125,7 +160,7 @@
         </mat-form-field>
 
         <!-- Location -->
-        <mat-form-field appearance="outline" class="w-full">
+        <mat-form-field appearance="outline" class="w-full md:col-span-2" >
           <mat-label>Location</mat-label>
           <input
             matInput
@@ -151,20 +186,7 @@
           >
         </mat-form-field>
 
-        <!-- Matibabu Card -->
-        <mat-form-field appearance="outline" class="w-full">
-          <mat-label>Matibabu Card</mat-label>
-          <input
-            matInput
-            formControlName="matibabu_card"
-            maxlength="12"
-            placeholder="Enter 12-digit Matibabu Card Number"
-          />
-          <mat-error
-            *ngIf="patientForm.get('matibabu_card')?.hasError('pattern')"
-            >Matibabu Card must be exactly 12 digits</mat-error
-          >
-        </mat-form-field>
+
 
         <!-- Patient File Upload (full width) -->
         <div class="w-full md:col-span-2">

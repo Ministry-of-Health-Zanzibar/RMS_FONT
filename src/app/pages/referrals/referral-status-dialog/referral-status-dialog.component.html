@@ -5,7 +5,7 @@
     <h2 class="font-semibold text-lg mb-4">CONFIRM STATUS FORM</h2>
 
     <form [formGroup]="statusForm">
-     
+
       <mat-form-field appearance="outline" class="w-full">
         <mat-label>Status</mat-label>
         <mat-select formControlName="status">
@@ -83,51 +83,51 @@
           </mat-error>
         </mat-form-field>
 
-        <mat-form-field appearance="outline" class="w-full">
-          <mat-label>Start Date</mat-label>
-          <input
-            matInput
-            formControlName="start_date"
-            [matDatepicker]="picker1"
-            placeholder="Choose start date"
-          />
-          <mat-datepicker-toggle
-            matSuffix
-            [for]="picker1"
-          ></mat-datepicker-toggle>
-          <mat-datepicker #picker1></mat-datepicker>
-          <mat-error
-            *ngIf="
-              statusForm.controls['start_date'].touched &&
-              statusForm.controls['start_date'].invalid
-            "
-          >
-            Start Date is required
-          </mat-error>
-        </mat-form-field>
+      <!-- Start Date -->
+<mat-form-field appearance="outline" class="w-full">
+  <mat-label>Start Date</mat-label>
+  <input
+    matInput
+    formControlName="start_date"
+    [matDatepicker]="picker1"
+    placeholder="Choose start date"
+  />
+  <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+  <mat-datepicker #picker1></mat-datepicker>
 
-        <mat-form-field appearance="outline" class="w-full">
-          <mat-label>End Date</mat-label>
-          <input
-            matInput
-            formControlName="end_date"
-            [matDatepicker]="picker2"
-            placeholder="Choose end date"
-          />
-          <mat-datepicker-toggle
-            matSuffix
-            [for]="picker2"
-          ></mat-datepicker-toggle>
-          <mat-datepicker #picker2></mat-datepicker>
-          <mat-error
-            *ngIf="
-              statusForm.controls['end_date'].touched &&
-              statusForm.controls['end_date'].invalid
-            "
-          >
-            End Date is required
-          </mat-error>
-        </mat-form-field>
+  <mat-error
+    *ngIf="
+      statusForm.controls['start_date'].touched &&
+      statusForm.controls['start_date'].invalid
+    "
+  >
+    Start Date is required
+  </mat-error>
+</mat-form-field>
+
+<!-- End Date -->
+<mat-form-field appearance="outline" class="w-full">
+  <mat-label>End Date</mat-label>
+  <input
+    matInput
+    formControlName="end_date"
+    [matDatepicker]="picker2"
+    [matDatepickerFilter]="endDateFilter"
+    placeholder="Choose end date"
+  />
+  <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+  <mat-datepicker #picker2></mat-datepicker>
+
+  <mat-error
+    *ngIf="
+      statusForm.controls['end_date'].touched &&
+      statusForm.controls['end_date'].invalid
+    "
+  >
+    End Date is required
+  </mat-error>
+</mat-form-field>
+
       </ng-container>
 
       <div class="flex justify-end gap-6 pt-4">
