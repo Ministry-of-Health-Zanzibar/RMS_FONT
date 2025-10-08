@@ -21,6 +21,7 @@ export interface AddBillDialogData {
   hospitalId: number;
   billTitle: string;
   referralOptions: any[];
+  billData?: any; // 👈 Optional for update mode
 }
 
 @Component({
@@ -74,6 +75,17 @@ export class AddBillsComponent implements OnInit, OnDestroy {
     if (this.data.hospitalId && this.data.billFileId) {
       this.loadReferrals(this.data.hospitalId, this.data.billFileId);
     }
+
+    // ✅ If editing existing bill, prefill data
+    if (this.data.billData) {
+      this.billForm.patchValue({
+        referral_id: this.data.billData.referral_id,
+        total_amount: this.data.billData.total_amount,
+        bill_period_start: new Date(this.data.billData.bill_period_start),
+        bill_period_end: new Date(this.data.billData.bill_period_end),
+        bill_file_id: this.data.billData.bill_file_id,
+      });
+    }
   }
 
   ngOnDestroy(): void {
@@ -118,24 +130,21 @@ export class AddBillsComponent implements OnInit, OnDestroy {
       setTimeout(() => {
         this.loading = false;
         this.dialogRef.close(formValue);
-      }, 1500);
+      }, 1200);
     }
   }
 
   private formatDate(date: Date): string {
     if (!date) return '';
-
     const year = date.getFullYear();
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const day = date.getDate().toString().padStart(2, '0');
-
     return `${year}-${month}-${day}`;
   }
 
   onStartDateChange(): void {
     const startDate = this.billForm.get('bill_period_start')?.value;
     const endDate = this.billForm.get('bill_period_end')?.value;
-
     if (startDate && endDate && startDate > endDate) {
       this.billForm.get('bill_period_end')?.setValue(null);
     }

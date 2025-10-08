@@ -127,7 +127,7 @@ export class AddbodylistComponent implements OnInit, OnDestroy {
   updatePatient() {
     if (this.patientForm.invalid) return;
 
-    this.patientService.updatePartientList(this.patientForm.value, this.patientData.patient_list_id).subscribe(response => {
+    this.patientService.updateMedicalBoard(this.patientForm.value, this.patientData.patient_list_id).subscribe(response => {
       if (response.statusCode === 200) {
         Swal.fire({
           title: "Success",

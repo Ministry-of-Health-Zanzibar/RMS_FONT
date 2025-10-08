@@ -24,6 +24,7 @@ import {
 import { ReferralService } from '../../../../services/Referral/referral.service';
 import { environment } from '../../../../../environments/environment.prod';
 import { MatDialogConfig } from '@angular/material/dialog';
+import { BillFileFormComponent } from '../bill-file-form/bill-file-form.component';
 
 interface BillFile {
   bill_file_id: number;
@@ -301,11 +302,39 @@ export class BillFileByIdComponent implements OnInit, AfterViewInit {
         config.panelClass = 'full-screen-modal';
         config.data = { data: data };
     
-        const dialogRef = this.dialog.open(BillFileFormComponent, config);
+        const dialogRef = this.dialog.open(AddBillsComponent, config);
         dialogRef.afterClosed().subscribe((result: any) => {
           this.loadBillsByBillFileId(this.bill_file_id)
         });
       }
+
+
+
+
+        openUpdateDialog(bill: any): void {
+    const dialogRef = this.dialog.open(AddBillsComponent, {
+      width: '600px',
+      data: {
+        billFileId: bill.bill_file_id,
+        hospitalId: bill.hospital_id,
+        billTitle: `Editing ${bill.bill_number || 'Bill'}`,
+        referralOptions: [],
+        billData: bill,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+        this.billService.updateBill(bill.bill_id, result).subscribe({
+          next: () => {
+            Swal.fire('Updated!', 'Bill updated successfully', 'success');
+            this.loadBillsByBillFileId;
+          },
+          error: () => Swal.fire('Error', 'Failed to update bill', 'error'),
+        });
+      }
+    });
+  }
 
 
 }
