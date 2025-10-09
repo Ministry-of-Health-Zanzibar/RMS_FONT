@@ -20,6 +20,7 @@ import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { PartientFormComponent } from '../partient-form/partient-form.component';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
+import { EmrSegmentedModule } from '@elementar/components';
 
 @Component({
   selector: 'app-patiant',
@@ -35,6 +36,7 @@ import { MatSlideToggle } from '@angular/material/slide-toggle';
     MatTooltipModule,
     FormsModule,
     MatSlideToggle,
+    EmrSegmentedModule,
   ],
   templateUrl: './patiant.component.html',
   styleUrls: ['./patiant.component.scss'],
@@ -109,13 +111,12 @@ export class PatiantComponent {
     }
   }
 
-viewPDF(file: any) {
-  if (file?.file_path) {
-    const url = this.documentUrl + file.file_path;
-    window.open(url, '_blank');
+  viewPDF(file: any) {
+    if (file?.file_path) {
+      const url = this.documentUrl + file.file_path;
+      window.open(url, '_blank');
+    }
   }
-}
-
 
   addPatient() {
     const config = new MatDialogConfig();
@@ -132,19 +133,38 @@ viewPDF(file: any) {
     });
   }
 
-  updatePatient(data: any) {
+  // updatePatient(data: any) {
+  //   const config = new MatDialogConfig();
+  //   config.disableClose = false;
+  //   config.role = 'dialog';
+
+  //   config.maxHeight = '98vh';
+  //   config.width = '850px';
+  //   config.panelClass = 'full-screen-modal';
+  //   config.data = { data };
+
+  //   const dialogRef = this.dialog.open(PartientFormComponent, config);
+  //   dialogRef.afterClosed().subscribe(() => {
+  //     this.loadPatients();
+  //   });
+  // }
+
+  updatePatient(patientData: any) {
     const config = new MatDialogConfig();
     config.disableClose = false;
     config.role = 'dialog';
-    config.maxWidth = '100vw';
     config.maxHeight = '98vh';
     config.width = '850px';
     config.panelClass = 'full-screen-modal';
-    config.data = { data };
+
+    config.data = { patient: patientData };
 
     const dialogRef = this.dialog.open(PartientFormComponent, config);
-    dialogRef.afterClosed().subscribe(() => {
-      this.loadPatients();
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.loadPatients();
+      }
     });
   }
 
@@ -169,28 +189,28 @@ viewPDF(file: any) {
   }
 
   blockPatient(data: any, deleted: any) {
-  if (deleted) {
-    this.userService.unblockPatients(data, data?.patient_id).subscribe(
-      (res: any) => {
-        Swal.fire('Success', res.message, 'success');
-        this.loadPatients();
-      },
-      (err) => {
-        Swal.fire('Error', 'Failed to unblock patient', 'error');
-      }
-    );
-  } else {
-    this.userService.deletePatients(data?.patient_id).subscribe(
-      (res: any) => {
-        Swal.fire('Success', res.message, 'success');
-        this.loadPatients();
-      },
-      (err) => {
-        Swal.fire('Error', 'Failed to delete patient', 'error');
-      }
-    );
+    if (deleted) {
+      this.userService.unblockPatients(data, data?.patient_id).subscribe(
+        (res: any) => {
+          Swal.fire('Success', res.message, 'success');
+          this.loadPatients();
+        },
+        (err) => {
+          Swal.fire('Error', 'Failed to unblock patient', 'error');
+        }
+      );
+    } else {
+      this.userService.deletePatients(data?.patient_id).subscribe(
+        (res: any) => {
+          Swal.fire('Success', res.message, 'success');
+          this.loadPatients();
+        },
+        (err) => {
+          Swal.fire('Error', 'Failed to delete patient', 'error');
+        }
+      );
+    }
   }
-}
 
   displayMoreData(data: any) {
     const id = data.patient_list_id;

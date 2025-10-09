@@ -89,7 +89,7 @@
           >
         </mat-form-field>
 
-          <!-- Matibabu Card -->
+        <!-- Matibabu Card -->
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>Matibabu Card</mat-label>
           <input
@@ -105,26 +105,38 @@
         </mat-form-field>
 
         <!-- Date of Birth -->
-         <mat-radio-group formControlName="dob_type">
-  <mat-radio-button value="known">Known Date</mat-radio-button>
-  <mat-radio-button value="unknown">Estimated Age</mat-radio-button>
-</mat-radio-group>
+        <mat-radio-group formControlName="dob_type">
+          <mat-radio-button value="known">Known Date</mat-radio-button>
+          <mat-radio-button value="unknown">Estimated Age</mat-radio-button>
+        </mat-radio-group>
 
-<div *ngIf="patientForm.get('dob_type')?.value === 'known'">
-  <mat-form-field appearance="outline">
-    <mat-label>Date of Birth</mat-label>
-    <input matInput [matDatepicker]="dobPicker" formControlName="date_of_birth" />
-    <mat-datepicker-toggle matSuffix [for]="dobPicker"></mat-datepicker-toggle>
-    <mat-datepicker #dobPicker></mat-datepicker>
-  </mat-form-field>
-</div>
+        <div *ngIf="patientForm.get('dob_type')?.value === 'known'">
+          <mat-form-field appearance="outline">
+            <mat-label>Date of Birth</mat-label>
+            <input
+              matInput
+              [matDatepicker]="dobPicker"
+              formControlName="date_of_birth"
+            />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="dobPicker"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #dobPicker></mat-datepicker>
+          </mat-form-field>
+        </div>
 
-<div *ngIf="patientForm.get('dob_type')?.value === 'unknown'">
-  <mat-form-field appearance="outline">
-    <mat-label>Estimated Age</mat-label>
-    <input matInput type="number" formControlName="date_of_birth" placeholder="Enter Age" />
-  </mat-form-field>
-</div>
+        <div *ngIf="patientForm.get('dob_type')?.value === 'unknown'">
+          <mat-form-field appearance="outline">
+            <mat-label>Estimated Age</mat-label>
+            <input
+              matInput
+              type="number"
+              formControlName="date_of_birth"
+              placeholder="Enter Age"
+            />
+          </mat-form-field>
+        </div>
         <!-- <mat-form-field appearance="outline" class="w-full">
           <mat-label>Date of Birth</mat-label>
           <input
@@ -160,7 +172,7 @@
         </mat-form-field>
 
         <!-- Location -->
-        <mat-form-field appearance="outline" class="w-full md:col-span-2" >
+        <mat-form-field appearance="outline" class="w-full md:col-span-2">
           <mat-label>Location</mat-label>
           <input
             matInput
@@ -185,8 +197,6 @@
             >Location is required</mat-error
           >
         </mat-form-field>
-
-
 
         <!-- Patient File Upload (full width) -->
         <div class="w-full md:col-span-2">

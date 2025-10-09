@@ -114,10 +114,10 @@ export class BodyformListComponent {
     let config = new MatDialogConfig();
     config.disableClose = false;
     config.role = 'dialog';
-    config.width = '95vw'; // pana zaidi (95% ya screen width)
-    config.maxWidth = '100vw';
-    config.maxHeight = '100vh';
-    config.panelClass = 'wide-modal'; // class ya custom styling
+    // config.width = '95vw';
+    // config.maxWidth = '100vw';
+    // config.maxHeight = '100vh';
+    // config.panelClass = 'wide-modal';
 
     const dialogRef = this.dialog.open(AddbodylistComponent, config);
     dialogRef.afterClosed().subscribe((result) => {
@@ -129,11 +129,11 @@ export class BodyformListComponent {
     let config = new MatDialogConfig();
     config.disableClose = false;
     config.role = 'dialog';
-    config.maxWidth = '100vw';
-    config.maxHeight = '100vh';
-    config.height = '600px';
-    config.width = '850px';
-    config.panelClass = 'full-screen-modal';
+    // config.maxWidth = '100vw';
+    // config.maxHeight = '100vh';
+    // config.height = '600px';
+    // config.width = '850px';
+    // config.panelClass = 'full-screen-modal';
     config.data = { data: data };
 
     const dialogRef = this.dialog.open(AddbodylistComponent, config);
@@ -219,7 +219,7 @@ export class BodyformListComponent {
 
   // Call this from the template on toggle
   confirmBlock(patient: any) {
-    const isDeleted = !!patient.deleted_at; 
+    const isDeleted = !!patient.deleted_at;
     const action = isDeleted ? 'Unblock' : 'Delete';
 
     Swal.fire({
@@ -236,52 +236,55 @@ export class BodyformListComponent {
     });
   }
 
- blockPatient(data: any, deleted: any): void {
-  if (deleted) {
-    this.userService.unblockPatient(data?.patient_list_id).subscribe((response) => {
-      if (response.statusCode == 200) {
-        Swal.fire({   
-          title: 'Success',
-          text: response.message,
-          icon: 'success',
-          confirmButtonColor: '#4690eb',
-          confirmButtonText: 'Continue',
+  blockPatient(data: any, deleted: any): void {
+    if (deleted) {
+      this.userService
+        .unblockPatient(data?.patient_list_id)
+        .subscribe((response) => {
+          if (response.statusCode == 200) {
+            Swal.fire({
+              title: 'Success',
+              text: response.message,
+              icon: 'success',
+              confirmButtonColor: '#4690eb',
+              confirmButtonText: 'Continue',
+            });
+            this.userPetient();
+          } else {
+            Swal.fire({
+              title: 'Error',
+              text: response.message,
+              icon: 'error',
+              confirmButtonColor: '#4690eb',
+              confirmButtonText: 'Continue',
+            });
+          }
         });
-        this.userPetient();
-      } else {
-        Swal.fire({
-          title: 'Error',
-          text: response.message,
-          icon: 'error',
-          confirmButtonColor: '#4690eb',
-          confirmButtonText: 'Continue',
+    } else {
+      this.userService
+        .deletePatient(data?.patient_list_id)
+        .subscribe((response) => {
+          if (response.statusCode == 200) {
+            Swal.fire({
+              title: 'Success',
+              text: response.message,
+              icon: 'success',
+              confirmButtonColor: '#4690eb',
+              confirmButtonText: 'Continue',
+            });
+            this.userPetient();
+          } else {
+            Swal.fire({
+              title: 'Error',
+              text: response.message,
+              icon: 'error',
+              confirmButtonColor: '#4690eb',
+              confirmButtonText: 'Continue',
+            });
+          }
         });
-      }
-    });
-  } else {
- 
-    this.userService.deletePatient(data?.patient_list_id).subscribe((response) => {
-      if (response.statusCode == 200) {
-        Swal.fire({
-          title: 'Success',
-          text: response.message,
-          icon: 'success',
-          confirmButtonColor: '#4690eb',
-          confirmButtonText: 'Continue',
-        });
-        this.userPetient();
-      } else {
-        Swal.fire({
-          title: 'Error',
-          text: response.message,
-          icon: 'error',
-          confirmButtonColor: '#4690eb',
-          confirmButtonText: 'Continue',
-        });
-      }
-    });
+    }
   }
-}
 
   getPatient(id: any) {
     console.log('hiiii', id);
