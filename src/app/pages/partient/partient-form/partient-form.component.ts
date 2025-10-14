@@ -24,19 +24,16 @@ import {
   MatDialogRef,
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatFormFieldModule, MatLabel } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
-import { Observable, Subject, takeUntil, startWith, map } from 'rxjs';
+import { Observable, Subject, startWith, map } from 'rxjs';
 import Swal from 'sweetalert2';
 import { PartientService } from '../../../services/partient/partient.service';
 import { LocationService } from '../../../services/system-configuration/location.service';
-import {
-  AddpartientComponent,
-  AddPatientDialogData,
-} from '../addpartient/addpartient.component';
+import { AddpartientComponent } from '../addpartient/addpartient.component';
 import { MatRadioModule } from '@angular/material/radio';
 
 @Component({
@@ -62,11 +59,15 @@ import { MatRadioModule } from '@angular/material/radio';
     MatCardSubtitle,
     FormsModule,
     MatRadioModule,
+    MatLabel
   ],
   templateUrl: './partient-form.component.html',
-  styleUrl: './partient-form.component.scss',
+  styleUrls: ['./partient-form.component.scss'],
 })
 export class PartientFormComponent implements OnInit, OnDestroy {
+  currentFileName: string | null = null;
+  currentFilePath: string | null = null;
+
   patientForm: FormGroup;
   loading = false;
   selectedFile: File | null = null;
@@ -114,10 +115,6 @@ export class PartientFormComponent implements OnInit, OnDestroy {
           board.patient_list_title.toLowerCase().includes(filterValue)
         );
       });
-
-    if (this.data && this.data.patient) {
-      this.patchFormForEdit(this.data.patient);
-    }
   }
 
   ngOnDestroy(): void {
@@ -137,6 +134,10 @@ export class PartientFormComponent implements OnInit, OnDestroy {
           this.boardList = [];
           this.filteredBoardList = [];
         }
+
+        if (this.data?.patient) {
+          this.patchFormForEdit(this.data.patient);
+        }
       },
       (error) => {
         this.loading = false;
@@ -148,8 +149,8 @@ export class PartientFormComponent implements OnInit, OnDestroy {
   private loadLocations() {
     this.locationService.getLocation().subscribe({
       next: (res: any) => {
-        this.locations = res.data;
         this.options = res.data;
+        this.locations = res.data;
         this.filteredOptions = this.patientForm
           .get('location_id')!
           .valueChanges.pipe(
@@ -161,6 +162,10 @@ export class PartientFormComponent implements OnInit, OnDestroy {
               name ? this._filter(name) : this.options.slice()
             )
           );
+
+        if (this.data?.patient) {
+          this.patchFormForEdit(this.data.patient);
+        }
       },
       error: (err) => console.error('Failed to load locations', err),
     });
@@ -207,28 +212,13 @@ export class PartientFormComponent implements OnInit, OnDestroy {
     return '';
   }
 
-  /**  Populate form when editing */
-  // private patchFormForEdit(patient: any) {
-  //   this.patientForm.patchValue({
-  //     name: patient.name || '',
-  //     phone: patient.phone || '',
-  //     gender: patient.gender || '',
-  //     job: patient.job || '',
-  //     position: patient.position || '',
-  //     dob_type: patient.dob_type || 'known',
-  //     date_of_birth: patient.date_of_birth ? new Date(patient.date_of_birth) : null,
-  //     location_id: patient.location
-  //       ? patient.location.location_id
-  //         ? patient.location
-  //         : patient.location_id
-  //       : '',
-  //     matibabu_card: patient.matibabu_card || '',
-  //     patient_list_id: patient.patient_list_id || '',
-  //       patient_file_name: patient.patient_file_name || '',
-  //   });
-  // }
-
   private patchFormForEdit(patient: any) {
+    const locationObj = this.options.find(
+      (loc) =>
+        loc.location_id ===
+        (patient.geographical_location?.location_id || patient.location_id)
+    );
+
     this.patientForm.patchValue({
       name: patient.name || '',
       phone: patient.phone || '',
@@ -239,83 +229,90 @@ export class PartientFormComponent implements OnInit, OnDestroy {
       date_of_birth: patient.date_of_birth
         ? new Date(patient.date_of_birth)
         : null,
-      location_id:
-        this.options.find(
-          (loc) =>
-            loc.location_id ===
-            (patient.location?.location_id || patient.location_id)
-        ) || '', // ensures autocomplete sees the object
+      location_id: locationObj || '',
       matibabu_card: patient.matibabu_card || '',
       patient_list_id: patient.patient_list_id || '',
-      // File cannot be set programmatically, see below
+    });
+
+    if (patient.files && patient.files.length) {
+      this.currentFileName = patient.files[0].file_name;
+      this.currentFilePath = patient.files[0].file_path;
+    }
+  }
+
+onSubmit() {
+  if (this.patientForm.invalid) return;
+
+  this.loading = true;
+  const formValue = this.patientForm.value;
+  const formData = new FormData();
+
+  formData.append('name', formValue.name);
+  formData.append('phone', formValue.phone);
+  formData.append('gender', formValue.gender);
+  formData.append('job', formValue.job || '');
+  formData.append('position', formValue.position || '');
+  formData.append('matibabu_card', formValue.matibabu_card || '');
+  formData.append('patient_list_id', formValue.patient_list_id);
+  formData.append(
+    'date_of_birth',
+    this.formatDate(formValue.date_of_birth, formValue.dob_type)
+  );
+
+  const location = formValue.location_id;
+  formData.append(
+    'location_id',
+    typeof location === 'object' ? String(location.location_id) : String(location)
+  );
+
+  if (this.selectedFile) {
+    formData.append('patient_file', this.selectedFile, this.selectedFile.name);
+  }
+
+  // Determine if we are updating or creating
+  const patientId = this.data?.patient?.patient_id
+    ? Number(this.data.patient.patient_id)
+    : null;
+
+  if (patientId) {
+    if (isNaN(patientId)) {
+      this.loading = false;
+      Swal.fire('Error', 'Invalid patient ID', 'error');
+      return;
+    }
+
+    this.patientService.updatePartient(formData, patientId).subscribe({
+      next: (res) => {
+        this.loading = false;
+        Swal.fire('Updated', 'Patient updated successfully', 'success');
+        this.dialogRef.close(res);
+      },
+      error: (err) => {
+        this.loading = false;
+        Swal.fire(
+          'Error',
+          err.error?.message || 'Failed to update patient',
+          'error'
+        );
+      },
+    });
+  } else {
+    this.patientService.addPartient(formData).subscribe({
+      next: (res) => {
+        this.loading = false;
+        Swal.fire('Success', 'Patient saved successfully', 'success');
+        this.dialogRef.close(res);
+      },
+      error: (err) => {
+        this.loading = false;
+        Swal.fire(
+          'Error',
+          err.error?.message || 'Failed to save patient',
+          'error'
+        );
+      },
     });
   }
+}
 
-  onSubmit() {
-    if (this.patientForm.invalid) return;
-
-    this.loading = true;
-    const formValue = this.patientForm.value;
-    const formData = new FormData();
-
-    formData.append('name', formValue.name);
-    formData.append('phone', formValue.phone);
-    formData.append('gender', formValue.gender);
-    formData.append('job', formValue.job || '');
-    formData.append('position', formValue.position || '');
-    formData.append('matibabu_card', formValue.matibabu_card || '');
-    formData.append('patient_list_id', formValue.patient_list_id);
-    formData.append(
-      'date_of_birth',
-      this.formatDate(formValue.date_of_birth, formValue.dob_type)
-    );
-    const location = formValue.location_id;
-    formData.append(
-      'location_id',
-      typeof location === 'object' ? location.location_id : location
-    );
-    if (this.selectedFile) {
-      formData.append(
-        'patient_file',
-        this.selectedFile,
-        this.selectedFile.name
-      );
-    }
-
-    if (this.data && this.data.patient && this.data.patient.id) {
-      this.patientService
-        .updatePartient(this.data.patient.id, formData)
-        .subscribe({
-          next: (res) => {
-            this.loading = false;
-            Swal.fire('Updated', 'Patient updated successfully', 'success');
-            this.dialogRef.close(res);
-          },
-          error: (err) => {
-            this.loading = false;
-            Swal.fire(
-              'Error',
-              err.error?.message || 'Failed to update patient',
-              'error'
-            );
-          },
-        });
-    } else {
-      this.patientService.addPartient(formData).subscribe({
-        next: (res) => {
-          this.loading = false;
-          Swal.fire('Success', 'Patient saved successfully', 'success');
-          this.dialogRef.close(res);
-        },
-        error: (err) => {
-          this.loading = false;
-          Swal.fire(
-            'Error',
-            err.error?.message || 'Failed to save patient',
-            'error'
-          );
-        },
-      });
-    }
-  }
 }
