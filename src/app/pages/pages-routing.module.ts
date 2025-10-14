@@ -30,6 +30,11 @@ const routes: Routes = [
         loadChildren:()=>import('./system-config/locations/locations.module').then(m=>m.LocationsModule)
       },
       {
+        path:'config/diagnosis',
+        loadComponent:()=>import('./system-config/diagnosis/view-diagnosis/view-diagnosis.component').then(c=>c.ViewDiagnosisComponent)
+
+      },
+      {
         path:'config/hospital',
         loadChildren:()=>import('./system-config/hospital/hospital.module').then(m=>m.HospitalModule)
 
@@ -90,7 +95,7 @@ const routes: Routes = [
         loadChildren:()=>import('./accountants/account/account.module').then(m=>m.AccountModule)
 
       },
-      
+
 
       {
         path: '',

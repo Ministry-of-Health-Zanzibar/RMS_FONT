@@ -137,6 +137,12 @@ export class SidebarComponent {
           link: '/pages/config/reasons',
           permission: 'View Reason',
         },
+        {
+          type: 'link',
+          name: 'Diagnosis',
+          link: '/pages/config/diagnosis',
+          permission: 'View Diagnoses',
+        },
       ],
     },
 
@@ -164,7 +170,7 @@ export class SidebarComponent {
         },
       ],
     },
-   
+
      {
       id: 'referral',
       type: 'Single',
