@@ -55,6 +55,7 @@ export class AddbodylistComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.configForm();
+
     if (this.data?.data) {
       this.patientData = this.data.data;
       if (this.patientData.board_date) {
@@ -75,30 +76,27 @@ export class AddbodylistComponent implements OnInit, OnDestroy {
 
   configForm() {
     this.patientForm = new FormGroup({
-      patient_list_title: new FormControl(null, [Validators.required]),
+      // patient_list_title: new FormControl(null, [Validators.required]),
       board_type: new FormControl(null, [Validators.required]),
       board_date: new FormControl(null, [Validators.required]),
       no_of_patients: new FormControl(null, [
         Validators.required,
         Validators.min(1),
       ]),
+      // This control is used for validation only
       patient_list_file: new FormControl(null, [Validators.required]),
     });
   }
 
-  // onAttachmentSelected(event: any): void {
-  //   const file = event.target.files?.[0] ?? null;
-  //   if (file) {
-  //     this.patientForm.patchValue({ patient_list_file: file.name });
-  //     this.selectedAttachement = file;
-  //   }
-  // }
-
   onAttachmentSelected(event: any): void {
     const file = event.target.files?.[0] ?? null;
     if (file) {
-      this.patientForm.patchValue({ patient_list_file: file });
       this.selectedAttachement = file;
+      this.patientForm.patchValue({ patient_list_file: file.name }); // update form control
+      const control = this.patientForm.get('patient_list_file');
+      control?.markAsDirty();
+      control?.markAsTouched();
+      control?.updateValueAndValidity(); // trigger validation
     }
   }
 
@@ -138,31 +136,6 @@ export class AddbodylistComponent implements OnInit, OnDestroy {
       }
     });
   }
-
-  // updatePatient() {
-  //   if (this.patientForm.invalid) return;
-
-  //   this.patientService.updateMedicalBoard(this.patientForm.value, this.patientData.patient_list_id).subscribe(response => {
-  //     if (response.statusCode === 200) {
-  //       Swal.fire({
-  //         title: "Success",
-  //         text: response.message,
-  //         icon: "success",
-  //         confirmButtonColor: "#4690eb",
-  //         confirmButtonText: "Close"
-  //       });
-  //       this.dialogRef.close(true);
-  //     } else {
-  //       Swal.fire({
-  //         title: "Error",
-  //         text: response.message,
-  //         icon: "error",
-  //         confirmButtonColor: "#4690eb",
-  //         confirmButtonText: "Close"
-  //       });
-  //     }
-  //   });
-  // }
 
   updatePatient() {
     if (this.patientForm.invalid) return;
