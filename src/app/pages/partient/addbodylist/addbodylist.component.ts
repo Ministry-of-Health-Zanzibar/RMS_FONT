@@ -1,42 +1,36 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AsyncPipe, CommonModule } from '@angular/common';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { HDividerComponent } from '@elementar/components';
-import { map, Observable, startWith, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import Swal from 'sweetalert2';
 import { PartientService } from '../../../services/partient/partient.service';
-import { GlobalConstants } from '@shared/global-constants';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { RolePermissionService } from '../../../services/users/role-permission.service';
-import { environment } from '../../../../environments/environment.prod';
 
 @Component({
   selector: 'app-addbodylist',
   standalone: true,
   imports: [
-     CommonModule,
-        ReactiveFormsModule,
-        MatButtonModule,
-        MatDialogModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatSelectModule,
-        MatDatepickerModule,
-        MatIconModule,
-        MatDatepickerModule,
+    CommonModule,
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatIconModule
   ],
   templateUrl: './addbodylist.component.html',
-  styleUrl: './addbodylist.component.scss'
+  styleUrls: ['./addbodylist.component.scss'] // ✅ corrected 'styleUrl' -> 'styleUrls'
 })
 export class AddbodylistComponent implements OnInit, OnDestroy {
-
 
   private readonly onDestroy = new Subject<void>();
   readonly data = inject<any>(MAT_DIALOG_DATA);
@@ -70,8 +64,10 @@ export class AddbodylistComponent implements OnInit, OnDestroy {
 
   configForm() {
     this.patientForm = new FormGroup({
-      patient_list_title: new FormControl(null, [Validators.required]),
-      patient_list_file: new FormControl(null, Validators.required),
+      board_type: new FormControl(null, [Validators.required]),
+      board_date: new FormControl(null, [Validators.required]),
+      no_of_patients: new FormControl(null, [Validators.required, Validators.min(1)]),
+      patient_list_file: new FormControl(null, [Validators.required]),
     });
   }
 
@@ -85,10 +81,6 @@ export class AddbodylistComponent implements OnInit, OnDestroy {
 
   savePatient() {
     if (this.patientForm.invalid) return;
-
-  const formValue: any = { ...this.patientForm.value };
-
-
 
     const formData = new FormData();
     Object.keys(this.patientForm.controls).forEach(key => {

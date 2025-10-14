@@ -56,7 +56,7 @@ export class BodyformListComponent {
     private router: Router
   ) {}
 
-  displayedColumns: string[] = ['id', 'title', 'pdf', 'action', 'action2'];
+  displayedColumns: string[] = ['id', 'reference_number', 'board_type','no_of_patients', 'pdf', 'action', 'action2'];
   dataSource: MatTableDataSource<any> = new MatTableDataSource();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;

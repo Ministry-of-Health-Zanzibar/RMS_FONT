@@ -2,26 +2,89 @@
   <div class="w-full">
     <div class="relative h-full rounded-lg group p-6">
       <!-- Title -->
-      <div class="font-semibold" *ngIf="!patientData">CREATE NEW MEDICAL BOARD DOCUMENT</div>
-      <div class="font-semibold" *ngIf="patientData">UPDATE BOARD LIST DOCUMENT</div>
+      <div class="font-semibold" *ngIf="!patientData">
+        CREATE NEW MEDICAL BOARD DOCUMENT
+      </div>
+      <div class="font-semibold" *ngIf="patientData">
+        UPDATE BOARD LIST DOCUMENT
+      </div>
 
       <!-- Form -->
-      <form [formGroup]="patientForm" class="horizontal-form" enctype="multipart/form-data">
-
-        <!-- Row 1: Full Name, Gender -->
+      <form
+        [formGroup]="patientForm"
+        class="horizontal-form"
+        enctype="multipart/form-data"
+      >
+        <!-- Board Type -->
         <div class="form-row">
-          <mat-form-field class="form-field">
-            <mat-label>Medical Board No:</mat-label>
-            <input matInput placeholder="Ex. BOARD NO" formControlName="patient_list_title" type="text">
-            <mat-error *ngIf="patientForm.get('patient_list_title')?.invalid && patientForm.get('patient_list_title')?.touched">
-              <span *ngIf="patientForm.get('patient_list_title')?.errors?.['required']">This field is mandatory</span>
-              <span *ngIf="patientForm.get('patient_list_title')?.errors?.['pattern']">Must contain alphabetical characters only</span>
+          <mat-form-field class="form-field w-full">
+            <mat-label>Board Type</mat-label>
+            <mat-select formControlName="board_type">
+              <mat-option value="Emergency">Emergency</mat-option>
+              <mat-option value="Routine">Routine</mat-option>
+            </mat-select>
+            <mat-error
+              *ngIf="
+                patientForm.get('board_type')?.invalid &&
+                patientForm.get('board_type')?.touched
+              "
+            >
+              Board type is required
             </mat-error>
           </mat-form-field>
-           </div>
-          <div class="form-row">
-            <mat-form-field class="form-field w-full">
-            <mat-label>Upload Medical board File</mat-label>
+        </div>
+
+        <!-- Board Date -->
+        <div class="form-row">
+          <mat-form-field class="form-field w-full">
+            <mat-label>Board Date</mat-label>
+            <input
+              matInput
+              [matDatepicker]="picker"
+              formControlName="board_date"
+              placeholder="Select Date"
+            />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="picker"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error
+              *ngIf="
+                patientForm.get('board_date')?.invalid &&
+                patientForm.get('board_date')?.touched
+              "
+            >
+              Board date is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Number of Patients -->
+        <div class="form-row">
+          <mat-form-field class="form-field w-full">
+            <mat-label>Number of Patients</mat-label>
+            <input
+              matInput
+              type="number"
+              formControlName="no_of_patients"
+              placeholder="Enter number"
+            />
+            <mat-error
+              *ngIf="
+                patientForm.get('no_of_patients')?.invalid &&
+                patientForm.get('no_of_patients')?.touched
+              "
+            >
+              Must be at least 1
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- File Upload -->
+        <div class="form-row">
+          <mat-form-field class="form-field w-full">
+            <mat-label>Upload Medical Board File</mat-label>
             <input
               matInput
               type="text"
@@ -37,14 +100,22 @@
               #fileInput
               (change)="onAttachmentSelected($event)"
             />
-            <mat-icon matSuffix style="cursor: pointer;" (click)="fileInput.click()">attach_file</mat-icon>
-            <mat-error *ngIf="patientForm.get('patient_list_file')?.invalid && patientForm.get('patient_list_file')?.touched">
+            <mat-icon
+              matSuffix
+              style="cursor: pointer"
+              (click)="fileInput.click()"
+              >attach_file</mat-icon
+            >
+            <mat-error
+              *ngIf="
+                patientForm.get('patient_list_file')?.invalid &&
+                patientForm.get('patient_list_file')?.touched
+              "
+            >
               File is required
             </mat-error>
           </mat-form-field>
-
-          </div>
-
+        </div>
       </form>
 
       <!-- Actions -->
@@ -56,10 +127,9 @@
           [disabled]="patientForm.invalid"
           (click)="patientData ? updatePatient() : savePatient()"
         >
-          {{ patientData ? 'Update' : 'Save' }}
+          {{ patientData ? "Update" : "Save" }}
         </button>
       </mat-dialog-actions>
     </div>
   </div>
 </div>
-
