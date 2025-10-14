@@ -1,9 +1,18 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogModule,
+  MatDialogRef,
+} from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Subject } from 'rxjs';
@@ -25,13 +34,12 @@ import { RolePermissionService } from '../../../services/users/role-permission.s
     MatInputModule,
     MatSelectModule,
     MatDatepickerModule,
-    MatIconModule
+    MatIconModule,
   ],
   templateUrl: './addbodylist.component.html',
-  styleUrls: ['./addbodylist.component.scss'] // ✅ corrected 'styleUrl' -> 'styleUrls'
+  styleUrls: ['./addbodylist.component.scss'],
 })
 export class AddbodylistComponent implements OnInit, OnDestroy {
-
   private readonly onDestroy = new Subject<void>();
   readonly data = inject<any>(MAT_DIALOG_DATA);
 
@@ -49,6 +57,9 @@ export class AddbodylistComponent implements OnInit, OnDestroy {
     this.configForm();
     if (this.data?.data) {
       this.patientData = this.data.data;
+      if (this.patientData.board_date) {
+        this.patientData.board_date = new Date(this.patientData.board_date);
+      }
       this.patientForm.patchValue(this.patientData);
     }
   }
@@ -64,17 +75,29 @@ export class AddbodylistComponent implements OnInit, OnDestroy {
 
   configForm() {
     this.patientForm = new FormGroup({
+      patient_list_title: new FormControl(null, [Validators.required]),
       board_type: new FormControl(null, [Validators.required]),
       board_date: new FormControl(null, [Validators.required]),
-      no_of_patients: new FormControl(null, [Validators.required, Validators.min(1)]),
+      no_of_patients: new FormControl(null, [
+        Validators.required,
+        Validators.min(1),
+      ]),
       patient_list_file: new FormControl(null, [Validators.required]),
     });
   }
 
+  // onAttachmentSelected(event: any): void {
+  //   const file = event.target.files?.[0] ?? null;
+  //   if (file) {
+  //     this.patientForm.patchValue({ patient_list_file: file.name });
+  //     this.selectedAttachement = file;
+  //   }
+  // }
+
   onAttachmentSelected(event: any): void {
     const file = event.target.files?.[0] ?? null;
     if (file) {
-      this.patientForm.patchValue({ patient_list_file: file.name });
+      this.patientForm.patchValue({ patient_list_file: file });
       this.selectedAttachement = file;
     }
   }
@@ -83,7 +106,7 @@ export class AddbodylistComponent implements OnInit, OnDestroy {
     if (this.patientForm.invalid) return;
 
     const formData = new FormData();
-    Object.keys(this.patientForm.controls).forEach(key => {
+    Object.keys(this.patientForm.controls).forEach((key) => {
       if (key === 'patient_list_file') {
         if (this.selectedAttachement) {
           formData.append('patient_list_file', this.selectedAttachement);
@@ -94,50 +117,96 @@ export class AddbodylistComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.patientService.addBodyList(formData).subscribe(response => {
+    this.patientService.addBodyList(formData).subscribe((response) => {
       if (response.statusCode === 200) {
         Swal.fire({
-          title: "Success",
+          title: 'Success',
           text: response.message,
-          icon: "success",
-          confirmButtonColor: "#4690eb",
-          confirmButtonText: "Close"
+          icon: 'success',
+          confirmButtonColor: '#4690eb',
+          confirmButtonText: 'Close',
         });
         this.dialogRef.close(true);
       } else {
         Swal.fire({
-          title: "Error",
+          title: 'Error',
           text: response.message,
-          icon: "error",
-          confirmButtonColor: "#4690eb",
-          confirmButtonText: "Close"
+          icon: 'error',
+          confirmButtonColor: '#4690eb',
+          confirmButtonText: 'Close',
         });
       }
     });
   }
 
+  // updatePatient() {
+  //   if (this.patientForm.invalid) return;
+
+  //   this.patientService.updateMedicalBoard(this.patientForm.value, this.patientData.patient_list_id).subscribe(response => {
+  //     if (response.statusCode === 200) {
+  //       Swal.fire({
+  //         title: "Success",
+  //         text: response.message,
+  //         icon: "success",
+  //         confirmButtonColor: "#4690eb",
+  //         confirmButtonText: "Close"
+  //       });
+  //       this.dialogRef.close(true);
+  //     } else {
+  //       Swal.fire({
+  //         title: "Error",
+  //         text: response.message,
+  //         icon: "error",
+  //         confirmButtonColor: "#4690eb",
+  //         confirmButtonText: "Close"
+  //       });
+  //     }
+  //   });
+  // }
+
   updatePatient() {
     if (this.patientForm.invalid) return;
 
-    this.patientService.updateMedicalBoard(this.patientForm.value, this.patientData.patient_list_id).subscribe(response => {
-      if (response.statusCode === 200) {
-        Swal.fire({
-          title: "Success",
-          text: response.message,
-          icon: "success",
-          confirmButtonColor: "#4690eb",
-          confirmButtonText: "Close"
-        });
-        this.dialogRef.close(true);
+    const formData = new FormData();
+
+    Object.keys(this.patientForm.controls).forEach((key) => {
+      if (key === 'patient_list_file') {
+        if (this.selectedAttachement) {
+          formData.append('patient_list_file', this.selectedAttachement);
+        }
+      } else if (key === 'board_date') {
+        const dateValue = this.patientForm.get('board_date')?.value;
+        if (dateValue) {
+          const formattedDate = new Date(dateValue).toISOString().split('T')[0];
+          formData.append('board_date', formattedDate);
+        }
       } else {
-        Swal.fire({
-          title: "Error",
-          text: response.message,
-          icon: "error",
-          confirmButtonColor: "#4690eb",
-          confirmButtonText: "Close"
-        });
+        const value = this.patientForm.get(key)?.value;
+        formData.append(key, value ?? '');
       }
     });
+
+    this.patientService
+      .updateMedicalBoard(formData, this.patientData.patient_list_id)
+      .subscribe((response) => {
+        if (response.statusCode === 200) {
+          Swal.fire({
+            title: 'Success',
+            text: response.message,
+            icon: 'success',
+            confirmButtonColor: '#4690eb',
+            confirmButtonText: 'Close',
+          });
+          this.dialogRef.close(true);
+        } else {
+          Swal.fire({
+            title: 'Error',
+            text: response.message,
+            icon: 'error',
+            confirmButtonColor: '#4690eb',
+            confirmButtonText: 'Close',
+          });
+        }
+      });
   }
 }

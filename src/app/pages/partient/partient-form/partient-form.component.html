@@ -206,10 +206,17 @@
           <input
             type="file"
             (change)="onFileSelected($event)"
-            accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.xlsx"
             class="border rounded-lg p-2 w-full"
           />
           <mat-error *ngIf="!selectedFile">File is required</mat-error>
+        </div>
+
+      
+
+        <!-- Show existing file -->
+        <div *ngIf="currentFileName">
+          Current File:
+          <a [href]="currentFilePath" target="_blank">{{ currentFileName }}</a>
         </div>
 
         <!-- Actions (full width) -->

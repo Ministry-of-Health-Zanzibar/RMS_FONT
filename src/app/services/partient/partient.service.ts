@@ -24,7 +24,7 @@ export class PartientService {
     return this.http.get<any>(this.href_bodylist);
   }
 
-  public addBodyList(formData:any): Observable<any> {
+  public addBodyList(formData: any): Observable<any> {
     return this.http.post(this.href_bodylist, formData);
   }
 
@@ -84,7 +84,11 @@ export class PartientService {
     return this.http.patch(`${this.baseUrl}patient-lists/unblock/${id}`, {});
   }
 
-  public updatePartient(patient: any, id: any): Observable<any> {
+  // public updatePartient(patient: any, id: any): Observable<any> {
+  //   return this.http.post(`${this.href}/update/${id}`, patient);
+  // }
+
+  public updatePartient(patient: any, id: number): Observable<any> {
     return this.http.post(`${this.href}/update/${id}`, patient);
   }
 
