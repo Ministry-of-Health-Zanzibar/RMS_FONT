@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
@@ -18,6 +18,7 @@ import { PartientService } from '../../../services/partient/partient.service';
 import { PermissionService } from '../../../services/authentication/permission.service';
 import { AddPatientDialogData, AddpartientComponent } from '../addpartient/addpartient.component';
 import { environment } from '../../../../environments/environment.prod';
+import { AddmedicalhistoryComponent } from '../addmedicalhistory/addmedicalhistory.component';
 
 interface BodyList {
   patient_list_id: number;
@@ -200,4 +201,52 @@ private refreshPatients(patientFileId: number) {
       window.open(url, '_blank');
     }
   }
+
+ openAddMedicalHistory(patient: any) {
+  const config = new MatDialogConfig();
+
+  config.disableClose = false;
+  config.role = 'dialog';
+  config.maxWidth = '100vw';
+  config.maxHeight = '98vh';
+  config.panelClass = 'full-screen-modal';
+
+ console.log('Element sent to dialog   0:', patient);
+
+    config.data = patient;
+
+  const dialogRef = this.dialog.open(AddmedicalhistoryComponent, config);
+
+  // ✅ Handle data when dialog is closed
+  dialogRef.afterClosed().subscribe(result => {
+    if (result && result.success) {
+      console.log('✅ New medical history saved:', result.data);
+
+
+      Swal.fire({
+        title: 'Medical History Added',
+        text: 'The patient medical history was saved successfully!',
+        icon: 'success',
+        confirmButtonColor: '#4690eb'
+      });
+    } else {
+      console.log('Dialog closed without saving.');
+    }
+  });
+}
+
+
+//  openAddMedicalHistory(patient: any) {
+//     const config = new MatDialogConfig();
+//     console.log('Element sent to dialog:', patient);
+//     config.data = patient;
+//     config.width = '100vw';
+//     config.height = '98vh';
+
+//     this.dialog
+//       .open(AddmedicalhistoryComponent, config)
+//       .afterClosed()
+
+//   }
+
 }

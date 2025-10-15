@@ -13,7 +13,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { map, Observable, startWith, Subject, takeUntil } from 'rxjs';
 import Swal from 'sweetalert2';
 import { PartientService } from '../../../services/partient/partient.service';
-import { RolePermissionService } from '../../../services/users/role-permission.service';
 import { MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatCardSubtitle } from "@angular/material/card";
 import { LocationService } from '../../../services/system-configuration/location.service';
 import { MatAutocomplete } from "@angular/material/autocomplete";
