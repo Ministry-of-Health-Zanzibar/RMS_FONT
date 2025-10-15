@@ -57,6 +57,11 @@ const routes: Routes = [
     loadComponent: () =>
       import('./patiant/patiant.component').then((c) => c.PatiantComponent),
   },
+   {
+    path:'medical-history',
+    loadComponent:() => import('./addmedicalhistory/addmedicalhistory.component').then(c=>c.AddmedicalhistoryComponent)
+
+  },
 ];
 
 @NgModule({
