@@ -172,7 +172,7 @@
         </mat-form-field>
 
         <!-- Location -->
-        <mat-form-field appearance="outline" class="w-full md:col-span-2">
+        <mat-form-field appearance="outline">
           <mat-label>Location</mat-label>
           <input
             matInput
@@ -198,20 +198,54 @@
           >
         </mat-form-field>
 
+        <!-- zanID  -->
+
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>ZanID</mat-label>
+          <input
+            matInput
+            formControlName="zan_id"
+            maxlength="12"
+            placeholder="650070404"
+          />
+          <mat-error *ngIf="patientForm.get('zan_id')?.hasError('pattern')"
+            >ZanID must be exactly 9 digits</mat-error
+          >
+        </mat-form-field>
+
+        <!-- Has Insurance -->
+        <div class="w-full md:col-span-2">
+          <label class="block text-sm font-medium text-gray-700 mb-2">
+            Do you have insurance?
+          </label>
+
+          <mat-radio-group
+            formControlName="has_insurance"
+            class="flex space-x-6 items-center"
+          >
+            <mat-radio-button [value]="true">Yes</mat-radio-button>
+            <mat-radio-button [value]="false">No</mat-radio-button>
+          </mat-radio-group>
+
+          <mat-error
+            *ngIf="patientForm.get('has_insurance')?.hasError('required')"
+          >
+            Please select if the patient has insurance.
+          </mat-error>
+        </div>
+
         <!-- Patient File Upload (full width) -->
         <div class="w-full md:col-span-2">
           <label class="block text-sm font-medium text-gray-700 mb-2"
             >Patient File</label
           >
           <input
-            type="file"
+            type="file" 
             (change)="onFileSelected($event)"
             class="border rounded-lg p-2 w-full"
           />
           <mat-error *ngIf="!selectedFile">File is required</mat-error>
         </div>
-
-      
 
         <!-- Show existing file -->
         <div *ngIf="currentFileName">

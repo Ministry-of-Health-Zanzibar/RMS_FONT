@@ -66,6 +66,14 @@
             </td>
           </ng-container>
 
+          <!-- ZanID  Column -->
+          <ng-container matColumnDef="zan_id">
+            <th mat-header-cell *matHeaderCellDef>Zan_id</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.zan_id || "N/A" }}
+            </td>
+          </ng-container>
+
           <!-- Date of Birth Column -->
           <ng-container matColumnDef="date_of_birth">
             <th mat-header-cell *matHeaderCellDef>Date of Birth / Age</th>

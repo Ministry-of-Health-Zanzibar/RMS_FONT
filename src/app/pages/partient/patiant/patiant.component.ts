@@ -50,6 +50,7 @@ export class PatiantComponent {
     'id',
     'name',
     'matibabu_card',
+    'zan_id',
     'date_of_birth',
     'gender',
     'phone',
