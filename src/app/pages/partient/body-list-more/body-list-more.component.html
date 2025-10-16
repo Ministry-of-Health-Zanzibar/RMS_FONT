@@ -149,15 +149,16 @@
     <ng-template #noFiles>
       <span class="text-gray-400">N/A</span>
       <!-- Still allow adding history even if no file -->
-      <button
-        mat-flat-button
-        color="primary"
-        class="!bg-green-600 !text-white !ml-3 !px-3 !py-1 rounded-md text-xs hover:!bg-green-700 transition"
-        (click)="openAddMedicalHistory(p)"
-      >
-        <mat-icon class="!text-white text-sm">note_add</mat-icon>
-        Add Medical History
-      </button>
+     <button
+      mat-icon-button
+      color="primary"
+      class="!bg-green-600 !text-white !ml-3 hover:!bg-green-700 transition"
+      (click)="openAddMedicalHistory(p)"
+      matTooltip="Add Medical History"
+    >
+      <mat-icon class="!text-white">add</mat-icon>
+    </button>
+
     </ng-template>
   </td>
 </ng-container>

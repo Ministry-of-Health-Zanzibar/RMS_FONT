@@ -33,7 +33,7 @@
 
   <button
   (click)="addFollow(referralId)"
-  *ngIf="referralId && permission.parmissionMatched(['View FollowUp']) && follow?.status !== 'Closed'"
+  *ngIf="referralId && permission.parmissionMatched(['Create FollowUp']) && follow?.status !== 'Closed'"
   matTooltip="Add Follow-up"
   class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-all">
   <mat-icon>add_circle</mat-icon>

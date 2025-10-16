@@ -40,15 +40,8 @@
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
 
-        <!-- Frontend Validation -->
-        <mat-error *ngIf="medicalForm.get('referring_date')?.hasError('required')">
-          Referring date is required
-        </mat-error>
 
-        <!-- Backend Validation -->
-        <mat-error *ngIf="backendErrors?.referring_date">
-          {{ backendErrors.referring_date[0] }}
-        </mat-error>
+
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="w-full">

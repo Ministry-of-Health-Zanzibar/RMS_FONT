@@ -346,7 +346,7 @@ export class AddmedicalhistoryComponent implements OnInit, OnDestroy {
       patient_id: [patient.files?.[0]?.patient_id || '', Validators.required],
       referring_doctor: ['', Validators.required],
       file_number: ['', Validators.required],
-      referring_date: [new Date(), Validators.required],
+      referring_date: ['', ],
       history_of_presenting_illness: ['', Validators.required],
       physical_findings: ['', Validators.required],
       investigations: ['', Validators.required],

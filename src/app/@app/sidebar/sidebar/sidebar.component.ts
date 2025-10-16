@@ -113,7 +113,7 @@ export class SidebarComponent {
           type: 'link',
           name: 'Location',
           link: '/pages/config/location',
-          permission: 'Setup Management',
+          permission: 'View Location',
         },
 
 
@@ -174,7 +174,7 @@ export class SidebarComponent {
      {
       id: 'referral',
       type: 'Single',
-      name: 'Manage Referral',
+      name: 'Referrals',
       icon: 'call_split',
       link: '/pages/config/referrals',
       permission: 'View Referral',
@@ -185,7 +185,7 @@ export class SidebarComponent {
       name: 'Month Bill',
       icon: 'bill',
       link: '/pages/config/referrals/bill-file-list',
-      permission: 'View Referral',
+      permission: 'View Bill',
     },
     {
       id: 'payment',
@@ -193,7 +193,7 @@ export class SidebarComponent {
       name: 'Payment',
       icon: 'payment',
       link: '/pages/config/referrals/bill-by-hospital',
-      permission: 'View Referral',
+      permission: 'View Payment',
     },
     // {
     //   id: 'months1',
