@@ -34,6 +34,7 @@
           </mat-form-field>
         </div>
 
+
         <!-- Board Date -->
         <div class="form-row">
           <mat-form-field class="form-field w-full">
@@ -117,6 +118,36 @@
             </mat-error>
           </mat-form-field>
         </div>
+        <!-- User Selection -->
+<div class="form-row">
+  <mat-form-field class="form-field w-full">
+    <mat-label>Select Users</mat-label>
+    <mat-select
+      multiple
+      (selectionChange)="onUserSelected($event)"
+      (openedChange)="onUserDropdownOpened()"
+    >
+      <mat-option>
+        <input
+          matInput
+          placeholder="Search user..."
+          [(ngModel)]="userSearch"
+          (ngModelChange)="filterUser()"
+        />
+      </mat-option>
+      <mat-option
+        *ngFor="let u of filteredUser"
+        [value]="u.user_id"
+      >
+        {{ u.full_name }}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="patientForm.get('user_id')?.invalid && patientForm.get('user_id')?.touched">
+      Please select at least one user
+    </mat-error>
+  </mat-form-field>
+</div>
+
       </form>
 
       <!-- Actions -->

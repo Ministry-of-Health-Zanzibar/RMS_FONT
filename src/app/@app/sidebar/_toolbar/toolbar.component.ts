@@ -29,9 +29,11 @@ export class ToolbarComponent implements OnInit{
   constructor(private route:Router,){}
 
   fullName:any;
+  role:any;
 
   ngOnInit(): void {
     this.fullName = localStorage.getItem('full_name');
+     this.role = localStorage.getItem('roles');
   }
 
   logoutHead(){

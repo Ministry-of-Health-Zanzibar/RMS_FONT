@@ -74,10 +74,12 @@ export class HeaderComponent implements OnInit{
 
   fullName:any;
   emails:any;
+  role:any;
 
   ngOnInit(): void {
     this.fullName = localStorage.getItem('full_name');
     this.emails = localStorage.getItem('email');
+     this.role = localStorage.getItem('roles');
   }
 
   logoutHead() {

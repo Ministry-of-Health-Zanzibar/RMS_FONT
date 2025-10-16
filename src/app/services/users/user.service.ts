@@ -11,8 +11,14 @@ export class UserService {
 
   private baseUrl: string = `${environment.baseUrl}`;
   private href = `${this.baseUrl}userAccounts`;
+  private href_member = `${this.baseUrl}userAccounts/board-members`;
 
   constructor(private http: HttpClient) {}
+
+   public getAllMemberList(): Observable<any> {
+    return this.http.get<any>(this.href_member);
+  }
+
   public getAllUsers(): Observable<any> {
     return this.http.get<any>(this.href);
   }

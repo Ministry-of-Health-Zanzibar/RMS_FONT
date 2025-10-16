@@ -208,7 +208,7 @@ export class SidebarComponent {
       type: 'Single', // Changed from 'group' to 'link'
       name: 'Range Report',
       icon: 'report',
-      permission: 'View Monthly Bill',
+      permission: 'View Report',
       link: '/pages/patient/referralreport0990',
     },
     {
@@ -216,7 +216,7 @@ export class SidebarComponent {
       type: 'Single', // Changed from 'group' to 'link'
       name: 'Search Report',
       icon: 'search',
-      permission: 'View Monthly Bill',
+      permission: 'View Report',
       link: '/pages/patient/searchreport99990000',
     },
 
