@@ -35,6 +35,7 @@ import { PartientService } from '../../../services/partient/partient.service';
 import { LocationService } from '../../../services/system-configuration/location.service';
 import { AddpartientComponent } from '../addpartient/addpartient.component';
 import { MatRadioModule } from '@angular/material/radio';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-partient-form',
@@ -85,6 +86,7 @@ export class PartientFormComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private patientService: PartientService,
     private locationService: LocationService,
+    private router: Router,
     public dialogRef: MatDialogRef<AddpartientComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
@@ -327,5 +329,10 @@ export class PartientFormComponent implements OnInit, OnDestroy {
         },
       });
     }
+  }
+
+  displayMoreData(data: any) {
+    const id = data.patient_list_id;
+    this.router.navigate(['/pages/patient/bodylist', id]);
   }
 }
