@@ -144,12 +144,35 @@
     </div>
 
     <!-- Buttons -->
-    <div class="flex justify-end gap-3 pt-2">
-      <button mat-stroked-button type="button" (click)="onCancel()">Cancel</button>
-      <button mat-flat-button color="primary" type="submit" [disabled]="loading">
-        <mat-spinner *ngIf="loading" diameter="20" strokeWidth="3"></mat-spinner>
-        <span *ngIf="!loading">Save</span>
-      </button>
-    </div>
+  <div class="flex justify-end items-center gap-3 pt-4">
+  <!-- Cancel Button -->
+  <button
+    mat-stroked-button
+    type="button"
+    color="warn"
+    (click)="onCancel()"
+    [disabled]="loading"
+  >
+    Cancel
+  </button>
+
+  <!-- Save Button / Spinner -->
+  <button
+    *ngIf="!loading"
+    mat-raised-button
+    color="primary"
+    (click)="onSubmit()"
+    [disabled]="medicalForm.invalid"
+  >
+    Save
+  </button>
+
+  <mat-progress-spinner
+    *ngIf="loading"
+    diameter="26"
+    mode="indeterminate"
+  ></mat-progress-spinner>
+</div>
+
   </form>
 </div>

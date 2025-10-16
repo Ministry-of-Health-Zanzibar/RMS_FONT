@@ -133,15 +133,16 @@
         </a>
 
         <!-- Add Medical History Button -->
-        <button
-          mat-flat-button
-          color="primary"
-          class="!bg-green-600 !text-white !px-3 !py-1 rounded-md text-xs hover:!bg-green-700 transition"
-          (click)="openAddMedicalHistory(p)"
-        >
-          <mat-icon class="!text-white text-sm">note_add</mat-icon>
-          Add Medical History
-        </button>
+       <button
+  mat-flat-button
+  color="primary"
+  class="!bg-green-600 !text-white !px-2 !py-1 rounded-md hover:!bg-green-700 transition"
+  (click)="openAddMedicalHistory(p)"
+  matTooltip="Add Medical History"
+>
+  <mat-icon class="!text-white text-base">note_add</mat-icon>
+</button>
+
       </div>
     </ng-container>
 
