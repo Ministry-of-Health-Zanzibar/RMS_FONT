@@ -58,6 +58,14 @@ const routes: Routes = [
       import('./patiant/patiant.component').then((c) => c.PatiantComponent),
   },
    {
+    path: 'patient/:id',
+    loadComponent: () =>
+      import('./patient-details/patient-details.component').then(
+        (c) => c.PatientDetailsComponent
+      ),
+  },
+
+   {
     path:'medical-history',
     loadComponent:() => import('./addmedicalhistory/addmedicalhistory.component').then(c=>c.AddmedicalhistoryComponent)
 

@@ -16,9 +16,13 @@ import Swal from 'sweetalert2';
 
 import { PartientService } from '../../../services/partient/partient.service';
 import { PermissionService } from '../../../services/authentication/permission.service';
-import { AddPatientDialogData, AddpartientComponent } from '../addpartient/addpartient.component';
+import {
+  AddPatientDialogData,
+  AddpartientComponent,
+} from '../addpartient/addpartient.component';
 import { environment } from '../../../../environments/environment.prod';
 import { AddmedicalhistoryComponent } from '../addmedicalhistory/addmedicalhistory.component';
+import { PartientFormComponent } from '../partient-form/partient-form.component';
 
 interface BodyList {
   patient_list_id: number;
@@ -32,7 +36,7 @@ interface Patient {
   gender?: string;
   phone?: string;
   location?: string;
-   files?: {
+  files?: {
     file_id: number;
     file_name: string;
     file_path: string;
@@ -61,17 +65,30 @@ interface Patient {
   providers: [DatePipe],
 })
 export class BodyListMoreComponent implements OnInit, AfterViewInit {
-   public documentUrl = environment.fileUrl;
+  public documentUrl = environment.fileUrl;
   public bodyList: BodyList[] = [];
   public loading = false;
   public patient_id: string | null = null;
   public patient_list_id: number | null = null;
 
-  displayedBodyListColumns: string[] = ['patient_list_title', 'patient_list_file', 'actions'];
-  bodyListDataSource: MatTableDataSource<BodyList> = new MatTableDataSource<BodyList>();
+  displayedBodyListColumns: string[] = [
+    'patient_list_title',
+    'patient_list_file',
+    'actions',
+  ];
+  bodyListDataSource: MatTableDataSource<BodyList> =
+    new MatTableDataSource<BodyList>();
 
-  displayedPatientColumns: string[] = ['matibabu_card', 'name', 'gender', 'phone', 'location','files'];
-  patientDataSource: MatTableDataSource<Patient> = new MatTableDataSource<Patient>();
+  displayedPatientColumns: string[] = [
+    'matibabu_card',
+    'name',
+    'gender',
+    'phone',
+    'location',
+    'files',
+  ];
+  patientDataSource: MatTableDataSource<Patient> =
+    new MatTableDataSource<Patient>();
 
   @ViewChild('bodyListPaginator') bodyListPaginator!: MatPaginator;
   @ViewChild('bodyListSort') bodyListSort!: MatSort;
@@ -146,44 +163,50 @@ export class BodyListMoreComponent implements OnInit, AfterViewInit {
       phone: patien?.phone || 'N/A',
       gender: patien?.gender || 'N/A',
       location: patien.geographical_location?.label || 'N/A',
-       files: patien?.files || [] // you can map location name if needed
+      files: patien?.files || [], // you can map location name if needed
     };
   }
 
   addPatient(patientFileId: number) {
-  const dialogData: AddPatientDialogData = { patientFileId, referralOptions: [] };
+    const dialogData: AddPatientDialogData = {
+      patientFileId,
+      referralOptions: [],
+    };
 
-  const dialogRef = this.dialog.open(AddpartientComponent, {
-    width: '1000px',
-    data: dialogData,
-  });
+    const dialogRef = this.dialog.open(AddpartientComponent, {
+      // width: '1000px',
+      width: '750px',
+      maxWidth: '95vw',
+      height: '900px',
+      data: dialogData,
+    });
 
-  dialogRef.afterClosed().subscribe((result) => {
-    if (result) {
-      // Optional: if API returns the updated body list with patients, use it
-      this.refreshPatients(patientFileId);
-    }
-  });
-}
-
-// Refresh the patients from API
-private refreshPatients(patientFileId: number) {
-  this.loading = true;
-  this.userService.getBodyListById(patientFileId).subscribe({
-    next: (response: any) => {
-      this.loading = false;
-      if (response?.data?.patients) {
-        this.patientDataSource.data = response.data.patients.map((p: any) => this.formatPatient(p));
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.refreshPatients(patientFileId);
       }
-    },
-    error: (error) => {
-      this.loading = false;
-      console.error('Error refreshing patients:', error);
-      Swal.fire('Error', 'Failed to refresh patients', 'error');
-    }
-  });
-}
+    });
+  }
 
+  // Refresh the patients from API
+  private refreshPatients(patientFileId: number) {
+    this.loading = true;
+    this.userService.getBodyListById(patientFileId).subscribe({
+      next: (response: any) => {
+        this.loading = false;
+        if (response?.data?.patients) {
+          this.patientDataSource.data = response.data.patients.map((p: any) =>
+            this.formatPatient(p)
+          );
+        }
+      },
+      error: (error) => {
+        this.loading = false;
+        console.error('Error refreshing patients:', error);
+        Swal.fire('Error', 'Failed to refresh patients', 'error');
+      },
+    });
+  }
 
   // addPatient(patientFileId: number) {
   //   const dialogData: AddPatientDialogData = { patientFileId, referralOptions: [] };
@@ -202,51 +225,48 @@ private refreshPatients(patientFileId: number) {
     }
   }
 
- openAddMedicalHistory(patient: any) {
-  const config = new MatDialogConfig();
+  openAddMedicalHistory(patient: any) {
+    const config = new MatDialogConfig();
 
-  config.disableClose = false;
-  config.role = 'dialog';
-  config.maxWidth = '100vw';
-  config.maxHeight = '98vh';
-  config.panelClass = 'full-screen-modal';
+    config.disableClose = false;
+    config.role = 'dialog';
+    config.maxWidth = '100vw';
+    config.maxHeight = '98vh';
+    config.panelClass = 'full-screen-modal';
 
- console.log('Element sent to dialog   0:', patient);
+    console.log('Element sent to dialog   0:', patient);
 
     config.data = patient;
 
-  const dialogRef = this.dialog.open(AddmedicalhistoryComponent, config);
+    const dialogRef = this.dialog.open(AddmedicalhistoryComponent, config);
 
-  // ✅ Handle data when dialog is closed
-  dialogRef.afterClosed().subscribe(result => {
-    if (result && result.success) {
-      console.log('✅ New medical history saved:', result.data);
+    // ✅ Handle data when dialog is closed
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result && result.success) {
+        console.log('✅ New medical history saved:', result.data);
 
+        Swal.fire({
+          title: 'Medical History Added',
+          text: 'The patient medical history was saved successfully!',
+          icon: 'success',
+          confirmButtonColor: '#4690eb',
+        });
+      } else {
+        console.log('Dialog closed without saving.');
+      }
+    });
+  }
 
-      Swal.fire({
-        title: 'Medical History Added',
-        text: 'The patient medical history was saved successfully!',
-        icon: 'success',
-        confirmButtonColor: '#4690eb'
-      });
-    } else {
-      console.log('Dialog closed without saving.');
-    }
-  });
-}
+  //  openAddMedicalHistory(patient: any) {
+  //     const config = new MatDialogConfig();
+  //     console.log('Element sent to dialog:', patient);
+  //     config.data = patient;
+  //     config.width = '100vw';
+  //     config.height = '98vh';
 
+  //     this.dialog
+  //       .open(AddmedicalhistoryComponent, config)
+  //       .afterClosed()
 
-//  openAddMedicalHistory(patient: any) {
-//     const config = new MatDialogConfig();
-//     console.log('Element sent to dialog:', patient);
-//     config.data = patient;
-//     config.width = '100vw';
-//     config.height = '98vh';
-
-//     this.dialog
-//       .open(AddmedicalhistoryComponent, config)
-//       .afterClosed()
-
-//   }
-
+  //   }
 }

@@ -1,20 +1,28 @@
 <div class="p-6 max-w-6xl mx-auto">
   <mat-card class="shadow-lg rounded-2xl">
     <mat-card-header>
-      <mat-card-title class="text-2xl font-bold text-gray-800">Add New Patient</mat-card-title>
-      <mat-card-subtitle class="text-gray-600">Please fill in all required details</mat-card-subtitle>
+      <mat-card-title class="text-2xl font-bold text-gray-800"
+        >Add New Patient</mat-card-title
+      >
+      <mat-card-subtitle class="text-gray-600"
+        >Please fill in all required details</mat-card-subtitle
+      >
     </mat-card-header>
 
     <mat-card-content>
       <form
         [formGroup]="patientForm"
         (ngSubmit)="onSubmit()"
-        class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6"
+        class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6"
       >
         <!-- Name -->
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>Full Name</mat-label>
-          <input matInput formControlName="name" placeholder="Enter full name" />
+          <input
+            matInput
+            formControlName="name"
+            placeholder="Enter full name"
+          />
           <mat-error *ngIf="patientForm.get('name')?.hasError('required')">
             Name is required
           </mat-error>
@@ -50,28 +58,38 @@
           </mat-error>
         </mat-form-field>
 
-<mat-radio-group formControlName="dob_type">
-  <mat-radio-button value="known">Known Date</mat-radio-button>
-  <mat-radio-button value="unknown">Estimated Age</mat-radio-button>
-</mat-radio-group>
+        <mat-radio-group formControlName="dob_type">
+          <mat-radio-button value="known">Known Date</mat-radio-button>
+          <mat-radio-button value="unknown">Estimated Age</mat-radio-button>
+        </mat-radio-group>
 
-<div *ngIf="patientForm.get('dob_type')?.value === 'known'">
-  <mat-form-field appearance="outline">
-    <mat-label>Date of Birth</mat-label>
-    <input matInput [matDatepicker]="dobPicker" formControlName="date_of_birth" />
-    <mat-datepicker-toggle matSuffix [for]="dobPicker"></mat-datepicker-toggle>
-    <mat-datepicker #dobPicker></mat-datepicker>
-  </mat-form-field>
-</div>
+        <div *ngIf="patientForm.get('dob_type')?.value === 'known'">
+          <mat-form-field appearance="outline">
+            <mat-label>Date of Birth</mat-label>
+            <input
+              matInput
+              [matDatepicker]="dobPicker"
+              formControlName="date_of_birth"
+            />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="dobPicker"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #dobPicker></mat-datepicker>
+          </mat-form-field>
+        </div>
 
-<div *ngIf="patientForm.get('dob_type')?.value === 'unknown'">
-  <mat-form-field appearance="outline">
-    <mat-label>Estimated Age</mat-label>
-    <input matInput type="number" formControlName="date_of_birth" placeholder="Enter Age" />
-  </mat-form-field>
-</div>
-
-
+        <div *ngIf="patientForm.get('dob_type')?.value === 'unknown'">
+          <mat-form-field appearance="outline">
+            <mat-label>Estimated Age</mat-label>
+            <input
+              matInput
+              type="number"
+              formControlName="date_of_birth"
+              placeholder="Enter Age"
+            />
+          </mat-form-field>
+        </div>
 
         <!-- Job -->
         <mat-form-field appearance="outline" class="w-full">
@@ -82,7 +100,11 @@
         <!-- Position -->
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>Position</mat-label>
-          <input matInput formControlName="position" placeholder="Enter position" />
+          <input
+            matInput
+            formControlName="position"
+            placeholder="Enter position"
+          />
         </mat-form-field>
 
         <!-- Location -->
@@ -106,13 +128,15 @@
               {{ option.label }}
             </mat-option>
           </mat-autocomplete>
-          <mat-error *ngIf="patientForm.get('location_id')?.hasError('required')">
+          <mat-error
+            *ngIf="patientForm.get('location_id')?.hasError('required')"
+          >
             Location is required
           </mat-error>
         </mat-form-field>
 
         <!-- Matibabu Card -->
-        <mat-form-field  class="w-full">
+        <mat-form-field class="w-full">
           <mat-label>Matibabu Card</mat-label>
           <input
             matInput
@@ -120,14 +144,53 @@
             maxlength="12"
             placeholder="Enter 12-digit Matibabu Card Number"
           />
-          <mat-error *ngIf="patientForm.get('matibabu_card')?.hasError('pattern')">
+          <mat-error
+            *ngIf="patientForm.get('matibabu_card')?.hasError('pattern')"
+          >
             Matibabu Card must be exactly 12 digits
           </mat-error>
         </mat-form-field>
 
+        <!-- zanID  -->
+
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>ZanID</mat-label>
+          <input
+            matInput
+            formControlName="zan_id"
+            maxlength="12"
+            placeholder="650070404"
+          />
+          <mat-error *ngIf="patientForm.get('zan_id')?.hasError('pattern')"
+            >ZanID must be exactly 9 digits</mat-error
+          >
+        </mat-form-field>
+
+        <div class="w-full md:col-span-2">
+          <label class="block text-sm font-medium text-gray-700 mb-2">
+            Do you have insurance?
+          </label>
+
+          <mat-radio-group
+            formControlName="has_insurance"
+            class="flex space-x-6 items-center"
+          >
+            <mat-radio-button [value]="false">No</mat-radio-button>
+            <mat-radio-button [value]="true">Yes</mat-radio-button>
+          </mat-radio-group>
+
+          <mat-error
+            *ngIf="patientForm.get('has_insurance')?.hasError('required')"
+          >
+            Please select if the patient has insurance.
+          </mat-error>
+        </div>
+
         <!-- Patient File Upload -->
         <div class="w-full md:col-span-3">
-          <label class="block text-sm font-medium text-gray-700 mb-2">Patient File</label>
+          <label class="block text-sm font-medium text-gray-700 mb-2"
+            >Patient File</label
+          >
           <input
             type="file"
             (change)="onFileSelected($event)"
@@ -142,7 +205,14 @@
 
         <!-- Actions -->
         <div class="flex justify-end space-x-3 md:col-span-3 pt-6">
-          <button mat-stroked-button color="warn" type="button" (click)="onCancel()">Cancel</button>
+          <button
+            mat-stroked-button
+            color="warn"
+            type="button"
+            (click)="onCancel()"
+          >
+            Cancel
+          </button>
           <button
             mat-raised-button
             color="primary"
@@ -150,7 +220,8 @@
             [disabled]="!patientForm.valid || loading"
           >
             <span *ngIf="loading" class="flex items-center">
-              <mat-spinner diameter="20" class="mr-2"></mat-spinner> Processing...
+              <mat-spinner diameter="20" class="mr-2"></mat-spinner>
+              Processing...
             </span>
             <span *ngIf="!loading">Save Patient</span>
           </button>
