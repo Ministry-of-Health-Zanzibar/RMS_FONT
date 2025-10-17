@@ -15,60 +15,56 @@
   </div>
 
   <!-- Dashboard Info Cards -->
- <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-   <!-- Card 2: Uploaded Files -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+  <!-- Card 1: Medical Boards -->
   <div
-    class="relative bg-gradient-to-r from-green-400 to-green-600 text-white rounded-xl p-6 flex flex-col items-center justify-center
-           shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
+    class="relative bg-gradient-to-r from-green-200 to-green-400 text-gray-800 rounded-2xl p-6 flex flex-col items-center justify-center
+           shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-300"
   >
-    <div class="text-5xl mb-3 animate-bounce">
-      <mat-icon>file_upload</mat-icon>
+    <div class="text-6xl mb-4 text-green-700">
+      <mat-icon fontIcon="assignment"></mat-icon>
     </div>
-    <div class="text-lg font-semibold">Medical Boards</div>
-    <div class="text-3xl font-bold mt-1">{{ referral?.data?.total_medical_boards }}</div>
-    <div class="absolute bottom-2 w-2/3 h-1 bg-white rounded-full opacity-30"></div>
-  </div>
-  <!-- Card 1: Total Users -->
-  <div
-    class="relative bg-gradient-to-r from-blue-400 to-blue-600 text-white rounded-xl p-6 flex flex-col items-center justify-center
-           shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
-  >
-    <div class="text-5xl mb-3 animate-pulse">
-      <mat-icon>persons</mat-icon>
-    </div>
-    <div class="text-lg font-semibold">Total Patient</div>
-    <div class="text-3xl font-bold mt-1">{{ referral?.data?.total_patients }}</div>
-    <div class="absolute bottom-2 w-2/3 h-1 bg-white rounded-full opacity-30"></div>
+    <div class="text-base uppercase tracking-wide text-gray-600">Medical Boards</div>
+    <div class="text-4xl font-extrabold mt-2">{{ referral?.data?.total_medical_boards | number }}</div>
   </div>
 
-
-
-  <!-- Card 3: Reports Generated -->
+  <!-- Card 2: Total Patients -->
   <div
-    class="relative bg-gradient-to-r from-yellow-400 to-yellow-600 text-white rounded-xl p-6 flex flex-col items-center justify-center
-           shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
+    class="relative bg-gradient-to-r from-blue-200 to-blue-400 text-gray-800 rounded-2xl p-6 flex flex-col items-center justify-center
+           shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-300"
   >
-    <div class="text-5xl mb-3 animate-spin-slow">
-      <mat-icon>report</mat-icon>
+    <div class="text-6xl mb-4 text-blue-700">
+      <mat-icon fontIcon="group"></mat-icon>
     </div>
-    <div class="text-lg font-semibold">Total Referral</div>
-    <div class="text-3xl font-bold mt-1">{{ referral?.data?.total_referrals }}</div>
-    <div class="absolute bottom-2 w-2/3 h-1 bg-white rounded-full opacity-30"></div>
+    <div class="text-base uppercase tracking-wide text-gray-600">Total Patients</div>
+    <div class="text-4xl font-extrabold mt-2">{{ referral?.data?.total_patients | number }}</div>
   </div>
 
-  <!-- Card 4: Active Sessions -->
+  <!-- Card 3: Total Referrals -->
   <div
-    class="relative bg-gradient-to-r from-red-400 to-red-600 text-white rounded-xl p-6 flex flex-col items-center justify-center
-           shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
+    class="relative bg-gradient-to-r from-yellow-200 to-yellow-400 text-gray-800 rounded-2xl p-6 flex flex-col items-center justify-center
+           shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-300"
   >
-    <div class="text-5xl mb-3 animate-pulse">
-      <mat-icon>hospital</mat-icon>
+    <div class="text-6xl mb-4 text-yellow-700">
+      <mat-icon fontIcon="compare_arrows"></mat-icon>
     </div>
-    <div class="text-lg font-semibold">Total Hospital</div>
-    <div class="text-3xl font-bold mt-1">{{ referral?.data?.total_hospitals }}</div>
-    <div class="absolute bottom-2 w-2/3 h-1 bg-white rounded-full opacity-30"></div>
+    <div class="text-base uppercase tracking-wide text-gray-600">Total Referrals</div>
+    <div class="text-4xl font-extrabold mt-2">{{ referral?.data?.total_referrals | number }}</div>
+  </div>
+
+  <!-- Card 4: Total Hospitals -->
+  <div
+    class="relative bg-gradient-to-r from-red-200 to-red-400 text-gray-800 rounded-2xl p-6 flex flex-col items-center justify-center
+           shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-300"
+  >
+    <div class="text-6xl mb-4 text-red-700">
+      <mat-icon fontIcon="local_hospital"></mat-icon>
+    </div>
+    <div class="text-base uppercase tracking-wide text-gray-600">Total Hospitals</div>
+    <div class="text-4xl font-extrabold mt-2">{{ referral?.data?.total_hospitals | number }}</div>
   </div>
 </div>
+
 
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
     <div class="bg-white shadow rounded-lg p-6">
