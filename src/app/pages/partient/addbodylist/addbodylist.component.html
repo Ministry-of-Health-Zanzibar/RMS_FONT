@@ -127,41 +127,80 @@
       (selectionChange)="onUserSelected($event)"
       (openedChange)="onUserDropdownOpened()"
     >
-      <mat-option>
-        <input
-          matInput
-          placeholder="Search user..."
-          [(ngModel)]="userSearch"
-          (ngModelChange)="filterUser()"
-        />
+      <!-- 🔄 Show loader if fetching users -->
+      <mat-option *ngIf="isLoadingUsers" disabled>
+        <mat-progress-spinner
+          diameter="24"
+          mode="indeterminate"
+        ></mat-progress-spinner>
+        &nbsp;Loading users...
       </mat-option>
-      <mat-option
-        *ngFor="let u of filteredUser"
-        [value]="u.user_id"
-      >
-        {{ u.full_name }}
+
+      <!-- 🔍 Search box appears only if users exist -->
+      <ng-container *ngIf="!isLoadingUsers && userList.length > 0">
+        <mat-option>
+          <input
+            matInput
+            placeholder="Search user..."
+            [(ngModel)]="userSearch"
+            (ngModelChange)="filterUser()"
+            class="w-full px-2 py-1 text-sm border rounded-md"
+          />
+        </mat-option>
+
+        <!-- 👤 Show filtered users -->
+        <mat-option
+          *ngFor="let u of filteredUser"
+          [value]="u.user_id"
+        >
+          {{ u.full_name }}
+        </mat-option>
+
+        <!-- 🚫 Show message if no match -->
+        <mat-option *ngIf="filteredUser.length === 0" disabled>
+          No users found
+        </mat-option>
+      </ng-container>
+
+      <!-- 🚫 Show message if API returned empty -->
+      <mat-option *ngIf="!isLoadingUsers && userList.length === 0" disabled>
+        No users available
       </mat-option>
     </mat-select>
-    <mat-error *ngIf="patientForm.get('user_id')?.invalid && patientForm.get('user_id')?.touched">
+
+    <mat-error
+      *ngIf="patientForm.get('user_id')?.invalid && patientForm.get('user_id')?.touched"
+    >
       Please select at least one user
     </mat-error>
   </mat-form-field>
 </div>
 
+
       </form>
 
-      <!-- Actions -->
-      <mat-dialog-actions align="end">
-        <button mat-button (click)="onClose()">Cancel</button>
-        <button
-          mat-flat-button
-          color="primary"
-          [disabled]="patientForm.invalid"
-          (click)="patientData ? updatePatient() : savePatient()"
-        >
-          {{ patientData ? "Update" : "Save" }}
-        </button>
-      </mat-dialog-actions>
+    <mat-dialog-actions align="end">
+  <button mat-button (click)="onClose()" [disabled]="loading">Cancel</button>
+
+  <!-- Save/Update Button -->
+  <button
+    *ngIf="!loading"
+    mat-flat-button
+    color="primary"
+    [disabled]="patientForm.invalid"
+    (click)="patientData ? updatePatient() : savePatient()"
+  >
+    {{ patientData ? "Update" : "Save" }}
+  </button>
+
+  <!-- Spinner while saving -->
+  <mat-progress-spinner
+    *ngIf="loading"
+    diameter="28"
+    mode="indeterminate"
+  ></mat-progress-spinner>
+</mat-dialog-actions>
+
     </div>
   </div>
 </div>

@@ -7,19 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { TotalSubscribersWidgetComponent } from '@shared/widgets/total-subscribers-widget/total-subscribers-widget.component';
-import { AvgOpenRateWidgetComponent } from '@shared/widgets/avg-open-rate-widget/avg-open-rate-widget.component';
-import { AvgClickRateWidgetComponent } from '@shared/widgets/avg-click-rate-widget/avg-click-rate-widget.component';
-import { UniqueVisitorsWidgetComponent } from '@shared/widgets/unique-visitors-widget/unique-visitors-widget.component';
-import { ExchangeWidgetComponent } from '../../../@shared/widgets/exchange-widget/exchange-widget.component';
-import { MyInvestmentsComponent } from '../../../@shared/widgets/my-investments/my-investments.component';
-import { PaymentInformationWidgetComponent } from '../../../@shared/widgets/payment-information-widget/payment-information-widget.component';
-import { PurchasesByChannelsWidgetComponent } from '../../../@shared/widgets/purchases-by-channels-widget/purchases-by-channels-widget.component';
-import { SiteVisitorsWidgetComponent } from '../../../@shared/widgets/site-visitors-widget/site-visitors-widget.component';
-import { EventsWidgetComponent } from '@shared/widgets/events-widget/events-widget.component';
-import { TeamWidgetComponent } from '@shared/widgets/team-widget/team-widget.component';
-import { TasksInProgressWidgetComponent } from '@shared/widgets/tasks-in-progress-widget/tasks-in-progress-widget.component';
-import { CustomerSatisfactionWidgetComponent } from '@shared/widgets/customer-satisfaction-widget/customer-satisfaction-widget.component';
+
 import { StatisticalService } from '../../../services/report/statistical.service';
 import { Chart, registerables } from 'chart.js';
 Chart.register(...registerables);
@@ -226,24 +214,27 @@ export class FinanceComponent implements OnInit {
             label: chartName,
             data: complailData,
             // backgroundColor: 'rgba(75, 192, 192, 0.2)',
-            backgroundColor: [
-              'rgba(255, 99, 132, 0.2)',
-              'rgba(255, 159, 64, 0.2)',
-              'rgba(255, 205, 86, 0.2)',
-              'rgba(54, 162, 235, 0.2)',
-              'rgba(153, 102, 255, 0.2)',
-              'rgba(201, 203, 207, 0.2)',
-            ],
+           backgroundColor: [
+                  'rgba(255, 182, 193, 0.5)',
+                  'rgba(255, 200, 120, 0.5)',
+                  'rgba(255, 236, 153, 0.5)',
+                  'rgba(144, 238, 144, 0.5)',
+                  'rgba(173, 216, 230, 0.5)',
+                  'rgba(221, 160, 221, 0.5)',
+                  'rgba(224, 224, 224, 0.5)',
+                ],
+
             // borderColor: 'rgba(75, 192, 192, 1)',
-            borderColor: [
-              'rgb(255, 99, 132)',
-              'rgb(255, 159, 64)',
-              'rgb(255, 205, 86)',
-              'rgb(75, 192, 192)',
-              'rgb(54, 162, 235)',
-              'rgb(153, 102, 255)',
-              'rgb(201, 203, 207)',
+          borderColor: [
+              'rgb(255, 182, 193)', // Light Pink
+              'rgb(255, 200, 120)', // Light Orange
+              'rgb(255, 236, 153)', // Soft Yellow
+              'rgb(144, 238, 144)', // Light Green
+              'rgb(173, 216, 230)', // Light Blue
+              'rgb(221, 160, 221)', // Light Purple
+              'rgb(224, 224, 224)', // Soft Gray
             ],
+
             borderWidth: 1,
           },
         ],
@@ -268,23 +259,23 @@ export class FinanceComponent implements OnInit {
           {
             label: label,
             data: data.map((d) => d.total),
-            backgroundColor: [
-              'rgba(255, 99, 132, 0.2)',
-              'rgba(255, 159, 64, 0.2)',
-              'rgba(255, 205, 86, 0.2)',
-              'rgba(75, 192, 192, 0.2)',
-              'rgba(54, 162, 235, 0.2)',
-              'rgba(153, 102, 255, 0.2)',
-              'rgba(201, 203, 207, 0.2)',
-            ],
-            borderColor: [
-              'rgb(255, 99, 132)',
-              'rgb(255, 159, 64)',
-              'rgb(255, 205, 86)',
-              'rgb(75, 192, 192)',
-              'rgb(54, 162, 235)',
-              'rgb(153, 102, 255)',
-              'rgb(201, 203, 207)',
+             backgroundColor: [
+                  'rgba(255, 182, 193, 0.5)',
+                  'rgba(255, 200, 120, 0.5)',
+                  'rgba(255, 236, 153, 0.5)',
+                  'rgba(144, 238, 144, 0.5)',
+                  'rgba(173, 216, 230, 0.5)',
+                  'rgba(221, 160, 221, 0.5)',
+                  'rgba(224, 224, 224, 0.5)',
+                ],
+             borderColor: [
+              'rgb(255, 182, 193)', // Light Pink
+              'rgb(255, 200, 120)', // Light Orange
+              'rgb(255, 236, 153)', // Soft Yellow
+              'rgb(144, 238, 144)', // Light Green
+              'rgb(173, 216, 230)', // Light Blue
+              'rgb(221, 160, 221)', // Light Purple
+              'rgb(224, 224, 224)', // Soft Gray
             ],
             borderWidth: 1,
           },
