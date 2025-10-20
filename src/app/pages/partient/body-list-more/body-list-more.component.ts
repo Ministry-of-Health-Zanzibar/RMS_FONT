@@ -23,6 +23,7 @@ import {
 import { environment } from '../../../../environments/environment.prod';
 import { AddmedicalhistoryComponent } from '../addmedicalhistory/addmedicalhistory.component';
 import { PartientFormComponent } from '../partient-form/partient-form.component';
+import { AddmultiplepatientComponent, AddMultiplePatientDialogData } from '../addmultiplepatient/addmultiplepatient.component';
 
 interface BodyList {
   patient_list_id: number;
@@ -174,6 +175,28 @@ export class BodyListMoreComponent implements OnInit, AfterViewInit {
     };
 
     const dialogRef = this.dialog.open(AddpartientComponent, {
+      // width: '1000px',
+      width: '750px',
+      maxWidth: '95vw',
+      height: '900px',
+      data: dialogData,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.refreshPatients(patientFileId);
+      }
+    });
+  }
+
+
+  addMultiple(patientFileId: number) {
+    const dialogData: AddMultiplePatientDialogData = {
+      patientFileId,
+      referralOptions: [],
+    };
+
+    const dialogRef = this.dialog.open(AddmultiplepatientComponent, {
       // width: '1000px',
       width: '750px',
       maxWidth: '95vw',
