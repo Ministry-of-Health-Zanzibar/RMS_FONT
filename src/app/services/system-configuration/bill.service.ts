@@ -4,10 +4,9 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment.prod';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BillService {
-
   private baseUrl: string = `${environment.baseUrl}`;
   private href = `${this.baseUrl}bills`;
   private baseUrls: string = `${environment.baseUrl}`;
@@ -28,31 +27,32 @@ export class BillService {
   }
 
   public addBill(bills: any): Observable<any> {
-    return this.http.post(this.href,bills);
+    return this.http.post(this.href, bills);
   }
 
-  public deleteBill(id:any): Observable<any>{
+  public deleteBill(id: any): Observable<any> {
     return this.http.delete(`${this.href}/${id}`);
   }
 
-  public updateBill(employerType:any, id:any): Observable<any>{
-    return this.http.patch(`${this.href}/${id}`,employerType)
+  public updateBill(employerType: any, id: any): Observable<any> {
+    return this.http.patch(`${this.href}/${id}`, employerType);
   }
-  public unblockBill(data: any, id:any): Observable<any>{
+  public unblockBill(data: any, id: any): Observable<any> {
     return this.http.patch(`${this.baseUrl}bills/unBlock/${id}`, data);
   }
 
   //payment endpoint
 
   public addPayment(payment: any): Observable<any> {
-    return this.http.post(this.href_payment,payment);
+    return this.http.post(this.href_payment, payment);
   }
 
-  getReferralsByHospital(hospitalId: number,billFileId: number): Observable<any> {
+  getReferralsByHospital(
+    hospitalId: number,
+    billFileId: number
+  ): Observable<any> {
     return this.http.get<any>(
       `${this.baseUrls}referrals-by-hospital/${hospitalId}/${billFileId}`
     );
   }
-
-
 }

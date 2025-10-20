@@ -1,0 +1,231 @@
+            <!-- PATIENT INFO CARD -->
+            <mat-card class="shadow-lg rounded-2xl p-6 bg-white mt-5">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-xl font-bold text-gray-800">Patient Information</h2>
+
+                <button
+                mat-flat-button
+                color="primary"
+                (click)="openAddMedicalHistory(patient)"
+                >
+                <mat-icon>add</mat-icon>
+                Add Medical History
+                </button>
+            </div>
+
+            <!-- PATIENT INFO TABLE -->
+            <div class="overflow-x-auto">
+                <table
+                mat-table
+                [dataSource]="[patient]"
+                class="min-w-full border border-gray-200 rounded-lg"
+                matSort
+                >
+                <!-- Index -->
+                <ng-container matColumnDef="no">
+                    <th mat-header-cell *matHeaderCellDef>No</th>
+                    <td mat-cell *matCellDef="let element; let i = index">{{ i + 1 }}</td>
+                </ng-container>
+
+                <!-- Name -->
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef>Name</th>
+                    <td mat-cell *matCellDef="let element">{{ element?.name }}</td>
+                </ng-container>
+
+                <!-- Matibabu Card -->
+                <ng-container matColumnDef="matibabu_card">
+                    <th mat-header-cell *matHeaderCellDef>Matibabu Card</th>
+                    <td mat-cell *matCellDef="let element">{{ element?.matibabu_card }}</td>
+                </ng-container>
+
+                <!-- Date of Birth -->
+                <ng-container matColumnDef="date_of_birth">
+                    <th mat-header-cell *matHeaderCellDef>Date of Birth</th>
+                    <td mat-cell *matCellDef="let element">
+                    {{ element?.date_of_birth | date: 'mediumDate' }}
+                    </td>
+                </ng-container>
+
+                <!-- Gender -->
+                <ng-container matColumnDef="gender">
+                    <th mat-header-cell *matHeaderCellDef>Gender</th>
+                    <td mat-cell *matCellDef="let element">{{ element?.gender }}</td>
+                </ng-container>
+
+                <!-- Phone -->
+                <ng-container matColumnDef="phone">
+                    <th mat-header-cell *matHeaderCellDef>Phone</th>
+                    <td mat-cell *matCellDef="let element">{{ element?.phone }}</td>
+                </ng-container>
+
+                <!-- Job -->
+                <ng-container matColumnDef="job">
+                    <th mat-header-cell *matHeaderCellDef>Job</th>
+                    <td mat-cell *matCellDef="let element">{{ element?.job }}</td>
+                </ng-container>
+
+                <!-- Zan ID -->
+                <ng-container matColumnDef="zan_id">
+                    <th mat-header-cell *matHeaderCellDef>Zan ID</th>
+                    <td mat-cell *matCellDef="let element">{{ element?.zan_id }}</td>
+                </ng-container>
+
+                <!-- Header and Rows -->
+                <tr
+                    mat-header-row
+                    *matHeaderRowDef="[
+                    'no',
+                    'name',
+                    'matibabu_card',
+                    'date_of_birth',
+                    'gender',
+                    'phone',
+                    'job',
+                    'zan_id'
+                    ]"
+                ></tr>
+                <tr
+                    mat-row
+                    *matRowDef="let row; columns: [
+                    'no',
+                    'name',
+                    'matibabu_card',
+                    'date_of_birth',
+                    'gender',
+                    'phone',
+                    'job',
+                    'zan_id'
+                    ]"
+                ></tr>
+                </table>
+            </div>
+            </mat-card>
+
+            <!-- MEDICAL HISTORY CARD -->
+            <mat-card class="shadow-lg rounded-2xl p-6 bg-white mt-8">
+            <h2 class="text-xl font-bold text-gray-800 mb-4">
+                Medical History Records
+            </h2>
+
+            <div *ngIf="patient?.patient_histories?.length > 0; else noHistory">
+                <div class="overflow-x-auto">
+                <table
+                    mat-table
+                    [dataSource]="patient.patient_histories"
+                    class="min-w-full border border-gray-200 rounded-lg"
+                    matSort
+                >
+                    <!-- Index -->
+                    <ng-container matColumnDef="no">
+                    <th mat-header-cell *matHeaderCellDef>No</th>
+                    <td mat-cell *matCellDef="let element; let i = index">
+                        {{ i + 1 }}
+                    </td>
+                    </ng-container>
+
+                    <!-- File Number -->
+                    <ng-container matColumnDef="file_number">
+                    <th mat-header-cell *matHeaderCellDef>File No.</th>
+                    <td mat-cell *matCellDef="let element">{{ element.file_number }}</td>
+                    </ng-container>
+
+                    <!-- Doctor -->
+                    <ng-container matColumnDef="referring_doctor">
+                    <th mat-header-cell *matHeaderCellDef>Referring Doctor</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{ element.referring_doctor }}
+                    </td>
+                    </ng-container>
+
+                    <!-- Reason -->
+                    <ng-container matColumnDef="reason">
+                    <th mat-header-cell *matHeaderCellDef>Reason</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{ element.reason?.referral_reason_name }}
+                    </td>
+                    </ng-container>
+
+                    <!-- Date -->
+                    <ng-container matColumnDef="created_at">
+                    <th mat-header-cell *matHeaderCellDef>Created At</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{ element.created_at | date: 'medium' }}
+                    </td>
+                    </ng-container>
+
+                    <!-- File -->
+                    <ng-container matColumnDef="file">
+                    <th mat-header-cell *matHeaderCellDef>File</th>
+                    <td mat-cell *matCellDef="let element">
+                        <span
+                        *ngIf="element.history_file"
+                        (click)="viewPDF(element.history_file)"
+                        class="inline-flex items-center gap-1 text-indigo-600 hover:text-indigo-800 cursor-pointer"
+                        >
+                        <mat-icon>picture_as_pdf</mat-icon>
+                        View
+                        </span>
+                        <span *ngIf="!element.history_file" class="text-gray-400">N/A</span>
+                    </td>
+                    </ng-container>
+
+                    <!-- Actions -->
+                    <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef class="text-center">Actions</th>
+                    <td mat-cell *matCellDef="let element" class="text-center">
+                        <span
+                        class="inline-flex items-center gap-1 text-blue-600 hover:text-blue-800 cursor-pointer"
+                        (click)="displayMoreData(element)"
+                        >
+                        <mat-icon>visibility</mat-icon> View
+                        </span>
+                    </td>
+                    </ng-container>
+
+                    <!-- Header and Rows -->
+                    <tr
+                    mat-header-row
+                    *matHeaderRowDef="[
+                        'no',
+                        'file_number',
+                        'referring_doctor',
+                        'reason',
+                        'created_at',
+                        'file',
+                        'actions'
+                    ]"
+                    ></tr>
+                    <tr
+                    mat-row
+                    *matRowDef="let row; columns: [
+                        'no',
+                        'file_number',
+                        'referring_doctor',
+                        'reason',
+                        'created_at',
+                        'file',
+                        'actions'
+                    ]"
+                    ></tr>
+                </table>
+                </div>
+            </div>
+
+            <!-- If no history -->
+            <ng-template #noHistory>
+                <div class="text-center text-gray-500 py-4">
+                No medical history records available.
+                </div>
+            </ng-template>
+            </mat-card>
+
+            <!-- LOADING SPINNER -->
+            <div
+            *ngIf="loading"
+            class="fixed inset-0 flex items-center justify-center bg-white bg-opacity-70 z-50"
+            >
+            <div
+                class="w-16 h-16 border-4 border-blue-500 border-dashed rounded-full animate-spin"
+            ></div>
+            </div>

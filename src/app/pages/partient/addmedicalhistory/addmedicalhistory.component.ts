@@ -328,7 +328,7 @@ export class AddmedicalhistoryComponent implements OnInit, OnDestroy {
     console.log('Patient Gender:', patient.gender);
     console.log('Patient Location:', patient.location);
 
-    const filePatientId = patient.files?.[0]?.patient_id;
+    const filePatientId = patient?.patient_id;
     console.log('Patient ID from file:', filePatientId);
 
     this.buildForm(patient);
@@ -343,7 +343,7 @@ export class AddmedicalhistoryComponent implements OnInit, OnDestroy {
 
   buildForm(patient?: any) {
     this.medicalForm = this.fb.group({
-      patient_id: [patient.files?.[0]?.patient_id || '', Validators.required],
+      patient_id: [patient?.patient_id || '', Validators.required],
       referring_doctor: ['', Validators.required],
       file_number: ['', Validators.required],
       referring_date: ['', ],
@@ -378,12 +378,12 @@ export class AddmedicalhistoryComponent implements OnInit, OnDestroy {
   }
 
   onDiagnosesSelected(event: any) {
-    const selectedIds = event.value; // Example: [1, 3, 7]
+    const selectedIds = event.value; 
     const formArray = this.medicalForm.get('diagnosis_ids') as FormArray;
     formArray.clear();
 
     selectedIds.forEach((id: number) => formArray.push(this.fb.control(id)));
-    console.log('✅ Selected diagnosis_ids:', this.medicalForm.value.diagnosis_ids);
+    console.log('Selected diagnosis_ids:', this.medicalForm.value.diagnosis_ids);
   }
 
   onDiagnosesDropdownOpened() {
@@ -417,7 +417,7 @@ onSubmit() {
     return;
   }
 
-  this.loading = true; // 🔄 Start loading
+  this.loading = true; 
 
   const formValue = this.medicalForm.value;
   const formData = new FormData();
@@ -451,7 +451,7 @@ onSubmit() {
     next: (res) => {
       console.log('Response:', res);
       Swal.fire('Success', 'Medical history saved successfully', 'success');
-      this.loading = false; // ✅ Stop loading
+      this.loading = false;
       this.dialogRef.close(true);
     },
     error: (err) => {

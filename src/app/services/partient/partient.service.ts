@@ -9,6 +9,8 @@ import { environment } from '../../../environments/environment.prod';
 export class PartientService {
   private baseUrl: string = `${environment.baseUrl}`;
   private href = `${this.baseUrl}patients`;
+  private hrefe = `${this.baseUrl}`;
+
   private baseForBoard = `${this.baseUrl}patient-lists`;
 
   private href_for_addreferral = `${this.baseUrl}patients/for-referral/allowed`;
@@ -66,8 +68,19 @@ export class PartientService {
   }
 
   public getPartientById(id: any) {
-    return this.http.get<any>(`${this.href}/${id}`);
+    return this.http.get<any>(`${this.hrefe}patient-histories/${id}`);
   }
+
+  public getPartientHistoryListById(id: any) {
+    return this.http.get<any>(`${this.href}/histories/${id}`);
+  }
+
+
+
+//   public getPartientById(id: number) {
+//   return this.http.get<any>(`http://localhost:8000/api/patient-histories/${id}`);
+// }
+
 
   public deletePatients(id: any): Observable<any> {
     return this.http.delete(`${this.href}/${id}`);

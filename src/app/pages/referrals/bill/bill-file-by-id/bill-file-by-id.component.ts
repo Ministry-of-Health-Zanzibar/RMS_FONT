@@ -71,7 +71,7 @@ export class BillFileByIdComponent implements OnInit, AfterViewInit {
   public loading = false;
   public bill_id: string | null = null;
   // public bill_file_id: number | null = null;
-  public bill_file_id: number 
+  public bill_file_id: number;
 
   public documentUrl = environment.fileUrl;
 
@@ -290,30 +290,32 @@ export class BillFileByIdComponent implements OnInit, AfterViewInit {
     }
   }
 
-
-   updateBill(data: any) {
-        let config = new MatDialogConfig();
-        config.disableClose = false;
-        config.role = 'dialog';
-        config.maxWidth = '100vw';
-        config.maxHeight = '100vh';
-        config.height = '600px';
-        config.width = '850px';
-        config.panelClass = 'full-screen-modal';
-        config.data = { data: data };
-    
-        const dialogRef = this.dialog.open(AddBillsComponent, config);
-        dialogRef.afterClosed().subscribe((result: any) => {
-          this.loadBillsByBillFileId(this.bill_file_id)
-        });
-      }
-
-
-
-
-        openUpdateDialog(bill: any): void {
+  updateBill(billData: any) {
     const dialogRef = this.dialog.open(AddBillsComponent, {
-      width: '600px',
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      height: '600px',
+      width: '850px',
+      panelClass: 'full-screen-modal',
+      data: {
+        billFileId: billData.bill_file_id,
+        hospitalId: billData.hospital_id,
+        billTitle: billData.bill_file_title || 'Bill',
+        referralOptions: [],
+        billData: billData,
+      } as AddBillDialogData,
+    });
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+        this.loadBillsByBillFileId(this.bill_file_id);
+      }
+    });
+  }
+
+  openUpdateDialog(bill: any): void {
+    const dialogRef = this.dialog.open(AddBillsComponent, {
+     
       data: {
         billFileId: bill.bill_file_id,
         hospitalId: bill.hospital_id,
@@ -335,6 +337,4 @@ export class BillFileByIdComponent implements OnInit, AfterViewInit {
       }
     });
   }
-
-
 }

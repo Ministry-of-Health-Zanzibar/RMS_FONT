@@ -1,9 +1,11 @@
 <div class="p-6 max-w-2xl">
   <h2 class="text-2xl font-bold text-gray-800 mb-2">
-    {{ data.billData ? 'Update Bill' : 'Add New Bill' }}
+    {{ data.billData ? "Update Bill" : "Add New Bill" }}
   </h2>
   <p class="text-gray-600 mb-6">
-    {{ data.billData ? 'Modify existing bill details' : 'Create a new bill for' }}
+    {{
+      data.billData ? "Modify existing bill details" : "Create a new bill for"
+    }}
     <strong>{{ data.billTitle }}</strong>
   </p>
 
@@ -12,8 +14,11 @@
     <mat-form-field appearance="outline" class="w-full">
       <mat-label>Select Referral</mat-label>
       <mat-select formControlName="referral_id">
-        <mat-option *ngFor="let referral of referrals" [value]="referral.referral_id">
-          {{ referral.referral_number }} - {{ referral.patient_name }}
+        <mat-option
+          *ngFor="let referral of referrals"
+          [value]="referral.referral_id"
+        >
+          {{ referral.referral_number }} - {{ referral.patient.name }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="billForm.get('referral_id')?.hasError('required')">
@@ -56,9 +61,14 @@
         [min]="minDate"
         [max]="maxDate"
       />
-      <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+      <mat-datepicker-toggle
+        matSuffix
+        [for]="startPicker"
+      ></mat-datepicker-toggle>
       <mat-datepicker #startPicker></mat-datepicker>
-      <mat-error *ngIf="billForm.get('bill_period_start')?.hasError('required')">
+      <mat-error
+        *ngIf="billForm.get('bill_period_start')?.hasError('required')"
+      >
         Start date is required
       </mat-error>
     </mat-form-field>
@@ -73,7 +83,10 @@
         [min]="billForm.get('bill_period_start')?.value || minDate"
         [max]="maxDate"
       />
-      <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+      <mat-datepicker-toggle
+        matSuffix
+        [for]="endPicker"
+      ></mat-datepicker-toggle>
       <mat-datepicker #endPicker></mat-datepicker>
       <mat-error *ngIf="billForm.get('bill_period_end')?.hasError('required')">
         End date is required
@@ -95,7 +108,9 @@
           <mat-spinner diameter="20" class="mr-2"></mat-spinner>
           Processing...
         </span>
-        <span *ngIf="!loading">{{ data.billData ? 'Update Bill' : 'Create Bill' }}</span>
+        <span *ngIf="!loading">{{
+          data.billData ? "Update Bill" : "Create Bill"
+        }}</span>
       </button>
     </div>
   </form>

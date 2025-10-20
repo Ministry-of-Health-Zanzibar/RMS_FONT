@@ -215,6 +215,6 @@ export class PatiantComponent {
 
   displayMoreData(data: any) {
     const id = data.patient_id;
-    this.router.navigate(['/pages/patient/patient', id]);
+    this.router.navigate(['/pages/patient/patient-table', id]);
   }
 }

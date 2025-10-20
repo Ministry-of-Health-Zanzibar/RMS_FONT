@@ -57,6 +57,8 @@ const routes: Routes = [
     loadComponent: () =>
       import('./patiant/patiant.component').then((c) => c.PatiantComponent),
   },
+
+
    {
     path: 'patient/:id',
     loadComponent: () =>
@@ -64,6 +66,16 @@ const routes: Routes = [
         (c) => c.PatientDetailsComponent
       ),
   },
+
+
+   {
+    path: 'patient-table/:id',
+    loadComponent: () =>
+      import('./patient-history-table/patient-history-table.component').then(
+        (c) => c.PatientHistoryTableComponent
+      ),
+  },
+
 
    {
     path:'medical-history',

@@ -1,7 +1,16 @@
 import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
+import {
+  ReactiveFormsModule,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+import {
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+  MatDialogModule,
+} from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -14,14 +23,13 @@ import { Subject, takeUntil } from 'rxjs';
 import Swal from 'sweetalert2';
 
 import { BillService } from '../../../../services/system-configuration/bill.service';
-import { ReferralService } from '../../../../services/Referral/referral.service';
 
 export interface AddBillDialogData {
   billFileId: number;
   hospitalId: number;
   billTitle: string;
   referralOptions: any[];
-  billData?: any; // 👈 Optional for update mode
+  billData?: any;
 }
 
 @Component({
@@ -54,7 +62,6 @@ export class AddBillsComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private billsService: BillService,
-    private referralService: ReferralService,
     public dialogRef: MatDialogRef<AddBillsComponent>,
     @Inject(MAT_DIALOG_DATA) public data: AddBillDialogData
   ) {
@@ -72,19 +79,24 @@ export class AddBillsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    if (this.data.hospitalId && this.data.billFileId) {
-      this.loadReferrals(this.data.hospitalId, this.data.billFileId);
+    // Patch all fields except referral
+    if (this.data.billData) {
+      const billData = this.data.billData;
+      this.billForm.patchValue({
+        total_amount: billData.total_amount || '',
+        bill_period_start: billData.bill_period_start
+          ? new Date(billData.bill_period_start)
+          : null,
+        bill_period_end: billData.bill_period_end
+          ? new Date(billData.bill_period_end)
+          : null,
+        bill_file_id: billData.bill_file_id || this.data.billFileId,
+      });
     }
 
-    // ✅ If editing existing bill, prefill data
-    if (this.data.billData) {
-      this.billForm.patchValue({
-        referral_id: this.data.billData.referral_id,
-        total_amount: this.data.billData.total_amount,
-        bill_period_start: new Date(this.data.billData.bill_period_start),
-        bill_period_end: new Date(this.data.billData.bill_period_end),
-        bill_file_id: this.data.billData.bill_file_id,
-      });
+    // Load referrals and patch referral_id
+    if (this.data.hospitalId && this.data.billFileId) {
+      this.loadReferrals(this.data.hospitalId, this.data.billFileId);
     }
   }
 
@@ -93,6 +105,40 @@ export class AddBillsComponent implements OnInit, OnDestroy {
     this.onDestroy$.complete();
   }
 
+  // private loadReferrals(hospitalId: number, billFileId: number) {
+  //   this.billsService
+  //     .getReferralsByHospital(hospitalId, billFileId)
+  //     .pipe(takeUntil(this.onDestroy$))
+  //     .subscribe({
+  //       next: (res) => {
+  //         if (res?.data) {
+
+  //           this.referrals = res.data.map((r: any) => ({
+  //             ...r,
+  //             referral_id: Number(r.referral_id),
+  //           }));
+
+  //           const billReferralId = Number(
+  //             this.data.billData?.referral?.referral_id
+  //           );
+  //           if (
+  //             billReferralId &&
+  //             this.referrals.some((r) => r.referral_id === billReferralId)
+  //           ) {
+  //             this.billForm.patchValue({ referral_id: billReferralId });
+  //           }
+  //         } else {
+  //           this.referrals = [];
+  //           Swal.fire('Error', res.message || 'No referrals found', 'error');
+  //         }
+  //       },
+  //       error: () => {
+  //         this.referrals = [];
+  //         Swal.fire('Error', 'Failed to load referrals', 'error');
+  //       },
+  //     });
+  // }
+
   private loadReferrals(hospitalId: number, billFileId: number) {
     this.billsService
       .getReferralsByHospital(hospitalId, billFileId)
@@ -100,7 +146,22 @@ export class AddBillsComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (res) => {
           if (res?.data) {
-            this.referrals = res.data;
+            // Ensure referral_id is a number
+            this.referrals = res.data.map((r: any) => ({
+              ...r,
+              referral_id: Number(r.referral_id),
+            }));
+
+            // Patch referral_id AFTER referrals are loaded
+            const billReferralId = Number(
+              this.data.billData?.referral?.referral_id
+            );
+            if (
+              billReferralId &&
+              this.referrals.some((r) => r.referral_id === billReferralId)
+            ) {
+              this.billForm.patchValue({ referral_id: billReferralId });
+            }
           } else {
             this.referrals = [];
             Swal.fire('Error', res.message || 'No referrals found', 'error');
@@ -118,20 +179,20 @@ export class AddBillsComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(): void {
-    if (this.billForm.valid) {
-      this.loading = true;
+    if (!this.billForm.valid) return;
 
-      const formValue = {
-        ...this.billForm.value,
-        bill_period_start: this.formatDate(this.billForm.value.bill_period_start),
-        bill_period_end: this.formatDate(this.billForm.value.bill_period_end),
-      };
+    this.loading = true;
 
-      setTimeout(() => {
-        this.loading = false;
-        this.dialogRef.close(formValue);
-      }, 1200);
-    }
+    const formValue = {
+      ...this.billForm.value,
+      bill_period_start: this.formatDate(this.billForm.value.bill_period_start),
+      bill_period_end: this.formatDate(this.billForm.value.bill_period_end),
+    };
+
+    setTimeout(() => {
+      this.loading = false;
+      this.dialogRef.close(formValue);
+    }, 1200);
   }
 
   private formatDate(date: Date): string {
