@@ -15,7 +15,7 @@ import { PermissionService } from '../../../services/authentication/permission.s
 import { BillFileService } from '../../../services/Bills/bill-file.service';
 import { ReferralpaymentComponent } from '../referralpayment/referralpayment.component';
 import { EmrSegmentedModule } from '@elementar/components';
-import {MatDividerModule} from '@angular/material/divider';
+import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
 import { environment } from '../../../../environments/environment.prod';
 
@@ -32,15 +32,15 @@ import { environment } from '../../../../environments/environment.prod';
     MatTooltipModule,
     MatButtonModule,
     EmrSegmentedModule,
-    MatCardModule
+    MatCardModule,
   ],
   templateUrl: './billpayment.component.html',
   styleUrls: ['./billpayment.component.scss'],
 })
 export class BillpaymentComponent implements OnInit, OnDestroy {
   private readonly onDestroy = new Subject<void>();
-    public documentUrl = environment.fileUrl;
-  
+  public documentUrl = environment.fileUrl;
+
   loading = false;
 
   displayedColumns: string[] = [
@@ -49,6 +49,7 @@ export class BillpaymentComponent implements OnInit, OnDestroy {
     'amount',
     'paid_amount',
     'balance',
+    'bill_period',
     'status',
     'action',
   ];
@@ -76,22 +77,62 @@ export class BillpaymentComponent implements OnInit, OnDestroy {
     }
   }
 
+  // public getAllPaymentByHospital(hospital_id: number) {
+  //   this.loading = true;
+  //   this.billFileService.getAllBillFilesForPaymentById(hospital_id).subscribe({
+  //     next: (response: any) => {
+  //       this.loading = false;
+  //       if (response?.data) {
+  //         this.hospital_id = response.data.hospital_id;
+  //         this.hospital_name = response.data.hospital_name;
+
+  //         this.dataSource.data = response.data.bill_files || [];
+
+  //         this.totals = response.data.totals || {};
+  //       } else {
+  //         this.dataSource.data = [];
+  //         this.totals = {};
+  //       }
+  //     },
+  //     error: (error) => {
+  //       this.loading = false;
+  //       console.error('Error fetching bill files:', error);
+  //       Swal.fire('Error', 'Failed to fetch bill files', 'error');
+  //     },
+  //   });
+  // }
+
   public getAllPaymentByHospital(hospital_id: number) {
     this.loading = true;
+
     this.billFileService.getAllBillFilesForPaymentById(hospital_id).subscribe({
       next: (response: any) => {
         this.loading = false;
+
         if (response?.data) {
           this.hospital_id = response.data.hospital_id;
           this.hospital_name = response.data.hospital_name;
 
-          this.dataSource.data = response.data.bill_files || [];
+          
+          this.dataSource.data = (response.data.bill_files || []).map(
+            (file: any) => {
+              return {
+                ...file,
+                bill_start: file.bill_start ? new Date(file.bill_start) : null,
+                bill_end: file.bill_end ? new Date(file.bill_end) : null,
+              };
+            }
+          );
 
           this.totals = response.data.totals || {};
         } else {
           this.dataSource.data = [];
           this.totals = {};
         }
+
+        // Attach paginator and sort if needed
+        if (this.paginator) this.dataSource.paginator = this.paginator;
+        if (this.sort) this.dataSource.sort = this.sort;
       },
       error: (error) => {
         this.loading = false;
@@ -153,10 +194,8 @@ export class BillpaymentComponent implements OnInit, OnDestroy {
     config.width = '950px';
     config.height = '1000px';
 
-    this.dialog
-      .open(ReferralpaymentComponent, config)
-      .afterClosed()
-      // .subscribe(() => this.getAllPaymentByHospital());
+    this.dialog.open(ReferralpaymentComponent, config).afterClosed();
+    // .subscribe(() => this.getAllPaymentByHospital());
   }
 
   displayMoreData(element: any) {
