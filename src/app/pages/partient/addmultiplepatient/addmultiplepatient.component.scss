@@ -1,0 +1,60 @@
+/* Container styling */
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Smooth Material field styling */
+::ng-deep .mat-mdc-form-field {
+  width: 100%;
+  transition: all 0.3s ease;
+}
+
+::ng-deep .mat-mdc-form-field-appearance-outline .mdc-notched-outline__leading,
+::ng-deep .mat-mdc-form-field-appearance-outline .mdc-notched-outline__trailing {
+  border-color: #cce5e1 !important;
+}
+
+::ng-deep .mat-mdc-form-field-appearance-outline.mat-focused .mdc-notched-outline__leading,
+::ng-deep .mat-mdc-form-field-appearance-outline.mat-focused .mdc-notched-outline__trailing {
+  border-color: #0d9488 !important; /* Teal when focused */
+}
+
+::ng-deep .mat-mdc-select-value,
+::ng-deep .mat-mdc-floating-label {
+  color: #065f46 !important;
+}
+
+button[mat-stroked-button] {
+  border-radius: 8px;
+  padding: 8px 24px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+button[mat-stroked-button]:hover {
+  background-color: #fbeaea;
+}
+
+button[mat-raised-button] {
+  border-radius: 8px;
+  font-weight: 600;
+  background-color: #059669 !important;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+button[mat-raised-button]:hover {
+  background-color: #047857 !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .p-6 {
+    padding: 1rem;
+  }
+
+  form {
+    gap: 1rem;
+  }
+}

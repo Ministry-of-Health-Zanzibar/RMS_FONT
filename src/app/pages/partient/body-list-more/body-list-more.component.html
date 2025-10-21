@@ -43,7 +43,7 @@
             <span
               (click)="addPatient(file.patient_list_id)"
               *ngIf="permission.parmissionMatched(['View Patient List'])"
-              matTooltip="Add Bill"
+              matTooltip="Add Patient"
               class="cursor-pointer w-10 h-10 flex items-center justify-center text-white bg-blue-600 rounded-full hover:bg-blue-700 transition-all mx-auto"
             >
               <mat-icon>person_add</mat-icon>
@@ -54,7 +54,7 @@
             <span
               (click)="addMultiple(file.patient_list_id)"
               *ngIf="permission.parmissionMatched(['View Patient List'])"
-              matTooltip="Add Bill"
+              matTooltip="Add Multiple Patient"
               class="cursor-pointer w-10 h-10 flex items-center justify-center text-white bg-blue-600 rounded-full hover:bg-blue-700 transition-all mx-auto"
             >
               <mat-icon>person_add</mat-icon>
@@ -149,7 +149,7 @@
        <button
   mat-flat-button
   color="primary"
-  class="!bg-green-600 !text-white !px-2 !py-1 rounded-md hover:!bg-green-700 transition"
+  class="!bg-blue-600 !text-white !px-2 !py-1 rounded-md hover:!bg-blue-700 transition"
   (click)="openAddMedicalHistory(p)"
   matTooltip="Add Medical History"
 >
@@ -165,7 +165,7 @@
      <button
       mat-icon-button
       color="primary"
-      class="!bg-green-600 !text-white !ml-3 hover:!bg-green-700 transition"
+      class="!bg-blue-600 !text-white !ml-3 hover:!bg-green-700 transition"
       (click)="openAddMedicalHistory(p)"
       matTooltip="Add Medical History"
     >

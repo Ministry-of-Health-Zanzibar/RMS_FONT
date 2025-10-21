@@ -53,14 +53,14 @@ export class ViewreasonComponent {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
- 
- 
+
+
    constructor(public permission: PermissionService,
      public reasonsService: ReasonsService,
      private route:Router,
      private dialog: MatDialog
      ){}
- 
+
    ngOnInit(): void {
      this.getReasons();
    }
@@ -85,17 +85,17 @@ export class ViewreasonComponent {
            console.log('country getAway api fail to load')
          })
        }
-     
-     
+
+
        applyFilter(event: Event) {
          const filterValue = (event.target as HTMLInputElement).value;
          this.dataSource.filter = filterValue.trim().toLowerCase();
-     
+
          if (this.dataSource.paginator) {
            this.dataSource.paginator.firstPage();
          }
        }
-     
+
        addR() {
          let config = new MatDialogConfig()
          config.disableClose = false
@@ -104,15 +104,15 @@ export class ViewreasonComponent {
          config.maxHeight = '100vh'
          config.width = '850px'
          config.panelClass = 'full-screen-modal'
-     
+
          const dialogRef = this.dialog.open(AddreasonComponent,config);
-     
+
          dialogRef.afterClosed().subscribe(result => {
            this.getReasons();
          });
        }
-      
-         
+
+
         addReasons() {
            let config = new MatDialogConfig()
            config.disableClose = false
@@ -126,8 +126,8 @@ export class ViewreasonComponent {
              this.getReasons();
            });
          }
-   
-       
+
+
          updateReasons(data: any) {
            let config = new MatDialogConfig()
            config.disableClose = false
@@ -137,16 +137,16 @@ export class ViewreasonComponent {
            config.width = '850px'
            config.panelClass = 'full-screen-modal'
            config.data = {data: data}
-       
+
            const dialogRef = this.dialog.open(AddreasonComponent,config);
-       
+
            dialogRef.afterClosed().subscribe(result => {
              this.getReasons();
            });
          }
-       
-       
-       
+
+
+
          confirmBlock(data:any){
            var message;
            if(data.deleted_at){
@@ -173,7 +173,7 @@ export class ViewreasonComponent {
              }
            });
          }
-       
+
          blockReasons(data: any, deleted: any): void{
             if(deleted){
              this.reasonsService.unblockReasons(data, data?.reason_id).subscribe(response=>{
@@ -219,6 +219,5 @@ export class ViewreasonComponent {
               });
             }
           }
- 
+
  }
- 

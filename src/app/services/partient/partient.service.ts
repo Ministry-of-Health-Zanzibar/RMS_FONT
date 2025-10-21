@@ -20,6 +20,11 @@ export class PartientService {
   private href_insurances = `${this.baseUrl}insurances`;
   private href_patientInsurance = `${this.baseUrl}patients-withinsurance`;
 
+  private addMultiple = `${this.baseUrl}patient-lists/assign-patients`;
+
+
+
+
   constructor(private http: HttpClient) {}
   //body list
   public getAllBodyList(): Observable<any> {
@@ -101,9 +106,18 @@ export class PartientService {
   //   return this.http.post(`${this.href}/update/${id}`, patient);
   // }
 
+
   public updatePartient(patient: any, id: number): Observable<any> {
     return this.http.post(`${this.href}/update/${id}`, patient);
   }
+  public addMultiplePartient(patient: any, id: number): Observable<any> {
+  return this.http.post(`${this.baseUrl}/patient-lists/assign-patients/${id}`, patient);
+}
+
+
+  //   public addMultiplePartient(patient: any, id: number): Observable<any> {
+  //   return this.http.post(`${this.addMultiple}/${id}`, patient);
+  // }
 
   public updateMedicalBoard(
     patient: any,
