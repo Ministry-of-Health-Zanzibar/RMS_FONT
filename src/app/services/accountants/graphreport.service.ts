@@ -18,6 +18,12 @@ export class GraphreportService {
     );
   }
 
+  public getMonthRefferalByGender(): Observable<any> {
+    return this.http.get<any>(
+      `${this.baseUrl}reports/getMonthlyMaleAndFemaleReferralReport`
+    );
+  }
+
   public getDocumentPerMonthReport(): Observable<any> {
     return this.http.get<any>(
       `${this.baseUrl}accountant/reports/reportPerMonthly`

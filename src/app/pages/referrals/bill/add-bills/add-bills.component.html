@@ -18,7 +18,8 @@
           *ngFor="let referral of referrals"
           [value]="referral.referral_id"
         >
-          {{ referral.referral_number }} - {{ referral.patient.name }}
+          {{ referral.referral_number }} -
+          {{ referral.patient?.name || "No Name" }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="billForm.get('referral_id')?.hasError('required')">
