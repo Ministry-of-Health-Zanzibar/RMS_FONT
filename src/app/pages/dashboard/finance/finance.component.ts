@@ -132,6 +132,54 @@ export class FinanceComponent implements OnInit {
     );
   }
 
+  // fetchReferralByMonth(): void {
+  //   this.reportService.getMonthRefferalByGender().subscribe(
+  //     (response) => {
+  //       const chartData = response?.data || [];
+
+  //       const monthNames = [
+  //         'January',
+  //         'February',
+  //         'March',
+  //         'April',
+  //         'May',
+  //         'June',
+  //         'July',
+  //         'August',
+  //         'September',
+  //         'October',
+  //         'November',
+  //         'December',
+  //       ];
+
+  //       const months = chartData.map((item: any) => {
+  //         const [year, month] = item.month.split('-');
+  //         return monthNames[parseInt(month) - 1];
+  //       });
+
+  //       const maleReferrals = chartData.map(
+  //         (item: any) => item.male_referrals || 0
+  //       );
+  //       const femaleReferrals = chartData.map(
+  //         (item: any) => item.female_referrals || 0
+  //       );
+
+  //       this.barChartOptions = {
+  //         ...this.barChartOptions,
+  //         series: [
+  //           { name: 'Male', data: maleReferrals },
+  //           { name: 'Female', data: femaleReferrals },
+  //         ],
+  //         xaxis: {
+  //           ...this.barChartOptions.xaxis,
+  //           categories: months,
+  //         },
+  //       };
+  //     },
+  //     (error) => console.error('Error fetching referral data:', error)
+  //   );
+  // }
+
   fetchReferralByMonth(): void {
     this.reportService.getMonthRefferalByGender().subscribe(
       (response) => {
@@ -152,9 +200,11 @@ export class FinanceComponent implements OnInit {
           'December',
         ];
 
-        const months = chartData.map((item: any) => {
+        // Create "Month Year" labels
+        const monthYearLabels = chartData.map((item: any) => {
           const [year, month] = item.month.split('-');
-          return monthNames[parseInt(month) - 1];
+          const monthName = monthNames[parseInt(month, 10) - 1];
+          return `${monthName} ${year}`; // e.g. "January 2025"
         });
 
         const maleReferrals = chartData.map(
@@ -172,7 +222,8 @@ export class FinanceComponent implements OnInit {
           ],
           xaxis: {
             ...this.barChartOptions.xaxis,
-            categories: months,
+            categories: monthYearLabels,
+            title: { text: 'Month & Year' },
           },
         };
       },
