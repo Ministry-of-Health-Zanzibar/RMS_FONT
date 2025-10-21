@@ -37,13 +37,12 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { Observable, Subject } from 'rxjs';
 import Swal from 'sweetalert2';
-
 import { DiagnosisService } from '../../../services/system-configuration/diagnosis.service';
-import { MedicalhistoryService } from '../../../services/partient/medicalhistory.service';
 import { ReasonsService } from '../../../services/system-configuration/reasons.service';
+import { MedicalhistoryService } from '../../../services/partient/medicalhistory.service';
 
 @Component({
-  selector: 'app-addmedicalhistory',
+  selector: 'app-addmedicalform',
   standalone: true,
   imports: [
     CommonModule,
@@ -66,10 +65,10 @@ import { ReasonsService } from '../../../services/system-configuration/reasons.s
     MatCardSubtitle,
     MatRadioModule,
   ],
-  templateUrl: './addmedicalhistory.component.html',
-  styleUrls: ['./addmedicalhistory.component.scss'],
+  templateUrl: './addmedicalform.component.html',
+  styleUrl: './addmedicalform.component.scss'
 })
-export class AddmedicalhistoryComponent implements OnInit, OnDestroy {
+export class AddmedicalformComponent implements OnInit, OnDestroy {
   medicalForm!: FormGroup;
   loading = false;
   backendErrors: any = {};
@@ -85,7 +84,7 @@ export class AddmedicalhistoryComponent implements OnInit, OnDestroy {
     private diagnosisService: DiagnosisService,
     private reasonServices: ReasonsService,
     private medicalHistoryService: MedicalhistoryService,
-    public dialogRef: MatDialogRef<AddmedicalhistoryComponent>,
+    public dialogRef: MatDialogRef<AddmedicalformComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
@@ -99,7 +98,7 @@ export class AddmedicalhistoryComponent implements OnInit, OnDestroy {
     console.log('Patient Gender:', patient.gender);
     console.log('Patient Location:', patient.location);
 
-    const filePatientId = patient.patient_id;
+    const filePatientId = patient?.files[0]?.patient_id;
     console.log('Patient ID from file:', filePatientId);
 
     this.buildForm(patient);
@@ -114,7 +113,7 @@ export class AddmedicalhistoryComponent implements OnInit, OnDestroy {
 
   buildForm(patient?: any) {
     this.medicalForm = this.fb.group({
-      patient_id: [patient.patient_id || '', Validators.required],
+      patient_id: [patient?.files[0]?.patient_id || '', Validators.required],
       referring_doctor: ['', Validators.required],
       file_number: ['', Validators.required],
       referring_date: ['', ],

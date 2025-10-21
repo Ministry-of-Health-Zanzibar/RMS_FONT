@@ -110,14 +110,15 @@ export class PartientService {
   public updatePartient(patient: any, id: number): Observable<any> {
     return this.http.post(`${this.href}/update/${id}`, patient);
   }
-  public addMultiplePartient(patient: any, id: number): Observable<any> {
-  return this.http.post(`${this.baseUrl}/patient-lists/assign-patients/${id}`, patient);
-}
+//   public addMultiplePartient(patient: any, id: number): Observable<any> {
+//   return this.http.post(`${this.baseUrl}patient-lists/assign-patients/${id}`, patient);
+
+// }
 
 
-  //   public addMultiplePartient(patient: any, id: number): Observable<any> {
-  //   return this.http.post(`${this.addMultiple}/${id}`, patient);
-  // }
+    public addMultiplePartient(patient: any, id: number): Observable<any> {
+    return this.http.post(`${this.addMultiple}/${id}`, patient);
+  }
 
   public updateMedicalBoard(
     patient: any,

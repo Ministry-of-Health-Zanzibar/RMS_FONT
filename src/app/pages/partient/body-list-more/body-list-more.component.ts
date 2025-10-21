@@ -24,6 +24,7 @@ import { environment } from '../../../../environments/environment.prod';
 import { AddmedicalhistoryComponent } from '../addmedicalhistory/addmedicalhistory.component';
 import { PartientFormComponent } from '../partient-form/partient-form.component';
 import { AddmultiplepatientComponent, AddMultiplePatientDialogData } from '../addmultiplepatient/addmultiplepatient.component';
+import { AddmedicalformComponent } from '../addmedicalform/addmedicalform.component';
 
 interface BodyList {
   patient_list_id: number;
@@ -261,7 +262,7 @@ export class BodyListMoreComponent implements OnInit, AfterViewInit {
 
     config.data = patient;
 
-    const dialogRef = this.dialog.open(AddmedicalhistoryComponent, config);
+    const dialogRef = this.dialog.open(AddmedicalformComponent, config);
 
     // ✅ Handle data when dialog is closed
     dialogRef.afterClosed().subscribe((result) => {
