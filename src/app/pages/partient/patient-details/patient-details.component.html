@@ -1,302 +1,302 @@
-<div *ngIf="medicalHistory" class="max-w-6xl mx-auto p-6 space-y-8">
-  <!-- Header Banner -->
-  <div
-    class="relative bg-gradient-to-r from-blue-700 to-blue-500 text-white rounded-2xl shadow-lg p-10 mb-8 flex items-center justify-center"
-  >
-    <img
-      src="../../../../assets/img/doctor.png"
-      alt="Doctor"
-      class="absolute left-4 top-1/2 transform -translate-y-1/2 w-24 h-24 opacity-80 rounded-full shadow-lg"
-    />
-    <div class="text-center z-10">
-      <h1 class="text-4xl font-bold tracking-wide">Medical History Details</h1>
-      <p class="mt-2 text-lg opacity-90">Detailed information of the record</p>
+  <div *ngIf="medicalHistory" class="max-w-6xl mx-auto p-6 space-y-8">
+    <!-- Header Banner -->
+    <div
+      class="relative bg-gradient-to-r from-blue-700 to-blue-500 text-white rounded-2xl shadow-lg p-10 mb-8 flex items-center justify-center"
+    >
+      <img
+        src="../../../../assets/img/doctor.png"
+        alt="Doctor"
+        class="absolute left-4 top-1/2 transform -translate-y-1/2 w-24 h-24 opacity-80 rounded-full shadow-lg"
+      />
+      <div class="text-center z-10">
+        <h1 class="text-4xl font-bold tracking-wide">Medical History Details</h1>
+        <p class="mt-2 text-lg opacity-90">Detailed information of the record</p>
+      </div>
+      <img
+        src="../../../../assets/img/objective3.png"
+        alt="Patient"
+        class="absolute right-4 top-1/2 transform -translate-y-1/2 w-24 h-24 opacity-80 rounded-full shadow-lg"
+      />
     </div>
-    <img
-      src="../../../../assets/img/objective3.png"
-      alt="Patient"
-      class="absolute right-4 top-1/2 transform -translate-y-1/2 w-24 h-24 opacity-80 rounded-full shadow-lg"
-    />
+
+    <!-- Add New Button -->
+    <!-- <div class="flex justify-end mb-4">
+      <button
+        mat-raised-button
+        color="primary"
+        class="!bg-primary-600 !text-white hover:!bg-primary-700 transition"
+        (click)="openAddMedicalHistory(medicalHistory)"
+      >
+        <mat-icon class="!text-white mr-1">add</mat-icon> Add Medical History
+      </button>
+    </div> -->
+
+    <!-- Patient Info -->
+    <mat-card
+      class="shadow-2xl rounded-2xl border border-gray-100 bg-gradient-to-br from-blue-50 via-white to-blue-100"
+    >
+      <mat-card-header class="pb-2 border-b border-gray-200">
+        <mat-card-title
+          class="text-2xl font-bold text-blue-800 flex items-center"
+        >
+          <mat-icon color="primary" class="mr-2 text-3xl">person</mat-icon>
+          Patient Information
+        </mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content class="p-6">
+        <div class="grid md:grid-cols-2 gap-6 text-gray-800">
+          <!-- Name -->
+          <div
+            class="flex items-center bg-white rounded-xl p-3 shadow-sm border border-gray-100"
+          >
+            <mat-icon color="primary" class="mr-3">badge</mat-icon>
+            <div>
+              <p class="text-sm text-gray-500">Full Name</p>
+              <p class="font-semibold text-lg">
+                {{ medicalHistory.patient.name }}
+              </p>
+            </div>
+          </div>
+
+          <!-- Gender -->
+          <div
+            class="flex items-center bg-white rounded-xl p-3 shadow-sm border border-gray-100"
+          >
+            <mat-icon color="accent" class="mr-3">wc</mat-icon>
+            <div>
+              <p class="text-sm text-gray-500">Gender</p>
+              <p class="font-semibold text-lg capitalize">
+                {{ medicalHistory.patient.gender }}
+              </p>
+            </div>
+          </div>
+
+          <!-- Date of Birth -->
+          <div
+            class="flex items-center bg-white rounded-xl p-3 shadow-sm border border-gray-100"
+          >
+            <mat-icon color="warn" class="mr-3">calendar_month</mat-icon>
+            <div>
+              <p class="text-sm text-gray-500">Date of Birth</p>
+              <p class="font-semibold text-lg">
+                {{ medicalHistory.patient.date_of_birth | date : "mediumDate" }}
+              </p>
+            </div>
+          </div>
+
+          <!-- Phone -->
+          <div
+            class="flex items-center bg-white rounded-xl p-3 shadow-sm border border-gray-100"
+          >
+            <mat-icon color="primary" class="mr-3">phone</mat-icon>
+            <div>
+              <p class="text-sm text-gray-500">Phone Number</p>
+              <p class="font-semibold text-lg">
+                {{ medicalHistory.patient.phone }}
+              </p>
+            </div>
+          </div>
+
+          <!-- Job -->
+          <div
+            class="flex items-center bg-white rounded-xl p-3 shadow-sm border border-gray-100"
+          >
+            <mat-icon color="accent" class="mr-3">work</mat-icon>
+            <div>
+              <p class="text-sm text-gray-500">Job</p>
+              <p class="font-semibold text-lg">
+                {{ medicalHistory.patient.job }}
+              </p>
+            </div>
+          </div>
+
+          <!-- Position -->
+          <div
+            class="flex items-center bg-white rounded-xl p-3 shadow-sm border border-gray-100"
+          >
+            <mat-icon color="primary" class="mr-3">assignment_ind</mat-icon>
+            <div>
+              <p class="text-sm text-gray-500">Position</p>
+              <p class="font-semibold text-lg">
+                {{ medicalHistory.patient.position }}
+              </p>
+            </div>
+          </div>
+
+          <!-- Location ID -->
+          <div
+            class="flex items-center bg-white rounded-xl p-3 shadow-sm border border-gray-100 md:col-span-2"
+          >
+            <mat-icon color="warn" class="mr-3">location_on</mat-icon>
+            <div>
+              <p class="text-sm text-gray-500">Location ID</p>
+              <p class="font-semibold text-lg">
+                {{ medicalHistory.patient.location_id }}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Created Date -->
+        <div class="mt-6 text-right text-gray-500 text-sm italic">
+          Created on:
+          {{ medicalHistory.patient.created_at | date : "medium" }}
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Diagnoses Section -->
+    <mat-card class="shadow-lg rounded-2xl border border-gray-200">
+      <mat-card-header>
+        <mat-card-title class="text-2xl font-semibold text-gray-800">
+          <mat-icon color="accent" class="mr-2">healing</mat-icon> Diagnoses
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="p-6">
+        <div *ngIf="medicalHistory.diagnoses?.length; else noDiagnoses">
+          <div
+            *ngFor="let d of medicalHistory.diagnoses"
+            class="bg-blue-50 border border-blue-200 rounded-xl p-3 mb-3 flex items-center justify-between"
+          >
+            <div>
+              <p class="font-semibold text-blue-800">
+                {{ d.diagnosis_name }}
+              </p>
+              <p class="text-sm text-gray-600">Code: {{ d.diagnosis_code }}</p>
+            </div>
+            <mat-icon color="primary">medical_services</mat-icon>
+          </div>
+        </div>
+        <ng-template #noDiagnoses>
+          <p class="text-gray-500 italic">No diagnoses available.</p>
+        </ng-template>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Medical History Details -->
+    <mat-card class="shadow-lg rounded-2xl border border-gray-200">
+      <mat-card-header>
+        <mat-card-title class="text-2xl font-semibold text-gray-800">
+          <mat-icon color="warn" class="mr-2">description</mat-icon> Medical
+          History Information
+        </mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content class="p-6 text-gray-700">
+        <table class="table-auto w-full border-collapse border border-gray-300">
+          <tbody>
+            <tr class="bg-gray-50">
+              <th class="border border-gray-300 p-3 text-left">
+                Referring Doctor
+              </th>
+              <td class="border border-gray-300 p-3">
+                {{ medicalHistory.referring_doctor }}
+              </td>
+              <th class="border border-gray-300 p-3 text-left">File Number</th>
+              <td class="border border-gray-300 p-3">
+                {{ medicalHistory.file_number }}
+              </td>
+            </tr>
+            <tr>
+              <th class="border border-gray-300 p-3 text-left">
+                Presenting Illness
+              </th>
+              <td colspan="3" class="border border-gray-300 p-3">
+                {{ medicalHistory.history_of_presenting_illness }}
+              </td>
+            </tr>
+            <tr class="bg-gray-50">
+              <th class="border border-gray-300 p-3 text-left">
+                Physical Findings
+              </th>
+              <td colspan="3" class="border border-gray-300 p-3">
+                {{ medicalHistory.physical_findings }}
+              </td>
+            </tr>
+            <tr>
+              <th class="border border-gray-300 p-3 text-left">Investigations</th>
+              <td colspan="3" class="border border-gray-300 p-3">
+                {{ medicalHistory.investigations }}
+              </td>
+            </tr>
+            <tr class="bg-gray-50">
+              <th class="border border-gray-300 p-3 text-left">
+                Management Done
+              </th>
+              <td colspan="3" class="border border-gray-300 p-3">
+                {{ medicalHistory.management_done }}
+              </td>
+            </tr>
+            <tr>
+              <th class="border border-gray-300 p-3 text-left">Board Comments</th>
+              <td colspan="3" class="border border-gray-300 p-3">
+                {{ medicalHistory.board_comments }}
+              </td>
+            </tr>
+            <tr class="bg-gray-50">
+              <th class="border border-gray-300 p-3 text-left">History File</th>
+              <td colspan="3" class="border border-gray-300 p-3">
+                <button
+                  *ngIf="medicalHistory.history_file"
+                  mat-stroked-button
+                  color="primary"
+                  (click)="viewPDF(medicalHistory.history_file)"
+                >
+                  <mat-icon>picture_as_pdf</mat-icon> View File
+                </button>
+                <span *ngIf="!medicalHistory.history_file" class="text-gray-500"
+                  >No file available</span
+                >
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </mat-card-content>
+    </mat-card>
   </div>
 
-  <!-- Add New Button -->
-  <!-- <div class="flex justify-end mb-4">
-    <button
-      mat-raised-button
-      color="primary"
-      class="!bg-primary-600 !text-white hover:!bg-primary-700 transition"
-      (click)="openAddMedicalHistory(medicalHistory)"
-    >
-      <mat-icon class="!text-white mr-1">add</mat-icon> Add Medical History
-    </button>
-  </div> -->
-
-  <!-- Patient Info -->
-  <mat-card
-    class="shadow-2xl rounded-2xl border border-gray-100 bg-gradient-to-br from-blue-50 via-white to-blue-100"
-  >
-    <mat-card-header class="pb-2 border-b border-gray-200">
-      <mat-card-title
-        class="text-2xl font-bold text-blue-800 flex items-center"
+  <!-- Diagnoses List -->
+  <!-- <mat-card class="shadow-xl rounded-2xl">
+    <mat-card-header>
+      <mat-card-title class="text-xl font-semibold text-gray-800"
+        >Diagnoses</mat-card-title
       >
-        <mat-icon color="primary" class="mr-2 text-3xl">person</mat-icon>
-        Patient Information
-      </mat-card-title>
-    </mat-card-header>
-
-    <mat-card-content class="p-6">
-      <div class="grid md:grid-cols-2 gap-6 text-gray-800">
-        <!-- Name -->
-        <div
-          class="flex items-center bg-white rounded-xl p-3 shadow-sm border border-gray-100"
-        >
-          <mat-icon color="primary" class="mr-3">badge</mat-icon>
-          <div>
-            <p class="text-sm text-gray-500">Full Name</p>
-            <p class="font-semibold text-lg">
-              {{ medicalHistory.patient.name }}
-            </p>
-          </div>
-        </div>
-
-        <!-- Gender -->
-        <div
-          class="flex items-center bg-white rounded-xl p-3 shadow-sm border border-gray-100"
-        >
-          <mat-icon color="accent" class="mr-3">wc</mat-icon>
-          <div>
-            <p class="text-sm text-gray-500">Gender</p>
-            <p class="font-semibold text-lg capitalize">
-              {{ medicalHistory.patient.gender }}
-            </p>
-          </div>
-        </div>
-
-        <!-- Date of Birth -->
-        <div
-          class="flex items-center bg-white rounded-xl p-3 shadow-sm border border-gray-100"
-        >
-          <mat-icon color="warn" class="mr-3">calendar_month</mat-icon>
-          <div>
-            <p class="text-sm text-gray-500">Date of Birth</p>
-            <p class="font-semibold text-lg">
-              {{ medicalHistory.patient.date_of_birth | date : "mediumDate" }}
-            </p>
-          </div>
-        </div>
-
-        <!-- Phone -->
-        <div
-          class="flex items-center bg-white rounded-xl p-3 shadow-sm border border-gray-100"
-        >
-          <mat-icon color="primary" class="mr-3">phone</mat-icon>
-          <div>
-            <p class="text-sm text-gray-500">Phone Number</p>
-            <p class="font-semibold text-lg">
-              {{ medicalHistory.patient.phone }}
-            </p>
-          </div>
-        </div>
-
-        <!-- Job -->
-        <div
-          class="flex items-center bg-white rounded-xl p-3 shadow-sm border border-gray-100"
-        >
-          <mat-icon color="accent" class="mr-3">work</mat-icon>
-          <div>
-            <p class="text-sm text-gray-500">Job</p>
-            <p class="font-semibold text-lg">
-              {{ medicalHistory.patient.job }}
-            </p>
-          </div>
-        </div>
-
-        <!-- Position -->
-        <div
-          class="flex items-center bg-white rounded-xl p-3 shadow-sm border border-gray-100"
-        >
-          <mat-icon color="primary" class="mr-3">assignment_ind</mat-icon>
-          <div>
-            <p class="text-sm text-gray-500">Position</p>
-            <p class="font-semibold text-lg">
-              {{ medicalHistory.patient.position }}
-            </p>
-          </div>
-        </div>
-
-        <!-- Location ID -->
-        <div
-          class="flex items-center bg-white rounded-xl p-3 shadow-sm border border-gray-100 md:col-span-2"
-        >
-          <mat-icon color="warn" class="mr-3">location_on</mat-icon>
-          <div>
-            <p class="text-sm text-gray-500">Location ID</p>
-            <p class="font-semibold text-lg">
-              {{ medicalHistory.patient.location_id }}
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Created Date -->
-      <div class="mt-6 text-right text-gray-500 text-sm italic">
-        Created on:
-        {{ medicalHistory.patient.created_at | date : "medium" }}
-      </div>
-    </mat-card-content>
-  </mat-card>
-
-  <!-- Diagnoses Section -->
-  <mat-card class="shadow-lg rounded-2xl border border-gray-200">
-    <mat-card-header>
-      <mat-card-title class="text-2xl font-semibold text-gray-800">
-        <mat-icon color="accent" class="mr-2">healing</mat-icon> Diagnoses
-      </mat-card-title>
     </mat-card-header>
     <mat-card-content class="p-6">
-      <div *ngIf="medicalHistory.diagnoses?.length; else noDiagnoses">
-        <div
-          *ngFor="let d of medicalHistory.diagnoses"
-          class="bg-blue-50 border border-blue-200 rounded-xl p-3 mb-3 flex items-center justify-between"
-        >
-          <div>
-            <p class="font-semibold text-blue-800">
-              {{ d.diagnosis_name }}
-            </p>
-            <p class="text-sm text-gray-600">Code: {{ d.diagnosis_code }}</p>
-          </div>
-          <mat-icon color="primary">medical_services</mat-icon>
-        </div>
-      </div>
-      <ng-template #noDiagnoses>
-        <p class="text-gray-500 italic">No diagnoses available.</p>
-      </ng-template>
-    </mat-card-content>
-  </mat-card>
-
-  <!-- Medical History Details -->
-  <mat-card class="shadow-lg rounded-2xl border border-gray-200">
-    <mat-card-header>
-      <mat-card-title class="text-2xl font-semibold text-gray-800">
-        <mat-icon color="warn" class="mr-2">description</mat-icon> Medical
-        History Information
-      </mat-card-title>
-    </mat-card-header>
-
-    <mat-card-content class="p-6 text-gray-700">
-      <table class="table-auto w-full border-collapse border border-gray-300">
+      <table
+        *ngIf="medicalHistory.diagnoses?.length > 0; else noDiagnoses"
+        class="table-auto w-full border-collapse border border-gray-300"
+      >
+        <thead class="bg-gray-100">
+          <tr>
+            <th class="border border-gray-300 p-2 text-center">#</th>
+            <th class="border border-gray-300 p-2 text-center">Code</th>
+            <th class="border border-gray-300 p-2 text-center">Diagnosis Name</th>
+          </tr>
+        </thead>
         <tbody>
-          <tr class="bg-gray-50">
-            <th class="border border-gray-300 p-3 text-left">
-              Referring Doctor
-            </th>
-            <td class="border border-gray-300 p-3">
-              {{ medicalHistory.referring_doctor }}
+          <tr
+            *ngFor="let diag of medicalHistory.diagnoses; let i = index"
+            class="hover:bg-gray-50"
+          >
+            <td class="border border-gray-300 p-2 text-center">{{ i + 1 }}</td>
+            <td class="border border-gray-300 p-2 text-center">
+              {{ diag.diagnosis_code }}
             </td>
-            <th class="border border-gray-300 p-3 text-left">File Number</th>
-            <td class="border border-gray-300 p-3">
-              {{ medicalHistory.file_number }}
-            </td>
-          </tr>
-          <tr>
-            <th class="border border-gray-300 p-3 text-left">
-              Presenting Illness
-            </th>
-            <td colspan="3" class="border border-gray-300 p-3">
-              {{ medicalHistory.history_of_presenting_illness }}
-            </td>
-          </tr>
-          <tr class="bg-gray-50">
-            <th class="border border-gray-300 p-3 text-left">
-              Physical Findings
-            </th>
-            <td colspan="3" class="border border-gray-300 p-3">
-              {{ medicalHistory.physical_findings }}
-            </td>
-          </tr>
-          <tr>
-            <th class="border border-gray-300 p-3 text-left">Investigations</th>
-            <td colspan="3" class="border border-gray-300 p-3">
-              {{ medicalHistory.investigations }}
-            </td>
-          </tr>
-          <tr class="bg-gray-50">
-            <th class="border border-gray-300 p-3 text-left">
-              Management Done
-            </th>
-            <td colspan="3" class="border border-gray-300 p-3">
-              {{ medicalHistory.management_done }}
-            </td>
-          </tr>
-          <tr>
-            <th class="border border-gray-300 p-3 text-left">Board Comments</th>
-            <td colspan="3" class="border border-gray-300 p-3">
-              {{ medicalHistory.board_comments }}
-            </td>
-          </tr>
-          <tr class="bg-gray-50">
-            <th class="border border-gray-300 p-3 text-left">History File</th>
-            <td colspan="3" class="border border-gray-300 p-3">
-              <button
-                *ngIf="medicalHistory.history_file"
-                mat-stroked-button
-                color="primary"
-                (click)="viewPDF(medicalHistory.history_file)"
-              >
-                <mat-icon>picture_as_pdf</mat-icon> View File
-              </button>
-              <span *ngIf="!medicalHistory.history_file" class="text-gray-500"
-                >No file available</span
-              >
+            <td class="border border-gray-300 p-2 text-center">
+              {{ diag.diagnosis_name }}
             </td>
           </tr>
         </tbody>
       </table>
-    </mat-card-content>
-  </mat-card>
-</div>
 
-<!-- Diagnoses List -->
-<!-- <mat-card class="shadow-xl rounded-2xl">
-  <mat-card-header>
-    <mat-card-title class="text-xl font-semibold text-gray-800"
-      >Diagnoses</mat-card-title
-    >
-  </mat-card-header>
-  <mat-card-content class="p-6">
-    <table
-      *ngIf="medicalHistory.diagnoses?.length > 0; else noDiagnoses"
-      class="table-auto w-full border-collapse border border-gray-300"
-    >
-      <thead class="bg-gray-100">
-        <tr>
-          <th class="border border-gray-300 p-2 text-center">#</th>
-          <th class="border border-gray-300 p-2 text-center">Code</th>
-          <th class="border border-gray-300 p-2 text-center">Diagnosis Name</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          *ngFor="let diag of medicalHistory.diagnoses; let i = index"
-          class="hover:bg-gray-50"
+      <ng-template #noDiagnoses>
+        <div
+          class="text-center text-gray-500 p-6 bg-gray-50 rounded-lg shadow-md"
         >
-          <td class="border border-gray-300 p-2 text-center">{{ i + 1 }}</td>
-          <td class="border border-gray-300 p-2 text-center">
-            {{ diag.diagnosis_code }}
-          </td>
-          <td class="border border-gray-300 p-2 text-center">
-            {{ diag.diagnosis_name }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <ng-template #noDiagnoses>
-      <div
-        class="text-center text-gray-500 p-6 bg-gray-50 rounded-lg shadow-md"
-      >
-        No diagnoses found.
-      </div>
-    </ng-template>
-  </mat-card-content>
-</mat-card> -->
+          No diagnoses found.
+        </div>
+      </ng-template>
+    </mat-card-content>
+  </mat-card> -->
