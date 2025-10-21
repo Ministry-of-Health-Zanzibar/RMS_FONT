@@ -1,4 +1,3 @@
-import { GraphreportService } from './../../../services/accountants/graphreport.service';
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
@@ -7,17 +6,39 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-
-import { StatisticalService } from '../../../services/report/statistical.service';
-import { Chart, registerables } from 'chart.js';
-Chart.register(...registerables);
 import { NgApexchartsModule } from 'ng-apexcharts';
+import { StatisticalService } from '../../../services/report/statistical.service';
+import { GraphreportService } from './../../../services/accountants/graphreport.service';
+
 import {
   ApexAxisChartSeries,
   ApexChart,
-  ApexTitleSubtitle,
+  ApexDataLabels,
+  ApexPlotOptions,
   ApexXAxis,
+  ApexYAxis,
+  ApexLegend,
+  ApexFill,
+  ApexTooltip,
+  ApexTitleSubtitle,
+  ApexNonAxisChartSeries,
+  ApexResponsive,
 } from 'ng-apexcharts';
+
+// ✅ Define chart options interface
+export type ApexChartOptions = {
+  series: ApexAxisChartSeries;
+  chart: ApexChart;
+  dataLabels: ApexDataLabels;
+  plotOptions: ApexPlotOptions;
+  xaxis: ApexXAxis;
+  yaxis: ApexYAxis;
+  fill: ApexFill;
+  tooltip: ApexTooltip;
+  legend: ApexLegend;
+  title: ApexTitleSubtitle;
+  colors: string[];
+};
 
 @Component({
   standalone: true,
@@ -32,12 +53,62 @@ import {
     NgApexchartsModule,
   ],
   templateUrl: './finance.component.html',
-  styleUrl: './finance.component.scss',
+  styleUrls: ['./finance.component.scss'],
 })
 export class FinanceComponent implements OnInit {
   referral: any = {};
 
-  totalMaleComplain: any;
+  barChartOptions: ApexChartOptions = {
+    series: [
+      { name: 'Male', data: [] },
+      { name: 'Female', data: [] },
+    ],
+    chart: {
+      type: 'bar',
+      height: 350,
+      stacked: false,
+      toolbar: { show: true },
+    },
+    plotOptions: {
+      bar: {
+        horizontal: false,
+        columnWidth: '55%',
+        borderRadius: 6,
+        borderRadiusApplication: 'end',
+      },
+    },
+    dataLabels: { enabled: false },
+    xaxis: {
+      categories: [],
+      title: { text: 'Month' },
+      labels: { style: { fontSize: '12px' } },
+    },
+    yaxis: {
+      title: { text: 'Patients' },
+      labels: { style: { fontSize: '12px' } },
+    },
+    fill: { opacity: 1 },
+    legend: {
+      position: 'top',
+      horizontalAlign: 'center',
+      fontSize: '14px',
+    },
+    tooltip: {
+      y: {
+        formatter: (val: number, opts?: any) => {
+          const gender = opts?.seriesIndex === 0 ? 'Male' : 'Female';
+          const month = opts?.w.globals.labels[opts.dataPointIndex];
+          return `${month} - ${gender}: ${val}`;
+        },
+      },
+    },
+    colors: ['#4FD1C5', '#9AE6B4'],
+    title: {
+      text: 'Monthly Referrals by Gender',
+      align: 'center',
+      style: { fontSize: '18px', fontWeight: 'bold', color: '#333' },
+    },
+  };
 
   constructor(
     private dashboardService: StatisticalService,
@@ -45,33 +116,87 @@ export class FinanceComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // this.getSourceSummaryReport();
-    // this.getDocumentTypeSummaryReport();
     this.getReferralSummary();
     this.getReferralSummaryByReason();
+    this.fetchReferralByMonth();
     this.fetchData();
   }
+
   fetchData(): void {
     this.reportService.getCount().subscribe(
       (response) => {
         this.referral = response;
         console.log('Data fetched successfully:', this.referral);
       },
-      (error) => {
-        console.error('Error fetching data:', error);
-      }
+      (error) => console.error('Error fetching data:', error)
     );
   }
+
+  fetchReferralByMonth(): void {
+    this.reportService.getMonthRefferalByGender().subscribe(
+      (response) => {
+        const chartData = response?.data || [];
+
+        const monthNames = [
+          'January',
+          'February',
+          'March',
+          'April',
+          'May',
+          'June',
+          'July',
+          'August',
+          'September',
+          'October',
+          'November',
+          'December',
+        ];
+
+        const months = chartData.map((item: any) => {
+          const [year, month] = item.month.split('-');
+          return monthNames[parseInt(month) - 1];
+        });
+
+        const maleReferrals = chartData.map(
+          (item: any) => item.male_referrals || 0
+        );
+        const femaleReferrals = chartData.map(
+          (item: any) => item.female_referrals || 0
+        );
+
+        this.barChartOptions = {
+          ...this.barChartOptions,
+          series: [
+            { name: 'Male', data: maleReferrals },
+            { name: 'Female', data: femaleReferrals },
+          ],
+          xaxis: {
+            ...this.barChartOptions.xaxis,
+            categories: months,
+          },
+        };
+      },
+      (error) => console.error('Error fetching referral data:', error)
+    );
+  }
+
+  pieSeries: ApexNonAxisChartSeries = [];
+  pieLabels: string[] = [];
+  pieChart: ApexChart = { type: 'pie', height: 350, width: 600 };
+  pieTitle: ApexTitleSubtitle = { text: 'Referrals by Hospitals' };
+  pieLegend: ApexLegend = { position: 'right' };
+  pieResponsive: ApexResponsive[] = [
+    {
+      breakpoint: 480,
+      options: { chart: { width: 300 }, legend: { position: 'bottom' } },
+    },
+  ];
 
   getReferralSummary(): void {
     this.reportService.getReportreferralByHospital().subscribe(
       (data) => {
-        if (!data) {
-          console.error('No referral data found');
-          return;
-        }
+        if (!data) return;
         const hospitalMap: { [key: string]: string } = {
-
           totalReferralsByMuhimbiliOrthopaedicInstitute:
             'Muhimbili Orthopaedic Institute',
           totalReferralsByJakayaKikweteCardiacInstitute:
@@ -82,40 +207,15 @@ export class FinanceComponent implements OnInit {
             'Ocean Road Cancer Institute',
           totalReferralsByKilimanjaroChristianMedicalCentre:
             'Kilimanjaro Christian Medical Centre',
-
         };
-        this.pieLabels = Object.keys(hospitalMap);
-        this.pieLabels = this.pieLabels.map((key) => hospitalMap[key]);
-
+        this.pieLabels = Object.keys(hospitalMap).map(
+          (key) => hospitalMap[key]
+        );
         this.pieSeries = Object.keys(hospitalMap).map((key) => data[key] || 0);
       },
-      (error) => {
-        console.error('Error fetching referral summary', error);
-      }
+      (error) => console.error('Error fetching referral summary', error)
     );
   }
-
-  pieSeries: ApexNonAxisChartSeries = [];
-  pieLabels: string[] = [];
-
-  pieChart: ApexChart = {
-    type: 'pie',
-    height: 350,
-    width: 600,
-  };
-
-  pieTitle: ApexTitleSubtitle = { text: 'Referrals by Hospitals' };
-  pieLegend: ApexLegend = { position: 'right' };
-
-  pieResponsive: ApexResponsive[] = [
-    {
-      breakpoint: 480,
-      options: {
-        chart: { width: 300 },
-        legend: { position: 'bottom' },
-      },
-    },
-  ];
 
   reasonSeries: ApexNonAxisChartSeries = [];
   reasonLabels: string[] = [];
@@ -125,168 +225,23 @@ export class FinanceComponent implements OnInit {
   reasonResponsive: ApexResponsive[] = [
     {
       breakpoint: 480,
-      options: {
-        chart: { width: 300 },
-        legend: { position: 'bottom' },
-      },
+      options: { chart: { width: 300 }, legend: { position: 'bottom' } },
     },
   ];
 
   getReferralSummaryByReason(): void {
     this.reportService.getReportreferralreferralsByReason().subscribe(
       (data) => {
-        if (!data) {
-          console.error('No referral data found');
-          return;
-        }
-
+        if (!data) return;
         const reasonMap: { [key: string]: string } = {
           Male: 'Male',
           Female: 'Female',
-
         };
-
         this.reasonLabels = Object.keys(reasonMap).map((key) => reasonMap[key]);
         this.reasonSeries = Object.keys(reasonMap).map((key) => data[key] || 0);
       },
-      (error) => {
-        console.error('Error fetching referral summary by reason', error);
-      }
+      (error) =>
+        console.error('Error fetching referral summary by reason', error)
     );
-  }
-
-  // public getSourceSummaryReport(): void {
-  //   this.dashboardService.getTypeCount().subscribe((data) => {
-  //     if (!data.sourceSummary) {
-  //       console.error('No sourceSummary data found');
-  //       return;
-  //     }
-
-  //     const labels = data.sourceSummary.map((item: any) => item.source_name);
-  //     const totals = data.sourceSummary.map((item: any) => item.total);
-
-  //     this.renderChart(
-  //       'sourcePieChart',
-  //       labels,
-  //       totals,
-  //       'pie',
-  //       'Documents by Source'
-  //     );
-  //   });
-  // }
-
-  // public getDocumentTypeSummaryReport(): void {
-  //   this.reportService.getDocumentTypeReport().subscribe((data) => {
-  //     if (!data.documentTypeSummary) {
-  //       console.error('No documentTypeSummary data found');
-  //       return;
-  //     }
-
-  //     const labels = data.documentTypeSummary.map(
-  //       (item: any) => item.document_type_name
-  //     );
-  //     const totals = data.documentTypeSummary.map((item: any) => item.total);
-
-  //     this.renderChart(
-  //       'documentTypeChart',
-  //       labels,
-  //       totals,
-  //       'pie',
-  //       'Documents by Type'
-  //     );
-  //   });
-  // }
-
-  // With Months
-  renderChart(
-    canvasId: string,
-    labels: string[],
-    complailData: number[],
-    chartType: any,
-    chartName: string
-  ): void {
-    new Chart(canvasId, {
-      type: chartType,
-      data: {
-        labels: labels,
-        datasets: [
-          {
-            label: chartName,
-            data: complailData,
-            // backgroundColor: 'rgba(75, 192, 192, 0.2)',
-           backgroundColor: [
-                  'rgba(255, 182, 193, 0.5)',
-                  'rgba(255, 200, 120, 0.5)',
-                  'rgba(255, 236, 153, 0.5)',
-                  'rgba(144, 238, 144, 0.5)',
-                  'rgba(173, 216, 230, 0.5)',
-                  'rgba(221, 160, 221, 0.5)',
-                  'rgba(224, 224, 224, 0.5)',
-                ],
-
-            // borderColor: 'rgba(75, 192, 192, 1)',
-          borderColor: [
-              'rgb(255, 182, 193)', // Light Pink
-              'rgb(255, 200, 120)', // Light Orange
-              'rgb(255, 236, 153)', // Soft Yellow
-              'rgb(144, 238, 144)', // Light Green
-              'rgb(173, 216, 230)', // Light Blue
-              'rgb(221, 160, 221)', // Light Purple
-              'rgb(224, 224, 224)', // Soft Gray
-            ],
-
-            borderWidth: 1,
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        scales: {
-          y: {
-            beginAtZero: true,
-          },
-        },
-      },
-    });
-  }
-
-  createChart(canvasId: string, data: any[], label: string) {
-    new Chart(canvasId, {
-      type: 'line',
-      data: {
-        labels: data.map((d) => d.day || d.month || d.year || d.status),
-        datasets: [
-          {
-            label: label,
-            data: data.map((d) => d.total),
-             backgroundColor: [
-                  'rgba(255, 182, 193, 0.5)',
-                  'rgba(255, 200, 120, 0.5)',
-                  'rgba(255, 236, 153, 0.5)',
-                  'rgba(144, 238, 144, 0.5)',
-                  'rgba(173, 216, 230, 0.5)',
-                  'rgba(221, 160, 221, 0.5)',
-                  'rgba(224, 224, 224, 0.5)',
-                ],
-             borderColor: [
-              'rgb(255, 182, 193)', // Light Pink
-              'rgb(255, 200, 120)', // Light Orange
-              'rgb(255, 236, 153)', // Soft Yellow
-              'rgb(144, 238, 144)', // Light Green
-              'rgb(173, 216, 230)', // Light Blue
-              'rgb(221, 160, 221)', // Light Purple
-              'rgb(224, 224, 224)', // Soft Gray
-            ],
-            borderWidth: 1,
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        scales: {
-          y: { beginAtZero: true },
-        },
-      },
-    });
   }
 }
