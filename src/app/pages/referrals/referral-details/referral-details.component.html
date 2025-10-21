@@ -106,6 +106,58 @@
       </p>
     </div>
 
+    <!-- Medical Histories -->
+<div
+  class="bg-green-50 p-4 mt-4 rounded-xl"
+  *ngIf="patientHistories?.length > 0"
+>
+  <h4 class="text-lg font-semibold text-green-600 mb-3">
+    Medical Histories ({{ patientHistories.length }})
+  </h4>
+
+  <mat-accordion class="space-y-2">
+    <mat-expansion-panel
+      *ngFor="let history of patientHistories; let i = index"
+      class="rounded-lg shadow-sm border border-green-200"
+    >
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <div class="flex items-center gap-3">
+            <mat-icon class="text-green-600">history</mat-icon>
+            <span class="font-semibold text-gray-700">
+              History #{{ i + 1 }}
+            </span>
+          </div>
+        </mat-panel-title>
+
+        <mat-panel-description>
+          <span class="text-gray-500 text-sm">
+            File No: {{ history.file_number || 'N/A' }}
+          </span>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <div class="p-3 text-gray-700">
+        <p><strong>Doctor:</strong> {{ history.referring_doctor }}</p>
+        <p><strong>File Number:</strong> {{ history.file_number }}</p>
+        <p><strong>Board Comments:</strong> {{ history.board_comments }}</p>
+
+        <a
+          *ngIf="history.history_file"
+          class="inline-flex items-center gap-1 text-indigo-600 hover:text-indigo-800 cursor-pointer mt-2"
+          (click)="viewFiles(history)"
+        >
+          <mat-icon>picture_as_pdf</mat-icon>
+          View History PDF
+        </a>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>
+
+
+
+
     <!-- Status -->
     <div class="flex items-center space-x-4">
       <h3 class="text-2xl font-semibold text-gray-700">Status:</h3>

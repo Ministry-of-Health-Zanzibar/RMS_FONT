@@ -5,7 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIcon } from '@angular/material/icon';
+import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ReferralService } from '../../../services/Referral/referral.service';
@@ -14,6 +14,8 @@ import Swal from 'sweetalert2';
 import { MatCardModule } from '@angular/material/card';
 import { ReferralsLetterComponent } from '../referrals-letter/referrals-letter.component';
 import { environment } from '../../../../environments/environment.prod';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 @Component({
   selector: 'app-referral-details',
@@ -29,6 +31,10 @@ import { environment } from '../../../../environments/environment.prod';
     MatIcon,
     MatDialogModule,
     MatCardModule,
+     MatExpansionModule,
+    MatIconModule,
+    MatTooltipModule,
+
   ],
   templateUrl: './referral-details.component.html',
   styleUrl: './referral-details.component.scss',
@@ -37,6 +43,7 @@ export class ReferralDetailsComponent {
   public displayRoleForm!: FormGroup;
   referralID: string | null = null;
   referral: any = null;
+  patientHistories:any = null;
   insurance: any = null;
   userRole: string | null;
   public documentUrl = environment.fileUrl;
@@ -76,6 +83,9 @@ export class ReferralDetailsComponent {
     this.referralsService.getReferralById(this.referralID).subscribe(
       (response) => {
         this.referral = response.data;
+         // If you need direct access to patient or histories
+
+    this.patientHistories = response.data.patient.patient_histories;
       },
       (error) => {
         console.error('Failed to load patient data', error);
@@ -117,7 +127,14 @@ export class ReferralDetailsComponent {
 
 viewFile(file: any) {
   if (file?.file_path) {
-    const url = this.documentUrl + file.file_path; 
+    const url = this.documentUrl + file.file_path;
+    window.open(url, '_blank');
+  }
+}
+
+viewFiles(file: any) {
+  if (file?.history_file) {
+    const url = this.documentUrl + file.history_file;
     window.open(url, '_blank');
   }
 }
