@@ -1,23 +1,40 @@
-
 <div>
   <div class="w-full">
-    <div class="relative h-full rounded-lg  group  p-6">
-
-      <div class="font-semibold ">ADD FOLLOW UP FORM</div>
-      <form [formGroup]="patientForm" class="horizontal-form" enctype="multipart/form-data">
-
+    <div class="relative h-full rounded-lg group p-6">
+      <div class="font-semibold">ADD FOLLOW UP FORM</div>
+      <form
+        [formGroup]="patientForm"
+        class="horizontal-form"
+        enctype="multipart/form-data"
+      >
         <!-- Row 1: Full Name, Gender -->
         <div class="form-row">
           <mat-form-field class="form-field">
             <mat-label>Content Summary</mat-label>
-            <input matInput placeholder="Ex. Content Summary" formControlName="content_summary" type="text">
-            <mat-error *ngIf="patientForm.get('content_summary')?.invalid && patientForm.get('content_summary')?.touched">
-              <span *ngIf="patientForm.get('content_summary')?.errors?.['required']">This field is mandatory</span>
-              <span *ngIf="patientForm.get('content_summary')?.errors?.['pattern']">Must contain alphabetical characters only</span>
+            <input
+              matInput
+              placeholder="Ex. Content Summary"
+              formControlName="content_summary"
+              type="text"
+            />
+            <mat-error
+              *ngIf="
+                patientForm.get('content_summary')?.invalid &&
+                patientForm.get('content_summary')?.touched
+              "
+            >
+              <span
+                *ngIf="patientForm.get('content_summary')?.errors?.['required']"
+                >This field is mandatory</span
+              >
+              <span
+                *ngIf="patientForm.get('content_summary')?.errors?.['pattern']"
+                >Must contain alphabetical characters only</span
+              >
             </mat-error>
           </mat-form-field>
 
-          <mat-form-field class="form-field">
+          <!-- <mat-form-field class="form-field">
             <mat-label>Outcom</mat-label>
             <mat-select formControlName="outcome">
               <mat-option value="Follow-up">Follow-up</mat-option>
@@ -25,27 +42,61 @@
               <mat-option value="Transferred">Transferred</mat-option>
               <mat-option value="Death">Death</mat-option>
             </mat-select>
-            <mat-error *ngIf="patientForm.get('outcome')?.invalid && patientForm.get('outcome')?.touched">
+            <mat-error
+              *ngIf="
+                patientForm.get('outcome')?.invalid &&
+                patientForm.get('outcome')?.touched
+              "
+            >
+              This field is mandatory
+            </mat-error>
+          </mat-form-field> -->
+
+          <mat-form-field class="form-field">
+            <mat-label>Outcome</mat-label>
+            <mat-select formControlName="outcome" [disabled]="!!data?.outcome">
+              <mat-option value="Follow-up">Follow-up</mat-option>
+              <mat-option value="Finished">Finished</mat-option>
+              <mat-option value="Transferred">Transferred</mat-option>
+              <mat-option value="Death">Death</mat-option>
+            </mat-select>
+            <mat-error
+              *ngIf="
+                patientForm.get('outcome')?.invalid &&
+                patientForm.get('outcome')?.touched
+              "
+            >
               This field is mandatory
             </mat-error>
           </mat-form-field>
         </div>
 
-       <div class="form-row" *ngIf="patientForm.get('outcome')?.value === 'Follow-up'">
-
-
-           <mat-form-field class="form-field">
+        <div
+          class="form-row"
+          *ngIf="patientForm.get('outcome')?.value === 'Follow-up'"
+        >
+          <mat-form-field class="form-field">
             <mat-label>Next Appoitment Date</mat-label>
-            <input matInput type="date" formControlName="next_appointment_date">
-            <mat-error *ngIf="patientForm.get('next_appointment_date')?.invalid && patientForm.get('next_appointment_date')?.touched">
+            <input
+              matInput
+              type="date"
+              formControlName="next_appointment_date"
+            />
+            <mat-error
+              *ngIf="
+                patientForm.get('next_appointment_date')?.invalid &&
+                patientForm.get('next_appointment_date')?.touched
+              "
+            >
               This field is mandatory
             </mat-error>
           </mat-form-field>
+        </div>
 
-
-     </div>
-
-    <div class="form-row" *ngIf="patientForm.get('outcome')?.value === 'Transferred'">
+        <div
+          class="form-row"
+          *ngIf="patientForm.get('outcome')?.value === 'Transferred'"
+        >
           <mat-form-field appearance="outline" class="form-field">
             <mat-label>Hospital</mat-label>
             <mat-select formControlName="hospital_id">
@@ -56,16 +107,20 @@
           </mat-form-field>
         </div>
 
-
         <!-- Row 4: Date of Birth, File Upload -->
         <div class="form-row">
-         <mat-form-field class="form-field">
-    <mat-label>Follow up Date</mat-label>
-    <input matInput type="date" formControlName="followup_date">
-    <mat-error *ngIf="patientForm.get('followup_date')?.invalid && patientForm.get('followup_date')?.touched">
-      This field is mandatory
-    </mat-error>
-  </mat-form-field>
+          <mat-form-field class="form-field">
+            <mat-label>Follow up Date</mat-label>
+            <input matInput type="date" formControlName="followup_date" />
+            <mat-error
+              *ngIf="
+                patientForm.get('followup_date')?.invalid &&
+                patientForm.get('followup_date')?.touched
+              "
+            >
+              This field is mandatory
+            </mat-error>
+          </mat-form-field>
 
           <mat-form-field class="form-field">
             <mat-label>Upload File</mat-label>
@@ -84,27 +139,36 @@
               #fileInput
               (change)="onAttachmentSelected($event)"
             />
-            <mat-icon matSuffix style="cursor: pointer;" (click)="fileInput.click()">attach_file</mat-icon>
-            <mat-error *ngIf="patientForm.get('letter_file')?.invalid && patientForm.get('letter_file')?.touched">
+            <mat-icon
+              matSuffix
+              style="cursor: pointer"
+              (click)="fileInput.click()"
+              >attach_file</mat-icon
+            >
+            <mat-error
+              *ngIf="
+                patientForm.get('letter_file')?.invalid &&
+                patientForm.get('letter_file')?.touched
+              "
+            >
               File is required
             </mat-error>
           </mat-form-field>
-
-
         </div>
-
-
-
       </form>
     </div>
   </div>
 
-  <mat-dialog-actions align ="end">
+  <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close>Cancel</button>
-    <button  mat-flat-button [mat-dialog-close]="true" cdkFocusInitial [disabled]="patientForm.invalid" (click)="saveClient()">Add FollowUp</button>
+    <button
+      mat-flat-button
+      [mat-dialog-close]="true"
+      cdkFocusInitial
+      [disabled]="patientForm.invalid"
+      (click)="saveClient()"
+    >
+      Add FollowUp
+    </button>
   </mat-dialog-actions>
 </div>
-
-
-
-
