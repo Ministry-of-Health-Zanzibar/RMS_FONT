@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class GraphreportService {
   private baseUrl: string = `${environment.baseUrl}`;
-   private href = `${this.baseUrl}dashboard/totals`;
+  private href = `${this.baseUrl}dashboard/totals`;
 
   constructor(private http: HttpClient) {}
 
@@ -21,6 +21,12 @@ export class GraphreportService {
   public getMonthRefferalByGender(): Observable<any> {
     return this.http.get<any>(
       `${this.baseUrl}reports/getMonthlyMaleAndFemaleReferralReport`
+    );
+  }
+
+  public getAnalyticalReferalTrend(): Observable<any> {
+    return this.http.get<any>(
+      `${this.baseUrl}analytics/referral-trend`
     );
   }
 
@@ -50,9 +56,7 @@ export class GraphreportService {
     return this.http.get<any>(`${this.baseUrl}reports/referralsByGender`);
   }
 
-   public getCount(): Observable<any> {
+  public getCount(): Observable<any> {
     return this.http.get<any>(this.href);
   }
-
-
 }
