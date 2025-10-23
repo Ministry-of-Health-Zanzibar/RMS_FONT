@@ -23,9 +23,9 @@ import {
   ApexTitleSubtitle,
   ApexNonAxisChartSeries,
   ApexResponsive,
+  ApexMarkers,
 } from 'ng-apexcharts';
 
-// ✅ Define chart options interface
 export type ApexChartOptions = {
   series: ApexAxisChartSeries;
   chart: ApexChart;
@@ -37,6 +37,8 @@ export type ApexChartOptions = {
   tooltip: ApexTooltip;
   legend: ApexLegend;
   title: ApexTitleSubtitle;
+  stroke?: ApexStroke;
+  markers?: ApexMarkers;
   colors: string[];
 };
 
@@ -110,6 +112,63 @@ export class FinanceComponent implements OnInit {
     },
   };
 
+  lineChartOptions: ApexChartOptions = {
+    series: [], // Will be filled dynamically from API
+    chart: {
+      type: 'line',
+      height: 400,
+      toolbar: { show: true },
+      zoom: { enabled: true },
+    },
+    dataLabels: {
+      enabled: false,
+    },
+    stroke: {
+      curve: 'smooth',
+      width: 3,
+    },
+    title: {
+      text: 'Referral Trends',
+      align: 'center',
+      style: { fontSize: '20px', fontWeight: 'bold' },
+    },
+    xaxis: {
+      categories: [],
+      title: { text: 'Date' },
+      labels: { rotate: -45 },
+    },
+    yaxis: {
+      title: { text: 'Referrals' },
+    },
+    legend: {
+      position: 'right',
+      fontSize: '13px',
+    },
+    colors: [
+      '#008FFB',
+      '#FEB019',
+      '#00E396',
+      '#FF4560',
+      '#775DD0',
+      '#546E7A',
+      '#26A69A',
+      '#D10CE8',
+      '#8D6E63',
+      '#1E88E5',
+    ],
+    tooltip: {
+      shared: true,
+      intersect: false,
+    },
+    fill: {
+      type: 'solid',
+      opacity: 0.8,
+    },
+    plotOptions: {
+      bar: { horizontal: false },
+    },
+  };
+
   constructor(
     private dashboardService: StatisticalService,
     private reportService: GraphreportService
@@ -119,7 +178,57 @@ export class FinanceComponent implements OnInit {
     this.getReferralSummary();
     this.getReferralSummaryByReason();
     this.fetchReferralByMonth();
+    this.fetchReferralTrends();
     this.fetchData();
+  }
+
+  fetchReferralTrends(): void {
+    this.reportService.getAnalyticalReferalTrend().subscribe(
+      (response) => {
+        console.log('Raw response:', response);
+
+        if (!response || !response.data) return;
+
+        const categories: string[] = response.dates || [];
+        const dataObj: Record<string, { date: string; total: number }[]> =
+          response.data;
+
+        const series = Object.keys(dataObj).map((key) => ({
+          name: key,
+          data: categories.map((date: string) => {
+            const entry = dataObj[key].find((item) => item.date === date);
+            return entry ? entry.total : 0;
+          }),
+        }));
+
+        console.log('Processed Series:', series);
+        console.log('Categories:', categories);
+
+        this.lineChartOptions = {
+          ...this.lineChartOptions,
+          series,
+          xaxis: { ...this.lineChartOptions.xaxis, categories },
+          stroke: { curve: 'smooth', width: 3 },
+          markers: { size: 6 },
+          colors: ['#00E396', '#FEB019', '#FF4560', '#775DD0', '#008FFB'],
+          fill: {
+            type: 'gradient',
+            gradient: {
+              shade: 'light',
+              type: 'horizontal',
+              shadeIntensity: 0.5,
+              opacityFrom: 0.8,
+              opacityTo: 0.3,
+              stops: [0, 100],
+            },
+          },
+          tooltip: { shared: true, intersect: false },
+        };
+      },
+      (error) => {
+        console.error('Error fetching referral trend:', error);
+      }
+    );
   }
 
   fetchData(): void {
