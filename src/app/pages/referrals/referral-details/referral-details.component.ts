@@ -118,12 +118,20 @@ export class ReferralDetailsComponent {
     });
   }
 
-  viewPatientListPDF(referral: any) {
-  if (referral?.patient?.patient_list?.patient_list_file) {
-    const url = this.documentUrl + referral.patient.patient_list.patient_list_file;
-    window.open(url, '_blank');
+viewPatientListPDF(referral: any) {
+  const list = referral?.patient?.patient_list;
+
+  if (list && list.length > 0) {
+    const filePath = list[0].patient_list_file;
+
+    if (filePath) {
+      const url = this.documentUrl + filePath;
+      window.open(url, '_blank'); // open in browser tab
+    }
   }
 }
+
+
 
 viewFile(file: any) {
   if (file?.file_path) {
