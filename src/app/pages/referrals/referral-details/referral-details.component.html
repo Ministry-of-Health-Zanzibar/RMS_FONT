@@ -35,6 +35,10 @@
           <span class="font-semibold w-32 inline-block">Gender:</span>
           {{ referral.patient?.gender || "N/A" }}
         </p>
+         <p>
+          <span class="font-semibold w-32 inline-block">ZanID:</span>
+          {{ referral.patient?.zan_id || "N/A" }}
+        </p>
       </div>
 
       <!-- Hospital Info -->
@@ -91,31 +95,32 @@
         <span class="font-semibold w-32">Reference number: </span>
         {{ referral.referral_number || "N/A" }}
       </p>
-      <p>
-        <span class="font-semibold w-32 inline-block">Medical board:</span>
-        {{ referral.patient?.patient_list?.patient_list_title || "N/A" }}
-      </p>
+     <p>
+      <span class="font-semibold w-32 inline-block">Board Type:</span>
+      {{ referral.patient?.patient_list?.[0]?.board_type || "N/A" }}
+    </p>
 
-      <p *ngIf="referral.patient?.patient_list?.patient_list_file">
-        <a
-          (click)="viewPatientListPDF(referral)"
-          class="inline-flex items-center gap-1 text-indigo-600 hover:text-indigo-800 cursor-pointer"
-        >
-          <mat-icon>picture_as_pdf</mat-icon> View Patient List PDF
-        </a>
-      </p>
+     <p *ngIf="referral.patient?.patient_list?.[0]?.patient_list_file">
+    <a
+      (click)="viewPatientListPDF(referral.patient.patient_list[0].patient_list_file)"
+      class="inline-flex items-center gap-1 text-indigo-600 hover:text-indigo-800 cursor-pointer"
+    >
+      <mat-icon>picture_as_pdf</mat-icon> View Patient List PDF
+    </a>
+  </p>
+
     </div>
 
-    <!-- Medical Histories -->
-<div
+  <div
   class="bg-green-50 p-4 mt-4 rounded-xl"
-  *ngIf="patientHistories?.length > 0"
+  *ngIf="patientHistories?.length > 0 || diagnoses?.length > 0"
 >
   <h4 class="text-lg font-semibold text-green-600 mb-3">
-    Medical Histories ({{ patientHistories.length }})
+    Medical Histories ({{ patientHistories?.length || 0 }})
   </h4>
 
-  <mat-accordion class="space-y-2">
+  <!-- Medical Histories -->
+  <mat-accordion class="space-y-2" *ngIf="patientHistories?.length > 0">
     <mat-expansion-panel
       *ngFor="let history of patientHistories; let i = index"
       class="rounded-lg shadow-sm border border-green-200"
@@ -153,6 +158,34 @@
       </div>
     </mat-expansion-panel>
   </mat-accordion>
+
+  <!-- Diagnoses Section -->
+  <div class="mt-6" *ngIf="diagnoses?.length > 0">
+    <h4 class="text-lg font-semibold text-green-600 mb-3">
+      Diagnoses ({{ diagnoses.length }})
+    </h4>
+
+    <table class="min-w-full bg-white border border-green-200 rounded-lg shadow">
+      <thead class="bg-green-100 text-green-700">
+        <tr>
+          <th class="p-2 text-left">#</th>
+          <th class="p-2 text-left">Diagnosis Code</th>
+          <th class="p-2 text-left">Diagnosis Name</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr
+          *ngFor="let d of diagnoses; let i = index"
+          class="border-t hover:bg-green-50"
+        >
+          <td class="p-2">{{ i + 1 }}</td>
+          <td class="p-2">{{ d.diagnosis_code }}</td>
+          <td class="p-2">{{ d.diagnosis_name }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 
 

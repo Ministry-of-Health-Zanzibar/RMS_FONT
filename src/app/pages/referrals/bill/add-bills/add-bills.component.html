@@ -2,12 +2,12 @@
   <h2 class="text-2xl font-bold text-gray-800 mb-2">
     {{ data.billData ? "Update Bill" : "Add New Bill" }}
   </h2>
-  <p class="text-gray-600 mb-6">
+  <!-- <p class="text-gray-600 mb-6">
     {{
       data.billData ? "Modify existing bill details" : "Create a new bill for"
     }}
     <strong>{{ data.billTitle }}</strong>
-  </p>
+  </p> -->
 
   <form [formGroup]="billForm" (ngSubmit)="onSubmit()" class="space-y-4">
     <!-- Referral -->
@@ -19,7 +19,7 @@
           [value]="referral.referral_id"
         >
           {{ referral.referral_number }} -
-          {{ referral.patient?.name || "No Name" }}
+          {{ referral.patient_name || "No Name" }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="billForm.get('referral_id')?.hasError('required')">
