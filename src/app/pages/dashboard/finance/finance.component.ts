@@ -60,6 +60,58 @@ export type ApexChartOptions = {
 export class FinanceComponent implements OnInit {
   referral: any = {};
 
+  // barChartOptions: ApexChartOptions = {
+  //   series: [
+  //     { name: 'Male', data: [] },
+  //     { name: 'Female', data: [] },
+  //   ],
+  //   chart: {
+  //     type: 'bar',
+  //     height: 350,
+  //     stacked: false,
+  //     toolbar: { show: true },
+  //   },
+  //   plotOptions: {
+  //     bar: {
+  //       horizontal: false,
+  //       columnWidth: '55%',
+  //       borderRadius: 6,
+  //       borderRadiusApplication: 'end',
+  //     },
+  //   },
+  //   dataLabels: { enabled: false },
+  //   xaxis: {
+  //     categories: [],
+  //     title: { text: 'Month' },
+  //     labels: { style: { fontSize: '12px' } },
+  //   },
+  //   yaxis: {
+  //     title: { text: 'Patients' },
+  //     labels: { style: { fontSize: '12px' } },
+  //   },
+  //   fill: { opacity: 1 },
+  //   legend: {
+  //     position: 'top',
+  //     horizontalAlign: 'center',
+  //     fontSize: '14px',
+  //   },
+  //   tooltip: {
+  //     y: {
+  //       formatter: (val: number, opts?: any) => {
+  //         const gender = opts?.seriesIndex === 0 ? 'Male' : 'Female';
+  //         const month = opts?.w.globals.labels[opts.dataPointIndex];
+  //         return `${month} - ${gender}: ${val}`;
+  //       },
+  //     },
+  //   },
+  //   colors: ['#4FD1C5', '#9AE6B4'],
+  //   title: {
+  //     text: 'Monthly Referrals by Gender',
+  //     align: 'center',
+  //     style: { fontSize: '18px', fontWeight: 'bold', color: '#333' },
+  //   },
+  // };
+
   barChartOptions: ApexChartOptions = {
     series: [
       { name: 'Male', data: [] },
@@ -68,20 +120,20 @@ export class FinanceComponent implements OnInit {
     chart: {
       type: 'bar',
       height: 350,
-      stacked: false,
+      stacked: true, 
       toolbar: { show: true },
     },
     plotOptions: {
       bar: {
         horizontal: false,
         columnWidth: '55%',
-        borderRadius: 6,
+        borderRadius: 5,
         borderRadiusApplication: 'end',
       },
     },
     dataLabels: { enabled: false },
     xaxis: {
-      categories: [],
+      categories: [], 
       title: { text: 'Month' },
       labels: { style: { fontSize: '12px' } },
     },
@@ -104,7 +156,7 @@ export class FinanceComponent implements OnInit {
         },
       },
     },
-    colors: ['#4FD1C5', '#9AE6B4'],
+    colors: ['#4FD1C5', '#2B6CB0'],
     title: {
       text: 'Monthly Referrals by Gender',
       align: 'center',

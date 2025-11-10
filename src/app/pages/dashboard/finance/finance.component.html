@@ -6,34 +6,74 @@
     >
       Dashboard
     </h1>
-    <div class="w-full h-1 bg-gradient-to-r from-teal-400 to-green-500 mt-2 rounded-full"></div>
-    <div class="w-full h-0.5 bg-gradient-to-r from-green-300 to-emerald-400 mt-1 rounded-full"></div>
+    <div
+      class="w-full h-1 bg-gradient-to-r from-teal-400 to-green-500 mt-2 rounded-full"
+    ></div>
+    <div
+      class="w-full h-0.5 bg-gradient-to-r from-green-300 to-emerald-400 mt-1 rounded-full"
+    ></div>
   </div>
 
   <!-- Dashboard Info Cards -->
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-    <div class="relative bg-gradient-to-r from-green-100 to-green-300 rounded-2xl p-6 flex flex-col items-center shadow-md">
-      <mat-icon fontIcon="assignment_turned_in" class="text-6xl mb-4 text-green-700"></mat-icon>
-      <div class="text-sm uppercase tracking-wide text-gray-600">Medical Boards</div>
-      <div class="text-4xl font-extrabold mt-2">{{ referral?.data?.total_medical_boards | number }}</div>
+    <div
+      class="relative bg-gradient-to-r from-green-100 to-green-300 rounded-2xl p-6 flex flex-col items-center shadow-md"
+    >
+      <mat-icon
+        fontIcon="assignment_turned_in"
+        class="text-6xl mb-4 text-green-700"
+      ></mat-icon>
+      <div class="text-sm uppercase tracking-wide text-gray-600">
+        Medical Boards
+      </div>
+      <div class="text-4xl font-extrabold mt-2">
+        {{ referral?.data?.total_medical_boards | number }}
+      </div>
     </div>
 
-    <div class="relative bg-gradient-to-r from-teal-100 to-teal-300 rounded-2xl p-6 flex flex-col items-center shadow-md">
-      <mat-icon fontIcon="groups" class="text-6xl mb-4 text-teal-700"></mat-icon>
-      <div class="text-sm uppercase tracking-wide text-gray-600">Total Patients</div>
-      <div class="text-4xl font-extrabold mt-2">{{ referral?.data?.total_patients | number }}</div>
+    <div
+      class="relative bg-gradient-to-r from-teal-100 to-teal-300 rounded-2xl p-6 flex flex-col items-center shadow-md"
+    >
+      <mat-icon
+        fontIcon="groups"
+        class="text-6xl mb-4 text-teal-700"
+      ></mat-icon>
+      <div class="text-sm uppercase tracking-wide text-gray-600">
+        Total Patients
+      </div>
+      <div class="text-4xl font-extrabold mt-2">
+        {{ referral?.data?.total_patients | number }}
+      </div>
     </div>
 
-    <div class="relative bg-gradient-to-r from-gray-100 to-gray-300 rounded-2xl p-6 flex flex-col items-center shadow-md">
-      <mat-icon fontIcon="compare_arrows" class="text-6xl mb-4 text-gray-600"></mat-icon>
-      <div class="text-sm uppercase tracking-wide text-gray-600">Total Referrals</div>
-      <div class="text-4xl font-extrabold mt-2">{{ referral?.data?.total_referrals | number }}</div>
+    <div
+      class="relative bg-gradient-to-r from-gray-100 to-gray-300 rounded-2xl p-6 flex flex-col items-center shadow-md"
+    >
+      <mat-icon
+        fontIcon="compare_arrows"
+        class="text-6xl mb-4 text-gray-600"
+      ></mat-icon>
+      <div class="text-sm uppercase tracking-wide text-gray-600">
+        Total Referrals
+      </div>
+      <div class="text-4xl font-extrabold mt-2">
+        {{ referral?.data?.total_referrals | number }}
+      </div>
     </div>
 
-    <div class="relative bg-gradient-to-r from-yellow-100 to-yellow-300 rounded-2xl p-6 flex flex-col items-center shadow-md">
-      <mat-icon fontIcon="local_hospital" class="text-6xl mb-4 text-yellow-700"></mat-icon>
-      <div class="text-sm uppercase tracking-wide text-gray-600">Total Hospitals</div>
-      <div class="text-4xl font-extrabold mt-2">{{ referral?.data?.total_hospitals | number }}</div>
+    <div
+      class="relative bg-gradient-to-r from-yellow-100 to-yellow-300 rounded-2xl p-6 flex flex-col items-center shadow-md"
+    >
+      <mat-icon
+        fontIcon="local_hospital"
+        class="text-6xl mb-4 text-yellow-700"
+      ></mat-icon>
+      <div class="text-sm uppercase tracking-wide text-gray-600">
+        Total Hospitals
+      </div>
+      <div class="text-4xl font-extrabold mt-2">
+        {{ referral?.data?.total_hospitals | number }}
+      </div>
     </div>
   </div>
 
@@ -62,8 +102,7 @@
     </div>
   </div>
 
-
-  <div class="bg-white shadow rounded-lg p-6 mt-10">
+  <!-- <div class="bg-white shadow rounded-lg p-6 mt-10">
     <apx-chart
       [series]="barChartOptions.series"
       [chart]="barChartOptions.chart"
@@ -91,6 +130,38 @@
     [tooltip]="lineChartOptions.tooltip"
     [legend]="lineChartOptions.legend"
   ></apx-chart>
-</div>
+</div> -->
 
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
+  
+    <div class="bg-white shadow rounded-lg p-6">
+      <apx-chart
+        [series]="barChartOptions.series"
+        [chart]="barChartOptions.chart"
+        [xaxis]="barChartOptions.xaxis"
+        [yaxis]="barChartOptions.yaxis"
+        [plotOptions]="barChartOptions.plotOptions"
+        [legend]="barChartOptions.legend"
+        [fill]="barChartOptions.fill"
+        [tooltip]="barChartOptions.tooltip"
+        [colors]="barChartOptions.colors"
+        [title]="barChartOptions.title"
+      ></apx-chart>
+    </div>
+
+ 
+    <div class="bg-white shadow rounded-lg p-6">
+      <apx-chart
+        [series]="lineChartOptions.series"
+        [chart]="lineChartOptions.chart"
+        [xaxis]="lineChartOptions.xaxis"
+        [yaxis]="lineChartOptions.yaxis"
+        [stroke]="{ curve: 'smooth', width: 3 }"
+        [colors]="lineChartOptions.colors"
+        [title]="lineChartOptions.title"
+        [tooltip]="lineChartOptions.tooltip"
+        [legend]="lineChartOptions.legend"
+      ></apx-chart>
+    </div>
+  </div>
 </div>
