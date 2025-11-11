@@ -45,6 +45,7 @@ export class ReferralDetailsComponent {
   referral: any = null;
   patientHistories:any = null;
   insurance: any = null;
+  diagnoses: any[] = [];
   userRole: string | null;
   public documentUrl = environment.fileUrl;
 
@@ -77,21 +78,27 @@ export class ReferralDetailsComponent {
   //     });
   // }
 
-  public getMoreData() {
-    if (!this.referralID) return;
+ public getMoreData() {
+  if (!this.referralID) return;
 
-    this.referralsService.getReferralById(this.referralID).subscribe(
-      (response) => {
-        this.referral = response.data;
-         // If you need direct access to patient or histories
+  this.referralsService.getReferralById(this.referralID).subscribe(
+    (response) => {
+      this.referral = response.data;
 
-    this.patientHistories = response.data.patient.patient_histories;
-      },
-      (error) => {
-        console.error('Failed to load patient data', error);
-      }
-    );
-  }
+      // Patient histories
+      this.patientHistories = response.data.patient.patient_histories;
+
+      // ADD THIS → diagnoses from API
+      this.diagnoses = response.data.diagnoses;
+
+      console.log("Diagnoses: ", this.diagnoses);
+    },
+    (error) => {
+      console.error('Failed to load patient data', error);
+    }
+  );
+}
+
 
   updateStatusPopup() {
     const dialogRef = this.dialog.open(ReferralStatusDialogComponent, {

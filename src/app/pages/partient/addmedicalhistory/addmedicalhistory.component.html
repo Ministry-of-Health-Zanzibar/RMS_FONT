@@ -44,7 +44,19 @@
 
       </mat-form-field>
 
-   <mat-form-field appearance="outline" class="w-full">
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>History of Presenting Illness</mat-label>
+        <textarea
+          matInput
+          rows="3"
+          formControlName="history_of_presenting_illness"
+        ></textarea>
+      </mat-form-field>
+    </div>
+
+    <!-- Reason Row -->
+    <div class="grid grid-cols-2 gap-4">
+      <mat-form-field appearance="outline" class="w-full">
         <mat-label>Reason</mat-label>
         <mat-select formControlName="reason_id">
           <mat-option *ngFor="let reason of reasonList" [value]="reason.reason_id">
@@ -53,11 +65,28 @@
         </mat-select>
       </mat-form-field>
 
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Physical Findings</mat-label>
+        <textarea
+          matInput
+          rows="3"
+          formControlName="physical_findings"
+        ></textarea>
+      </mat-form-field>
     </div>
 
+    <!-- Investigations + Management -->
+    <div class="grid grid-cols-2 gap-4">
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Investigations</mat-label>
+        <textarea matInput rows="3" formControlName="investigations"></textarea>
+      </mat-form-field>
 
-
- 
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Management Done</mat-label>
+        <textarea matInput rows="3" formControlName="management_done"></textarea>
+      </mat-form-field>
+    </div>
 
     <!-- Board Comments -->
     <div class="grid grid-cols-1">
