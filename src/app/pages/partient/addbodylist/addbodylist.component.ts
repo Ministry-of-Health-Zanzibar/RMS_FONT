@@ -158,18 +158,51 @@ onUserSelected(event: any) {
     });
   }
 
-  // ✅ File upload handler
-  onAttachmentSelected(event: any): void {
-    const file = event.target.files?.[0] ?? null;
-    if (file) {
-      this.selectedAttachement = file;
-      this.patientForm.patchValue({ patient_list_file: file.name });
-      const control = this.patientForm.get('patient_list_file');
-      control?.markAsDirty();
-      control?.markAsTouched();
-      control?.updateValueAndValidity();
+ 
+onAttachmentSelected(event: any): void {
+  const file = event.target.files?.[0] ?? null;
+
+  if (file) {
+
+    const maxSize = 2 * 1024 * 1024; // 2MB
+
+    if (file.size > maxSize) {
+      Swal.fire({
+        title: 'File Too Large',
+        text: 'The file must not exceed 2MB.',
+        icon: 'error',
+        confirmButtonColor: '#4690eb'
+      });
+
+      // Clear selection
+      this.selectedAttachement = null;
+      this.patientForm.patchValue({ patient_list_file: '' });
+
+      return;
     }
+
+    // ✅ Accept file if valid
+    this.selectedAttachement = file;
+    this.patientForm.patchValue({ patient_list_file: file.name });
+
+    const control = this.patientForm.get('patient_list_file');
+    control?.markAsDirty();
+    control?.markAsTouched();
+    control?.updateValueAndValidity();
   }
+}
+
+  // onAttachmentSelected(event: any): void {
+  //   const file = event.target.files?.[0] ?? null;
+  //   if (file) {
+  //     this.selectedAttachement = file;
+  //     this.patientForm.patchValue({ patient_list_file: file.name });
+  //     const control = this.patientForm.get('patient_list_file');
+  //     control?.markAsDirty();
+  //     control?.markAsTouched();
+  //     control?.updateValueAndValidity();
+  //   }
+  // }
 
 
 
