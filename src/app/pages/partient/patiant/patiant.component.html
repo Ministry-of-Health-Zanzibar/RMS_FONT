@@ -35,7 +35,7 @@
             <button
               mat-flat-button
               (click)="addPatient()"
-              *ngIf="permission.parmissionMatched(['Create Patient List'])"
+              *ngIf="permission.parmissionMatched(['Create Patient'])"
             >
               <mat-icon>add</mat-icon> Add Patient
             </button>
@@ -127,7 +127,7 @@
                       class="size-9 rounded-full border bg-surface flex items-center justify-center cursor-pointer hover:bg-gray-100 transition"
                       (click)="updatePatient(element)"
                       *ngIf="
-                        permission.parmissionMatched(['Update Patient List'])
+                        permission.parmissionMatched(['Update Patient'])
                       "
                       matTooltip="Edit"
                     >
