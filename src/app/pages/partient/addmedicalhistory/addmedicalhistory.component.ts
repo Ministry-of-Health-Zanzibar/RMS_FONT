@@ -118,10 +118,10 @@ export class AddmedicalhistoryComponent implements OnInit, OnDestroy {
       referring_doctor: ['', Validators.required],
       file_number: ['', Validators.required],
       referring_date: ['', ],
-      // history_of_presenting_illness: ['', Validators.required],
-      // physical_findings: ['', Validators.required],
-      // investigations: ['', Validators.required],
-      // management_done: ['', Validators.required],
+      history_of_presenting_illness: ['', Validators.required],
+      physical_findings: ['', Validators.required],
+      investigations: ['', Validators.required],
+      management_done: ['', Validators.required],
       board_comments: ['',Validators.required],
       reason_id: ['', Validators.required],
       diagnosis_ids: ['',Validators.required],
@@ -200,6 +200,10 @@ onSubmit() {
     'referring_date',
     'board_comments',
     'reason_id',
+    'history_of_presenting_illness',
+    'physical_findings',
+    'investigations',
+    'management_done'
   ]) {
     formData.append(key, formValue[key]);
   }

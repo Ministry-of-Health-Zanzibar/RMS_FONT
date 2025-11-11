@@ -146,29 +146,21 @@ export class SidebarComponent {
       ],
     },
 
-
+     {
+      id: 'bodies',
+      type: 'Single',
+      icon: 'medical',
+      name: 'Medical Board',
+      link: '/pages/patient/bodylist',
+      permission: 'View Patient List',
+    },
     {
-      id: 'PID',
-      type: 'group',
-      name: 'Patient',
-      icon: 'menu',
+      id: 'patients',
+      type: 'Single',
+      icon: 'patients',
+      name: 'Patients',
+      link: '/pages/patient/partient',
       permission: 'View Patient',
-      children: [
-
-        {
-          type: 'link',
-          name: 'Medical Board',
-          link: '/pages/patient/bodylist',
-          permission: 'View Patient List',
-        },
-
-         {
-          type: 'link',
-          name: 'Patients',
-          link: '/pages/patient/partient',
-          permission: 'View Patient List',
-        },
-      ],
     },
 
      {
