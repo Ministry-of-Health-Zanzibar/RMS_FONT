@@ -1,80 +1,30 @@
 <div class="p-6 max-w-5xl mx-auto">
   <mat-card class="shadow-lg rounded-2xl">
     <mat-card-header>
-      <mat-card-title class="text-2xl font-bold text-gray-800"
-        >Add New Patients</mat-card-title
-      >
-      <mat-card-subtitle class="text-gray-600"
-        >Please fill in all required details</mat-card-subtitle
-      >
+      <mat-card-title class="text-2xl font-bold text-gray-800">
+        {{ data?.patient ? 'Edit Patient' : 'Add New Patient' }}
+      </mat-card-title>
+      <mat-card-subtitle class="text-gray-600">
+        Please fill in all required details
+      </mat-card-subtitle>
     </mat-card-header>
 
     <mat-card-content>
-      <form
-        [formGroup]="patientForm"
-        (ngSubmit)="onSubmit()"
-        class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6"
-      >
-        <mat-form-field appearance="outline" class="w-full md:col-span-2">
-          <mat-label>Select Medical Board</mat-label>
-          <mat-select formControlName="patient_list_id">
-            <!-- Search box -->
-            <mat-option>
-              <input
-                type="text"
-                placeholder="Search board..."
-                [formControl]="boardSearchControl"
-                (click)="$event.stopPropagation()"
-                (keydown)="$event.stopPropagation()"
-                class="w-full px-2 py-1 border rounded focus:outline-none"
-              />
-            </mat-option>
+      <form [formGroup]="patientForm" (ngSubmit)="onSubmit()" class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
 
-            <!-- Filtered list -->
-            <mat-option
-              *ngFor="let board of filteredBoardList"
-              [value]="board.patient_list_id"
-            >
-              {{ board.patient_list_title }}
-            </mat-option>
-          </mat-select>
-
-          <mat-error
-            *ngIf="patientForm.get('patient_list_id')?.hasError('required')"
-          >
-            Medical Board selection is required
-          </mat-error>
-        </mat-form-field>
-
-        <!-- Full Name -->
+        <!-- Name -->
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>Full Name</mat-label>
-          <input
-            matInput
-            formControlName="name"
-            placeholder="Enter full name"
-          />
-          <mat-error *ngIf="patientForm.get('name')?.hasError('required')"
-            >Name is required</mat-error
-          >
+          <input matInput formControlName="name" placeholder="Enter full name" />
+          <mat-error *ngIf="patientForm.get('name')?.hasError('required')">Name is required</mat-error>
         </mat-form-field>
 
         <!-- Phone -->
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>Phone</mat-label>
-          <input
-            matInput
-            type="tel"
-            formControlName="phone"
-            maxlength="10"
-            placeholder="Enter 10-digit phone number"
-          />
-          <mat-error *ngIf="patientForm.get('phone')?.hasError('required')"
-            >Phone number is required</mat-error
-          >
-          <mat-error *ngIf="patientForm.get('phone')?.hasError('pattern')"
-            >Phone number must be exactly 10 digits</mat-error
-          >
+          <input matInput type="tel" formControlName="phone" maxlength="10" placeholder="Enter 10-digit phone number" />
+          <mat-error *ngIf="patientForm.get('phone')?.hasError('required')">Phone number is required</mat-error>
+          <mat-error *ngIf="patientForm.get('phone')?.hasError('pattern')">Phone number must be exactly 10 digits</mat-error>
         </mat-form-field>
 
         <!-- Gender -->
@@ -84,76 +34,36 @@
             <mat-option value="male">Male</mat-option>
             <mat-option value="female">Female</mat-option>
           </mat-select>
-          <mat-error *ngIf="patientForm.get('gender')?.hasError('required')"
-            >Gender is required</mat-error
-          >
+          <mat-error *ngIf="patientForm.get('gender')?.hasError('required')">Gender is required</mat-error>
         </mat-form-field>
 
         <!-- Matibabu Card -->
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>Matibabu Card</mat-label>
-          <input
-            matInput
-            formControlName="matibabu_card"
-            maxlength="12"
-            placeholder="Enter 12-digit Matibabu Card Number"
-          />
-          <mat-error
-            *ngIf="patientForm.get('matibabu_card')?.hasError('pattern')"
-            >Matibabu Card must be exactly 12 digits</mat-error
-          >
+          <input matInput formControlName="matibabu_card" placeholder="Enter card number" />
         </mat-form-field>
 
-        <!-- Date of Birth -->
-        <mat-radio-group formControlName="dob_type">
-          <mat-radio-button value="known">Known Date</mat-radio-button>
-          <mat-radio-button value="unknown">Estimated Age</mat-radio-button>
-        </mat-radio-group>
-
-        <div *ngIf="patientForm.get('dob_type')?.value === 'known'">
-          <mat-form-field appearance="outline">
-            <mat-label>Date of Birth</mat-label>
-            <input
-              matInput
-              [matDatepicker]="dobPicker"
-              formControlName="date_of_birth"
-            />
-            <mat-datepicker-toggle
-              matSuffix
-              [for]="dobPicker"
-            ></mat-datepicker-toggle>
-            <mat-datepicker #dobPicker></mat-datepicker>
-          </mat-form-field>
+        <!-- DOB Type -->
+        <div class="col-span-2 flex space-x-4 items-center">
+          <label class="font-medium">Date of Birth:</label>
+          <mat-radio-group formControlName="dob_type" class="flex space-x-6 items-center">
+            <mat-radio-button value="known">Known Date</mat-radio-button>
+            <mat-radio-button value="unknown">Estimated Age</mat-radio-button>
+          </mat-radio-group>
         </div>
 
-        <div *ngIf="patientForm.get('dob_type')?.value === 'unknown'">
-          <mat-form-field appearance="outline">
-            <mat-label>Estimated Age</mat-label>
-            <input
-              matInput
-              type="number"
-              formControlName="date_of_birth"
-              placeholder="Enter Age"
-            />
-          </mat-form-field>
-        </div>
-        <!-- <mat-form-field appearance="outline" class="w-full">
+        <!-- Date or Age -->
+        <mat-form-field appearance="outline" *ngIf="patientForm.get('dob_type')?.value === 'known'" class="w-full">
           <mat-label>Date of Birth</mat-label>
-          <input
-            matInput
-            [matDatepicker]="dobPicker"
-            formControlName="date_of_birth"
-          />
-          <mat-datepicker-toggle
-            matSuffix
-            [for]="dobPicker"
-          ></mat-datepicker-toggle>
+          <input matInput [matDatepicker]="dobPicker" formControlName="date_of_birth" />
+          <mat-datepicker-toggle matSuffix [for]="dobPicker"></mat-datepicker-toggle>
           <mat-datepicker #dobPicker></mat-datepicker>
-          <mat-error
-            *ngIf="patientForm.get('date_of_birth')?.hasError('required')"
-            >Date of Birth is required</mat-error
-          >
-        </mat-form-field> -->
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" *ngIf="patientForm.get('dob_type')?.value === 'unknown'" class="w-full">
+          <mat-label>Estimated Age</mat-label>
+          <input matInput type="number" formControlName="date_of_birth" placeholder="Enter estimated age" />
+        </mat-form-field>
 
         <!-- Job -->
         <mat-form-field appearance="outline" class="w-full">
@@ -164,116 +74,77 @@
         <!-- Position -->
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>Position</mat-label>
-          <input
-            matInput
-            formControlName="position"
-            placeholder="Enter position"
-          />
+          <input matInput formControlName="position" placeholder="Enter position" />
         </mat-form-field>
 
         <!-- Location -->
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" class="w-full">
           <mat-label>Location</mat-label>
-          <input
-            matInput
-            placeholder="Search location"
-            formControlName="location_id"
-            [matAutocomplete]="auto"
-          />
-          <mat-autocomplete
-            #auto="matAutocomplete"
-            [displayWith]="displayFn"
-            [panelWidth]="'auto'"
-          >
-            <mat-option
-              *ngFor="let option of filteredOptions | async; trackBy: trackById"
-              [value]="option"
-            >
+          <input matInput placeholder="Search location" formControlName="location_id" [matAutocomplete]="auto" />
+          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+            <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
               {{ option.label }}
             </mat-option>
           </mat-autocomplete>
-          <mat-error
-            *ngIf="patientForm.get('location_id')?.hasError('required')"
-            >Location is required</mat-error
-          >
         </mat-form-field>
 
-        <!-- zanID  -->
-
+        <!-- ZanID -->
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>ZanID</mat-label>
-          <input
-            matInput
-            formControlName="zan_id"
-            maxlength="12"
-            placeholder="650070404"
-          />
-          <mat-error *ngIf="patientForm.get('zan_id')?.hasError('pattern')"
-            >ZanID must be exactly 9 digits</mat-error
-          >
+          <input matInput formControlName="zan_id" placeholder="Enter ZanID" />
         </mat-form-field>
 
-        <!-- Has Insurance -->
-        <div class="w-full md:col-span-2">
-          <label class="block text-sm font-medium text-gray-700 mb-2">
-            Do you have insurance?
-          </label>
-
-          <mat-radio-group
-            formControlName="has_insurance"
-            class="flex space-x-6 items-center"
-          >
+        <!-- Insurance -->
+        <div class="col-span-2">
+          <label class="font-medium block mb-2">Do you have insurance?</label>
+          <mat-radio-group formControlName="has_insurance" class="flex space-x-6 items-center">
             <mat-radio-button [value]="true">Yes</mat-radio-button>
             <mat-radio-button [value]="false">No</mat-radio-button>
           </mat-radio-group>
-
-          <mat-error
-            *ngIf="patientForm.get('has_insurance')?.hasError('required')"
-          >
-            Please select if the patient has insurance.
-          </mat-error>
         </div>
 
-        <!-- Patient File Upload (full width) -->
-        <div class="w-full md:col-span-2">
-          <label class="block text-sm font-medium text-gray-700 mb-2"
-            >Patient File</label
-          >
-          <input
-            type="file" 
-            (change)="onFileSelected($event)"
-            class="border rounded-lg p-2 w-full"
-          />
-          <mat-error *ngIf="!selectedFile">File is required</mat-error>
+        <div *ngIf="patientForm.get('has_insurance')?.value === true" class="col-span-2 grid grid-cols-1 md:grid-cols-3 gap-4">
+          <mat-form-field appearance="outline">
+            <mat-label>Insurance Provider</mat-label>
+            <mat-select formControlName="insurance_provider_name">
+              <mat-option value="ZSSF">ZSSF</mat-option>
+              <mat-option value="NHIF">NHIF</mat-option>
+              <mat-option value="Other">Other</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Card Number</mat-label>
+            <input matInput formControlName="card_number" placeholder="Enter card number" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Valid Until</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="valid_until" />
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
         </div>
 
-        <!-- Show existing file -->
-        <div *ngIf="currentFileName">
-          Current File:
-          <a [href]="currentFilePath" target="_blank">{{ currentFileName }}</a>
+        <!-- File Upload -->
+        <div class="col-span-2">
+          <label class="block mb-2 font-medium text-gray-700">Patient File</label>
+          <input type="file" (change)="onFileSelected($event)" class="border p-2 rounded w-full" />
         </div>
 
-        <!-- Actions (full width) -->
-        <div class="flex justify-end space-x-3 md:col-span-2 pt-6">
-          <button
-            mat-stroked-button
-            color="warn"
-            type="button"
-            (click)="onCancel()"
-          >
-            Cancel
-          </button>
-          <button
-            mat-raised-button
-            color="primary"
-            type="submit"
-            [disabled]="!patientForm.valid || loading"
-          >
-            <span *ngIf="loading" class="flex items-center">
-              <mat-spinner diameter="20" class="mr-2"></mat-spinner>
-              Processing...
+        <!-- Existing file -->
+        <div *ngIf="currentFileName" class="col-span-2">
+          Current File: <a [href]="currentFilePath" target="_blank">{{ currentFileName }}</a>
+        </div>
+
+        <!-- Actions -->
+        <div class="col-span-2 flex justify-end space-x-3 mt-6">
+          <button mat-stroked-button color="warn" type="button" (click)="onCancel()">Cancel</button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="loading || !patientForm.valid">
+            <span *ngIf="loading">
+              <mat-spinner diameter="20"></mat-spinner> Processing...
             </span>
-            <span *ngIf="!loading">Save Patient</span>
+            <span *ngIf="!loading">Save</span>
           </button>
         </div>
       </form>

@@ -57,6 +57,11 @@ const routes: Routes = [
     loadComponent: () =>
       import('./patiant/patiant.component').then((c) => c.PatiantComponent),
   },
+  {
+    path: 'patientfromhospital',
+    loadComponent:()=>import('./viewpatientfromhospital/viewpatientfromhospital.component').then(c=>c.ViewpatientfromhospitalComponent)
+
+  },
 
 
    {
