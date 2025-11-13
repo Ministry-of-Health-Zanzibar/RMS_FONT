@@ -1,6 +1,6 @@
   <div
     class="p-10 space-y-8"
-    *ngIf="permission.parmissionMatched(['View Patient'])"
+    *ngIf="permission.parmissionMatched(['View Patient History'])"
   >
     <div class="flex items-center justify-between">
       <h1 class="text-lg font-bold">Patient Lists</h1>
@@ -32,13 +32,13 @@
           </div>
 
           <div>
-            <button
+            <!-- <button
               mat-flat-button
               (click)="addPatient()"
               *ngIf="permission.parmissionMatched(['Create Patient'])"
             >
               <mat-icon>add</mat-icon> Add Patient
-            </button>
+            </button> -->
           </div>
         </div>
 
@@ -123,18 +123,7 @@
                 >
                   <!-- Edit button -->
                   <emr-segmented-button value="edit_squareData">
-                    <span
-                      class="size-9 rounded-full border bg-surface flex items-center justify-center cursor-pointer hover:bg-gray-100 transition"
-                      (click)="updatePatient(element)"
-                      *ngIf="
-                        permission.parmissionMatched(['Update Patient'])
-                      "
-                      matTooltip="Edit"
-                    >
-                      <mat-icon class="font-icon edit_squareData"
-                        >edit_square</mat-icon
-                      >
-                    </span>
+
 
                       <span
                       class="size-9 rounded-full border bg-surface flex items-center justify-center cursor-pointer"
@@ -146,14 +135,7 @@
                   </emr-segmented-button>
 
                   <!-- Toggle button -->
-                  <emr-segmented-button value="toggle_status">
-                    <mat-slide-toggle
-                      [checked]="!element.deleted_at"
-                      (change)="confirmBlock(element)"
-                      color="primary"
-                    >
-                    </mat-slide-toggle>
-                  </emr-segmented-button>
+                 
                 </emr-segmented>
               </td>
             </ng-container>
@@ -183,3 +165,4 @@
       ></div>
     </div>
   </div>
+

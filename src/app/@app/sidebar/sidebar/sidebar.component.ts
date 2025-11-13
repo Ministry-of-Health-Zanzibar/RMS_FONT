@@ -162,6 +162,15 @@ export class SidebarComponent {
       link: '/pages/patient/partient',
       permission: 'View Patient',
     },
+    {
+      id: 'history',
+      type: 'Single',
+      icon: 'Medical',
+      name: 'View Patient History',
+      link: '/pages/patient/patientfromhospital',
+      permission: 'View Patient History',
+    },
+
 
      {
       id: 'referral',

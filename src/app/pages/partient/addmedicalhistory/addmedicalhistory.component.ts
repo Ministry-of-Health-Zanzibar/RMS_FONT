@@ -122,10 +122,10 @@ export class AddmedicalhistoryComponent implements OnInit, OnDestroy {
       physical_findings: ['', Validators.required],
       investigations: ['', Validators.required],
       management_done: ['', Validators.required],
-      board_comments: ['',Validators.required],
+      // board_comments: ['',Validators.required],
       reason_id: ['', Validators.required],
       diagnosis_ids: ['',Validators.required],
-      history_file: [null,Validators.required],
+      // history_file: [null,Validators.required],
     });
   }
 
@@ -169,14 +169,14 @@ export class AddmedicalhistoryComponent implements OnInit, OnDestroy {
     );
   }
 
-  onFileSelected(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      this.selectedFile = file;
-      this.medicalForm.patchValue({ history_file: file });
-      this.medicalForm.get('history_file')?.updateValueAndValidity();
-    }
-  }
+  // onFileSelected(event: any) {
+  //   const file = event.target.files[0];
+  //   if (file) {
+  //     this.selectedFile = file;
+  //     this.medicalForm.patchValue({ history_file: file });
+  //     this.medicalForm.get('history_file')?.updateValueAndValidity();
+  //   }
+  // }
 
   onCancel() {
     this.dialogRef.close();
@@ -198,7 +198,6 @@ onSubmit() {
     'referring_doctor',
     'file_number',
     'referring_date',
-    'board_comments',
     'reason_id',
     'history_of_presenting_illness',
     'physical_findings',

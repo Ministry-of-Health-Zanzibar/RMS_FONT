@@ -13,7 +13,7 @@ export class PartientService {
 
   private baseForBoard = `${this.baseUrl}patient-lists`;
 
-  private href_for_addreferral = `${this.baseUrl}patients/for-referral/allowed`;
+  private href_for_addreferral = `${this.baseUrl}patient-histories`;
 
   private hrefee = `${this.baseUrl}patients/patients-for-referral`;
   private href_bodylist = `${this.baseUrl}patient-lists`;
@@ -79,6 +79,11 @@ export class PartientService {
   public getPartientHistoryListById(id: any) {
     return this.http.get<any>(`${this.href}/histories/${id}`);
   }
+
+  updateStatus(id: any, payload: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}patient-histories/update-status/${id}`, payload);
+  }
+
 
 
 

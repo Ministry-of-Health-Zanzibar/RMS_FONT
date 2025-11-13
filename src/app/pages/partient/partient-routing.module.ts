@@ -57,6 +57,11 @@ const routes: Routes = [
     loadComponent: () =>
       import('./patiant/patiant.component').then((c) => c.PatiantComponent),
   },
+  {
+    path: 'patientfromhospital',
+    loadComponent:()=>import('./viewpatientfromhospital/viewpatientfromhospital.component').then(c=>c.ViewpatientfromhospitalComponent)
+
+  },
 
 
    {
@@ -74,6 +79,11 @@ const routes: Routes = [
       import('./patient-history-table/patient-history-table.component').then(
         (c) => c.PatientHistoryTableComponent
       ),
+  },
+  {
+    path:'patientfromhospital/:id',
+    loadComponent:()=>import('./viewpatientfromhospitalbyid/viewpatientfromhospitalbyid.component').then(c=>c.ViewpatientfromhospitalbyidComponent)
+
   },
 
 
