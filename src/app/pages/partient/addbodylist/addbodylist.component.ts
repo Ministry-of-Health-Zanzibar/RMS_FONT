@@ -24,7 +24,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { RolePermissionService } from '../../../services/users/role-permission.service';
 import { UserService } from '../../../services/users/user.service';
-import { MatProgressSpinner } from "@angular/material/progress-spinner";
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-addbodylist',
@@ -40,8 +40,8 @@ import { MatProgressSpinner } from "@angular/material/progress-spinner";
     MatSelectModule,
     MatDatepickerModule,
     MatIconModule,
-    MatProgressSpinner
-],
+    MatProgressSpinner,
+  ],
   templateUrl: './addbodylist.component.html',
   styleUrls: ['./addbodylist.component.scss'],
 })
@@ -55,9 +55,9 @@ export class AddbodylistComponent implements OnInit, OnDestroy {
   loading = false;
 
   userList: any[] = [];
-filteredUser: any[] = [];
-userSearch: string = '';
-isLoadingUsers = false;
+  filteredUser: any[] = [];
+  userSearch: string = '';
+  isLoadingUsers = false;
 
   constructor(
     private patientService: PartientService,
@@ -105,38 +105,36 @@ isLoadingUsers = false;
 
   // ✅ Load users
 
+  loadUsers() {
+    this.isLoadingUsers = true;
+    this.memberList.getAllMemberList().subscribe({
+      next: (res: any) => {
+        this.userList = res?.data || [];
+        this.filteredUser = [...this.userList];
+        this.isLoadingUsers = false;
+      },
+      error: (err) => {
+        console.error('Failed to load user', err);
+        this.isLoadingUsers = false;
+        this.userList = [];
+        this.filteredUser = [];
+      },
+    });
+  }
 
-loadUsers() {
-  this.isLoadingUsers = true;
-  this.memberList.getAllMemberList().subscribe({
-    next: (res: any) => {
-      this.userList = res?.data || [];
-      this.filteredUser = [...this.userList];
-      this.isLoadingUsers = false;
-    },
-    error: (err) => {
-      console.error('Failed to load user', err);
-      this.isLoadingUsers = false;
-      this.userList = [];
-      this.filteredUser = [];
-    },
-  });
-}
+  filterUser() {
+    const term = this.userSearch.toLowerCase();
+    this.filteredUser = this.userList.filter((u) =>
+      u.full_name?.toLowerCase().includes(term)
+    );
+  }
 
-filterUser() {
-  const term = this.userSearch.toLowerCase();
-  this.filteredUser = this.userList.filter((u) =>
-    u.full_name?.toLowerCase().includes(term)
-  );
-}
-
-onUserSelected(event: any) {
-  const selectedIds = event.value;
-  const formArray = this.patientForm.get('user_id') as FormArray;
-  formArray.clear();
-  selectedIds.forEach((id: number) => formArray.push(new FormControl(id)));
-}
-
+  onUserSelected(event: any) {
+    const selectedIds = event.value;
+    const formArray = this.patientForm.get('user_id') as FormArray;
+    formArray.clear();
+    selectedIds.forEach((id: number) => formArray.push(new FormControl(id)));
+  }
 
   // ✅ Reset filter when dropdown opens
   onUserDropdownOpened() {
@@ -158,39 +156,36 @@ onUserSelected(event: any) {
     });
   }
 
- 
-onAttachmentSelected(event: any): void {
-  const file = event.target.files?.[0] ?? null;
+  onAttachmentSelected(event: any): void {
+    const file = event.target.files?.[0] ?? null;
 
-  if (file) {
+    if (file) {
+      const maxSize = 2 * 1024 * 1024;
+      if (file.size > maxSize) {
+        Swal.fire({
+          title: 'File Too Large',
+          text: 'The file must not exceed 2MB.',
+          icon: 'error',
+          confirmButtonColor: '#4690eb',
+        });
 
-    const maxSize = 2 * 1024 * 1024; // 2MB
+        // Clear selection
+        this.selectedAttachement = null;
+        this.patientForm.patchValue({ patient_list_file: '' });
 
-    if (file.size > maxSize) {
-      Swal.fire({
-        title: 'File Too Large',
-        text: 'The file must not exceed 2MB.',
-        icon: 'error',
-        confirmButtonColor: '#4690eb'
-      });
+        return;
+      }
 
-      // Clear selection
-      this.selectedAttachement = null;
-      this.patientForm.patchValue({ patient_list_file: '' });
+      // ✅ Accept file if valid
+      this.selectedAttachement = file;
+      this.patientForm.patchValue({ patient_list_file: file.name });
 
-      return;
+      const control = this.patientForm.get('patient_list_file');
+      control?.markAsDirty();
+      control?.markAsTouched();
+      control?.updateValueAndValidity();
     }
-
-    // ✅ Accept file if valid
-    this.selectedAttachement = file;
-    this.patientForm.patchValue({ patient_list_file: file.name });
-
-    const control = this.patientForm.get('patient_list_file');
-    control?.markAsDirty();
-    control?.markAsTouched();
-    control?.updateValueAndValidity();
   }
-}
 
   // onAttachmentSelected(event: any): void {
   //   const file = event.target.files?.[0] ?? null;
@@ -204,96 +199,29 @@ onAttachmentSelected(event: any): void {
   //   }
   // }
 
+  savePatient() {
+    if (this.patientForm.invalid) return;
 
+    this.loading = true; // Show spinner
 
-savePatient() {
-  if (this.patientForm.invalid) return;
-
-  this.loading = true; // Show spinner
-
-  const formData = new FormData();
-  Object.keys(this.patientForm.controls).forEach((key) => {
-    if (key === 'patient_list_file') {
-      if (this.selectedAttachement) {
-        formData.append('patient_list_file', this.selectedAttachement);
-      }
-    } else if (key === 'user_id') {
-      const userIds = this.patientForm.get('user_id')?.value || [];
-      userIds.forEach((id: number) =>
-        formData.append('user_id[]', id.toString())
-      );
-    } else {
-      const value = this.patientForm.get(key)?.value;
-      formData.append(key, value ?? '');
-    }
-  });
-
-  this.patientService.addBodyList(formData).subscribe({
-    next: (response) => {
-      this.loading = false; // Hide spinner
-      if (response.statusCode === 200) {
-        Swal.fire({
-          title: 'Success',
-          text: response.message,
-          icon: 'success',
-          confirmButtonColor: '#4690eb',
-          confirmButtonText: 'Close',
-        });
-        this.dialogRef.close(true);
+    const formData = new FormData();
+    Object.keys(this.patientForm.controls).forEach((key) => {
+      if (key === 'patient_list_file') {
+        if (this.selectedAttachement) {
+          formData.append('patient_list_file', this.selectedAttachement);
+        }
+      } else if (key === 'user_id') {
+        const userIds = this.patientForm.get('user_id')?.value || [];
+        userIds.forEach((id: number) =>
+          formData.append('user_id[]', id.toString())
+        );
       } else {
-        Swal.fire({
-          title: 'Error',
-          text: response.message,
-          icon: 'error',
-          confirmButtonColor: '#4690eb',
-          confirmButtonText: 'Close',
-        });
+        const value = this.patientForm.get(key)?.value;
+        formData.append(key, value ?? '');
       }
-    },
-    error: (err) => {
-      console.error('Error saving patient:', err);
-      this.loading = false; // Hide spinner
-      Swal.fire({
-        title: 'Error',
-        text: 'Something went wrong. Please try again.',
-        icon: 'error',
-      });
-    },
-  });
-}
+    });
 
-// ✅ Update existing record
-updatePatient() {
-  if (this.patientForm.invalid) return;
-
-  this.loading = true; // Show spinner
-
-  const formData = new FormData();
-  Object.keys(this.patientForm.controls).forEach((key) => {
-    if (key === 'patient_list_file') {
-      if (this.selectedAttachement) {
-        formData.append('patient_list_file', this.selectedAttachement);
-      }
-    } else if (key === 'board_date') {
-      const dateValue = this.patientForm.get('board_date')?.value;
-      if (dateValue) {
-        const formattedDate = new Date(dateValue).toISOString().split('T')[0];
-        formData.append('board_date', formattedDate);
-      }
-    } else if (key === 'user_id') {
-      const userIds = this.patientForm.get('user_id')?.value || [];
-      userIds.forEach((id: number) =>
-        formData.append('user_id[]', id.toString())
-      );
-    } else {
-      const value = this.patientForm.get(key)?.value;
-      formData.append(key, value ?? '');
-    }
-  });
-
-  this.patientService
-    .updateMedicalBoard(formData, this.patientData.patient_list_id)
-    .subscribe({
+    this.patientService.addBodyList(formData).subscribe({
       next: (response) => {
         this.loading = false; // Hide spinner
         if (response.statusCode === 200) {
@@ -316,7 +244,7 @@ updatePatient() {
         }
       },
       error: (err) => {
-        console.error('Error updating patient:', err);
+        console.error('Error saving patient:', err);
         this.loading = false; // Hide spinner
         Swal.fire({
           title: 'Error',
@@ -325,6 +253,70 @@ updatePatient() {
         });
       },
     });
-}
+  }
 
+  // ✅ Update existing record
+  updatePatient() {
+    if (this.patientForm.invalid) return;
+
+    this.loading = true; // Show spinner
+
+    const formData = new FormData();
+    Object.keys(this.patientForm.controls).forEach((key) => {
+      if (key === 'patient_list_file') {
+        if (this.selectedAttachement) {
+          formData.append('patient_list_file', this.selectedAttachement);
+        }
+      } else if (key === 'board_date') {
+        const dateValue = this.patientForm.get('board_date')?.value;
+        if (dateValue) {
+          const formattedDate = new Date(dateValue).toISOString().split('T')[0];
+          formData.append('board_date', formattedDate);
+        }
+      } else if (key === 'user_id') {
+        const userIds = this.patientForm.get('user_id')?.value || [];
+        userIds.forEach((id: number) =>
+          formData.append('user_id[]', id.toString())
+        );
+      } else {
+        const value = this.patientForm.get(key)?.value;
+        formData.append(key, value ?? '');
+      }
+    });
+
+    this.patientService
+      .updateMedicalBoard(formData, this.patientData.patient_list_id)
+      .subscribe({
+        next: (response) => {
+          this.loading = false; // Hide spinner
+          if (response.statusCode === 200) {
+            Swal.fire({
+              title: 'Success',
+              text: response.message,
+              icon: 'success',
+              confirmButtonColor: '#4690eb',
+              confirmButtonText: 'Close',
+            });
+            this.dialogRef.close(true);
+          } else {
+            Swal.fire({
+              title: 'Error',
+              text: response.message,
+              icon: 'error',
+              confirmButtonColor: '#4690eb',
+              confirmButtonText: 'Close',
+            });
+          }
+        },
+        error: (err) => {
+          console.error('Error updating patient:', err);
+          this.loading = false; // Hide spinner
+          Swal.fire({
+            title: 'Error',
+            text: 'Something went wrong. Please try again.',
+            icon: 'error',
+          });
+        },
+      });
+  }
 }

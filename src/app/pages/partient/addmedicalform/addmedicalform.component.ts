@@ -1,10 +1,5 @@
 import { CommonModule } from '@angular/common';
-import {
-  Component,
-  Inject,
-  OnInit,
-  OnDestroy,
-} from '@angular/core';
+import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
 import {
   ReactiveFormsModule,
   FormGroup,
@@ -66,7 +61,7 @@ import { MedicalhistoryService } from '../../../services/partient/medicalhistory
     MatRadioModule,
   ],
   templateUrl: './addmedicalform.component.html',
-  styleUrl: './addmedicalform.component.scss'
+  styleUrl: './addmedicalform.component.scss',
 })
 export class AddmedicalformComponent implements OnInit, OnDestroy {
   medicalForm!: FormGroup;
@@ -87,6 +82,16 @@ export class AddmedicalformComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<AddmedicalformComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
+
+  fileSizeValidator(maxSizeMB: number) {
+    return (control: any) => {
+      const file = control.value;
+      if (file && file.size > maxSizeMB * 1024 * 1024) {
+        return { fileSize: true };
+      }
+      return null;
+    };
+  }
 
   ngOnInit(): void {
     console.log('Dialog received data:', this.data);
@@ -116,15 +121,16 @@ export class AddmedicalformComponent implements OnInit, OnDestroy {
       patient_id: [patient?.files[0]?.patient_id || '', Validators.required],
       referring_doctor: ['', Validators.required],
       file_number: ['', Validators.required],
-      referring_date: ['', ],
+      referring_date: [''],
       // history_of_presenting_illness: ['', Validators.required],
       // physical_findings: ['', Validators.required],
       // investigations: ['', Validators.required],
       // management_done: ['', Validators.required],
-      board_comments: ['',Validators.required],
+      board_comments: ['', Validators.required],
       reason_id: ['', Validators.required],
-      diagnosis_ids: ['',Validators.required],
-      history_file: [null,Validators.required],
+      diagnosis_ids: ['', Validators.required],
+      history_file: [null, [Validators.required, this.fileSizeValidator(2)]],
+      // history_file: [null, Validators.required],
     });
   }
 
@@ -153,7 +159,10 @@ export class AddmedicalformComponent implements OnInit, OnDestroy {
     formArray.clear();
 
     selectedIds.forEach((id: number) => formArray.push(this.fb.control(id)));
-    console.log('Selected diagnosis_ids:', this.medicalForm.value.diagnosis_ids);
+    console.log(
+      'Selected diagnosis_ids:',
+      this.medicalForm.value.diagnosis_ids
+    );
   }
 
   onDiagnosesDropdownOpened() {
@@ -168,9 +177,36 @@ export class AddmedicalformComponent implements OnInit, OnDestroy {
     );
   }
 
+  // onFileSelected(event: any) {
+  //   const file = event.target.files[0];
+  //   if (file) {
+  //     this.selectedFile = file;
+  //     this.medicalForm.patchValue({ history_file: file });
+  //     this.medicalForm.get('history_file')?.updateValueAndValidity();
+  //   }
+  // }
+
   onFileSelected(event: any) {
     const file = event.target.files[0];
+    const maxSizeKB = 2048;
+    const maxSizeBytes = maxSizeKB * 1024;
+
     if (file) {
+      if (file.size > maxSizeBytes) {
+        Swal.fire({
+          icon: 'error',
+          title: 'File too large',
+          text: `The selected file exceeds ${
+            maxSizeKB / 1024
+          } MB (max allowed). Please upload a smaller file.`,
+        });
+
+        this.selectedFile = null;
+        this.medicalForm.patchValue({ history_file: null });
+        this.medicalForm.get('history_file')?.setErrors({ fileSize: true });
+        return;
+      }
+
       this.selectedFile = file;
       this.medicalForm.patchValue({ history_file: file });
       this.medicalForm.get('history_file')?.updateValueAndValidity();
@@ -181,52 +217,55 @@ export class AddmedicalformComponent implements OnInit, OnDestroy {
     this.dialogRef.close();
   }
 
-onSubmit() {
-  if (this.medicalForm.invalid) {
-    this.medicalForm.markAllAsTouched();
-    return;
-  }
+  onSubmit() {
+    if (this.medicalForm.invalid) {
+      this.medicalForm.markAllAsTouched();
+      return;
+    }
 
-  this.loading = true;
+    this.loading = true;
 
-  const formValue = this.medicalForm.value;
-  const formData = new FormData();
+    const formValue = this.medicalForm.value;
+    const formData = new FormData();
 
-  for (const key of [
-    'patient_id',
-    'referring_doctor',
-    'file_number',
-    'referring_date',
-    'board_comments',
-    'reason_id',
-  ]) {
-    formData.append(key, formValue[key]);
-  }
+    for (const key of [
+      'patient_id',
+      'referring_doctor',
+      'file_number',
+      'referring_date',
+      'board_comments',
+      'reason_id',
+    ]) {
+      formData.append(key, formValue[key]);
+    }
 
-  if (Array.isArray(formValue.diagnosis_ids)) {
-    formValue.diagnosis_ids.forEach((id: number) => {
-      formData.append('diagnosis_ids[]', id.toString());
+    if (Array.isArray(formValue.diagnosis_ids)) {
+      formValue.diagnosis_ids.forEach((id: number) => {
+        formData.append('diagnosis_ids[]', id.toString());
+      });
+    }
+
+    if (this.selectedFile) {
+      formData.append(
+        'history_file',
+        this.selectedFile,
+        this.selectedFile.name
+      );
+    }
+
+    this.medicalHistoryService.addMedical(formData).subscribe({
+      next: (res) => {
+        console.log('Response:', res);
+        Swal.fire('Success', 'Medical history saved successfully', 'success');
+        this.loading = false;
+        this.dialogRef.close(true);
+      },
+      error: (err) => {
+        console.error('Backend error:', err.error);
+        this.backendErrors = err.error.errors || {};
+        Swal.fire('Error', 'Failed to save medical history', 'error');
+        this.loading = false;
+      },
     });
   }
-
-  if (this.selectedFile) {
-    formData.append('history_file', this.selectedFile, this.selectedFile.name);
-  }
-
-  this.medicalHistoryService.addMedical(formData).subscribe({
-    next: (res) => {
-      console.log('Response:', res);
-      Swal.fire('Success', 'Medical history saved successfully', 'success');
-      this.loading = false;
-      this.dialogRef.close(true);
-    },
-    error: (err) => {
-      console.error('Backend error:', err.error);
-      this.backendErrors = err.error.errors || {};
-      Swal.fire('Error', 'Failed to save medical history', 'error');
-      this.loading = false; // ✅ Stop loading even on error
-    },
-  });
-}
-
 }

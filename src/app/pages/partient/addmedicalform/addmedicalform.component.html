@@ -39,23 +39,20 @@
         />
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
-
-
-
       </mat-form-field>
 
-  <mat-form-field appearance="outline" class="w-full">
+      <mat-form-field appearance="outline" class="w-full">
         <mat-label>Reason</mat-label>
         <mat-select formControlName="reason_id">
-          <mat-option *ngFor="let reason of reasonList" [value]="reason.reason_id">
+          <mat-option
+            *ngFor="let reason of reasonList"
+            [value]="reason.reason_id"
+          >
             {{ reason.referral_reason_name }}
           </mat-option>
         </mat-select>
       </mat-form-field>
-
     </div>
-
-   
 
     <!-- Board Comments -->
     <div class="grid grid-cols-1">
@@ -106,36 +103,34 @@
     </div>
 
     <!-- Buttons -->
-  <div class="flex justify-end items-center gap-3 pt-4">
-  <!-- Cancel Button -->
-  <button
-    mat-stroked-button
-    type="button"
-    color="warn"
-    (click)="onCancel()"
-    [disabled]="loading"
-  >
-    Cancel
-  </button>
+    <div class="flex justify-end items-center gap-3 pt-4">
+      <!-- Cancel Button -->
+      <button
+        mat-stroked-button
+        type="button"
+        color="warn"
+        (click)="onCancel()"
+        [disabled]="loading"
+      >
+        Cancel
+      </button>
 
-  <!-- Save Button / Spinner -->
-  <button
-    *ngIf="!loading"
-    mat-raised-button
-    color="primary"
-    (click)="onSubmit()"
-    [disabled]="medicalForm.invalid"
-  >
-    Save
-  </button>
+      <!-- Save Button / Spinner -->
+      <button
+        *ngIf="!loading"
+        mat-raised-button
+        color="primary"
+        (click)="onSubmit()"
+        [disabled]="medicalForm.invalid"
+      >
+        Save
+      </button>
 
-  <mat-progress-spinner
-    *ngIf="loading"
-    diameter="26"
-    mode="indeterminate"
-  ></mat-progress-spinner>
-</div>
-
+      <mat-progress-spinner
+        *ngIf="loading"
+        diameter="26"
+        mode="indeterminate"
+      ></mat-progress-spinner>
+    </div>
   </form>
 </div>
-
