@@ -79,15 +79,25 @@ export class AddmultiplepatientComponent implements OnInit, OnDestroy {
   }
 
   loadPatients() {
-    this.patientService.getAllPartientforReferral().subscribe({
-      next: (res) => {
-        this.patients = res.data;
-      },
-      error: (err) => {
-        console.error('Failed to load patients', err);
-      },
-    });
-  }
+  this.patientService.getAllPartientforReferral().subscribe({
+    next: (res) => {
+      // Filter only histories with status == 'reviewed'
+      const reviewedHistories = res.data.filter(
+        (item: any) => item.status === 'reviewed'
+      );
+
+      // Extract patients from those histories
+      this.patients = reviewedHistories.map((item: any) => ({
+        patient_id: item.patient?.patient_id,
+        name: item.patient?.name,
+        phone: item.patient?.phone,
+      }));
+    },
+    error: (err) => {
+      console.error('Failed to load patients', err);
+    },
+  });
+}
 
   onCancel() {
     this.dialogRef.close();

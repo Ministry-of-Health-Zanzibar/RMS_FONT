@@ -80,6 +80,11 @@ const routes: Routes = [
         (c) => c.PatientHistoryTableComponent
       ),
   },
+  {
+    path:'patientfromhospital/:id',
+    loadComponent:()=>import('./viewpatientfromhospitalbyid/viewpatientfromhospitalbyid.component').then(c=>c.ViewpatientfromhospitalbyidComponent)
+
+  },
 
 
    {

@@ -164,9 +164,17 @@ public documentUrl = environment.fileUrl;
       );
     }
   }
-
+//  displayMoreData(data: any) {
+//     const id = data.patient_histories_id;
+//     this.router.navigate(['/pages/patient/patient', id]);
+//   }
   displayMoreData(data: any) {
-    const id = data.patient_id;
-    this.router.navigate(['/pages/patient/patient-table', id]);
+  const id = data.patient_id;
+  if (!id) {
+    Swal.fire('Error', 'No history ID available.', 'error');
+    return;
   }
+  this.router.navigate(['/pages/patient/patientfromhospital', id]);
+}
+
 }

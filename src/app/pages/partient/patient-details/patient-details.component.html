@@ -124,18 +124,7 @@
             </div>
           </div>
 
-          <!-- Location ID -->
-          <div
-            class="flex items-center bg-white rounded-xl p-3 shadow-sm border border-gray-100 md:col-span-2"
-          >
-            <mat-icon color="warn" class="mr-3">location_on</mat-icon>
-            <div>
-              <p class="text-sm text-gray-500">Location ID</p>
-              <p class="font-semibold text-lg">
-                {{ medicalHistory.patient.location_id }}
-              </p>
-            </div>
-          </div>
+
         </div>
 
         <!-- Created Date -->
@@ -228,75 +217,10 @@
                 {{ medicalHistory.management_done }}
               </td>
             </tr>
-            <tr>
-              <th class="border border-gray-300 p-3 text-left">Board Comments</th>
-              <td colspan="3" class="border border-gray-300 p-3">
-                {{ medicalHistory.board_comments }}
-              </td>
-            </tr>
-            <tr class="bg-gray-50">
-              <th class="border border-gray-300 p-3 text-left">History File</th>
-              <td colspan="3" class="border border-gray-300 p-3">
-                <button
-                  *ngIf="medicalHistory.history_file"
-                  mat-stroked-button
-                  color="primary"
-                  (click)="viewPDF(medicalHistory.history_file)"
-                >
-                  <mat-icon>picture_as_pdf</mat-icon> View File
-                </button>
-                <span *ngIf="!medicalHistory.history_file" class="text-gray-500"
-                  >No file available</span
-                >
-              </td>
-            </tr>
+           
           </tbody>
         </table>
       </mat-card-content>
     </mat-card>
   </div>
 
-  <!-- Diagnoses List -->
-  <!-- <mat-card class="shadow-xl rounded-2xl">
-    <mat-card-header>
-      <mat-card-title class="text-xl font-semibold text-gray-800"
-        >Diagnoses</mat-card-title
-      >
-    </mat-card-header>
-    <mat-card-content class="p-6">
-      <table
-        *ngIf="medicalHistory.diagnoses?.length > 0; else noDiagnoses"
-        class="table-auto w-full border-collapse border border-gray-300"
-      >
-        <thead class="bg-gray-100">
-          <tr>
-            <th class="border border-gray-300 p-2 text-center">#</th>
-            <th class="border border-gray-300 p-2 text-center">Code</th>
-            <th class="border border-gray-300 p-2 text-center">Diagnosis Name</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            *ngFor="let diag of medicalHistory.diagnoses; let i = index"
-            class="hover:bg-gray-50"
-          >
-            <td class="border border-gray-300 p-2 text-center">{{ i + 1 }}</td>
-            <td class="border border-gray-300 p-2 text-center">
-              {{ diag.diagnosis_code }}
-            </td>
-            <td class="border border-gray-300 p-2 text-center">
-              {{ diag.diagnosis_name }}
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-      <ng-template #noDiagnoses>
-        <div
-          class="text-center text-gray-500 p-6 bg-gray-50 rounded-lg shadow-md"
-        >
-          No diagnoses found.
-        </div>
-      </ng-template>
-    </mat-card-content>
-  </mat-card> -->

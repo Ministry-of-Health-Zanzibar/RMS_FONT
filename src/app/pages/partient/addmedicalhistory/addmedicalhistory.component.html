@@ -2,9 +2,9 @@
   <h2 class="text-lg font-semibold mb-6 text-center">Add Medical History</h2>
 
   <form [formGroup]="medicalForm" (ngSubmit)="onSubmit()" class="space-y-4">
-    <!-- <p class="text-xs text-gray-500">
+    <p class="text-xs text-gray-500">
       Patient ID: {{ medicalForm.get('patient_id')?.value }}
-    </p> -->
+    </p>
 
     <!-- First Row -->
     <div class="grid grid-cols-2 gap-4">
@@ -89,12 +89,12 @@
     </div>
 
     <!-- Board Comments -->
-    <div class="grid grid-cols-1">
+    <!-- <div class="grid grid-cols-1">
       <mat-form-field appearance="outline" class="w-full">
         <mat-label>Board Comments</mat-label>
         <textarea matInput rows="3" formControlName="board_comments"></textarea>
       </mat-form-field>
-    </div>
+    </div> -->
 
     <!-- Diagnoses Section -->
     <div>
@@ -128,13 +128,13 @@
     </div>
 
     <!-- File Upload -->
-    <div>
+    <!-- <div>
       <label class="block mb-2 text-sm font-medium">Upload History File</label>
       <input type="file" (change)="onFileSelected($event)" />
       <p *ngIf="selectedFile" class="text-sm text-gray-500 mt-1">
         Selected: {{ selectedFile.name }}
       </p>
-    </div>
+    </div> -->
 
     <!-- Buttons -->
   <div class="flex justify-end items-center gap-3 pt-4">

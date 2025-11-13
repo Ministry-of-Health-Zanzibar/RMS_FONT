@@ -165,8 +165,8 @@ export class SidebarComponent {
     {
       id: 'history',
       type: 'Single',
-      icon: 'patient',
-      name: 'Patients',
+      icon: 'Medical',
+      name: 'View Patient History',
       link: '/pages/patient/patientfromhospital',
       permission: 'View Patient History',
     },
