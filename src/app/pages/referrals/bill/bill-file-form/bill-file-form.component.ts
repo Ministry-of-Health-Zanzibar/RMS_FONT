@@ -122,9 +122,34 @@ export class BillFileFormComponent {
     return d >= startDate;
   };
 
+  // onAttachmentSelected(event: any): void {
+  //   const file = event.target.files?.[0] ?? null;
+  //   if (file) {
+  //     this.billForm.patchValue({ bill_file: file.name });
+  //     this.selectedAttachment = file;
+  //   }
+  // }
+
   onAttachmentSelected(event: any): void {
     const file = event.target.files?.[0] ?? null;
+
     if (file) {
+      const maxSizeInMB = 2;
+      const maxSizeInBytes = maxSizeInMB * 1024 * 1024;
+
+      if (file.size > maxSizeInBytes) {
+        Swal.fire({
+          icon: 'error',
+          title: 'File Too Large',
+          text: `The selected file exceeds ${maxSizeInMB} MB. Please choose a smaller file.`,
+        });
+
+        event.target.value = '';
+        this.billForm.patchValue({ bill_file: null });
+        this.selectedAttachment = null;
+        return;
+      }
+
       this.billForm.patchValue({ bill_file: file.name });
       this.selectedAttachment = file;
     }
