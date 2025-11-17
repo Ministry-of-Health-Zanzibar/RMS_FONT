@@ -3,7 +3,7 @@
     *ngIf="permission.parmissionMatched(['View Patient History'])"
   >
     <div class="flex items-center justify-between">
-      <h1 class="text-lg font-bold">Patient Lists</h1>
+      <h1 class="text-lg font-bold">Patient List</h1>
     </div>
 
     <div class="w-full">
@@ -66,35 +66,46 @@
               </td>
             </ng-container>
 
-            <!-- ZanID  Column -->
-            <ng-container matColumnDef="zan_id">
-              <th mat-header-cell *matHeaderCellDef>Zan_id</th>
-              <td mat-cell *matCellDef="let element">
-                {{ element.zan_id || "N/A" }}
-              </td>
-            </ng-container>
-
-            <!-- Date of Birth Column -->
-            <ng-container matColumnDef="date_of_birth">
-              <th mat-header-cell *matHeaderCellDef>Date of Birth / Age</th>
-              <td mat-cell *matCellDef="let element">
-                {{ element.date_of_birth }}
-              </td>
-            </ng-container>
-
-            <!-- Gender Column -->
-            <ng-container matColumnDef="gender">
-              <th mat-header-cell *matHeaderCellDef>Gender</th>
-              <td mat-cell *matCellDef="let element">{{ element.gender }}</td>
-            </ng-container>
-
             <!-- Phone Column -->
             <ng-container matColumnDef="phone">
               <th mat-header-cell *matHeaderCellDef>Phone</th>
               <td mat-cell *matCellDef="let element">{{ element.phone }}</td>
             </ng-container>
 
-            <ng-container matColumnDef="patient_file">
+            <!-- ZanID  Column -->
+            <ng-container matColumnDef="referring_doctor">
+              <th mat-header-cell *matHeaderCellDef>Referring Doctor</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.latest_history?.referring_doctor || "N/A" }}
+              </td>
+            </ng-container>
+
+            <!-- Date of Birth Column -->
+            <ng-container matColumnDef="investigations">
+              <th mat-header-cell *matHeaderCellDef>Investigations</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.latest_history?.investigations }}
+              </td>
+            </ng-container>
+
+            <!-- Gender Column -->
+             <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef>Status</th>
+            <td mat-cell *matCellDef="let element">
+              <span class="status-chip" [ngClass]="element.latest_history?.status">
+                {{ element.latest_history?.status | titlecase }}
+              </span>
+            </td>
+          </ng-container>
+
+            <!-- <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef>Status</th>
+              <td mat-cell *matCellDef="let element">{{ element.latest_history?.status }}</td>
+            </ng-container> -->
+
+
+
+            <!-- <ng-container matColumnDef="patient_file">
               <th mat-header-cell *matHeaderCellDef>View PDF</th>
               <td mat-cell *matCellDef="let element">
                 <a
@@ -105,7 +116,7 @@
                   <mat-icon>picture_as_pdf</mat-icon> View PDF
                 </a>
               </td>
-            </ng-container>
+            </ng-container> -->
 
             <!-- Action Column -->
             <ng-container matColumnDef="action">
@@ -135,7 +146,7 @@
                   </emr-segmented-button>
 
                   <!-- Toggle button -->
-                 
+
                 </emr-segmented>
               </td>
             </ng-container>

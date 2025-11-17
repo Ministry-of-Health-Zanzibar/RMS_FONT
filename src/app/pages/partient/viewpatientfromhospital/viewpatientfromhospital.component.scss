@@ -1,0 +1,33 @@
+.status-chip {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: capitalize;
+  color: white;
+}
+
+/* STATUS COLORS */
+.pending {
+  background-color: #f59e0b; /* amber */
+}
+
+.reviewed {
+  background-color: #3b82f6; /* blue */
+}
+
+.requested {
+  background-color: #6366f1; /* indigo */
+}
+
+.approved {
+  background-color: #10b981; /* green */
+}
+
+.confirmed {
+  background-color: #0ea5e9; /* light blue */
+}
+
+.rejected {
+  background-color: #ef4444; /* red */
+}

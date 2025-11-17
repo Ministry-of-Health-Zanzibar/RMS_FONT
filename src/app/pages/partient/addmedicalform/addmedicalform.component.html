@@ -1,31 +1,10 @@
 <div class="p-6 bg-white rounded-lg shadow-md w-[800px] mx-auto">
-  <h2 class="text-lg font-semibold mb-6 text-center">Add Medical History</h2>
+  <h2 class="text-lg font-semibold mb-6 text-center">Add Medical Board Information</h2>
 
   <form [formGroup]="medicalForm" (ngSubmit)="onSubmit()" class="space-y-4">
     <!-- <p class="text-xs text-gray-500">
       Patient ID: {{ medicalForm.get('patient_id')?.value }}
     </p> -->
-
-    <!-- First Row -->
-    <div class="grid grid-cols-2 gap-4">
-      <mat-form-field appearance="outline" class="w-full">
-        <mat-label>Referring Doctor</mat-label>
-        <input
-          matInput
-          formControlName="referring_doctor"
-          placeholder="Enter doctor's name"
-        />
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="w-full">
-        <mat-label>File Number</mat-label>
-        <input
-          matInput
-          formControlName="file_number"
-          placeholder="Enter file number"
-        />
-      </mat-form-field>
-    </div>
 
     <!-- Second Row -->
     <div class="grid grid-cols-2 gap-4">
@@ -55,7 +34,7 @@
 
     </div>
 
-   
+
 
     <!-- Board Comments -->
     <div class="grid grid-cols-1">

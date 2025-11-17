@@ -55,7 +55,7 @@ export class PartientService {
     return this.http.get<any>(`${this.href_bodylist}/body-form/${id}`);
   }
 
-  //end body list services
+  //end board list services
 
   public getAllPartients(): Observable<any> {
     return this.http.get<any>(this.href);

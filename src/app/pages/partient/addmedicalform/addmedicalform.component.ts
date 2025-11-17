@@ -92,11 +92,9 @@ export class AddmedicalformComponent implements OnInit, OnDestroy {
     console.log('Dialog received data:', this.data);
 
     const patient = this.data;
-    console.log('Patient Name:', patient.name);
+
     console.log('Patient Matibabu Card:', patient.matibabu_card);
-    console.log('Patient Phone:', patient.phone);
-    console.log('Patient Gender:', patient.gender);
-    console.log('Patient Location:', patient.location);
+
 
     const filePatientId = patient?.files[0]?.patient_id;
     console.log('Patient ID from file:', filePatientId);
@@ -114,8 +112,8 @@ export class AddmedicalformComponent implements OnInit, OnDestroy {
   buildForm(patient?: any) {
     this.medicalForm = this.fb.group({
       patient_id: [patient?.files[0]?.patient_id || '', Validators.required],
-      referring_doctor: ['', Validators.required],
-      file_number: ['', Validators.required],
+      // referring_doctor: ['', Validators.required],
+      // file_number: ['', Validators.required],
       referring_date: ['', ],
       // history_of_presenting_illness: ['', Validators.required],
       // physical_findings: ['', Validators.required],
@@ -194,8 +192,6 @@ onSubmit() {
 
   for (const key of [
     'patient_id',
-    'referring_doctor',
-    'file_number',
     'referring_date',
     'board_comments',
     'reason_id',

@@ -46,7 +46,7 @@ export class ViewpatientfromhospitalbyidComponent implements OnInit {
     this.patientService.getPartientById(id).subscribe({
       next: (response: any) => {
         this.loading = false;
-        if (response?.status && response?.data) {
+        if (response?.data) {
           this.medicalHistory = response.data;
         } else {
           Swal.fire('Error', 'No medical history found', 'error');

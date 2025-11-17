@@ -20,6 +20,7 @@ import { Router } from '@angular/router';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { EmrSegmentedModule } from '@elementar/components';
 import Swal from 'sweetalert2';
+import { PatienthistoryService } from '../../../services/partient/patienthistory.service';
 
 @Component({
   selector: 'app-viewpatientfromhospital',
@@ -50,11 +51,10 @@ public documentUrl = environment.fileUrl;
     'id',
     'name',
     'matibabu_card',
-    'zan_id',
-    'date_of_birth',
-    'gender',
     'phone',
-    'patient_file',
+    'referring_doctor',
+    'investigations',
+    'status',
     'action',
   ];
   dataSource: MatTableDataSource<any> = new MatTableDataSource();
@@ -65,6 +65,7 @@ public documentUrl = environment.fileUrl;
   constructor(
     public permission: PermissionService,
     private userService: PartientService,
+    private patientHistory: PatienthistoryService,
     private dialog: MatDialog,
     private router: Router
   ) {}
@@ -83,8 +84,7 @@ public documentUrl = environment.fileUrl;
 
   loadPatients() {
     this.loading = true;
-    this.userService
-      .getAllPartients()
+    this.patientHistory.getAllBodyList()
       .pipe(takeUntil(this.onDestroy))
       .subscribe(
         (response: any) => {
@@ -168,12 +168,14 @@ public documentUrl = environment.fileUrl;
 //     const id = data.patient_histories_id;
 //     this.router.navigate(['/pages/patient/patient', id]);
 //   }
-  displayMoreData(data: any) {
-  const id = data.patient_id;
+displayMoreData(data: any) {
+  const id = data?.latest_history?.patient_histories_id;
+
   if (!id) {
     Swal.fire('Error', 'No history ID available.', 'error');
     return;
   }
+
   this.router.navigate(['/pages/patient/patientfromhospital', id]);
 }
 

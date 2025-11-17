@@ -11,7 +11,6 @@ import {
   Validators,
   FormsModule,
   ReactiveFormsModule,
-  FormControl,
 } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
@@ -113,6 +112,14 @@ export class PartientFormComponent implements OnInit, OnDestroy {
     if (this.data?.patient) {
       this.patchFormForEdit(this.data.patient);
     }
+
+    // 🟢 Automatically format valid_until when user picks a date
+    this.patientForm.get('valid_until')?.valueChanges.subscribe((val) => {
+      if (val) {
+        const formatted = new Date(val).toISOString().split('T')[0];
+        this.patientForm.patchValue({ valid_until: formatted }, { emitEvent: false });
+      }
+    });
   }
 
   ngOnDestroy(): void {
@@ -165,18 +172,17 @@ export class PartientFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Format DOB
-  private formatDate(value: Date | string | number, dobType: string): string {
+  private formatDate(value: any, dobType: string): string {
+    if (!value) return '';
     if (dobType === 'known') {
       const d = new Date(value);
       const year = d.getFullYear();
       const month = (d.getMonth() + 1).toString().padStart(2, '0');
       const day = d.getDate().toString().padStart(2, '0');
       return `${year}-${month}-${day}`;
-    } else if (dobType === 'unknown') {
+    } else {
       return String(value);
     }
-    return '';
   }
 
   private patchFormForEdit(patient: any) {
@@ -202,7 +208,9 @@ export class PartientFormComponent implements OnInit, OnDestroy {
       has_insurance: !!patient.has_insurance,
       insurance_provider_name: patient.insurance_provider_name || '',
       card_number: patient.card_number || '',
-      valid_until: patient.valid_until || '',
+      valid_until: patient.valid_until
+        ? new Date(patient.valid_until).toISOString().split('T')[0]
+        : '',
     });
 
     if (patient.files?.length) {
@@ -221,6 +229,19 @@ export class PartientFormComponent implements OnInit, OnDestroy {
     this.loading = true;
     const formValue = this.patientForm.value;
     const formData = new FormData();
+
+    // 🟢 Format date_of_birth & valid_until before sending
+    if (formValue.date_of_birth) {
+      formValue.date_of_birth = this.formatDate(
+        formValue.date_of_birth,
+        formValue.dob_type
+      );
+    }
+    if (formValue.valid_until) {
+      formValue.valid_until = new Date(formValue.valid_until)
+        .toISOString()
+        .split('T')[0];
+    }
 
     // Append all fields
     Object.keys(formValue).forEach((key) => {
