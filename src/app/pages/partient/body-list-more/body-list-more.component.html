@@ -5,15 +5,17 @@
     class="bg-white shadow-xl rounded-2xl overflow-hidden p-6 mb-6"
   >
     <div class="flex justify-between items-center mb-4">
-      <h2 class="text-xl font-semibold">Medical Board Information</h2>
+      <h2 class="text-xl font-semibold">Medical Board Informations</h2>
     </div>
 
     <table class="w-full table-auto border-collapse">
       <thead class="bg-gray-200 text-gray-700">
         <tr>
           <th class="border border-gray-300 p-3 text-center">Board Title</th>
+          <th class="border border-gray-300 p-3 text-center">Board Type</th>
+          <th class="border border-gray-300 p-3 text-center">No of Patients</th>
           <th class="border border-gray-300 p-3 text-center">File</th>
-          <!-- <th class="border border-gray-300 p-3 text-center">Actions</th> -->
+
           <th class="border border-gray-300 p-3 text-center">Add Multiple</th>
         </tr>
       </thead>
@@ -25,6 +27,16 @@
             class="border border-gray-300 p-3 text-center font-medium text-gray-700"
           >
             {{ file.patient_list_title }}
+          </td>
+           <td
+            class="border border-gray-300 p-3 text-center font-medium text-gray-700"
+          >
+            {{ file.board_type }}
+          </td>
+           <td
+            class="border border-gray-300 p-3 text-center font-medium text-gray-700"
+          >
+            {{ file.no_of_patients }}
           </td>
 
           <!-- PDF Link -->
@@ -133,9 +145,10 @@
 <ng-container matColumnDef="files">
   <th mat-header-cell *matHeaderCellDef mat-sort-header>Files</th>
   <td mat-cell *matCellDef="let p">
-    <ng-container *ngIf="p.files?.length > 0;">
-      <div *ngFor="let f of p.files" class="flex items-center gap-3">
-        <!-- PDF View Button -->
+    <ng-container >
+       <!-- <ng-container *ngIf="p.files?.length > 0;"> -->
+      <!-- <div *ngFor="let f of p.files" class="flex items-center gap-3">
+
         <a
           [href]="documentUrl + f.file_path"
           target="_blank"
@@ -143,9 +156,9 @@
         >
           <mat-icon>picture_as_pdf</mat-icon>
           View PDF
-        </a>
+        </a> -->
 
-        <!-- Add Medical History Button -->
+
       <button
         mat-icon-button
         color="primary"
@@ -157,7 +170,7 @@
       </button>
 
 
-      </div>
+      <!-- </div> -->
     </ng-container>
 
     <!-- <ng-template #noFiles>

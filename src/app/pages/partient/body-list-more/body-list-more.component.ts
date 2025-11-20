@@ -30,6 +30,8 @@ interface BodyList {
   patient_list_id: number;
   patient_list_title: string;
   patient_list_file?: string;
+  boards_type?: string;
+  no_of_patients?: number;
 }
 
 interface Patient {
@@ -76,6 +78,8 @@ export class BodyListMoreComponent implements OnInit, AfterViewInit {
   displayedBodyListColumns: string[] = [
     'patient_list_title',
     'patient_list_file',
+    'boards_type',
+    'no_of_patients',
     'actions',
   ];
   bodyListDataSource: MatTableDataSource<BodyList> =
@@ -179,7 +183,7 @@ export class BodyListMoreComponent implements OnInit, AfterViewInit {
       // width: '1000px',
       width: '750px',
       maxWidth: '95vw',
-      height: '900px',
+      height: '600px',
       data: dialogData,
     });
 
@@ -201,7 +205,7 @@ export class BodyListMoreComponent implements OnInit, AfterViewInit {
       // width: '1000px',
       width: '750px',
       maxWidth: '95vw',
-      height: '900px',
+      height: '400px',
       data: dialogData,
     });
 
