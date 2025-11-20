@@ -13,7 +13,7 @@ export class PartientService {
 
   private baseForBoard = `${this.baseUrl}patient-lists`;
 
-  private href_for_addreferral = `${this.baseUrl}patient-histories`;
+  private href_for_addreferral = `${this.baseUrl}patient-histories/allowed-to-assign/patients`;
 
   private hrefee = `${this.baseUrl}patients/patients-for-referral`;
   private href_bodylist = `${this.baseUrl}patient-lists`;

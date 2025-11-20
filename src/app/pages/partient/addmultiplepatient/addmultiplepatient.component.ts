@@ -24,6 +24,7 @@ import { LocationService } from '../../../services/system-configuration/location
 import { MatCardModule } from '@angular/material/card';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatRadioModule } from '@angular/material/radio';
+import { response } from 'express';
 
 export interface AddMultiplePatientDialogData {
   patientFileId: number;
@@ -78,26 +79,20 @@ export class AddmultiplepatientComponent implements OnInit, OnDestroy {
     this.onDestroy$.complete();
   }
 
-  loadPatients() {
+ loadPatients() {
   this.patientService.getAllPartientforReferral().subscribe({
     next: (res) => {
-      // Filter only histories with status == 'reviewed'
-      const reviewedHistories = res.data.filter(
-        (item: any) => item.status === 'reviewed'
-      );
+      console.log("Patients loaded:", res);
 
-      // Extract patients from those histories
-      this.patients = reviewedHistories.map((item: any) => ({
-        patient_id: item.patient?.patient_id,
-        name: item.patient?.name,
-        phone: item.patient?.phone,
-      }));
+      // If API returns data inside res.data
+      this.patients = res.data;
     },
     error: (err) => {
       console.error('Failed to load patients', err);
     },
   });
 }
+
 
   onCancel() {
     this.dialogRef.close();
