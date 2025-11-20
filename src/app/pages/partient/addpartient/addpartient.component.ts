@@ -72,7 +72,8 @@ export interface AddPatientDialogData {
 export class AddpartientComponent implements OnInit, OnDestroy {
   patientForm: FormGroup;
   loading = false;
-  selectedFile: File | null = null;
+   selectedAttachement: File | null = null;
+  // selectedFile: File | null = null;
   patient: any;
 
   locations: any[] = [];
@@ -173,14 +174,56 @@ export class AddpartientComponent implements OnInit, OnDestroy {
     return option.location_id;
   }
 
-  onFileSelected(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      this.selectedFile = file;
-      this.patientForm.patchValue({ patient_file: file });
-      this.patientForm.get('patient_file')?.updateValueAndValidity();
-    }
+  onAttachmentSelected(event: any): void {
+  const file = event.target.files?.[0] ?? null;
+
+  if (!file) return;
+
+  const maxSize = 2 * 1024 * 1024; // 2MB
+
+  if (file.size > maxSize) {
+    Swal.fire({
+      title: 'File Too Large',
+      text: 'The file must not exceed 2MB.',
+      icon: 'error',
+      confirmButtonColor: '#4690eb',
+    });
+
+    // ❌ Reset file
+    event.target.value = '';
+    this.selectedAttachement = null;
+
+    // ❌ Reset form input
+    this.patientForm.patchValue({ patient_file: '' });
+
+    // Force Angular validation to run
+    const control = this.patientForm.get('patient_file');
+    control?.markAsDirty();
+    control?.markAsTouched();
+    control?.updateValueAndValidity();
+
+    return;
   }
+
+  // ✅ Valid file
+  this.selectedAttachement = file;
+  this.patientForm.patchValue({ patient_file: file.name });
+
+  const control = this.patientForm.get('patient_file');
+  control?.markAsDirty();
+  control?.markAsTouched();
+  control?.updateValueAndValidity();
+}
+
+
+  // onFileSelected(event: any) {
+  //   const file = event.target.files[0];
+  //   if (file) {
+  //     this.selectedFile = file;
+  //     this.patientForm.patchValue({ patient_file: file });
+  //     this.patientForm.get('patient_file')?.updateValueAndValidity();
+  //   }
+  // }
 
   onCancel() {
     this.dialogRef.close();
@@ -230,13 +273,13 @@ export class AddpartientComponent implements OnInit, OnDestroy {
         typeof location === 'object' ? location.location_id : location
       );
 
-      if (this.selectedFile) {
-        formData.append(
-          'patient_file',
-          this.selectedFile,
-          this.selectedFile.name
-        );
-      }
+      // if (this.onAttachmentSelected) {
+      //   formData.append(
+      //     'patient_file',
+      //     this.selectedFile,
+      //     this.selectedFile.name
+      //   );
+      // }
 
       this.patientService.addPartient(formData).subscribe({
         next: (res) => {

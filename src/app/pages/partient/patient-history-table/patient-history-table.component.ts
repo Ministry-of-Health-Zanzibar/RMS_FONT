@@ -59,27 +59,52 @@ export class PatientHistoryTableComponent implements OnInit {
     });
   }
 
-  private fetchPatientHistory(id: number) {
-    this.loading = true;
-    this.patientService.getPartientHistoryListById(id).subscribe({
-      next: (response: any) => {
-        this.loading = false;
-        if (response?.statusCode === 200 || response?.statusCode === 201) {
-          this.patient = response.data.patient;
-          const history = this.patient?.patient_histories || [];
-          this.dataSource = new MatTableDataSource(history);
-          this.dataSource.paginator = this.paginator;
-        } else {
-          Swal.fire('Error', 'No medical history found', 'error');
-        }
-      },
-      error: (error) => {
-        this.loading = false;
-        console.error('Error fetching history:', error);
-        Swal.fire('Error', 'Failed to fetch patient history', 'error');
-      },
-    });
-  }
+ private fetchPatientHistory(id: number) {
+  this.loading = true;
+
+  this.patientService.getPartientHistoryListById(id).subscribe({
+    next: (response: any) => {
+      this.loading = false;
+
+      if (response.statusCode === 200 || response.statusCode === 201) {
+        this.patient = response.data.patient;
+
+        const history = this.patient.patient_histories || [];
+
+        this.dataSource = new MatTableDataSource(history);
+        this.dataSource.paginator = this.paginator;
+      }
+    },
+    error: () => {
+      this.loading = false;
+      Swal.fire('Error', 'Failed to fetch patient history', 'error');
+    }
+  });
+}
+
+
+
+  // private fetchPatientHistory(id: number) {
+  //   this.loading = true;
+  //   this.patientService.getPartientHistoryListById(id).subscribe({
+  //     next: (response: any) => {
+  //       this.loading = false;
+  //       if (response?.statusCode === 200 || response?.statusCode === 201) {
+  //         this.patient = response.data.patient;
+  //         const history = this.patient?.patient_histories || [];
+  //         this.dataSource = new MatTableDataSource(history);
+  //         this.dataSource.paginator = this.paginator;
+  //       } else {
+  //         Swal.fire('Error', 'No medical history found', 'error');
+  //       }
+  //     },
+  //     error: (error) => {
+  //       this.loading = false;
+  //       console.error('Error fetching history:', error);
+  //       Swal.fire('Error', 'Failed to fetch patient history', 'error');
+  //     },
+  //   });
+  // }
 
   viewPDF(filePath: string) {
     if (filePath) {
@@ -88,29 +113,31 @@ export class PatientHistoryTableComponent implements OnInit {
     }
   }
 
-  openAddMedicalHistory(patient: any) {
-    const config = new MatDialogConfig();
-    config.disableClose = false;
-    config.role = 'dialog';
-    config.maxWidth = '100vw';
-    config.maxHeight = '98vh';
-    config.panelClass = 'full-screen-modal';
-    config.data = patient;
+ openAddMedicalHistory(patient: any) {
+  const config = new MatDialogConfig();
+  config.disableClose = false;
+  config.role = 'dialog';
+  config.maxWidth = '100vw';
+  config.maxHeight = '98vh';
+  config.panelClass = 'full-screen-modal';
+  config.data = patient;
 
-    const dialogRef = this.dialog.open(AddmedicalhistoryComponent, config);
+  const dialogRef = this.dialog.open(AddmedicalhistoryComponent, config);
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result && result.success) {
-        Swal.fire({
-          title: 'Medical History Added',
-          text: 'The patient medical history was saved successfully!',
-          icon: 'success',
-          confirmButtonColor: '#4690eb',
-        });
-        this.fetchPatientHistory(patient.patient_id);
-      }
-    });
-  }
+  dialogRef.afterClosed().subscribe((result) => {
+    if (result && result.success) {
+      Swal.fire({
+        title: 'Medical History Added',
+        text: 'The patient medical history was saved successfully!',
+        icon: 'success'
+      });
+
+      // 🔥 Reload updated history without refreshing whole page
+      this.fetchPatientHistory(patient.patient_id);
+    }
+  });
+}
+
 
   displayMoreData(data: any) {
     const id = data.patient_histories_id;

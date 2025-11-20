@@ -2,7 +2,7 @@
   <mat-card class="shadow-lg rounded-2xl">
     <mat-card-header>
       <mat-card-title class="text-2xl font-bold text-gray-800"
-        >Add New Patient</mat-card-title
+        >Add New Patients</mat-card-title
       >
       <mat-card-subtitle class="text-gray-600"
         >Please fill in all required details</mat-card-subtitle
@@ -187,7 +187,44 @@
         </div>
 
         <!-- Patient File Upload -->
-        <div class="w-full md:col-span-3">
+          <!-- File Upload -->
+      <div class="form-row">
+  <mat-form-field class="form-field w-full">
+    <mat-label>Upload Medical Board File</mat-label>
+
+    <input
+      matInput
+      type="text"
+      formControlName="patient_file"
+      readonly
+      placeholder="No file chosen"
+      (click)="fileInput.click()"
+    />
+
+    <input
+      type="file"
+      accept=".pdf,.doc,.docx,.jpg,.png"
+      hidden
+      #fileInput
+      (change)="onAttachmentSelected($event)"
+    />
+
+    <mat-icon matSuffix style="cursor: pointer" (click)="fileInput.click()">
+      attach_file
+    </mat-icon>
+
+    <mat-error
+      *ngIf="
+        patientForm.get('patient_file')?.invalid &&
+        patientForm.get('patient_file')?.touched
+      "
+    >
+      File is required
+    </mat-error>
+  </mat-form-field>
+</div>
+
+        <!-- <div class="w-full md:col-span-3">
           <label class="block text-sm font-medium text-gray-700 mb-2"
             >Patient File</label
           >
@@ -198,7 +235,7 @@
             class="border rounded-lg p-2 w-full"
           />
           <mat-error *ngIf="!selectedFile">File is required</mat-error>
-        </div>
+        </div> -->
 
         <!-- Hidden patient_list_id -->
         <input type="hidden" formControlName="patient_list_id" />

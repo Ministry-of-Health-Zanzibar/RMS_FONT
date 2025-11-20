@@ -70,7 +70,7 @@ import { Router } from '@angular/router';
 export class PartientFormComponent implements OnInit, OnDestroy {
   patientForm!: FormGroup;
   loading = false;
-  selectedFile: File | null = null;
+ selectedAttachement: File | null = null;
   currentFileName: string | null = null;
   currentFilePath: string | null = null;
 
@@ -103,7 +103,7 @@ export class PartientFormComponent implements OnInit, OnDestroy {
       insurance_provider_name: [''],
       card_number: [''],
       valid_until: [''],
-      patient_file: [null],
+      patient_file: [null, Validators.required],
     });
 
     this.loadLocations();
@@ -164,13 +164,47 @@ export class PartientFormComponent implements OnInit, OnDestroy {
   }
 
   // File upload handler
-  onFileSelected(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      this.selectedFile = file;
-      this.patientForm.patchValue({ patient_file: file });
-    }
+onAttachmentSelected(event: any): void {
+  const file = event.target.files?.[0] ?? null;
+
+  if (!file) return;
+
+  const maxSize = 2 * 1024 * 1024; // 2MB
+
+  if (file.size > maxSize) {
+    Swal.fire({
+      title: 'File Too Large',
+      text: 'The file must not exceed 2MB.',
+      icon: 'error',
+      confirmButtonColor: '#4690eb',
+    });
+
+    // ❌ Reset file
+    event.target.value = '';
+    this.selectedAttachement = null;
+
+    // ❌ Reset form input
+    this.patientForm.patchValue({ patient_file: '' });
+
+    // Force Angular validation to run
+    const control = this.patientForm.get('patient_file');
+    control?.markAsDirty();
+    control?.markAsTouched();
+    control?.updateValueAndValidity();
+
+    return;
   }
+
+  // ✅ Valid file
+  this.selectedAttachement = file;
+  this.patientForm.patchValue({ patient_file: file.name });
+
+  const control = this.patientForm.get('patient_file');
+  control?.markAsDirty();
+  control?.markAsTouched();
+  control?.updateValueAndValidity();
+}
+
 
   private formatDate(value: any, dobType: string): string {
     if (!value) return '';
@@ -251,8 +285,8 @@ export class PartientFormComponent implements OnInit, OnDestroy {
           'location_id',
           typeof loc === 'object' ? String(loc.location_id) : String(loc)
         );
-      } else if (key === 'patient_file' && this.selectedFile) {
-        formData.append('patient_file', this.selectedFile);
+      } else if (key === 'patient_file' ) {
+       
       } else {
         formData.append(key, formValue[key] ?? '');
       }

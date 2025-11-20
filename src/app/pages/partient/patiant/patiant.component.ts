@@ -54,7 +54,6 @@ export class PatiantComponent {
     'date_of_birth',
     'gender',
     'phone',
-    'patient_file',
     'action',
   ];
   dataSource: MatTableDataSource<any> = new MatTableDataSource();

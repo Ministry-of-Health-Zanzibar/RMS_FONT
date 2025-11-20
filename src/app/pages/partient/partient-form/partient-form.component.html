@@ -94,6 +94,41 @@
           <input matInput formControlName="zan_id" maxlength="9" placeholder="Enter ZanID" />
         </mat-form-field>
 
+   <mat-form-field appearance="outline" class="w-full">
+    <mat-label>Upload Patient File</mat-label>
+
+    <input
+      matInput
+      type="text"
+      formControlName="patient_file"
+      readonly
+      placeholder="No file chosen"
+      (click)="fileInput.click()"
+    />
+
+    <input
+      type="file"
+      accept=".pdf,.doc,.docx,.jpg,.png"
+      hidden
+      #fileInput
+      (change)="onAttachmentSelected($event)"
+    />
+
+    <mat-icon matSuffix style="cursor: pointer" (click)="fileInput.click()">
+      attach_file
+    </mat-icon>
+
+    <mat-error
+      *ngIf="
+        patientForm.get('patient_file')?.invalid &&
+        patientForm.get('patient_file')?.touched
+      "
+    >
+      File is required
+    </mat-error>
+  </mat-form-field>
+
+
         <!-- Insurance -->
         <div class="col-span-2">
           <label class="font-medium block mb-2">Do you have insurance?</label>
@@ -127,10 +162,8 @@
         </div>
 
         <!-- File Upload -->
-        <div class="col-span-2">
-          <label class="block mb-2 font-medium text-gray-700">Patient File</label>
-          <input type="file" (change)="onFileSelected($event)" class="border p-2 rounded w-full" />
-        </div>
+
+
 
         <!-- Existing file -->
         <div *ngIf="currentFileName" class="col-span-2">

@@ -13,7 +13,7 @@
         <tr>
           <th class="border border-gray-300 p-3 text-center">Board Title</th>
           <th class="border border-gray-300 p-3 text-center">File</th>
-          <th class="border border-gray-300 p-3 text-center">Actions</th>
+          <!-- <th class="border border-gray-300 p-3 text-center">Actions</th> -->
           <th class="border border-gray-300 p-3 text-center">Add Multiple</th>
         </tr>
       </thead>
@@ -39,7 +39,7 @@
           </td>
 
           <!-- Action Button -->
-          <td class="border border-gray-300 p-3 text-center">
+          <!-- <td class="border border-gray-300 p-3 text-center">
             <span
               (click)="addPatient(file.patient_list_id)"
               *ngIf="permission.parmissionMatched(['View Patient List'])"
@@ -49,7 +49,7 @@
               <mat-icon>person_add</mat-icon>
             </span>
 
-          </td>
+          </td> -->
           <td class="border border-gray-300 p-3 text-center">
           <span
             (click)="addMultiple(file.patient_list_id)"

@@ -74,6 +74,7 @@ forwardStatus() {
   }
 
   const id =
+    this.medicalHistory.patient_histories_id ||
     this.medicalHistory.id ||
     this.medicalHistory.medical_id ||
     this.medicalHistory.patient_id;
@@ -99,19 +100,20 @@ forwardStatus() {
     next: (res: any) => {
       this.loading = false;
 
-      // ✅ Check statusCode for success
-      if (res.statusCode === 200) {
+      // ✅ FIXED: Check "success"
+      if (res.success === true) {
         Swal.fire({
           title: 'Forwarded Successfully',
-          text: res.message || 'The status has been updated to "reviewed".',
+          text: res.message || 'Status updated.',
           icon: 'success',
           confirmButtonColor: '#4690eb',
         });
-        this.fetchPatientHistory(id); // Refresh record
+
+        this.fetchPatientHistory(id); // refresh
       } else {
         Swal.fire({
           title: 'Error',
-          text: res.message || 'Failed to forward record.',
+          text: res.message || 'Failed to update record.',
           icon: 'error',
           confirmButtonColor: '#4690eb',
         });
@@ -122,12 +124,13 @@ forwardStatus() {
       console.error('Error forwarding status:', err);
       Swal.fire(
         'Error',
-        err.error?.message || 'Something went wrong while updating status.',
+        err.error?.message || 'Something went wrong.',
         'error'
       );
     },
   });
 }
+
 
 
   openAddMedicalHistory(patient: any) {

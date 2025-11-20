@@ -94,7 +94,7 @@
               <td mat-cell *matCellDef="let element">{{ element.phone }}</td>
             </ng-container>
 
-            <ng-container matColumnDef="patient_file">
+            <!-- <ng-container matColumnDef="patient_file">
               <th mat-header-cell *matHeaderCellDef>View PDF</th>
               <td mat-cell *matCellDef="let element">
                 <a
@@ -105,7 +105,7 @@
                   <mat-icon>picture_as_pdf</mat-icon> View PDF
                 </a>
               </td>
-            </ng-container>
+            </ng-container> -->
 
             <!-- Action Column -->
             <ng-container matColumnDef="action">
@@ -121,6 +121,15 @@
                   theme="simple"
                   class="-mx-2 flex items-center gap-2"
                 >
+
+                 <emr-segmented-button value="toggle_status">
+                    <mat-slide-toggle
+                      [checked]="!element.deleted_at"
+                      (change)="confirmBlock(element)"
+                      color="primary"
+                    >
+                    </mat-slide-toggle>
+                  </emr-segmented-button>
                   <!-- Edit button -->
                   <emr-segmented-button value="edit_squareData">
                     <span
@@ -146,14 +155,7 @@
                   </emr-segmented-button>
 
                   <!-- Toggle button -->
-                  <emr-segmented-button value="toggle_status">
-                    <mat-slide-toggle
-                      [checked]="!element.deleted_at"
-                      (change)="confirmBlock(element)"
-                      color="primary"
-                    >
-                    </mat-slide-toggle>
-                  </emr-segmented-button>
+
                 </emr-segmented>
               </td>
             </ng-container>
