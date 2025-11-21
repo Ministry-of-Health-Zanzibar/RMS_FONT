@@ -123,7 +123,7 @@ export class AddmedicalhistoryComponent implements OnInit, OnDestroy {
       investigations: ['', Validators.required],
       management_done: ['', Validators.required],
       reason_id: ['', Validators.required],
-      diagnosis_ids: [[], Validators.required], 
+      diagnosis_ids: [[], Validators.required],
       history_file: [null, Validators.required],
     });
   }
@@ -192,7 +192,7 @@ export class AddmedicalhistoryComponent implements OnInit, OnDestroy {
     const formValue = this.medicalForm.value;
     const formData = new FormData();
 
-    
+
     formData.append('patient_id', formValue.patient_id);
     formData.append('referring_doctor', formValue.referring_doctor);
     formData.append('file_number', formValue.file_number);
@@ -203,14 +203,14 @@ export class AddmedicalhistoryComponent implements OnInit, OnDestroy {
     formData.append('investigations', formValue.investigations);
     formData.append('management_done', formValue.management_done);
 
-   
+
     if (Array.isArray(formValue.diagnosis_ids)) {
       formValue.diagnosis_ids.forEach((id: number) => {
         formData.append('diagnosis_ids[]', id.toString());
       });
     }
 
-   
+
     if (this.selectedFile) {
       formData.append('history_file', this.selectedFile, this.selectedFile.name);
     }
@@ -221,11 +221,11 @@ export class AddmedicalhistoryComponent implements OnInit, OnDestroy {
       next: (res: any) => {
         console.log('Success response:', res);
         this.loading = false;
-        
-      
-        this.dialogRef.close({ 
-          success: true, 
-          data: res 
+
+
+        this.dialogRef.close({
+          success: true,
+          data: res
         });
       },
       error: (err) => {

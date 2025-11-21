@@ -131,6 +131,73 @@ forwardStatus() {
   });
 }
 
+//fowfard from requsted
+
+forwardtoRequstedStatus() {
+  if (!this.medicalHistory) {
+    Swal.fire('Error', 'Patient record not loaded yet.', 'error');
+    return;
+  }
+
+  const id =
+    this.medicalHistory.patient_histories_id ||
+    this.medicalHistory.id ||
+    this.medicalHistory.medical_id ||
+    this.medicalHistory.patient_id;
+
+  if (!id) {
+    Swal.fire('Error', 'Record ID not found. Please reload the page.', 'error');
+    return;
+  }
+
+  if (this.medicalHistory.status !== 'pending') {
+    Swal.fire(
+      'Info',
+      `Status is already "${this.medicalHistory.status}".`,
+      'info'
+    );
+    return;
+  }
+
+  this.loading = true;
+  const payload = { status: 'reviewed' };
+
+  this.patientService.updateStatus(id, payload).subscribe({
+    next: (res: any) => {
+      this.loading = false;
+
+      // ✅ FIXED: Check "success"
+      if (res.success === true) {
+        Swal.fire({
+          title: 'Forwarded Successfully',
+          text: res.message || 'Status updated.',
+          icon: 'success',
+          confirmButtonColor: '#4690eb',
+        });
+
+        this.fetchPatientHistory(id); // refresh
+      } else {
+        Swal.fire({
+          title: 'Error',
+          text: res.message || 'Failed to update record.',
+          icon: 'error',
+          confirmButtonColor: '#4690eb',
+        });
+      }
+    },
+    error: (err) => {
+      this.loading = false;
+      console.error('Error forwarding status:', err);
+      Swal.fire(
+        'Error',
+        err.error?.message || 'Something went wrong.',
+        'error'
+      );
+    },
+  });
+}
+
+
 
 
   openAddMedicalHistory(patient: any) {

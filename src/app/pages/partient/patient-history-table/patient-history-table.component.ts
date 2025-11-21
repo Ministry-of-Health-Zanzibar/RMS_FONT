@@ -6,7 +6,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 import { AddmedicalhistoryComponent } from '../addmedicalhistory/addmedicalhistory.component';
 
-// Angular Material imports
+// Angular Material
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -33,12 +33,13 @@ import { CommonModule } from '@angular/common';
   styleUrl: './patient-history-table.component.scss',
 })
 export class PatientHistoryTableComponent implements OnInit {
+
   public documentUrl = environment.fileUrl;
   public loading = false;
-  private patientId!: number;
 
   dataSource = new MatTableDataSource<any>([]);
   patient: any;
+  private patientId!: number;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -54,7 +55,6 @@ export class PatientHistoryTableComponent implements OnInit {
       const id = params.get('id');
       if (id) {
         this.patientId = +id;
-        console.log('Initial load - Patient ID:', this.patientId);
         this.fetchPatientHistory(this.patientId);
       } else {
         Swal.fire('Error', 'No patient history ID provided', 'error');
@@ -62,91 +62,41 @@ export class PatientHistoryTableComponent implements OnInit {
     });
   }
 
-<<<<<<< HEAD
- private fetchPatientHistory(id: number) {
-  this.loading = true;
-
-  this.patientService.getPartientHistoryListById(id).subscribe({
-    next: (response: any) => {
-      this.loading = false;
-
-      if (response.statusCode === 200 || response.statusCode === 201) {
-        this.patient = response.data.patient;
-
-        const history = this.patient.patient_histories || [];
-
-        this.dataSource = new MatTableDataSource(history);
-        this.dataSource.paginator = this.paginator;
-      }
-    },
-    error: () => {
-      this.loading = false;
-      Swal.fire('Error', 'Failed to fetch patient history', 'error');
-    }
-  });
-}
-
-
-
-  // private fetchPatientHistory(id: number) {
-  //   this.loading = true;
-  //   this.patientService.getPartientHistoryListById(id).subscribe({
-  //     next: (response: any) => {
-  //       this.loading = false;
-  //       if (response?.statusCode === 200 || response?.statusCode === 201) {
-  //         this.patient = response.data.patient;
-  //         const history = this.patient?.patient_histories || [];
-  //         this.dataSource = new MatTableDataSource(history);
-  //         this.dataSource.paginator = this.paginator;
-  //       } else {
-  //         Swal.fire('Error', 'No medical history found', 'error');
-  //       }
-  //     },
-  //     error: (error) => {
-  //       this.loading = false;
-  //       console.error('Error fetching history:', error);
-  //       Swal.fire('Error', 'Failed to fetch patient history', 'error');
-  //     },
-  //   });
-  // }
-=======
+  // 🔵 Fetch history
   private fetchPatientHistory(id: number) {
-    console.log('Fetching patient history for ID:', id);
     this.loading = true;
+
     this.patientService.getPartientHistoryListById(id).subscribe({
       next: (response: any) => {
         this.loading = false;
-        console.log('API Response:', response);
-        
+
         if (response?.statusCode === 200 || response?.statusCode === 201) {
           this.patient = response.data.patient;
           const history = this.patient?.patient_histories || [];
-          console.log('Patient histories:', history);
-          
+
           this.dataSource = new MatTableDataSource(history);
           this.dataSource.paginator = this.paginator;
         } else {
           Swal.fire('Error', 'No medical history found', 'error');
         }
       },
-      error: (error) => {
+      error: () => {
         this.loading = false;
-        console.error('Error fetching history:', error);
         Swal.fire('Error', 'Failed to fetch patient history', 'error');
       },
     });
   }
->>>>>>> iddyochu
 
+  // 🔵 View PDF
   viewPDF(filePath: string) {
     if (filePath) {
-      const url = this.documentUrl + filePath;
-      window.open(url, '_blank');
+      window.open(this.documentUrl + filePath, '_blank');
     }
   }
 
-<<<<<<< HEAD
  openAddMedicalHistory(patient: any) {
+  console.log('Opening medical history dialog for:', patient);
+
   const config = new MatDialogConfig();
   config.disableClose = false;
   config.role = 'dialog';
@@ -154,63 +104,28 @@ export class PatientHistoryTableComponent implements OnInit {
   config.maxHeight = '98vh';
   config.panelClass = 'full-screen-modal';
   config.data = patient;
-=======
-  openAddMedicalHistory(patient: any) {
-    console.log('Opening medical history dialog');
-    console.log('Current patient:', patient);
-    console.log('Stored patientId:', this.patientId);
-
-    const config = new MatDialogConfig();
-    config.disableClose = false;
-    config.role = 'dialog';
-    config.maxWidth = '100vw';
-    config.maxHeight = '98vh';
-    config.panelClass = 'full-screen-modal';
-    config.data = patient;
->>>>>>> iddyochu
 
   const dialogRef = this.dialog.open(AddmedicalhistoryComponent, config);
 
   dialogRef.afterClosed().subscribe((result) => {
-    if (result && result.success) {
+    console.log('Dialog closed:', result);
+
+    if (result?.success) {
       Swal.fire({
         title: 'Medical History Added',
         text: 'The patient medical history was saved successfully!',
-        icon: 'success'
+        icon: 'success',
+        confirmButtonColor: '#4690eb',
       });
 
-      // 🔥 Reload updated history without refreshing whole page
-      this.fetchPatientHistory(patient.patient_id);
+      // Refresh history
+      setTimeout(() => {
+        this.fetchPatientHistory(this.patientId);
+      }, 500);
     }
   });
 }
 
-<<<<<<< HEAD
-=======
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log('Dialog closed with result:', result);
-      
-      if (result && result.success) {
-        console.log('Medical history added successfully, refreshing...');
-        
-        Swal.fire({
-          title: 'Medical History Added',
-          text: 'The patient medical history was saved successfully!',
-          icon: 'success',
-          confirmButtonColor: '#4690eb',
-        });
-
-        // Force refresh with a bit longer delay
-        setTimeout(() => {
-          console.log('Refreshing data for patient ID:', this.patientId);
-          this.fetchPatientHistory(this.patientId);
-        }, 1000);
-      } else {
-        console.log('Dialog closed without success');
-      }
-    });
-  }
->>>>>>> iddyochu
 
   displayMoreData(data: any) {
     const id = data.patient_histories_id;

@@ -1,4 +1,5 @@
 <div class="p-10 space-y-8">
+
   <!-- Body List Table -->
   <div
     *ngIf="bodyListDataSource"
@@ -15,72 +16,50 @@
           <th class="border border-gray-300 p-3 text-center">Board Type</th>
           <th class="border border-gray-300 p-3 text-center">No of Patients</th>
           <th class="border border-gray-300 p-3 text-center">File</th>
-
           <th class="border border-gray-300 p-3 text-center">Add Multiple</th>
         </tr>
       </thead>
 
       <tbody>
         <tr *ngFor="let file of bodyListDataSource.filteredData">
-          <!-- Body Title -->
-          <td
-            class="border border-gray-300 p-3 text-center font-medium text-gray-700"
-          >
+
+          <td class="border border-gray-300 p-3 text-center font-medium text-gray-700">
             {{ file.patient_list_title }}
           </td>
-           <td
-            class="border border-gray-300 p-3 text-center font-medium text-gray-700"
-          >
+
+          <td class="border border-gray-300 p-3 text-center font-medium text-gray-700">
             {{ file.board_type }}
           </td>
-           <td
-            class="border border-gray-300 p-3 text-center font-medium text-gray-700"
-          >
+
+          <td class="border border-gray-300 p-3 text-center font-medium text-gray-700">
             {{ file.no_of_patients }}
           </td>
 
-          <!-- PDF Link -->
           <td class="border border-gray-300 p-3 text-center">
             <a
-                *ngIf="file?.patient_list_file"
-                (click)="viewPDF(file)"
-                class="inline-flex items-center gap-1 text-indigo-600 hover:text-indigo-800 cursor-pointer"
-              >
-                <mat-icon>picture_as_pdf</mat-icon> View PDF
-              </a>
+              *ngIf="file?.patient_list_file"
+              (click)="viewPDF(file)"
+              class="inline-flex items-center gap-1 text-indigo-600 hover:text-indigo-800 cursor-pointer"
+            >
+              <mat-icon>picture_as_pdf</mat-icon> View PDF
+            </a>
           </td>
 
-          <!-- Action Button -->
-          <!-- <td class="border border-gray-300 p-3 text-center">
+          <td class="border border-gray-300 p-3 text-center">
             <span
-              (click)="addPatient(file.patient_list_id)"
+              (click)="addMultiple(file.patient_list_id)"
               *ngIf="permission.parmissionMatched(['View Patient List'])"
-              matTooltip="Add Patient"
+              matTooltip="Add Multiple Patients"
               class="cursor-pointer w-10 h-10 flex items-center justify-center text-white bg-blue-600 rounded-full hover:bg-blue-700 transition-all mx-auto"
             >
-              <mat-icon>person_add</mat-icon>
+              <mat-icon>group_add</mat-icon>
             </span>
-
-          </td> -->
-          <td class="border border-gray-300 p-3 text-center">
-          <span
-            (click)="addMultiple(file.patient_list_id)"
-            *ngIf="permission.parmissionMatched(['View Patient List'])"
-            matTooltip="Add Multiple Patients"
-            class="cursor-pointer w-10 h-10 flex items-center justify-center text-white bg-blue-600 rounded-full hover:bg-blue-700 transition-all mx-auto"
-          >
-            <mat-icon>group_add</mat-icon>
-          </span>
-        </td>
+          </td>
 
         </tr>
 
-        <!-- No Data Row -->
         <tr *ngIf="bodyListDataSource.filteredData.length === 0">
-          <td
-            colspan="4"
-            class="border border-gray-300 p-3 text-center text-gray-500"
-          >
+          <td colspan="4" class="border border-gray-300 p-3 text-center text-gray-500">
             No Body List Available
           </td>
         </tr>
@@ -92,6 +71,7 @@
   <div class="bg-white shadow-xl rounded-2xl p-6 mb-6">
     <div class="flex justify-between items-center mb-4">
       <h2 class="text-xl font-semibold">Patients List</h2>
+
       <mat-form-field appearance="fill">
         <mat-label>Filter Patients</mat-label>
         <input
@@ -103,19 +83,14 @@
     </div>
 
     <table mat-table [dataSource]="patientDataSource" matSort class="min-w-full">
-      <!-- Patient ID -->
+
+      <!-- Matibabu Card -->
       <ng-container matColumnDef="matibabu_card">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>
-        Matibabu Card ID
-      </th>
-      <td mat-cell *matCellDef="let p">
-        <span class="text-blue-600 font-medium">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Matibabu Card</th>
+        <td mat-cell *matCellDef="let p" class="text-blue-600 font-medium">
           {{ p.matibabu_card ?? 'N/A' }}
-        </span>
-      </td>
-    </ng-container>
-
-
+        </td>
+      </ng-container>
 
       <!-- Patient Name -->
       <ng-container matColumnDef="name">
@@ -126,12 +101,12 @@
       <!-- Gender -->
       <ng-container matColumnDef="gender">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Gender</th>
-        <td mat-cell *matCellDef="let p">{{ p.gender | uppercase}}</td>
+        <td mat-cell *matCellDef="let p">{{ p.gender | uppercase }}</td>
       </ng-container>
 
       <!-- Phone -->
       <ng-container matColumnDef="phone">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Phone Number</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Phone</th>
         <td mat-cell *matCellDef="let p">{{ p.phone }}</td>
       </ng-container>
 
@@ -141,56 +116,48 @@
         <td mat-cell *matCellDef="let p">{{ p.location }}</td>
       </ng-container>
 
-  <!-- Files -->
-<ng-container matColumnDef="files">
-  <th mat-header-cell *matHeaderCellDef mat-sort-header>Files</th>
+      <!-- Status -->
+  <ng-container matColumnDef="latest_history">
+  <th mat-header-cell *matHeaderCellDef>Status</th>
   <td mat-cell *matCellDef="let p">
-    <ng-container >
-       <!-- <ng-container *ngIf="p.files?.length > 0;"> -->
-      <!-- <div *ngFor="let f of p.files" class="flex items-center gap-3">
-
-        <a
-          [href]="documentUrl + f.file_path"
-          target="_blank"
-          class="inline-flex items-center gap-1 text-indigo-600 hover:text-indigo-800 cursor-pointer"
-        >
-          <mat-icon>picture_as_pdf</mat-icon>
-          View PDF
-        </a> -->
-
-
-      <button
-        mat-icon-button
-        color="primary"
-        (click)="openAddMedicalHistory(p)"
-        matTooltip="Add Medical History"
-        class="!bg-blue-600 hover:!bg-blue-700 text-white rounded-full transition-all"
-      >
-        <mat-icon>note_add</mat-icon>
-      </button>
-
-
-      <!-- </div> -->
-    </ng-container>
-
-    <!-- <ng-template #noFiles>
-      <span class="text-gray-400">N/A</span>
-
-     <button
-      mat-icon-button
-      color="primary"
-      class="!bg-blue-600 !text-white !ml-3 hover:!bg-green-700 transition"
-      (click)="openAddMedicalHistory(p)"
-      matTooltip="Add Medical History"
+    <span
+      class="px-3 py-1 rounded-full text-white"
+      [ngClass]="{
+        'bg-gray-400': !p.latest_history?.status,   
+        'bg-green-600': p.latest_history?.status === 'pending',
+        'bg-yellow-500': p.latest_history?.status === 'reviewed',
+        'bg-red-600': p.latest_history?.status === 'requested',
+        'bg-blue-600': p.latest_history?.status === 'approved',
+        'bg-indigo-600': p.latest_history?.status === 'confirmed',
+        'bg-red-800': p.latest_history?.status === 'rejected'
+      }"
     >
-      <mat-icon class="!text-white">add</mat-icon>
-    </button>
-
-    </ng-template> -->
+      {{ p.latest_history?.status?.toUpperCase() || 'N/A' }}
+    </span>
   </td>
 </ng-container>
 
-      <!-- Rows -->
+
+
+
+      <!-- Medical History Button -->
+     <ng-container matColumnDef="files">
+  <th mat-header-cell *matHeaderCellDef>Actions</th>
+  <td mat-cell *matCellDef="let p">
+    <button
+      mat-icon-button
+      color="primary"
+      (click)="openAddMedicalHistory(p)"
+      matTooltip="Add Medical History"
+      class="!bg-blue-600 hover:!bg-blue-700 text-white rounded-full transition-all"
+    >
+      <mat-icon>note_add</mat-icon>
+    </button>
+  </td>
+</ng-container>
+
+
+      <!-- Render Rows -->
       <tr mat-header-row *matHeaderRowDef="displayedPatientColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedPatientColumns"></tr>
     </table>

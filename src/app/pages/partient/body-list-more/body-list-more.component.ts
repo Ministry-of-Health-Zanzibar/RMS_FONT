@@ -35,6 +35,7 @@ interface BodyList {
 }
 
 interface Patient {
+  patient_id: number; // include patient_id
   matibabu_card: number;
   name?: string;
   gender?: string;
@@ -46,7 +47,64 @@ interface Patient {
     file_path: string;
     file_type: string;
   }[];
+  latest_history?: {
+    patient_histories_id: number;
+    referring_doctor?: string;
+    file_number?: string;
+    referring_date?: string | null;
+    reason_id?: number;
+    history_of_presenting_illness?: string;
+    physical_findings?: string;
+    investigations?: string;
+    management_done?: string;
+    board_comments?: string | null;
+    history_file?: string | null;
+    created_at?: string;
+    updated_at?: string;
+    deleted_at?: string | null;
+    status?: string;
+    mkurugenzi_tiba_comments?: string | null;
+    dg_comments?: string | null;
+    mkurugenzi_tiba_id?: number | null;
+    dg_id?: number | null;
+    board_reason_id?: number | null;
+    diagnoses?: {
+      diagnosis_id: number;
+      uuid?: string;
+      diagnosis_code?: string;
+      diagnosis_name?: string;
+      created_at?: string;
+      updated_at?: string;
+      deleted_at?: string | null;
+    }[];
+    reason?: {
+      reason_id: number;
+      referral_reason_name?: string;
+      reason_descriptions?: string;
+      created_by?: number;
+      created_at?: string;
+      updated_at?: string;
+      deleted_at?: string | null;
+    };
+    patient?: {
+      patient_id: number;
+      name?: string;
+      matibabu_card?: string;
+      date_of_birth?: string;
+      gender?: string;
+      phone?: string;
+      location_id?: string;
+      job?: string | null;
+      position?: string | null;
+      created_by?: number;
+      created_at?: string;
+      updated_at?: string;
+      deleted_at?: string | null;
+      zan_id?: string;
+    };
+  };
 }
+
 
 @Component({
   selector: 'app-body-list-more',
@@ -74,6 +132,7 @@ export class BodyListMoreComponent implements OnInit, AfterViewInit {
   public loading = false;
   public patient_id: string | null = null;
   public patient_list_id: number | null = null;
+   public patient_histories_id: number | null = null;
 
   displayedBodyListColumns: string[] = [
     'patient_list_title',
@@ -91,6 +150,7 @@ export class BodyListMoreComponent implements OnInit, AfterViewInit {
     'gender',
     'phone',
     'location',
+    'latest_history',
     'files',
   ];
   patientDataSource: MatTableDataSource<Patient> =
@@ -134,44 +194,61 @@ export class BodyListMoreComponent implements OnInit, AfterViewInit {
     this.patientDataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  private getBodyListFileAndPatient(bodyListId: string) {
-    this.loading = true;
-    this.userService.getBodyListById(bodyListId).subscribe({
-      next: (response: any) => {
-        this.loading = false;
-        if (response?.data) {
-          this.bodyList = [response.data];
-          this.bodyListDataSource.data = this.bodyList;
-          this.patient_list_id = response.data.patient_list_id;
+ private getBodyListFileAndPatient(bodyListId: string) {
+  this.loading = true;
+  this.userService.getBodyListById(bodyListId).subscribe({
+    next: (response: any) => {
+      this.loading = false;
 
-          // Load patients from the response
-          this.patientDataSource.data = response.data.patients
-            ? response.data.patients.map((p: any) => this.formatPatient(p))
-            : [];
+      console.log("FULL RESPONSE:", response); // ⬅️ see everything
+
+      if (response && response.data) {
+        const bodyData = response.data;
+
+        // store status code
+        console.log("Status code:", response.statusCode);
+
+        this.bodyList = [bodyData];
+        this.bodyListDataSource.data = this.bodyList;
+
+        this.patient_list_id = bodyData.patient_list_id;
+
+        // Load patients
+        if (bodyData.patients && Array.isArray(bodyData.patients)) {
+          this.patientDataSource.data = bodyData.patients.map((p: any) =>
+            this.formatPatient(p)
+          );
         } else {
-          this.bodyList = [];
-          this.bodyListDataSource.data = [];
           this.patientDataSource.data = [];
         }
-      },
-      error: (error) => {
-        this.loading = false;
-        console.error('Error fetching body list:', error);
-        Swal.fire('Error', 'Failed to fetch body list', 'error');
-      },
-    });
-  }
+      }
+    },
+    error: (error) => {
+      this.loading = false;
+      console.error("Error fetching body list:", error);
+      Swal.fire("Error", "Failed to fetch body list", "error");
+    },
+  });
+}
 
-  private formatPatient(patien: any): Patient {
-    return {
-      matibabu_card: patien?.matibabu_card,
-      name: patien?.name || 'N/A',
-      phone: patien?.phone || 'N/A',
-      gender: patien?.gender || 'N/A',
-      location: patien.geographical_location?.label || 'N/A',
-      files: patien?.files || [], // you can map location name if needed
-    };
-  }
+
+ private formatPatient(patien: any): Patient {
+  return {
+    matibabu_card: patien?.matibabu_card,
+    name: patien?.name || 'N/A',
+    phone: patien?.phone || 'N/A',
+    gender: patien?.gender || 'N/A',
+    location: patien?.geographical_location?.label || 'N/A',
+    files: patien?.files || [],
+
+    // 🔥 IMPORTANT: Add latest_history
+    latest_history: patien?.latest_history || null,
+
+    // 🔥 Also include patient_id so dialog can use it
+    patient_id: patien?.patient_id,
+  };
+}
+
 
   addPatient(patientFileId: number) {
     const dialogData: AddPatientDialogData = {
@@ -253,37 +330,45 @@ export class BodyListMoreComponent implements OnInit, AfterViewInit {
     }
   }
 
-  openAddMedicalHistory(patient: any) {
-    const config = new MatDialogConfig();
+// openAddMedicalHistory(patient: any) {
+//   const config = new MatDialogConfig();
+//   config.disableClose = false;
+//   config.role = 'dialog';
+//   config.maxWidth = '100vw';
+//   config.maxHeight = '98vh';
+//   config.panelClass = 'full-screen-modal';
 
-    config.disableClose = false;
-    config.role = 'dialog';
-    config.maxWidth = '100vw';
-    config.maxHeight = '98vh';
-    config.panelClass = 'full-screen-modal';
+//   // Safely extract latest history ID
+//   const patientHistoryId = patient?.latest_history?.patient_histories_id || null;
 
-    console.log('Element sent to dialog   0:', patient);
+//   console.log('➡️ Patient sent to dialog:', patient);
+//   console.log('➡️ History ID sent to dialog:', patientHistoryId);
 
-    config.data = patient;
+//   // Send both patient object and history ID
+//   config.data = {
+//     patient,
+//     patientHistoryId
+//   };
 
-    const dialogRef = this.dialog.open(AddmedicalformComponent, config);
+//   const dialogRef = this.dialog.open(AddmedicalformComponent, config);
 
-    // ✅ Handle data when dialog is closed
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result && result.success) {
-        console.log('✅ New medical history saved:', result.data);
+//   dialogRef.afterClosed().subscribe((result) => {
+//     if (result && result.success) {
+//       console.log('✅ New medical history saved:', result.data);
+//       Swal.fire({
+//         title: 'Medical History Added',
+//         text: 'The patient medical history was saved successfully!',
+//         icon: 'success',
+//         confirmButtonColor: '#4690eb',
+//       });
+//     } else {
+//       console.log('Dialog closed without saving.');
+//     }
+//   });
+// }
 
-        Swal.fire({
-          title: 'Medical History Added',
-          text: 'The patient medical history was saved successfully!',
-          icon: 'success',
-          confirmButtonColor: '#4690eb',
-        });
-      } else {
-        console.log('Dialog closed without saving.');
-      }
-    });
-  }
+
+
 
   //  openAddMedicalHistory(patient: any) {
   //     const config = new MatDialogConfig();
@@ -297,4 +382,32 @@ export class BodyListMoreComponent implements OnInit, AfterViewInit {
   //       .afterClosed()
 
   //   }
+
+  openAddMedicalHistory(patient: any) {
+  const config = new MatDialogConfig();
+  config.disableClose = false;
+  config.role = 'dialog';
+  config.maxWidth = '100vw';
+  config.maxHeight = '98vh';
+  config.panelClass = 'full-screen-modal';
+
+  const patientHistoryId = patient?.latest_history?.patient_histories_id || null;
+
+  // Send both patient object and history ID
+  config.data = {
+    patient,
+    patientHistoryId
+  };
+
+  const dialogRef = this.dialog.open(AddmedicalformComponent, config);
+
+  // No success alert or console logs here
+  dialogRef.afterClosed().subscribe((result) => {
+    // You can handle refreshing data if needed without showing messages
+    if (result && result.success) {
+      this.refreshPatients(this.patient_list_id!); // optional: refresh patient table
+    }
+  });
+}
+
 }

@@ -10,12 +10,18 @@ export class MedicalhistoryService {
 
  private baseUrl: string = `${environment.baseUrl}`;
   private href = `${this.baseUrl}patient-histories`;
+
   private baseForBoard = `${this.baseUrl}patient-lists`;
 
 
 
   constructor(private http: HttpClient) {}
 
+
+public updateMedicals(patientHistoryId: number, medicalData: any): Observable<any> {
+  const url = `${this.baseUrl}patient-histories/${patientHistoryId}/medical-board`;
+  return this.http.put(url, medicalData); // send JSON
+}
 
   public addMedical(Medical: any): Observable<any> {
     return this.http.post(this.href, Medical);

@@ -2,27 +2,17 @@
   <h2 class="text-lg font-semibold mb-6 text-center">Add Medical Board Information</h2>
 
   <form [formGroup]="medicalForm" (ngSubmit)="onSubmit()" class="space-y-4">
-    <!-- <p class="text-xs text-gray-500">
-      Patient ID: {{ medicalForm.get('patient_id')?.value }}
-    </p> -->
+    <p class="text-xs text-gray-500">
+      Patient History ID: {{ medicalForm.get('patient_histories_id')?.value }}
+    </p>
 
     <!-- Second Row -->
-    <div class="grid grid-cols-2 gap-4">
-      <mat-form-field appearance="outline" class="w-full">
-        <mat-label>Referring Date</mat-label>
-        <input
-          matInput
-          [matDatepicker]="picker"
-          formControlName="referring_date"
-          placeholder="Select date"
-        />
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-      </mat-form-field>
+
+
 
       <mat-form-field appearance="outline" class="w-full">
         <mat-label>Reason</mat-label>
-        <mat-select formControlName="reason_id">
+        <mat-select formControlName="board_reason_id">
           <mat-option
             *ngFor="let reason of reasonList"
             [value]="reason.reason_id"
@@ -31,7 +21,7 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-    </div>
+
 
     <!-- Board Comments -->
     <div class="grid grid-cols-1">
@@ -46,7 +36,7 @@
       <mat-form-field appearance="outline" class="w-full">
         <mat-label>Select Diagnoses</mat-label>
         <mat-select
-          formControlName="diagnosis_ids"
+          formControlName="board_diagnosis_ids"
           multiple
           (openedChange)="onDiagnosesDropdownOpened()"
         >
@@ -72,14 +62,7 @@
       </mat-form-field>
     </div>
 
-    <!-- File Upload -->
-    <div>
-      <label class="block mb-2 text-sm font-medium">Upload History File</label>
-      <input type="file" (change)="onFileSelected($event)" />
-      <p *ngIf="selectedFile" class="text-sm text-gray-500 mt-1">
-        Selected: {{ selectedFile.name }}
-      </p>
-    </div>
+
 
     <!-- Buttons -->
     <div class="flex justify-end items-center gap-3 pt-4">
