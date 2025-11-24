@@ -1,0 +1,52 @@
+<div class="p-6 w-full max-w-md bg-white rounded-2xl shadow-xl border border-gray-200">
+
+  <!-- Header -->
+  <div class="flex items-center mb-4">
+    <mat-icon class="text-blue-600 mr-2">forward</mat-icon>
+    <h2 class="text-xl font-semibold text-gray-800">Forward Case</h2>
+  </div>
+
+  <p class="text-gray-500 text-sm mb-6">
+    Please enter comments before forwarding this case to the next level.
+  </p>
+
+  <!-- Form -->
+  <form [formGroup]="form" (ngSubmit)="submit()" class="space-y-4">
+
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Comments</mat-label>
+      <textarea
+        matInput
+        rows="4"
+        formControlName="mkurugenzi_tiba_comments"
+        placeholder="Enter your comments here..."
+      ></textarea>
+
+      <mat-error *ngIf="form.controls['mkurugenzi_tiba_comments'].hasError('required')">
+        Comments are required.
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Actions -->
+    <div class="flex justify-end space-x-3 pt-2">
+      <button
+        mat-button
+        type="button"
+        (click)="close()"
+        class="text-gray-600"
+      >
+        Cancel
+      </button>
+
+      <button
+        mat-raised-button
+        color="primary"
+        class="!bg-blue-600 hover:!bg-blue-700 text-white px-6 rounded-lg shadow-md transition-all"
+        [disabled]="form.invalid || loading"
+      >
+        {{ loading ? 'Sending...' : 'Forward' }}
+      </button>
+    </div>
+  </form>
+
+</div>

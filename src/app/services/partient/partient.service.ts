@@ -84,12 +84,31 @@ export class PartientService {
     return this.http.post(`${this.baseUrl}patient-histories/update-status/${id}`, payload);
   }
 
+public forwardToDG(id: number, comment: any): Observable<any> {
+  return this.http.put(
+    `${this.baseUrl}patient-histories/${id}/mkurugenzi-tiba`,
+    comment
+  );
+}
 
 
+  //   public forwardToDG( id: number,comment: any): Observable<any> {
+  //   return this.http.put(`${this.baseUrl}patient-histories/${id}/mkurugenzi-tiba`, comment);
+  // }
 
-//   public getPartientById(id: number) {
-//   return this.http.get<any>(`http://localhost:8000/api/patient-histories/${id}`);
+//   public forwardToDG(patientHistoryId: number, comments: string) {
+//   const formData = new FormData();
+//   formData.append('mkurugenzi_tiba_comments', comments);
+
+//   return this.http.put(
+//     `${this.baseUrl}patient-histories/${patientHistoryId}/mkurugenzi-tiba`,
+//     formData
+//   );
 // }
+
+
+
+
 
 
   public deletePatients(id: any): Observable<any> {
