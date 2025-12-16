@@ -53,6 +53,32 @@
             </td>
           </ng-container>
 
+          <ng-container matColumnDef="referral_number">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              class="text-neutral-500 dark:text-neutral-400"
+            >
+               Referral Number
+            </th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.referral_number || 'N/A' | uppercase }}
+            </td>
+          </ng-container>
+
+            <ng-container matColumnDef="matibabu_card">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              class="text-neutral-500 dark:text-neutral-400"
+            >
+               Matibabu Card
+            </th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.patient?.matibabu_card || 'N/A' | uppercase }}
+            </td>
+          </ng-container>
+
           <!-- Patient Name -->
           <ng-container matColumnDef="patient_name">
             <th

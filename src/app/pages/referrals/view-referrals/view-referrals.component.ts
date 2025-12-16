@@ -58,6 +58,8 @@ export class ViewReferralsComponent implements OnInit, OnDestroy {
 
   displayedColumns: string[] = [
     'id',
+    'referral_number',
+    'matibabu_card',
     'patient_name',
     'referral_reason_name',
     'status',

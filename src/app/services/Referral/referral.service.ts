@@ -12,6 +12,7 @@ export class ReferralService {
 
   private baseUrl: string = `${environment.baseUrl}`;
   private href = `${this.baseUrl}referrals`;
+   private href_byid = `${this.baseUrl}patient-histories`;
   private bill = `${this.baseUrl}bills`;
    private comment = `${this.baseUrl}referralLetters/comment/referral`;
   private href_withBill = `${this.baseUrl}referralwithbills`;
@@ -31,6 +32,10 @@ export class ReferralService {
 
   public getReferralById(id: any): Observable<any> {
     return this.http.get<any>(`${this.href}/${id}`);
+  }
+
+   public getReferralsById(id: any): Observable<any> {
+    return this.http.get<any>(`${this.href_byid}/${id}`);
   }
 
   public addReferral(referral: any): Observable<any> {
