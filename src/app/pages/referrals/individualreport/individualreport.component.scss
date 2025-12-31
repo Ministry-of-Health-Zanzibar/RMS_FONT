@@ -1,0 +1,231 @@
+.report-wrapper {
+  padding: 24px;
+  background: #f4f6fb;
+}
+
+.header-card {
+  padding: 20px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #1e88e5, #42a5f5);
+  color: white;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-icon {
+  font-size: 40px;
+}
+
+.status-chip {
+  background: #e8f5e9;
+  color: #2e7d32;
+  padding: 6px 16px;
+  border-radius: 18px;
+  font-weight: 600;
+}
+
+.section-card {
+  margin-top: 20px;
+  padding: 18px 20px;               /* space between border & content */
+  border-radius: 14px;
+  border: 1px solid #e0e0e0;        /* visible border */
+  background: #ffffff;
+
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    transform: translateY(-4px);    /* lift effect */
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
+    border-color: #1e88e5;           /* highlight on hover */
+  }
+}
+
+/* Improve title spacing */
+.section-card mat-card-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+
+/* Space content nicely */
+.section-card mat-card-content {
+  padding: 8px 4px 4px;
+}
+
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.field {
+  display: grid;
+  grid-template-columns: 24px 1fr auto;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px dashed #ddd;
+}
+
+.field.full {
+  grid-column: span 2;
+}
+
+.field mat-icon {
+  color: #1e88e5;
+}
+
+.history p {
+  display: flex;
+  gap: 8px;
+  margin: 8px 0;
+  line-height: 1.6;
+}
+
+.chips mat-chip {
+  margin: 6px;
+}
+
+.bill-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 14px;
+}
+
+.bill-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  font-size: 14px;
+
+  mat-icon {
+    color: #1e88e5;
+    font-size: 20px;
+  }
+}
+
+/* Bill status badge */
+.status-badge {
+  padding: 3px 10px;
+  border-radius: 14px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-left: 6px;
+}
+
+.status-badge.pending {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.status-badge.confirmed {
+  background: #d4edda;
+  color: #155724;
+}
+
+.status-badge.rejected {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.file-link {
+  color: #1e88e5;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.file-link:hover {
+  text-decoration: underline;
+}
+
+.table-wrapper {
+  margin-top: 18px;
+  overflow-x: auto;
+}
+
+
+
+.empty-text {
+  text-align: center;
+  color: #9ca3af;
+  margin-top: 10px;
+}
+
+.action-row {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+
+@media print {
+
+  /* Hide everything */
+  body * {
+    visibility: hidden;
+  }
+
+  /* Show only report content */
+  #print-area,
+  #print-area * {
+    visibility: visible;
+  }
+
+  /* Position content properly */
+  #print-area {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+
+  /* Remove shadows & colors for clean print */
+  mat-card {
+    box-shadow: none !important;
+    border: 1px solid #000;
+    page-break-inside: avoid;
+  }
+
+  /* Hide buttons & icons */
+  button,
+  mat-icon,
+  mat-progress-bar {
+    display: none !important;
+  }
+}
+
+@media print {
+  button,
+  mat-icon {
+    display: none !important;
+  }
+
+  mat-card {
+    box-shadow: none !important;
+    border: 1px solid #000;
+  }
+}
+
+
+
+

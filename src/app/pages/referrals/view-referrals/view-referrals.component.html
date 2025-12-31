@@ -1,6 +1,6 @@
 <div class="p-10 space-y-8">
   <div class="flex items-center justify-between">
-    <h1 class="text-lg font-bold">View Referrals </h1>
+    <h1 class="text-lg font-bold">Referrals </h1>
   </div>
   <div class="w-full">
     <div class="relative h-full rounded-lg border group dark:border-inverse p-4">
@@ -162,6 +162,18 @@
                   >
                     <mat-icon class="font-icon visibilityData"
                       >visibility</mat-icon
+                    >
+                  </span>
+                </emr-segmented-button>
+
+                  <emr-segmented-button *ngIf="isAdmin" value="visibilityData">
+                  <span
+                    class="size-9 rounded-full border bg-surface flex items-center justify-center"
+                    (click)="displayReport(element)"
+                    matTooltip="View More"
+                  >
+                    <mat-icon class="font-icon visibilityData"
+                      >more data</mat-icon
                     >
                   </span>
                 </emr-segmented-button>

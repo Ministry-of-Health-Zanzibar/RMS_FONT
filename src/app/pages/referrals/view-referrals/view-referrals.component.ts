@@ -278,11 +278,13 @@ export class ViewReferralsComponent implements OnInit, OnDestroy {
   this.router.navigate(['/pages/config/referrals/more', id]);
 }
 
+displayReport(element: any) {
+  const id =element.referrals[0]?.referral_id;
+  console.log('Referral ID:', id);
+  this.router.navigate(['/pages/config/referrals/individual-report',id ]);
+}
 
-  // displayMoreData(data: any) {
-  //   const id = data.referral_id;
-  //   this.router.navigate(['/pages/config/referrals/more', id]);
-  // }
+
 
    viewfollowup(data: any) {
   const id = data.referrals[0]?.referral_id;
@@ -296,6 +298,10 @@ export class ViewReferralsComponent implements OnInit, OnDestroy {
 
   public get isStaff(): boolean {
     return this.getUserRole() === 'ROLE STAFF';
+  }
+
+   public get isAdmin(): boolean {
+    return this.getUserRole() === 'ROLE ADMIN';
   }
 
   referralsLetterPopup(data: any): void {

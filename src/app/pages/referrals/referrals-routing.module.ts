@@ -69,6 +69,12 @@ const routes: Routes = [
         (c) => c.ReferralDetailsComponent
       ),
   },
+
+  {
+    path: 'individual-report/:id',
+    loadComponent:()=> import('./individualreport/individualreport.component').then(c=>c.IndividualreportComponent)
+
+  },
   {
     path: 'dialog',
     loadComponent: () =>

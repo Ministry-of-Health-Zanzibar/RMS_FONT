@@ -1,0 +1,218 @@
+
+<!-- <button mat-stroked-button color="primary" (click)="printReport()">
+  <mat-icon>print</mat-icon>
+  Print Report
+</button> -->
+
+<button mat-raised-button color="primary" (click)="downloadReport()">
+  <mat-icon>download</mat-icon>
+  Download Report
+</button>
+
+<div *ngIf="!isLoading && referral" class="report-wrapper">
+
+
+
+
+<div id="print-area">
+  <!-- ALL your report content here -->
+
+    <!-- HEADER -->
+  <mat-card class="header-card">
+    <div class="header-content">
+      <div class="header-left">
+        <mat-icon class="header-icon">assignment</mat-icon>
+        <div>
+          <h2>Individual Referral Report</h2>
+          <small>Referral No: {{ referral.referral_number }}</small>
+        </div>
+      </div>
+
+      <span class="status-chip">{{ referral.status }}</span>
+    </div>
+  </mat-card>
+
+  <!-- PATIENT -->
+  <mat-card class="section-card">
+    <mat-card-title>
+      <mat-icon>person</mat-icon>
+      Patient Information
+    </mat-card-title>
+
+    <mat-card-content class="grid">
+      <div class="field">
+        <mat-icon>badge</mat-icon>
+        <span>Name</span>
+        <strong>{{ referral.patient.name }}</strong>
+      </div>
+
+      <div class="field">
+        <mat-icon>wc</mat-icon>
+        <span>Gender</span>
+        <strong>{{ referral.patient.gender }}</strong>
+      </div>
+
+      <div class="field">
+        <mat-icon>cake</mat-icon>
+        <span>Date of Birth</span>
+        <strong>{{ referral.patient.date_of_birth }}</strong>
+      </div>
+
+      <div class="field">
+        <mat-icon>phone</mat-icon>
+        <span>Phone</span>
+        <strong>{{ referral.patient.phone }}</strong>
+      </div>
+
+      <div class="field full">
+        <mat-icon>location_on</mat-icon>
+        <span>Location</span>
+        <strong>{{ referral.patient.geographical_location?.label }}</strong>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- HOSPITAL -->
+  <mat-card class="section-card">
+    <mat-card-title>
+      <mat-icon>local_hospital</mat-icon>
+      Hospital Information
+    </mat-card-title>
+
+    <mat-card-content class="grid">
+      <div class="field">
+        <mat-icon>apartment</mat-icon>
+        <span>Hospital</span>
+        <strong>{{ referral.hospital.hospital_name }}</strong>
+      </div>
+
+      <div class="field">
+        <mat-icon>confirmation_number</mat-icon>
+        <span>Code</span>
+        <strong>{{ referral.hospital.hospital_code }}</strong>
+      </div>
+
+      <div class="field full">
+        <mat-icon>place</mat-icon>
+        <span>Address</span>
+        <strong>{{ referral.hospital.hospital_address }}</strong>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- MEDICAL HISTORY -->
+  <mat-card class="section-card" *ngFor="let history of referral.patient.patient_histories">
+    <mat-card-title>
+      <mat-icon>assignment_turned_in</mat-icon>
+      Medical History
+    </mat-card-title>
+
+    <mat-card-content class="history">
+      <p><mat-icon>person_outline</mat-icon><b>Referring Doctor:</b> {{ history.referring_doctor }}</p>
+      <p><mat-icon>healing</mat-icon><b>Presenting Illness:</b> {{ history.history_of_presenting_illness }}</p>
+      <p><mat-icon>biotech</mat-icon><b>Investigations:</b> {{ history.investigations }}</p>
+      <p><mat-icon>medical_services</mat-icon><b>Management Done:</b> {{ history.management_done }}</p>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- DIAGNOSES -->
+  <mat-card class="section-card">
+    <mat-card-title>
+      <mat-icon>medical_services</mat-icon>
+      Diagnoses
+    </mat-card-title>
+
+    <mat-card-content class="chips">
+      <mat-chip-listbox>
+        <mat-chip *ngFor="let d of referral.patient.patient_histories[0]?.diagnoses" selected>
+          <mat-icon>check_circle</mat-icon>
+          {{ d.diagnosis_code }} - {{ d.diagnosis_name }}
+        </mat-chip>
+      </mat-chip-listbox>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- BILL INFORMATION -->
+<mat-card class="section-card" *ngIf="referral.bills?.length">
+  <mat-card-title>
+    <mat-icon color="primary">receipt_long</mat-icon>
+    Bill Information
+  </mat-card-title>
+
+  <mat-card-content>
+    <div *ngFor="let bill of referral.bills" class="bill-grid">
+
+      <div class="bill-item">
+        <mat-icon>payments</mat-icon>
+        <span><b>Total Amount:</b> {{ bill.total_amount | number }}</span>
+      </div>
+
+      <div class="bill-item">
+        <mat-icon>event</mat-icon>
+        <span><b>Billing Period:</b>
+          {{ bill.bill_period_start | date }} –
+          {{ bill.bill_period_end | date }}
+        </span>
+      </div>
+
+      <div class="bill-item">
+        <mat-icon>hourglass_top</mat-icon>
+        <span><b>Status:</b>
+          <span class="status-badge" [ngClass]="bill.bill_status.toLowerCase()">
+            {{ bill.bill_status }}
+          </span>
+        </span>
+      </div>
+
+      <div class="bill-item" *ngIf="bill.bill_file">
+        <mat-icon>attach_file</mat-icon>
+        <span>
+          <b>Bill File:</b>
+          <a
+            [href]="bill.bill_file.bill_file"
+            target="_blank"
+            class="file-link"
+          >
+            View PDF
+          </a>
+        </span>
+      </div>
+
+    </div>
+  </mat-card-content>
+</mat-card>
+
+
+  <!-- CONFIRMATION -->
+  <mat-card class="section-card">
+    <mat-card-title>
+      <mat-icon>verified</mat-icon>
+      Confirmation
+    </mat-card-title>
+
+    <mat-card-content class="grid">
+      <div class="field">
+        <mat-icon>how_to_reg</mat-icon>
+        <span>Confirmed By</span>
+        <strong>
+          {{ referral.confirmed_by?.first_name }}
+          {{ referral.confirmed_by?.last_name }}
+        </strong>
+      </div>
+
+      <div class="field">
+        <mat-icon>event</mat-icon>
+        <span>Date</span>
+        <strong>{{ referral.updated_at | date:'medium' }}</strong>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+</div>
+</div>
+
+
+
+
+
+<mat-progress-bar *ngIf="isLoading" mode="indeterminate"></mat-progress-bar>

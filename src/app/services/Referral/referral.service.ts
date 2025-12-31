@@ -26,6 +26,10 @@ export class ReferralService {
     return this.http.post(this.href_letter,referral);
   }
 
+  getReportById(id: number) {
+  return this.http.get(`${this.baseUrl}reports/showEverythingByReferralId/${id}`);
+}
+
   public getAllRefferal(): Observable<any> {
     return this.http.get<any>(this.href);
   }
