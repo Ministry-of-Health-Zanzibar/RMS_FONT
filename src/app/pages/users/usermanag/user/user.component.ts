@@ -16,6 +16,10 @@ import { Subject, takeUntil } from 'rxjs';
 import { PermissionService } from '../../../../services/authentication/permission.service';
 import { UserService } from '../../../../services/users/user.service';
 import { MatSort } from '@angular/material/sort';
+import { PartientFormComponent } from '../../../partient/partient-form/partient-form.component';
+import { AssignUserHospitalComponent } from '../../assign-user-hospital/assign-user-hospital.component';
+import { MatCard } from "@angular/material/card";
+import { MatFormField } from "@angular/material/form-field";
 
 @Component({
   selector: 'app-user',
@@ -34,8 +38,10 @@ import { MatSort } from '@angular/material/sort';
     FormsModule,
     MatAnchor,
     MatButton,
-    EmrSegmentedModule
-  ],
+    EmrSegmentedModule,
+    MatCard,
+    MatFormField
+],
   templateUrl: './user.component.html',
   styleUrl: './user.component.scss'
 })
@@ -168,6 +174,24 @@ export class UserComponent {
       });
     }
   }
+
+
+addPatient(userId: number) {
+  const config = new MatDialogConfig();
+  config.disableClose = false;
+  config.role = 'dialog';
+  config.maxWidth = '100vw';
+  config.maxHeight = '98vh';
+  config.panelClass = 'full-screen-modal';
+  config.data = { userId: userId }; 
+
+  const dialogRef = this.dialog.open(AssignUserHospitalComponent, config);
+  dialogRef.afterClosed().subscribe(() => {
+    this.userDataTable();
+  });
+}
+
+
 
 }
 

@@ -1,0 +1,55 @@
+<mat-card class="shadow-lg rounded-2xl p-6 bg-white mt-5">
+  <div class="flex items-center justify-between mb-4">
+    <h2 class="text-xl font-bold text-gray-800">Assign Hospital</h2>
+  </div>
+
+  <form [formGroup]="assignForm">
+    <!-- Hospital Dropdown -->
+    <div class="overflow-x-auto mb-4">
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Hospital</mat-label>
+        <mat-select formControlName="hospital_id">
+          <mat-option *ngFor="let hospital of hospitals" [value]="hospital.hospital_id">
+            {{ hospital.hospital_name }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="assignForm.get('hospital_id')?.hasError('required')">
+          Hospital is required
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <!-- Role Dropdown -->
+    <div class="overflow-x-auto mb-4">
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Select Role</mat-label>
+        <mat-select formControlName="role">
+          <mat-option *ngFor="let role of roles" [value]="role">
+            {{ role }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="assignForm.get('role')?.hasError('required')">
+          Role is required
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <!-- Buttons -->
+    <div class="flex justify-end gap-2 mt-4">
+      <button mat-stroked-button color="warn" (click)="close()">Cancel</button>
+      <button mat-raised-button color="primary" (click)="submit()" [disabled]="loading">
+        Assign
+      </button>
+    </div>
+  </form>
+
+  <!-- Loading Spinner -->
+  <div
+    *ngIf="loading"
+    class="fixed inset-0 flex items-center justify-center bg-white bg-opacity-70 z-50"
+  >
+    <div
+      class="w-16 h-16 border-4 border-blue-500 border-dashed rounded-full animate-spin"
+    ></div>
+  </div>
+</mat-card>

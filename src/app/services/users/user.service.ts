@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment.prod';
@@ -8,14 +7,16 @@ import { environment } from '../../../environments/environment.prod';
   providedIn: 'root'
 })
 export class UserService {
-
   private baseUrl: string = `${environment.baseUrl}`;
   private href = `${this.baseUrl}userAccounts`;
+  private hospitalUrl = `${this.baseUrl}hospitals`;
+
+  
   private href_member = `${this.baseUrl}userAccounts/board-members`;
 
   constructor(private http: HttpClient) {}
 
-   public getAllMemberList(): Observable<any> {
+  public getAllMemberList(): Observable<any> {
     return this.http.get<any>(this.href_member);
   }
 
@@ -45,5 +46,15 @@ export class UserService {
 
   public getLogs(): Observable<any>{
     return this.http.get(`${this.baseUrl}logsFunction`)
+  }
+
+  // assign hospital to user
+  public assignHospitalToUser(userId: number, payload: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}users/${userId}/assign-hospital`, payload);
+  }
+
+  // Optional: method to fetch hospitals
+  public getHospitals(): Observable<any> {
+    return this.http.get(`${this.hospitalUrl}`);
   }
 }
