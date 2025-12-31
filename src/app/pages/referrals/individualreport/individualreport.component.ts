@@ -7,6 +7,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatCardModule } from '@angular/material/card';
 import { MatIcon } from '@angular/material/icon';
 import html2pdf from 'html2pdf.js';
+import { MatTableModule } from '@angular/material/table';
 
 @Component({
   selector: 'app-individualreport',
@@ -15,7 +16,8 @@ import html2pdf from 'html2pdf.js';
     CommonModule,          // ✅ REQUIRED for *ngIf, *ngFor
     MatProgressBarModule,  // mat-progress-bar
     MatCardModule,
-    MatIcon
+    MatIcon,
+    MatTableModule
   ],
   templateUrl: './individualreport.component.html',
   styleUrl: './individualreport.component.scss'
@@ -80,5 +82,31 @@ downloadReport() {
 html2pdf().from(element).set(options).save();
 
 }
+
+getTotalBillAmount(): number {
+  if (!this.referral?.bills?.length) return 0;
+
+  return this.referral.bills.reduce((sum: number, bill: any) => {
+    return sum + Number(bill.total_amount || 0);
+  }, 0);
+}
+
+getTotalPaidAmount(): number {
+  if (!this.referral?.bills?.length) return 0;
+
+  return this.referral.bills.reduce((sum: number, bill: any) => {
+    const billPaymentsTotal = (bill.payments || []).reduce(
+      (pSum: number, p: any) =>
+        pSum + Number(p.pivot?.allocated_amount || p.amount_paid || 0),
+      0
+    );
+    return sum + billPaymentsTotal;
+  }, 0);
+}
+
+getRemainingAmount(): number {
+  return this.getTotalBillAmount() - this.getTotalPaidAmount();
+}
+
 
 }
