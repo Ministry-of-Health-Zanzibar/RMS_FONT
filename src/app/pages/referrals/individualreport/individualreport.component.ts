@@ -26,6 +26,7 @@ export class IndividualreportComponent implements OnInit {
 
   referral: any;
   isLoading = true;
+  email="info@mohz.go.tz";
 
   constructor(
     private route: ActivatedRoute,

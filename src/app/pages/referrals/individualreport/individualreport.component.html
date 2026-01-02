@@ -1,454 +1,269 @@
-
-<!-- <button mat-stroked-button color="primary" (click)="printReport()">
-  <mat-icon>print</mat-icon>
-  Print Report
-</button> -->
-
 <button mat-raised-button color="primary" (click)="downloadReport()">
   <mat-icon>download</mat-icon>
   Download Report
 </button>
 
-<div *ngIf="!isLoading && referral" class="report-wrapper">
-
-
-
-
 <div id="print-area">
-  <!-- ALL your report content here -->
+<div class="letter-header">
+  <div class="logo-container">
+  <img src="../../../../assets/img/smz.png" class="logo" alt="Logo" />
+</div>
 
-    <!-- HEADER -->
-  <mat-card class="header-card">
-    <div class="header-content">
-      <div class="header-left">
-        <mat-icon class="header-icon">assignment</mat-icon>
-        <div>
-          <h2>Individual Referral Report</h2>
-          <small>Referral No: {{ referral.referral_number }}</small>
-        </div>
-      </div>
 
-      <span class="status-chip">{{ referral.status }}</span>
-    </div>
-  </mat-card>
+  <h2>SERIKALI YA MAPINDUZI YA ZANZIBAR</h2>
+  <h3>WIZARA YA AFYA</h3>
+
+  <div class="header-line"></div>
+
+  <p class="ref">
+    <b>Individual Referral Report</b><br />
+    Referral No: {{ referral.referral_number }}
+  </p>
+</div>
+
+<div class="two-column">
 
   <!-- PATIENT -->
-  <mat-card class="section-card">
-    <mat-card-title>
-      <mat-icon>person</mat-icon>
-      Patient Information
-    </mat-card-title>
-
-    <mat-card-content class="grid">
-      <div class="field">
-        <mat-icon>badge</mat-icon>
-        <span>Name</span>
-        <strong>{{ referral.patient.name }}</strong>
-      </div>
-
-      <div class="field">
-        <mat-icon>wc</mat-icon>
-        <span>Gender</span>
-        <strong>{{ referral.patient.gender }}</strong>
-      </div>
-
-      <div class="field">
-        <mat-icon>cake</mat-icon>
-        <span>Date of Birth</span>
-        <strong>{{ referral.patient.date_of_birth }}</strong>
-      </div>
-
-      <div class="field">
-        <mat-icon>phone</mat-icon>
-        <span>Phone</span>
-        <strong>{{ referral.patient.phone }}</strong>
-      </div>
-
-      <div class="field full">
-        <mat-icon>location_on</mat-icon>
-        <span>Location</span>
-        <strong>{{ referral.patient.geographical_location?.label }}</strong>
-      </div>
-    </mat-card-content>
-  </mat-card>
+  <div class="column">
+    <h4>Patient Information</h4>
+    <table class="info-table">
+      <tr><td>Name:</td><td>{{ referral.patient.name }}</td></tr>
+      <tr><td>Gender:</td><td>{{ referral.patient.gender }}</td></tr>
+      <tr><td>Date of Birth:</td><td>{{ referral.patient.date_of_birth }}</td></tr>
+      <tr><td>Phone:</td><td>{{ referral.patient.phone }}</td></tr>
+      <tr><td>Location:</td><td>{{ referral.patient.geographical_location?.label }}</td></tr>
+    </table>
+  </div>
 
   <!-- HOSPITAL -->
-  <mat-card class="section-card">
-    <mat-card-title>
-      <mat-icon>local_hospital</mat-icon>
-      Hospital Information
-    </mat-card-title>
-
-    <mat-card-content class="grid">
-      <div class="field">
-        <mat-icon>apartment</mat-icon>
-        <span>Hospital</span>
-        <strong>{{ referral.hospital.hospital_name }}</strong>
-      </div>
-
-      <div class="field">
-        <mat-icon>confirmation_number</mat-icon>
-        <span>Code</span>
-        <strong>{{ referral.hospital.hospital_code }}</strong>
-      </div>
-
-      <div class="field full">
-        <mat-icon>place</mat-icon>
-        <span>Address</span>
-        <strong>{{ referral.hospital.hospital_address }}</strong>
-      </div>
-    </mat-card-content>
-  </mat-card>
-
-  <!-- MEDICAL HISTORY -->
-  <mat-card class="section-card" *ngFor="let history of referral.patient.patient_histories">
-    <mat-card-title>
-      <mat-icon>assignment_turned_in</mat-icon>
-      Medical History
-    </mat-card-title>
-
-    <mat-card-content class="history">
-      <p><mat-icon>person_outline</mat-icon><b>Referring Doctor:</b> {{ history.referring_doctor }}</p>
-      <p><mat-icon>healing</mat-icon><b>Presenting Illness:</b> {{ history.history_of_presenting_illness }}</p>
-      <p><mat-icon>biotech</mat-icon><b>Investigations:</b> {{ history.investigations }}</p>
-      <p><mat-icon>medical_services</mat-icon><b>Management Done:</b> {{ history.management_done }}</p>
-    </mat-card-content>
-  </mat-card>
-
-<!-- HOSPITAL DIAGNOSES -->
-<mat-card class="section-card"
-          *ngIf="referral.patient.patient_histories[0]?.diagnoses?.length">
-
-  <mat-card-title>
-    <mat-icon color="primary">local_hospital</mat-icon>
-    Hospital (Doctor) Assessment
-  </mat-card-title>
-
-  <mat-card-content>
-
-    <!-- REFERRAL REASON -->
-    <div class="info-row"
-         *ngIf="referral.patient.patient_histories[0]?.reason">
-      <mat-icon>help_outline</mat-icon>
-      <div>
-        <b>Referral Reason:</b><br />
-        {{ referral.patient.patient_histories[0]?.reason?.referral_reason_name }}
-        <span class="muted">
-          ({{ referral.patient.patient_histories[0]?.reason?.reason_descriptions }})
-        </span>
-      </div>
-    </div>
-
-    <!-- DOCTOR DIAGNOSES -->
-    <div class="info-group">
-
-      <div class="group-title">
-        <mat-icon>healing</mat-icon>
-        Doctor Diagnoses
-      </div>
-
-      <ul class="diagnosis-list">
-        <li *ngFor="let d of referral.patient.patient_histories[0]?.diagnoses">
-          <span class="code">{{ d.diagnosis_code }}</span>
-          <span class="name">{{ d.diagnosis_name }}</span>
-        </li>
-      </ul>
-
-    </div>
-
-  </mat-card-content>
-</mat-card>
-
-
-  <!-- MEDICAL BOARD REVIEW -->
-<mat-card class="section-card"
-          *ngIf="referral.patient.patient_histories[0]?.board_diagnoses?.length
-              || referral.patient.patient_histories[0]?.board_reason">
-
-  <mat-card-title>
-    <mat-icon color="primary">gavel</mat-icon>
-    Medical Board Review
-  </mat-card-title>
-
-  <mat-card-content>
-
-    <!-- BOARD REASON -->
-    <div class="info-row"
-         *ngIf="referral.patient.patient_histories[0]?.board_reason">
-      <mat-icon>assignment</mat-icon>
-      <div>
-        <b>Board Decision:</b><br />
-        {{ referral.patient.patient_histories[0]?.board_reason?.referral_reason_name }}
-        <span class="muted">
-          ({{ referral.patient.patient_histories[0]?.board_reason?.reason_descriptions }})
-        </span>
-      </div>
-    </div>
-
-    <!-- BOARD DIAGNOSES -->
-    <div class="info-group"
-         *ngIf="referral.patient.patient_histories[0]?.board_diagnoses?.length">
-
-      <div class="group-title">
-        <mat-icon>medical_information</mat-icon>
-        Board Diagnoses
-      </div>
-
-      <ul class="diagnosis-list">
-        <li *ngFor="let d of referral.patient.patient_histories[0]?.board_diagnoses">
-          <span class="code">{{ d.diagnosis_code }}</span>
-          <span class="name">{{ d.diagnosis_name }}</span>
-        </li>
-      </ul>
-
-    </div>
-
-  </mat-card-content>
-</mat-card>
-
-
- <!-- ================= BILL INFORMATION ================= -->
-<mat-card class="section-card" *ngIf="referral?.bills?.length">
-
-  <mat-card-title>
-    <mat-icon color="primary">receipt_long</mat-icon>
-    Bill Information
-  </mat-card-title>
-
-  <mat-card-content>
-
-    <div *ngFor="let bill of referral.bills" class="bill-wrapper">
-
-      <!-- BILL SUMMARY -->
-      <div class="bill-summary">
-
-        <div class="summary-item">
-          <mat-icon>payments</mat-icon>
-          <div>
-            <span>Total Amount</span>
-            <b>{{ bill.total_amount | number }} TZS</b>
-          </div>
-        </div>
-
-        <div class="summary-item">
-          <mat-icon>date_range</mat-icon>
-          <div>
-            <span>Billing Period</span>
-            <b>
-              {{ bill.bill_period_start | date }} –
-              {{ bill.bill_period_end | date }}
-            </b>
-          </div>
-        </div>
-
-        <div class="summary-item">
-          <mat-icon>info</mat-icon>
-          <div>
-            <span>Status</span>
-            <span class="status-badge"
-                  [ngClass]="bill.bill_status.toLowerCase()">
-              {{ bill.bill_status }}
-            </span>
-          </div>
-        </div>
-
-        <div class="summary-item" *ngIf="bill.bill_file">
-          <mat-icon>attach_file</mat-icon>
-          <div>
-            <span>Bill File</span>
-            <a class="file-link"
-               [href]="bill.bill_file.bill_file"
-               target="_blank">
-              Download PDF
-            </a>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- ================= BILL ITEMS TABLE ================= -->
-      <div class="table-wrapper" *ngIf="bill.bill_items?.length">
-
-        <table mat-table [dataSource]="bill.bill_items" class="bill-table">
-
-          <!-- Description -->
-          <ng-container matColumnDef="description">
-            <th mat-header-cell *matHeaderCellDef> Description </th>
-            <td mat-cell *matCellDef="let item">
-              {{ item.description }}
-            </td>
-          </ng-container>
-
-          <!-- Amount -->
-          <ng-container matColumnDef="amount">
-            <th mat-header-cell *matHeaderCellDef> Amount (TZS) </th>
-            <td mat-cell *matCellDef="let item">
-              {{ item.amount | number }}
-            </td>
-          </ng-container>
-
-          <tr mat-header-row
-              *matHeaderRowDef="['description','amount']"></tr>
-          <tr mat-row
-              *matRowDef="let row; columns: ['description','amount'];">
-          </tr>
-
-        </table>
-      </div>
-
-      <!-- EMPTY ITEMS -->
-      <p class="empty-text" *ngIf="!bill.bill_items?.length">
-        No bill items available
-      </p>
-
-    </div>
-
-  </mat-card-content>
-</mat-card>
-
-
-<!-- PAYMENTS INFORMATION -->
-<mat-card class="section-card" *ngIf="referral.bills?.length">
-
-  <mat-card-title>
-    <mat-icon color="primary">account_balance_wallet</mat-icon>
-    Payments Information
-  </mat-card-title>
-
-  <mat-card-content>
-
-    <!-- SUMMARY CARDS -->
-    <div class="payment-summary">
-
-      <div class="summary-box total">
-        <mat-icon>receipt</mat-icon>
-        <div>
-          <span>Total Bill</span>
-          <b>{{ getTotalBillAmount() | number }} TZS</b>
-        </div>
-      </div>
-
-      <div class="summary-box paid">
-        <mat-icon>check_circle</mat-icon>
-        <div>
-          <span>Total Paid</span>
-          <b>{{ getTotalPaidAmount() | number }} TZS</b>
-        </div>
-      </div>
-
-      <div class="summary-box balance">
-        <mat-icon>warning</mat-icon>
-        <div>
-          <span>Remaining Balance</span>
-          <b>{{ getRemainingAmount() | number }} TZS</b>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- PAYMENTS TABLE -->
-    <div *ngFor="let bill of referral.bills">
-
-      <table mat-table
-             [dataSource]="bill.payments"
-             class="payment-table"
-             *ngIf="bill.payments?.length">
-
-        <!-- Payer -->
-        <ng-container matColumnDef="payer">
-          <th mat-header-cell *matHeaderCellDef> Payer </th>
-          <td mat-cell *matCellDef="let p"> {{ p.payer }} </td>
-        </ng-container>
-
-        <!-- Amount -->
-        <ng-container matColumnDef="amount">
-          <th mat-header-cell *matHeaderCellDef> Amount </th>
-          <td mat-cell *matCellDef="let p">
-            {{ p.pivot?.allocated_amount || p.amount_paid | number }} TZS
-          </td>
-        </ng-container>
-
-        <!-- Method -->
-        <ng-container matColumnDef="method">
-          <th mat-header-cell *matHeaderCellDef> Method </th>
-          <td mat-cell *matCellDef="let p"> {{ p.payment_method }} </td>
-        </ng-container>
-
-        <!-- Reference -->
-        <ng-container matColumnDef="reference">
-          <th mat-header-cell *matHeaderCellDef> Reference </th>
-          <td mat-cell *matCellDef="let p"> {{ p.reference_number }} </td>
-        </ng-container>
-
-        <!-- Date -->
-        <ng-container matColumnDef="date">
-          <th mat-header-cell *matHeaderCellDef> Date </th>
-          <td mat-cell *matCellDef="let p">
-            {{ p.payment_date | date:'medium' }}
-          </td>
-        </ng-container>
-
-        <!-- Status -->
-        <ng-container matColumnDef="status">
-          <th mat-header-cell *matHeaderCellDef> Status </th>
-          <td mat-cell *matCellDef="let p">
-            <span class="status-badge"
-                  [ngClass]="p.pivot?.status?.toLowerCase()">
-              {{ p.pivot?.status }}
-            </span>
-          </td>
-        </ng-container>
-
-        <tr mat-header-row
-            *matHeaderRowDef="['payer','amount','method','reference','date','status']">
-        </tr>
-        <tr mat-row
-            *matRowDef="let row; columns: ['payer','amount','method','reference','date','status'];">
-        </tr>
-
-      </table>
-
-      <p *ngIf="!bill.payments?.length" class="empty-text">
-        No payments recorded for this bill
-      </p>
-
-    </div>
-
-  </mat-card-content>
-</mat-card>
-
-
-
-  <!-- CONFIRMATION -->
-  <mat-card class="section-card">
-    <mat-card-title>
-      <mat-icon>verified</mat-icon>
-      Confirmation
-    </mat-card-title>
-
-    <mat-card-content class="grid">
-      <div class="field">
-        <mat-icon>how_to_reg</mat-icon>
-        <span>Confirmed By</span>
-        <strong>
-          {{ referral.confirmed_by?.first_name }}
-          {{ referral.confirmed_by?.last_name }}
-        </strong>
-      </div>
-
-      <div class="field">
-        <mat-icon>event</mat-icon>
-        <span>Date</span>
-        <strong>{{ referral.updated_at | date:'medium' }}</strong>
-      </div>
-    </mat-card-content>
-  </mat-card>
+  <div class="column">
+    <h4>Hospital Information</h4>
+    <table class="info-table">
+      <tr><td>Hospital:</td><td>{{ referral.hospital.hospital_name }}</td></tr>
+      <tr><td>Code:</td><td>{{ referral.hospital.hospital_code }}</td></tr>
+      <tr><td>Address:</td><td>{{ referral.hospital.hospital_address }}</td></tr>
+    </table>
+  </div>
 
 </div>
+
+<h4 class="section-title">Medical History</h4>
+
+<div *ngFor="let h of referral.patient.patient_histories" class="paragraph">
+  <p><b>Referring Doctor:</b> {{ h.referring_doctor }}</p>
+  <p><b>Presenting Illness:</b> {{ h.history_of_presenting_illness }}</p>
+  <p><b>Investigations:</b> {{ h.investigations }}</p>
+  <p><b>Management Done:</b> {{ h.management_done }}</p>
+</div>
+
+<h4 class="section-title">Hospital (Doctor) Assessment</h4>
+
+<!-- REFERRAL REASON -->
+<p *ngIf="referral.patient.patient_histories[0]?.reason">
+  <b>Referral Reason:</b><br />
+  {{ referral.patient.patient_histories[0]?.reason?.referral_reason_name }}
+  <br />
+  <span class="muted">
+    {{ referral.patient.patient_histories[0]?.reason?.reason_descriptions }}
+  </span>
+</p>
+
+<!-- DOCTOR DIAGNOSES -->
+<table class="data-table"
+       *ngIf="referral.patient.patient_histories[0]?.diagnoses?.length">
+  <tr>
+    <th>#</th>
+    <th>Diagnosis Code</th>
+    <th>Diagnosis Name</th>
+  </tr>
+
+  <tr *ngFor="let d of referral.patient.patient_histories[0]?.diagnoses; let i = index">
+    <td>{{ i + 1 }}</td>
+    <td>{{ d.diagnosis_code }}</td>
+    <td>{{ d.diagnosis_name }}</td>
+  </tr>
+</table>
+
+<p *ngIf="!referral.patient.patient_histories[0]?.diagnoses?.length"
+   class="muted">
+  No hospital diagnoses recorded.
+</p>
+
+<h4 class="section-title">Medical Board Assessment</h4>
+
+<!-- BOARD DECISION / REASON -->
+<p *ngIf="referral.patient.patient_histories[0]?.board_reason">
+  <b>Board Decision / Reason:</b><br />
+  {{ referral.patient.patient_histories[0]?.board_reason?.referral_reason_name }}
+  <br />
+  <span class="muted">
+    {{ referral.patient.patient_histories[0]?.board_reason?.reason_descriptions }}
+  </span>
+</p>
+
+<!-- BOARD DIAGNOSES -->
+<table class="data-table"
+       *ngIf="referral.patient.patient_histories[0]?.board_diagnoses?.length">
+  <tr>
+    <th>#</th>
+    <th>Diagnosis Code</th>
+    <th>Diagnosis Name</th>
+  </tr>
+
+  <tr *ngFor="let d of referral.patient.patient_histories[0]?.board_diagnoses; let i = index">
+    <td>{{ i + 1 }}</td>
+    <td>{{ d.diagnosis_code }}</td>
+    <td>{{ d.diagnosis_name }}</td>
+  </tr>
+</table>
+
+<p *ngIf="!referral.patient.patient_histories[0]?.board_diagnoses?.length"
+   class="muted">
+  No board diagnoses recorded.
+</p>
+
+<h4 class="section-title">Follow-Up Information</h4>
+
+<table class="data-table" *ngIf="referral?.patient?.followups?.length">
+  <tr>
+    <th>#</th>
+    <th>Follow-Up Date</th>
+    <th>Status</th>
+    <th>Notes</th>
+  </tr>
+
+  <tr *ngFor="let f of referral.patient.followups; let i = index">
+    <td>{{ i + 1 }}</td>
+    <td>{{ f.followup_date | date:'longDate' }}</td>
+    <td>{{ f.followup_status }}</td>
+    <td>{{ f.notes }}</td>
+  </tr>
+</table>
+
+<p *ngIf="!referral?.patient?.followups?.length" class="muted">
+  No follow-up records available.
+</p>
+
+<h4 class="section-title">Billing Summary</h4>
+
+<div *ngFor="let bill of referral.bills">
+  <p>
+    <b>Billing Period:</b>
+    {{ bill.bill_period_start | date }} – {{ bill.bill_period_end | date }}
+  </p>
+
+  <p><b>Total Amount:</b> {{ bill.total_amount | number }} TZS</p>
+  <p><b>Status:</b> {{ bill.bill_status }}</p>
+
+  <table class="data-table" *ngIf="bill.bill_items?.length">
+    <tr>
+      <th>Description</th>
+      <th>Amount (TZS)</th>
+    </tr>
+    <tr *ngFor="let item of bill.bill_items">
+      <td>{{ item.description }}</td>
+      <td>{{ item.amount | number }}</td>
+    </tr>
+  </table>
 </div>
 
 
 
+<h4 class="section-title">Payments Information</h4>
+
+<!-- SUMMARY -->
+<table class="info-table">
+  <tr>
+    <td><b>Total Bill Amount:</b></td>
+    <td>{{ getTotalBillAmount() | number }} TZS</td>
+  </tr>
+  <tr>
+    <td><b>Total Amount Paid:</b></td>
+    <td>{{ getTotalPaidAmount() | number }} TZS</td>
+  </tr>
+  <tr>
+    <td><b>Outstanding Balance:</b></td>
+    <td>{{ getRemainingAmount() | number }} TZS</td>
+  </tr>
+</table>
+
+<br />
+
+<!-- DETAILED PAYMENTS -->
+<div *ngFor="let bill of referral.bills">
+
+  <p>
+    <b>Billing Period:</b>
+    {{ bill.bill_period_start | date }} –
+    {{ bill.bill_period_end | date }}
+  </p>
+
+  <table class="data-table" *ngIf="bill.payments?.length">
+    <tr>
+      <th>Payer</th>
+      <th>Amount (TZS)</th>
+      <th>Payment Method</th>
+      <th>Reference</th>
+      <th>Date</th>
+      <th>Status</th>
+    </tr>
+
+    <tr *ngFor="let p of bill.payments">
+      <td>{{ p.payer }}</td>
+      <td>
+        {{ p.pivot?.allocated_amount || p.amount_paid | number }}
+      </td>
+      <td>{{ p.payment_method }}</td>
+      <td>{{ p.reference_number }}</td>
+      <td>{{ p.payment_date | date:'mediumDate' }}</td>
+      <td>{{ p.pivot?.status }}</td>
+    </tr>
+  </table>
+
+  <p *ngIf="!bill.payments?.length" class="muted">
+    No payments recorded for this billing period.
+  </p>
+
+  <br />
+</div>
 
 
-<mat-progress-bar *ngIf="isLoading" mode="indeterminate"></mat-progress-bar>
+<div class="signature-section">
+  <p><b>Confirmed By:</b></p>
+  <p>
+    {{ referral.confirmed_by?.first_name }}
+    {{ referral.confirmed_by?.last_name }}
+  </p>
+
+  <p><b>Date:</b> {{ referral.updated_at | date:'longDate' }}</p>
+
+  <br />
+
+  <p>______________________________</p>
+  <p><i>Authorized Signature</i></p>
+</div>
+
+<div class="letter-footer">
+  <div class="footer-left">
+    <p>6 Barabara ya Health Office, S.L.P 236 MNANZIMMOJA</p>
+    <p>POSTIKODI: 70467 Mjini Magharibi Zanzibar</p>
+  </div>
+
+  <div class="footer-right">
+    <p>
+      Tovuti:
+      <a href="http://www.mohz.go.tz" target="_blank">
+        www.mohz.go.tz
+      </a>
+    </p>
+    <p>
+      Barua pepe:
+      <a href="mailto:{{ email || 'N/A' }}">
+        {{ email || 'N/A' }}
+      </a>
+    </p>
+  </div>
+</div>
+
+
+</div>

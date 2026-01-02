@@ -152,7 +152,7 @@ export class AddbodylistComponent implements OnInit, OnDestroy {
         Validators.min(1),
       ]),
       user_id: new FormArray([], Validators.required),
-      patient_list_file: new FormControl(null, [Validators.required]),
+      patient_list_file: new FormControl(null),
     });
   }
 
