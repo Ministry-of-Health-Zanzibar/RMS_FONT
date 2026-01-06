@@ -9,7 +9,7 @@ import { environment } from '../../../environments/environment.prod';
 export class UserService {
   private baseUrl: string = `${environment.baseUrl}`;
   private href = `${this.baseUrl}userAccounts`;
-  private hospitalUrl = `${this.baseUrl}hospitals`;
+  private hospitalUrl = `${this.baseUrl}hospitals/internal-referral-hospitals`;
 
   
   private href_member = `${this.baseUrl}userAccounts/board-members`;
@@ -57,4 +57,6 @@ export class UserService {
   public getHospitals(): Observable<any> {
     return this.http.get(`${this.hospitalUrl}`);
   }
+
+
 }

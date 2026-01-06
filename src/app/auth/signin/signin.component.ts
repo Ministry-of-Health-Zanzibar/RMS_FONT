@@ -12,6 +12,7 @@ import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
 import { MatTooltip } from '@angular/material/tooltip';
 import { InactivityService } from '../../services/accountants/inactivity.service';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-signin',
@@ -29,7 +30,8 @@ import { InactivityService } from '../../services/accountants/inactivity.service
     HDividerComponent,
     ReactiveFormsModule,
     MatError,
-    MatTooltip
+    MatTooltip,
+    MatProgressSpinnerModule,
 
   ],
   templateUrl: './signin.component.html',
@@ -143,9 +145,10 @@ export class SigninComponent implements OnInit {
 
 
   loginSubmit(){
-    // this.matxLoader.open();
+    this.loading = true;
     this.authService.loginAuthenticate(this.loginForm.value).subscribe((response) => {
-      // this.matxLoader.close();
+     
+       this.loading = false;
         if (response && response.error) {
           console.log('Server returned an error:', response.error);
         } else {
@@ -158,12 +161,12 @@ export class SigninComponent implements OnInit {
               localStorage.setItem("full_name", response.data.full_name);
               localStorage.setItem("email", response.data.email);
 
-              // localStorage.setItem("roles", response.data.roles.name);
+              
               localStorage.setItem("roles", response.data.roles[0]?.name || 'Default Role');
 
 
               localStorage.setItem("isLogin","true");
-              // this.inactivityService.initListener();
+             
               const Toast = Swal.mixin({
                 toast: true,
                 position: "top-end",
@@ -220,6 +223,7 @@ export class SigninComponent implements OnInit {
           }
         }
       },(error) => {
+        this.loading = false;
         Swal.fire({
           title: 'Warning!',
           text: GlobalConstants.genericErrorConnectFail,
