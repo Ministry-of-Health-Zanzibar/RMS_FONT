@@ -53,6 +53,7 @@ public documentUrl = environment.fileUrl;
     'matibabu_card',
     'phone',
     'referring_doctor',
+    'hospital',
     'investigations',
     'status',
     'action',

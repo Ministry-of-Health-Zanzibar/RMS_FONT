@@ -123,7 +123,7 @@ export class AddhospitalComponent {
       this.hospitalService
         .addHospital(this.hospitalForm.value)
         .subscribe((response) => {
-          if (response.statusCode == 200) {
+          if (response.statusCode == 201) {
             Swal.fire({
               title: 'Success',
               text: 'Data saved successfull',
