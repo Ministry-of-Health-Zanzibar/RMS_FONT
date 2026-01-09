@@ -75,11 +75,28 @@ export class HeaderComponent implements OnInit{
   fullName:any;
   emails:any;
   role:any;
+  permissions: any;
+  hospitalInfo: any[] = [];
+hospitalName: string = '';
+hospitalRole: string = '';
+
 
   ngOnInit(): void {
     this.fullName = localStorage.getItem('full_name');
     this.emails = localStorage.getItem('email');
      this.role = localStorage.getItem('roles');
+
+    
+  const perms = localStorage.getItem('permissions');
+  this.permissions = perms ? JSON.parse(perms) : [];
+
+  const hospital = localStorage.getItem('hospital_info');
+  this.hospitalInfo = hospital ? JSON.parse(hospital) : [];
+
+  if (this.hospitalInfo.length > 0) {
+    this.hospitalName = this.hospitalInfo[0].hospital_name;
+    this.hospitalRole = this.hospitalInfo[0].hospital_role;
+  }
   }
 
   logoutHead() {
