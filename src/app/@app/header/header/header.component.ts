@@ -9,7 +9,11 @@ import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 import { MatDivider } from '@angular/material/divider';
 import { MatTooltip } from '@angular/material/tooltip';
 import { Router, RouterLink } from '@angular/router';
-import { EmrAvatarModule, IconComponent, SoundEffectDirective } from '@elementar/components';
+import {
+  EmrAvatarModule,
+  IconComponent,
+  SoundEffectDirective,
+} from '@elementar/components';
 import { NotificationListComponent } from '@app/header/_notifications/notification-list/notification-list.component';
 import { EmrPopoverModule } from '@elementar/components';
 import { AssistantSearchComponent } from '@app/header/_assistant-search/assistant-search.component';
@@ -42,15 +46,15 @@ import { InactivityService } from '../../../services/accountants/inactivity.serv
     AssistantSearchComponent,
     IconComponent,
     MatAnchor,
-    SoundEffectDirective
+    SoundEffectDirective,
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
   host: {
-    'class': 'block w-full h-full'
-  }
+    class: 'block w-full h-full',
+  },
 })
-export class HeaderComponent implements OnInit{
+export class HeaderComponent implements OnInit {
   protected _themeManager = inject(ThemeManagerService);
   private _layoutApi = inject(LayoutApiService);
   isDark = this._themeManager.isDark();
@@ -68,46 +72,41 @@ export class HeaderComponent implements OnInit{
     this.sidebarHidden = !this.sidebarHidden;
   }
 
-  constructor(private route:Router,
+  constructor(
+    private route: Router,
     private inactivityService: InactivityService
-  ){}
+  ) {}
 
-  fullName:any;
-  emails:any;
-  role:any;
-  permissions: any;
+  fullName: any;
+  emails: any;
+  role: any;
   hospitalInfo: any[] = [];
-hospitalName: string = '';
-hospitalRole: string = '';
-
+  hospitalName: string = '';
+  hospitalRole: string = '';
 
   ngOnInit(): void {
     this.fullName = localStorage.getItem('full_name');
     this.emails = localStorage.getItem('email');
-     this.role = localStorage.getItem('roles');
+    this.role = localStorage.getItem('roles');
 
-    
-  const perms = localStorage.getItem('permissions');
-  this.permissions = perms ? JSON.parse(perms) : [];
+    const hospital = localStorage.getItem('hospital_info');
+    this.hospitalInfo = hospital ? JSON.parse(hospital) : [];
 
-  const hospital = localStorage.getItem('hospital_info');
-  this.hospitalInfo = hospital ? JSON.parse(hospital) : [];
-
-  if (this.hospitalInfo.length > 0) {
-    this.hospitalName = this.hospitalInfo[0].hospital_name;
-    this.hospitalRole = this.hospitalInfo[0].hospital_role;
-  }
+    if (this.hospitalInfo.length > 0) {
+      this.hospitalName = this.hospitalInfo[0].hospital_name;
+      this.hospitalRole = this.hospitalInfo[0].hospital_role;
+    }
   }
 
   logoutHead() {
     Swal.fire({
-      title: "Are you sure?",
-      text: "You want to logout from this system",
-      icon: "warning",
+      title: 'Are you sure?',
+      text: 'You want to logout from this system',
+      icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, Logout"
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Logout',
     }).then((result) => {
       if (result.isConfirmed) {
         // this.inactivityService.stopListener(); // ✅ stop timeout/countdown
@@ -116,6 +115,4 @@ hospitalRole: string = '';
       }
     });
   }
-
-
 }
