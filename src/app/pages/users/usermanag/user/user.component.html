@@ -122,6 +122,67 @@
             <td mat-cell *matCellDef="let element">{{ element.email }}</td>
           </ng-container>
 
+          <!-- <ng-container matColumnDef="hospital">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              class="text-neutral-500 dark:text-neutral-400"
+            >
+              Hospital
+            </th>
+            <td mat-cell *matCellDef="let element">
+              <emr-segmented theme="simple" class="-mx-2">
+                <emr-segmented-button value="assign_hospital">
+                  <button
+                    mat-raised-button
+                    color="accent"
+                    (click)="addPatient(element.id)"
+                    matTooltip="Assign / Add Hospital"
+                    *ngIf="element.role_name === 'ROLE HOSPITAL USER'"
+                    class="flex items-center gap-1"
+                  >
+                    <mat-icon>local_hospital</mat-icon>
+                  </button>
+                </emr-segmented-button>
+              </emr-segmented>
+            </td>
+          </ng-container> -->
+
+          <ng-container matColumnDef="hospital">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              class="text-neutral-500 dark:text-neutral-400"
+            >
+              Hospital
+            </th>
+
+            <td mat-cell *matCellDef="let element">
+              
+              <ng-container *ngIf="!element.hospital; else assignedHospital">
+                <span class="text-neutral-400 italic">N/A</span>
+
+                <button
+                  mat-raised-button
+                  color="accent"
+                  class="ml-2 flex items-center gap-1"
+                  *ngIf="element.role_name === 'ROLE HOSPITAL USER'"
+                  (click)="addPatient(element.id)"
+                  matTooltip="Assign Hospital"
+                >
+                  <mat-icon>add</mat-icon>
+                </button>
+              </ng-container>
+
+   
+              <ng-template #assignedHospital>
+                <span class="font-medium text-primary-700">
+                  {{ element.hospital }}
+                </span>
+              </ng-template>
+            </td>
+          </ng-container>
+
           <!-- Weight Column -->
           <ng-container matColumnDef="action">
             <th
@@ -153,20 +214,6 @@
                     *ngIf="permission.parmissionMatched(['Update User'])"
                   >
                   </mat-slide-toggle>
-                </emr-segmented-button>
-
-                <emr-segmented-button value="assign_hospital">
-                  <button
-                    mat-raised-button
-                    color="accent"
-                    (click)="addPatient(element.id)"
-                    matTooltip="Assign / Add Hospital"
-                    *ngIf="element.role_name === 'ROLE HOSPITAL USER'"
-                    class="flex items-center gap-1"
-                  >
-                    <mat-icon>local_hospital</mat-icon>
-                    Assign Hospital
-                  </button>
                 </emr-segmented-button>
               </emr-segmented>
             </td>

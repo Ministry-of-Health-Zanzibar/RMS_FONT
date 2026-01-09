@@ -67,7 +67,7 @@ export class AssignUserHospitalComponent implements OnInit {
     this.loading = true;
     this.userService.getHospitals().subscribe({
       next: (res) => {
-        this.hospitals = res.data; // assumes API returns data array with hospital objects
+        this.hospitals = res.data; 
         this.loading = false;
       },
       error: (err) => {
@@ -87,7 +87,7 @@ export class AssignUserHospitalComponent implements OnInit {
     if (this.assignForm.invalid) return;
 
     const payload = {
-      hospital_id: this.assignForm.value.hospital_id, // use the selected id
+      hospital_id: this.assignForm.value.hospital_id, 
       role: this.assignForm.value.role
     };
 
