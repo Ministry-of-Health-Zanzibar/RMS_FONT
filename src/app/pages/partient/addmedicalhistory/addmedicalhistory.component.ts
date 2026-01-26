@@ -125,6 +125,7 @@ export class AddmedicalhistoryComponent implements OnInit, OnDestroy {
       reason_id: ['', Validators.required],
       diagnosis_ids: [[], Validators.required],
       history_file: [null, Validators.required],
+      case_type:[null, Validators.required],
     });
   }
 
@@ -202,6 +203,7 @@ export class AddmedicalhistoryComponent implements OnInit, OnDestroy {
     formData.append('physical_findings', formValue.physical_findings);
     formData.append('investigations', formValue.investigations);
     formData.append('management_done', formValue.management_done);
+     formData.append('case_type', formValue.case_type);
 
 
     if (Array.isArray(formValue.diagnosis_ids)) {

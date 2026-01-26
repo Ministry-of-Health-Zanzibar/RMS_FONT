@@ -54,7 +54,7 @@ public documentUrl = environment.fileUrl;
     'phone',
     'referring_doctor',
     'hospital',
-    'investigations',
+    'case_type',
     'status',
     'action',
   ];
