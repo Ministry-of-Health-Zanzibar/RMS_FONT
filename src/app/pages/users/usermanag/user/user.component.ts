@@ -175,6 +175,42 @@ export class UserComponent {
     }
   }
 
+   resetUserPassword(userId: number) {
+
+    Swal.fire({
+      title: 'Reset Password?',
+      text: 'A new password will be generated and sent to user email.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, Reset',
+      cancelButtonText: 'Cancel',
+      confirmButtonColor: '#2563eb'
+    }).then(result => {
+
+      if (result.isConfirmed) {
+        this.userService.resetPassword(userId).subscribe({
+          next: (response) => {
+            if (response.statusCode === 201) {
+              Swal.fire(
+                'Success',
+                response.message,
+                'success'
+              );
+            }
+          },
+          error: (error) => {
+            Swal.fire(
+              'Error',
+              error.error?.message || 'Something went wrong',
+              'error'
+            );
+          }
+        });
+      }
+
+    });
+  }
+
 
 addPatient(userId: number) {
   const config = new MatDialogConfig();

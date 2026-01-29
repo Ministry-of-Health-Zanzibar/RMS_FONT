@@ -215,6 +215,22 @@
                   >
                   </mat-slide-toggle>
                 </emr-segmented-button>
+
+              <emr-segmented-button value="reset_password">
+              <button
+                mat-icon-button
+                color="primary"
+                matTooltip="Reset Password"
+                (click)="resetUserPassword(element.id)"
+                *ngIf="permission.parmissionMatched(['Update User'])"
+              >
+                <mat-icon class="material-symbols-outlined">
+                  lock_reset
+                </mat-icon>
+              </button>
+        </emr-segmented-button>
+
+
               </emr-segmented>
             </td>
           </ng-container>
