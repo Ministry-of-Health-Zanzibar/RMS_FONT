@@ -33,17 +33,21 @@ export class AssignUserHospitalComponent implements OnInit {
   assignForm!: FormGroup;
   hospitals: any[] = [];
   roles: string[] = [
-    'hospital_admin',
-    'hospital_doctor',
-    'hospital_nurse',
-    'hospital_pharmacist',
-    'hospital_lab_technician',
-    'hospital_data_clerk',
-    'district_health_officer',
-    'district_data_manager',
-    'regional_health_officer',
-    'ministry_admin',
-    'ministry_analyst'
+    'Hospital Admin',
+    'Hospital Doctor',
+    'Hospital Nurse',
+    'Hospital Pharmacist',
+    'Pediatrics',
+    'Oncology',
+    'Internal Medicine',
+    'Surgery',
+    'Obstetrics',
+    'Gynaecology',
+    'Emergency',
+    'Orthopaedic',
+    'Urology',
+    'Ophthalmology',
+    'Neuro surg'
   ];
   loading = false;
 
