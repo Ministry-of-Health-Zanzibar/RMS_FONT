@@ -31,6 +31,67 @@
       </button>
     </div> -->
 
+    <!-- Status Tracking Section -->
+<mat-card class="shadow-lg rounded-2xl border border-gray-200">
+  <mat-card-header>
+    <mat-card-title class="text-2xl font-semibold text-green-800 flex items-center">
+      <mat-icon color="primary" class="mr-2">timeline</mat-icon>
+      Status Tracking
+    </mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content class="p-6">
+    <table class="table-auto w-full border-collapse border border-gray-300">
+      <tbody>
+        <tr class="bg-gray-50">
+          <th class="border border-gray-300 p-3 text-left">Stage</th>
+          <td class="border border-gray-300 p-3">
+            {{ medicalHistory.status_tracking.stage }}
+          </td>
+        </tr>
+
+        <tr>
+          <th class="border border-gray-300 p-3 text-left">Status Label</th>
+          <td class="border border-gray-300 p-3 font-semibold text-blue-700">
+            {{ medicalHistory.status_tracking.label }}
+          </td>
+        </tr>
+
+        <tr class="bg-gray-50">
+          <th class="border border-gray-300 p-3 text-left">Current Holder</th>
+          <td class="border border-gray-300 p-3">
+            {{ medicalHistory.status_tracking.current_holder }}
+          </td>
+        </tr>
+
+        <tr>
+          <th class="border border-gray-300 p-3 text-left">Description</th>
+          <td class="border border-gray-300 p-3">
+            {{ medicalHistory.status_tracking.description }}
+          </td>
+        </tr>
+
+        <tr class="bg-gray-50">
+          <th class="border border-gray-300 p-3 text-left">Progress</th>
+          <td class="border border-gray-300 p-3">
+            <div class="flex items-center gap-3">
+              <div class="w-full bg-gray-200 rounded-full h-3">
+                <div
+                  class="bg-green-600 h-3 rounded-full transition-all"
+                  [style.width]="medicalHistory.progress_percentage"
+                ></div>
+              </div>
+              <span class="font-semibold text-green-700">
+                {{ medicalHistory.progress_percentage }}
+              </span>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </mat-card-content>
+</mat-card>
+
     <!-- Patient Info -->
     <mat-card
       class="shadow-2xl rounded-2xl border border-gray-100 bg-gradient-to-br from-blue-50 via-white to-blue-100"
@@ -40,7 +101,7 @@
           class="text-2xl font-bold text-blue-800 flex items-center"
         >
           <mat-icon color="primary" class="mr-2 text-3xl">person</mat-icon>
-          Patient Information
+          Patient Informations
         </mat-card-title>
       </mat-card-header>
 
@@ -162,6 +223,7 @@
         </ng-template>
       </mat-card-content>
     </mat-card>
+
 
     <!-- Medical History Details -->
     <mat-card class="shadow-lg rounded-2xl border border-gray-200">
