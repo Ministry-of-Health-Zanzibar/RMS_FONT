@@ -56,6 +56,7 @@ boardDiagnoses = this.history?.board_diagnoses || [];
 
 hospitalReason = this.history?.reason;
 boardReason = this.history?.board_reason;
+boardMembers: any[] = [];
 
 
   constructor(
@@ -95,14 +96,29 @@ boardReason = this.history?.board_reason;
       this.referral = response.data;
 
       // Patient histories
-      this.patientHistories = response.data.patient.patient_histories;
+      this.patientHistories = response.data.patient?.patient_histories || [];
 
-      // ADD THIS → diagnoses from API
-      this.diagnoses = response.data.diagnoses;
+   
 
-      
+      // Take FIRST history (as per your scenario)
+      this.history = this.patientHistories.length
+        ? this.patientHistories[0]
+        : null;
 
-      console.log("Diagnoses: ", this.diagnoses);
+      // ✅ Hospital diagnoses (Doctor)
+      this.hospitalDiagnoses = this.history?.diagnoses || [];
+
+      // ✅ Board diagnoses (Medical Board)
+      this.boardDiagnoses = this.history?.board_diagnoses || [];
+
+      // ✅ Reasons
+      this.hospitalReason = this.history?.reason || null;
+      this.boardReason = this.history?.board_reason || null;
+
+     this.boardMembers =
+        response.data.patient?.patient_list?.[0]?.board_members || [];
+
+      console.log('Board Members:', this.boardMembers);
     },
     (error) => {
       console.error('Failed to load patient data', error);

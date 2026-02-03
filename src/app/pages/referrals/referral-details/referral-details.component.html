@@ -66,6 +66,7 @@
         </p>
       </div>
     </div>
+
   <div class="bg-yellow-50 p-6 rounded-2xl shadow-inner flex flex-col space-y-2">
   <h3 class="text-2xl font-semibold text-yellow-700 mb-2">
    Mkurugenzi Tiba Comments
@@ -82,56 +83,7 @@
 </div>
 
 
-    <!-- Referral Reason -->
-   <div class="bg-yellow-50 p-6 rounded-2xl shadow-inner flex flex-col space-y-2">
-  <h3 class="text-2xl font-semibold text-yellow-700 mb-2">
-    Referral Reason
-  </h3>
-
-  <p>
-    <span class="font-semibold w-32 inline-block">Reason:</span>
-    {{
-      referral?.patient?.patient_histories?.[0]?.board_reason?.referral_reason_name
-      || 'N/A'
-    }}
-  </p>
-
-  <p>
-    <span class="font-semibold w-32 inline-block">Description:</span>
-    {{
-      referral?.patient?.patient_histories?.[0]?.board_reason?.reason_descriptions
-      || 'N/A'
-    }}
-  </p>
-</div>
-
-
-    <!-- Bill file info -->
-    <div
-      class="bg-green-50 p-6 rounded-2xl shadow-inner flex flex-col space-y-2"
-    >
-      <h3 class="text-2xl font-semibold text-green-700 mb-2">
-        Medical board Info
-      </h3>
-      <p>
-        <span class="font-semibold w-32">Reference number: </span>
-        {{ referral.referral_number || "N/A" }}
-      </p>
-     <p>
-      <span class="font-semibold w-32 inline-block">Board Type:</span>
-      {{ referral.patient?.patient_list?.[0]?.board_type || "N/A" }}
-    </p>
-
-     <p *ngIf="referral.patient?.patient_list?.[0]?.patient_list_file">
-    <a
-      (click)="viewPatientListPDF(referral.patient.patient_list[0].patient_list_file)"
-      class="inline-flex items-center gap-1 text-indigo-600 hover:text-indigo-800 cursor-pointer"
-    >
-      <mat-icon>picture_as_pdf</mat-icon> View Patient List PDF
-    </a>
-  </p>
-
-    </div>
+ 
 
   <div
   class="bg-green-50 p-4 mt-4 rounded-xl"
@@ -166,9 +118,12 @@
 
       <div class="p-3 text-gray-700">
         <p><strong>Doctor:</strong> {{ history.referring_doctor }}</p>
-        <p><strong>File Number:</strong> {{ history.file_number }}</p>
-        <p><strong>Board Comments:</strong> {{ history.board_comments }}</p>
-        <p><strong>Mkurugenzi Tiba Comments:</strong> {{ history.mkurugenzi_tiba_comments }}</p>
+        <p><strong>Case Type:</strong> {{ history.case_type }}</p>
+        <p><strong>physical_findings:</strong> {{ history.physical_findings }}</p>
+         <p><strong>history_of_presenting_illness:</strong> {{ history.history_of_presenting_illness }}</p>
+          <p><strong>Investigations:</strong> {{ history.investigations }}</p>
+           <p><strong>management_done:</strong> {{ history.management_done }}</p>
+          
 
         <a
           *ngIf="history.history_file"
@@ -181,35 +136,179 @@
       </div>
     </mat-expansion-panel>
   </mat-accordion>
-
-  <!-- Diagnoses Section -->
-  <div class="mt-6" *ngIf="diagnoses?.length > 0">
-    <h4 class="text-lg font-semibold text-green-600 mb-3">
-      Diagnoses ({{ diagnoses.length }})
-    </h4>
-
-    <table class="min-w-full bg-white border border-green-200 rounded-lg shadow">
-      <thead class="bg-green-100 text-green-700">
-        <tr>
-          <th class="p-2 text-left">#</th>
-          <th class="p-2 text-left">Diagnosis Code</th>
-          <th class="p-2 text-left">Diagnosis Name</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <tr
-          *ngFor="let d of diagnoses; let i = index"
-          class="border-t hover:bg-green-50"
-        >
-          <td class="p-2">{{ i + 1 }}</td>
-          <td class="p-2">{{ d.diagnosis_code }}</td>
-          <td class="p-2">{{ d.diagnosis_name }}</td>
-        </tr>
-      </tbody>
-    </table>
   </div>
+ 
+  <div class="mt-6" *ngIf="hospitalDiagnoses?.length > 0">
+  <table class="min-w-full bg-white border border-green-200 rounded-lg shadow">
+
+    <!-- TABLE HEADER -->
+    <thead class="bg-green-100 text-green-700">
+      <tr>
+        <th colspan="3" class="p-3 text-left text-lg font-semibold">
+          Hospital Diagnoses ({{ hospitalDiagnoses.length }})
+        </th>
+      </tr>
+
+      <!-- Reason row -->
+      <tr *ngIf="hospitalReason">
+        <th colspan="3" class="p-2 text-left text-lg font-medium text-gray-700">
+          Reason:
+          <span class="text-green-700 font-semibold">
+            {{ hospitalReason.referral_reason_name }}
+          </span>
+         
+        </th>
+      </tr>
+
+      <!-- Column headers -->
+      <tr>
+        <th class="p-2 text-left">#</th>
+        <th class="p-2 text-left">Diagnosis Code</th>
+        <th class="p-2 text-left">Diagnosis Name</th>
+      </tr>
+    </thead>
+
+
+    <!-- TABLE BODY -->
+    <tbody>
+      <tr
+        *ngFor="let d of hospitalDiagnoses; let i = index"
+        class="border-t hover:bg-green-50"
+      >
+        <td class="p-2">{{ i + 1 }}</td>
+        <td class="p-2">{{ d.diagnosis_code }}</td>
+        <td class="p-2">{{ d.diagnosis_name }}</td>
+      </tr>
+    </tbody>
+  </table>
 </div>
+
+<!-- ================= BOARD MEMBERS ================= -->
+
+ 
+    <div
+      class="bg-green-50 p-6 rounded-2xl shadow-inner flex flex-col space-y-2"
+    >
+      <h3 class="text-2xl font-semibold text-green-700 mb-2">
+        Medical board Info
+      </h3>
+      <p>
+        <span class="font-semibold w-32">Reference number: </span>
+        {{ referral.referral_number || "N/A" }}
+      </p>
+     <p>
+      <span class="font-semibold w-32 inline-block">Board Type:</span>
+      {{ referral.patient?.patient_list?.[0]?.board_type || "N/A" }}
+    </p>
+
+     <p *ngIf="referral.patient?.patient_list?.[0]?.patient_list_file">
+    <a
+      (click)="viewPatientListPDF(referral.patient.patient_list[0].patient_list_file)"
+      class="inline-flex items-center gap-1 text-indigo-600 hover:text-indigo-800 cursor-pointer"
+    >
+      <mat-icon>picture_as_pdf</mat-icon> View Patient List PDF
+    </a>
+  </p>
+
+    </div>
+<div class="mt-6" *ngIf="boardMembers.length > 0">
+  <h4 class="text-lg font-semibold text-blue-600 mb-3">
+    Medical Board Members ({{ boardMembers.length }})
+  </h4>
+
+  <table
+    class="min-w-full bg-white border border-blue-200 rounded-lg shadow"
+  >
+    <thead class="bg-blue-100 text-blue-700">
+      <tr>
+        <th class="p-2 text-left">#</th>
+        <th class="p-2 text-left">Full Name</th>
+        <th class="p-2 text-left">Gender</th>
+        <th class="p-2 text-left">Phone</th>
+        <th class="p-2 text-left">Email</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr
+        *ngFor="let member of boardMembers; let i = index"
+        class="border-t hover:bg-blue-50"
+      >
+        <td class="p-2">{{ i + 1 }}</td>
+
+        <td class="p-2 font-medium">
+          {{ member.first_name }}
+          {{ member.middle_name }}
+          {{ member.last_name }}
+        </td>
+
+        <td class="p-2 capitalize">{{ member.gender }}</td>
+        <td class="p-2">{{ member.phone_no }}</td>
+        <td class="p-2">{{ member.email }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+ <div class="bg-yellow-50 p-6 rounded-2xl shadow-inner flex flex-col space-y-2">
+  <h3 class="text-2xl font-semibold text-yellow-700 mb-2">
+   Medical Board Comments
+  </h3>
+    <p>
+  <span class="font-semibold w-40 inline-block">
+    Comments:
+  </span>
+ {{ history.board_comments }}
+</p>
+</div>
+
+<div class="mt-6" *ngIf="boardDiagnoses?.length > 0">
+  <table class="min-w-full bg-white border border-blue-200 rounded-lg shadow">
+
+    <!-- TABLE HEADER -->
+    <thead class="bg-blue-100 text-blue-700">
+      <tr>
+        <th colspan="3" class="p-3 text-left text-lg font-semibold">
+          Board Diagnoses ({{ boardDiagnoses.length }})
+        </th>
+      </tr>
+
+      <!-- Board Reason row -->
+      <tr *ngIf="boardReason">
+        <th colspan="3" class="p-2 text-left text-lg font-medium text-gray-700">
+          Board Reason:
+          <span class="text-blue-700 font-semibold">
+            {{ boardReason.referral_reason_name }}
+          </span>
+        
+        </th>
+      </tr>
+
+      <!-- Column headers -->
+      <tr>
+        <th class="p-2 text-left">#</th>
+        <th class="p-2 text-left">Diagnosis Code</th>
+        <th class="p-2 text-left">Diagnosis Name</th>
+      </tr>
+    </thead>
+
+    <!-- TABLE BODY -->
+    <tbody>
+      <tr
+        *ngFor="let d of boardDiagnoses; let i = index"
+        class="border-t hover:bg-blue-50"
+      >
+        <td class="p-2">{{ i + 1 }}</td>
+        <td class="p-2">{{ d.diagnosis_code }}</td>
+        <td class="p-2">{{ d.diagnosis_name }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+
 
 
 
