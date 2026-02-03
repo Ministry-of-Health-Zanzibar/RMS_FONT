@@ -58,7 +58,7 @@
 
   <div class="mb-4 text-center">
     <p class="font-semibold uppercase">
-      Kuh: KUMPATIA MATIBABU MGONJWA {{ referral.patient?.name || "N/A" }}
+      Kuh: KUMPATIA MATIBABU MGONJWA {{ referral.patient?.name || "N/A" }} {{referral.patient?.date_of_birth || "N/A"}}
     </p>
   </div>
 
@@ -69,7 +69,7 @@
       mtajwa hapo juu.
     </p>
     <p>
-      Kwa barua hii, tunaomba mumpokee na kumpatia matibabu stahiki <b>{{ referral.patient?.name || "N/A" }}</b> kama tulivokubaliana.
+      Kwa barua hii, tunaomba mumpokee na kumpatia matibabu stahiki <b>{{ referral.patient?.name || "N/A" }}</b> kama tulivyokubaliana.
     </p>
     <p>
       Gharama za matibabu zitalipwa na Wizara ya Afya kwa mujibu wa Mkataba na
@@ -90,8 +90,9 @@
 
   <div class="mt-8">
     <p class="font-semibold">DKT. AMOUR S. MOHAMED</p>
-    <p class="uppercase">MKURUGENZI MKUU</p>
-    <p>WIZARA YA AFYA, ZANZIBAR</p>
+    <p class="font-semibold">MKURUGENZI MKUU</p>
+    <p class="font-semibold">WIZARA YA AFYA</p>
+    <p class="font-semibold">ZANZIBAR</p>
   </div>
 
   <mat-divider class="my-6"></mat-divider>

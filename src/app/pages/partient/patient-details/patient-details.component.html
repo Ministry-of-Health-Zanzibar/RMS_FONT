@@ -196,93 +196,202 @@
       </mat-card-content>
     </mat-card>
 
-    <!-- Diagnoses Section -->
-    <mat-card class="shadow-lg rounded-2xl border border-gray-200">
-      <mat-card-header>
-        <mat-card-title class="text-2xl font-semibold text-gray-800">
-          <mat-icon color="accent" class="mr-2">healing</mat-icon> Diagnoses
-        </mat-card-title>
-      </mat-card-header>
-      <mat-card-content class="p-6">
-        <div *ngIf="medicalHistory.diagnoses?.length; else noDiagnoses">
-          <div
-            *ngFor="let d of medicalHistory.diagnoses"
-            class="bg-blue-50 border border-blue-200 rounded-xl p-3 mb-3 flex items-center justify-between"
-          >
-            <div>
-              <p class="font-semibold text-blue-800">
-                {{ d.diagnosis_name }}
-              </p>
-              <p class="text-sm text-gray-600">Code: {{ d.diagnosis_code }}</p>
-            </div>
-            <mat-icon color="primary">medical_services</mat-icon>
-          </div>
-        </div>
-        <ng-template #noDiagnoses>
-          <p class="text-gray-500 italic">No diagnoses available.</p>
-        </ng-template>
-      </mat-card-content>
-    </mat-card>
+ <!-- ================= HOSPITAL DIAGNOSES ================= -->
+<mat-card class="shadow-lg rounded-2xl border border-gray-200 mt-6">
+  <mat-card-header>
+    <mat-card-title class="text-xl font-semibold text-blue-800 flex items-center">
+      <mat-icon class="mr-2">local_hospital</mat-icon>
+      Hospital Diagnoses
+    </mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content class="p-4">
+
+    <!-- Hospital Reason -->
+    <div class="mb-4 p-3 rounded-lg bg-blue-50 border border-blue-200">
+      <p class="text-sm text-gray-600">Hospital Reason</p>
+      <p class="font-semibold text-blue-800">
+        {{ medicalHistory.reason?.referral_reason_name }}
+      </p>
+    </div>
+
+    <!-- Diagnoses Table -->
+    <table class="table-auto w-full border border-gray-300 border-collapse">
+      <thead class="bg-blue-100">
+        <tr>
+          <th class="border p-2 text-left">Code</th>
+          <th class="border p-2 text-left">Diagnosis Name</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let diag of medicalHistory.diagnoses">
+          <td class="border p-2 font-semibold">
+            {{ diag.diagnosis_code }}
+          </td>
+          <td class="border p-2">
+            {{ diag.diagnosis_name }}
+          </td>
+        </tr>
+
+        <tr *ngIf="!medicalHistory.diagnoses?.length">
+          <td colspan="2" class="border p-3 text-center text-gray-500">
+            No hospital diagnoses recorded
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </mat-card-content>
+</mat-card>
 
 
-    <!-- Medical History Details -->
-    <mat-card class="shadow-lg rounded-2xl border border-gray-200">
-      <mat-card-header>
-        <mat-card-title class="text-2xl font-semibold text-gray-800">
-          <mat-icon color="warn" class="mr-2">description</mat-icon> Medical
-          History Information
-        </mat-card-title>
-      </mat-card-header>
 
-      <mat-card-content class="p-6 text-gray-700">
-        <table class="table-auto w-full border-collapse border border-gray-300">
-          <tbody>
-            <tr class="bg-gray-50">
-              <th class="border border-gray-300 p-3 text-left">
-                Referring Doctor
-              </th>
-              <td class="border border-gray-300 p-3">
-                {{ medicalHistory.referring_doctor }}
-              </td>
-              <th class="border border-gray-300 p-3 text-left">File Number</th>
-              <td class="border border-gray-300 p-3">
-                {{ medicalHistory.file_number }}
-              </td>
+     <mat-card
+    class="shadow-2xl rounded-3xl border border-gray-200 bg-gradient-to-br from-white to-blue-50"
+  >
+    <mat-card-header>
+      <mat-card-title class="text-3xl font-extrabold text-gray-800 flex items-center">
+        <mat-icon color="warn" class="mr-3 text-3xl">description</mat-icon>
+        Medical History Information
+      </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content class="p-8 text-gray-700">
+      <table
+        class="table-auto w-full border-collapse border border-gray-300 rounded-xl overflow-hidden"
+      >
+        <tbody>
+          <tr class="bg-blue-50">
+            <th class="border border-gray-300 p-4 text-left w-1/4">
+              Referring Doctor
+            </th>
+            <td class="border border-gray-300 p-4">
+              {{ medicalHistory.referring_doctor }}
+            </td>
+            <th class="border border-gray-300 p-4 text-left w-1/4">
+              File Number
+            </th>
+            <td class="border border-gray-300 p-4">
+              {{ medicalHistory.file_number }}
+            </td>
+          </tr>
+
+           <tr class="bg-blue-50">
+            <th class="border border-gray-300 p-4 text-left w-1/4">
+              Hospital Name
+            </th>
+            <td class="border border-gray-300 p-4">
+              {{ medicalHistory.hospital }}
+            </td>
+            <th class="border border-gray-300 p-4 text-left w-1/4">
+              Doctor Role
+            </th>
+            <td class="border border-gray-300 p-4">
+              {{ medicalHistory.hospital_role }}
+            </td>
+          </tr>
+
+           <tr class="bg-blue-50">
+            <th class="border border-gray-300 p-4 text-left w-1/4">
+              Doctor Phone
+            </th>
+            <td class="border border-gray-300 p-4">
+              {{ medicalHistory.patient.creator.phone_no }}
+            </td>
+            <th class="border border-gray-300 p-4 text-left w-1/4">
+              Doctor Email
+            </th>
+            <td class="border border-gray-300 p-4">
+              {{ medicalHistory.patient.creator.email }}
+            </td>
+          </tr>
+           <tr class="bg-blue-50">
+            <th class="border border-gray-300 p-4 text-left">
+              Case Type
+            </th>
+            <td class="border border-gray-300 p-4">
+              {{ medicalHistory.case_type }}
+            </td>
             </tr>
-            <tr>
-              <th class="border border-gray-300 p-3 text-left">
-                Presenting Illness
-              </th>
-              <td colspan="3" class="border border-gray-300 p-3">
-                {{ medicalHistory.history_of_presenting_illness }}
-              </td>
-            </tr>
-            <tr class="bg-gray-50">
-              <th class="border border-gray-300 p-3 text-left">
-                Physical Findings
-              </th>
-              <td colspan="3" class="border border-gray-300 p-3">
-                {{ medicalHistory.physical_findings }}
-              </td>
-            </tr>
-            <tr>
-              <th class="border border-gray-300 p-3 text-left">Investigations</th>
-              <td colspan="3" class="border border-gray-300 p-3">
-                {{ medicalHistory.investigations }}
-              </td>
-            </tr>
-            <tr class="bg-gray-50">
-              <th class="border border-gray-300 p-3 text-left">
-                Management Done
-              </th>
-              <td colspan="3" class="border border-gray-300 p-3">
-                {{ medicalHistory.management_done }}
-              </td>
-            </tr>
-           
-          </tbody>
-        </table>
-      </mat-card-content>
-    </mat-card>
+
+          <tr>
+            <th class="border border-gray-300 p-4 text-left">
+              Presenting Illness
+            </th>
+            <td colspan="3" class="border border-gray-300 p-4">
+              {{ medicalHistory.history_of_presenting_illness }}
+            </td>
+          </tr>
+
+          <tr class="bg-blue-50">
+            <th class="border border-gray-300 p-4 text-left">
+              Physical Findings
+            </th>
+            <td colspan="3" class="border border-gray-300 p-4">
+              {{ medicalHistory.physical_findings }}
+            </td>
+          </tr>
+
+          <tr>
+            <th class="border border-gray-300 p-4 text-left">
+              Investigations
+            </th>
+            <td colspan="3" class="border border-gray-300 p-4">
+              {{ medicalHistory.investigations }}
+            </td>
+          </tr>
+
+          <tr class="bg-blue-50">
+            <th class="border border-gray-300 p-4 text-left">
+              Management Done
+            </th>
+            <td colspan="3" class="border border-gray-300 p-4">
+              {{ medicalHistory.management_done }}
+            </td>
+          </tr>
+
+          <tr>
+            <th class="border border-gray-300 p-4 text-left">
+              Board Comments
+            </th>
+            <td colspan="3" class="border border-gray-300 p-4">
+              {{ medicalHistory.board_comments }}
+            </td>
+          </tr>
+           <tr>
+            <th class="border border-gray-300 p-4 text-left">
+              DG Comments
+            </th>
+            <td colspan="3" class="border border-gray-300 p-4">
+              {{ medicalHistory.dg_comments }}
+            </td>
+          </tr>
+
+
+
+          <tr class="bg-blue-50">
+            <th class="border border-gray-300 p-4 text-left">
+              History File
+            </th>
+            <td colspan="3" class="border border-gray-300 p-4">
+              <button
+                *ngIf="medicalHistory.history_file"
+                mat-stroked-button
+                color="primary"
+                class="rounded-full px-5 py-2 text-sm font-semibold"
+                (click)="viewPDF(medicalHistory.history_file)"
+              >
+                <mat-icon class="mr-1">picture_as_pdf</mat-icon> View File
+              </button>
+              <span
+                *ngIf="!medicalHistory.history_file"
+                class="text-gray-500 italic"
+                >No file available</span
+              >
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </mat-card-content>
+  </mat-card>
   </div>
 

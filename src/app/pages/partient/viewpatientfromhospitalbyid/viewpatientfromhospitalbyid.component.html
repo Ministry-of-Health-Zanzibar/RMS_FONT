@@ -40,6 +40,8 @@
   </button>
 </div>
 
+
+
  <div class="flex justify-end" *ngIf="medicalHistory?.status === 'requested'">
   <button
     mat-raised-button
@@ -52,6 +54,67 @@
     {{ loading ? 'Forwarding...' : 'Forward' }}
   </button>
 </div>
+
+   <!-- Status Tracking Section -->
+<mat-card class="shadow-lg rounded-2xl border border-gray-200">
+  <mat-card-header>
+    <mat-card-title class="text-2xl font-semibold text-green-800 flex items-center">
+      <mat-icon color="primary" class="mr-2">timeline</mat-icon>
+      Status Tracking
+    </mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content class="p-6">
+    <table class="table-auto w-full border-collapse border border-gray-300">
+      <tbody>
+        <tr class="bg-gray-50">
+          <th class="border border-gray-300 p-3 text-left">Stage</th>
+          <td class="border border-gray-300 p-3">
+            {{ medicalHistory.status_tracking.stage }}
+          </td>
+        </tr>
+
+        <tr>
+          <th class="border border-gray-300 p-3 text-left">Status Label</th>
+          <td class="border border-gray-300 p-3 font-semibold text-blue-700">
+            {{ medicalHistory.status_tracking.label }}
+          </td>
+        </tr>
+
+        <tr class="bg-gray-50">
+          <th class="border border-gray-300 p-3 text-left">Current Holder</th>
+          <td class="border border-gray-300 p-3">
+            {{ medicalHistory.status_tracking.current_holder }}
+          </td>
+        </tr>
+
+        <tr>
+          <th class="border border-gray-300 p-3 text-left">Description</th>
+          <td class="border border-gray-300 p-3">
+            {{ medicalHistory.status_tracking.description }}
+          </td>
+        </tr>
+
+        <tr class="bg-gray-50">
+          <th class="border border-gray-300 p-3 text-left">Progress</th>
+          <td class="border border-gray-300 p-3">
+            <div class="flex items-center gap-3">
+              <div class="w-full bg-gray-200 rounded-full h-3">
+                <div
+                  class="bg-green-600 h-3 rounded-full transition-all"
+                  [style.width]="medicalHistory.progress_percentage"
+                ></div>
+              </div>
+              <span class="font-semibold text-green-700">
+                {{ medicalHistory.progress_percentage }}
+              </span>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </mat-card-content>
+</mat-card>
 
 
   <!-- 🧍 Patient Information -->
@@ -152,38 +215,104 @@
 </mat-card>
 
 
-  <!-- 🧬 Diagnoses -->
-  <mat-card class="shadow-2xl rounded-3xl border border-gray-200 bg-white/90">
-    <mat-card-header>
-      <mat-card-title class="text-3xl font-extrabold text-gray-800 flex items-center">
-        <mat-icon color="accent" class="mr-3 text-3xl">healing</mat-icon>
-        Diagnoses
-      </mat-card-title>
-    </mat-card-header>
-    <mat-card-content class="p-8">
-      <div *ngIf="medicalHistory.diagnoses?.length; else noDiagnoses">
-        <div
-          *ngFor="let d of medicalHistory.diagnoses"
-          class="bg-gradient-to-r from-blue-50 to-cyan-100 border border-blue-200 rounded-2xl p-4 mb-4 flex items-center justify-between shadow-sm hover:shadow-md transition-all"
-        >
-          <div>
-            <p class="font-bold text-blue-800 text-lg">
-              {{ d.diagnosis_name }}
-            </p>
-            <p class="text-sm text-gray-600">Code: {{ d.diagnosis_code }}</p>
-          </div>
-          <mat-icon color="primary" class="text-3xl">medical_services</mat-icon>
-        </div>
-      </div>
-      <ng-template #noDiagnoses>
-        <div
-          class="text-center text-gray-500 italic bg-gray-50 rounded-xl py-6 shadow-inner"
-        >
-          No diagnoses available.
-        </div>
-      </ng-template>
-    </mat-card-content>
-  </mat-card>
+<!-- ================= HOSPITAL DIAGNOSES ================= -->
+<mat-card class="shadow-lg rounded-2xl border border-gray-200 mt-6">
+  <mat-card-header>
+    <mat-card-title class="text-xl font-semibold text-blue-800 flex items-center">
+      <mat-icon class="mr-2">local_hospital</mat-icon>
+      Hospital Diagnoses
+    </mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content class="p-4">
+
+    <!-- Hospital Reason -->
+    <div class="mb-4 p-3 rounded-lg bg-blue-50 border border-blue-200">
+      <p class="text-sm text-gray-600">Hospital Reason</p>
+      <p class="font-semibold text-blue-800">
+        {{ medicalHistory.reason?.referral_reason_name }}
+      </p>
+    
+    </div>
+
+    <!-- Diagnoses Table -->
+    <table class="table-auto w-full border border-gray-300 border-collapse">
+      <thead class="bg-blue-100">
+        <tr>
+          <th class="border p-2 text-left">Code</th>
+          <th class="border p-2 text-left">Diagnosis Name</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let diag of medicalHistory.diagnoses">
+          <td class="border p-2 font-semibold">
+            {{ diag.diagnosis_code }}
+          </td>
+          <td class="border p-2">
+            {{ diag.diagnosis_name }}
+          </td>
+        </tr>
+
+        <tr *ngIf="!medicalHistory.diagnoses?.length">
+          <td colspan="2" class="border p-3 text-center text-gray-500">
+            No hospital diagnoses recorded
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </mat-card-content>
+</mat-card>
+
+
+<!-- ================= BOARD DIAGNOSES ================= -->
+<mat-card class="shadow-lg rounded-2xl border border-gray-200 mt-6">
+  <mat-card-header>
+    <mat-card-title class="text-xl font-semibold text-green-800 flex items-center">
+      <mat-icon class="mr-2">groups</mat-icon>
+      Board Diagnoses
+    </mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content class="p-4">
+
+    <!-- Board Reason -->
+    <div class="mb-4 p-3 rounded-lg bg-green-50 border border-green-200">
+      <p class="text-sm text-gray-600">Board Reason</p>
+      <p class="font-semibold text-green-800">
+        {{ medicalHistory.board_reason?.referral_reason_name }}
+      </p>
+     
+    </div>
+
+    <!-- Board Diagnoses Table -->
+    <table class="table-auto w-full border border-gray-300 border-collapse">
+      <thead class="bg-green-100">
+        <tr>
+          <th class="border p-2 text-left">Code</th>
+          <th class="border p-2 text-left">Diagnosis Name</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let diag of medicalHistory.board_diagnoses">
+          <td class="border p-2 font-semibold">
+            {{ diag.diagnosis_code }}
+          </td>
+          <td class="border p-2">
+            {{ diag.diagnosis_name }}
+          </td>
+        </tr>
+
+        <tr *ngIf="!medicalHistory.board_diagnoses?.length">
+          <td colspan="2" class="border p-3 text-center text-gray-500">
+            No board diagnoses recorded
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </mat-card-content>
+</mat-card>
+
+
 
   <!-- 📄 Medical History Details -->
   <mat-card

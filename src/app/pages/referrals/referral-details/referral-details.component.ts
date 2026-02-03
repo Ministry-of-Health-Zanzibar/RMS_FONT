@@ -49,6 +49,15 @@ export class ReferralDetailsComponent {
   userRole: string | null;
   public documentUrl = environment.fileUrl;
 
+  history = this.referral?.patient?.patient_histories?.[0];
+
+hospitalDiagnoses = this.history?.diagnoses || [];
+boardDiagnoses = this.history?.board_diagnoses || [];
+
+hospitalReason = this.history?.reason;
+boardReason = this.history?.board_reason;
+
+
   constructor(
     private route: ActivatedRoute,
     public referralsService: ReferralService,
@@ -90,6 +99,8 @@ export class ReferralDetailsComponent {
 
       // ADD THIS → diagnoses from API
       this.diagnoses = response.data.diagnoses;
+
+      
 
       console.log("Diagnoses: ", this.diagnoses);
     },
