@@ -31,6 +31,35 @@ export class ReferralsLetterComponent implements OnInit {
   referralID: string | null = null;
   referral: any = null;
 
+calculateAge(dobOrAge: string | number | null): string {
+  if (!dobOrAge) return 'N/A';
+
+  // ✅ If backend already sends age (e.g. "6" or 6)
+  if (!isNaN(Number(dobOrAge))) {
+    const age = Number(dobOrAge);
+    return `${age} year${age !== 1 ? 's' : ''}`;
+  }
+
+  // ✅ If backend sends date (e.g. "2021-06-09")
+  const dob = new Date(dobOrAge as string);
+  if (isNaN(dob.getTime())) return 'N/A';
+
+  const today = new Date();
+  let age = today.getFullYear() - dob.getFullYear();
+  const monthDiff = today.getMonth() - dob.getMonth();
+
+  if (
+    monthDiff < 0 ||
+    (monthDiff === 0 && today.getDate() < dob.getDate())
+  ) {
+    age--;
+  }
+
+  return `${age} year${age !== 1 ? 's' : ''}`;
+}
+
+
+
   constructor(
     private referralsService: ReferralService,
     @Inject(MAT_DIALOG_DATA) public data: any

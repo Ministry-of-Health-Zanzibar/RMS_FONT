@@ -58,7 +58,8 @@
 
   <div class="mb-4 text-center">
     <p class="font-semibold uppercase">
-      Kuh: KUMPATIA MATIBABU MGONJWA {{ referral.patient?.name || "N/A" }} {{referral.patient?.date_of_birth || "N/A"}}
+      Kuh: KUMPATIA MATIBABU MGONJWA {{ referral.patient?.name || "N/A" }} {{ calculateAge(referral.patient?.date_of_birth) }}
+
     </p>
   </div>
 
