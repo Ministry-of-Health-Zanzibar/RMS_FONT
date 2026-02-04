@@ -311,21 +311,28 @@ onAttachmentSelected(event: any): void {
         },
       });
     } else {
-      this.patientService.addPartient(formData).subscribe({
-        next: (res) => {
-          this.loading = false;
-          Swal.fire('Success', 'Patient saved successfully', 'success');
-          this.dialogRef.close(res);
-        },
-        error: (err) => {
-          this.loading = false;
-          Swal.fire(
-            'Error',
-            err.error?.message || 'Failed to save patient',
-            'error'
-          );
-        },
-      });
+     this.patientService.addPartient(formData).subscribe({
+  next: (res) => {
+    this.loading = false;
+
+    Swal.fire('Success', 'Patient saved successfully', 'success');
+
+    // ✅ return patient + flag
+    this.dialogRef.close({
+      success: true,
+      patient: res.data ?? res
+    });
+  },
+  error: (err) => {
+    this.loading = false;
+    Swal.fire(
+      'Error',
+      err.error?.message || 'Failed to save patient',
+      'error'
+    );
+  },
+});
     }
+
   }
 }

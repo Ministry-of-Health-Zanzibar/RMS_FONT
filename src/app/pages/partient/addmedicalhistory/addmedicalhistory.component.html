@@ -1,5 +1,21 @@
 <div class="p-6 bg-white rounded-lg shadow-md w-[800px] mx-auto">
-  <h2 class="text-lg font-semibold mb-6 text-center">Add Medical History</h2>
+
+<h3 class="text-lg font-semibold mb-6 text-center">
+  Medical History for Referral
+</h3>
+
+<p
+  class="text-sm text-red-700 text-center mb-6
+         border-2 border-blue-600
+         rounded-lg px-4 py-3 font-medium"
+>
+  Capture the patient’s clinical history to support referral review and
+  decision-making by the medical board.
+</p>
+
+
+
+
 
   <form [formGroup]="medicalForm" (ngSubmit)="onSubmit()" class="space-y-4">
     <!-- <p class="text-xs text-gray-500">

@@ -21,6 +21,7 @@ import Swal from 'sweetalert2';
 import { PartientFormComponent } from '../partient-form/partient-form.component';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { EmrSegmentedModule } from '@elementar/components';
+import { AddmedicalhistoryComponent } from '../addmedicalhistory/addmedicalhistory.component';
 
 @Component({
   selector: 'app-patiant',
@@ -118,19 +119,62 @@ export class PatiantComponent {
     }
   }
 
+//   openAddPatient() {
+//   const dialogRef = this.dialog.open(AddPatientComponent, {
+//     width: '900px',
+//     disableClose: false
+//   });
+
+//   dialogRef.afterClosed().subscribe(result => {
+//     if (result?.success && result?.patient) {
+     
+//       this.openAddMedicalHistory(result.patient);
+//     }
+//   });
+// }
+
+openAddMedicalHistory(patient: any) {
+  const dialogRef = this.dialog.open(AddmedicalhistoryComponent, {
+    maxWidth: '100vw',
+    maxHeight: '98vh',
+    panelClass: 'full-screen-modal',
+    data: patient
+  });
+
+  dialogRef.afterClosed().subscribe((result) => {
+    if (result?.success) {
+      Swal.fire({
+        title: 'Medical History Added',
+        text: 'The patient medical history was saved successfully!',
+        icon: 'success',
+        confirmButtonColor: '#4690eb',
+      }).then(() => {
+        // ✅ Refresh whole page
+        window.location.reload();
+      });
+    }
+  });
+}
+
+
+
+
   addPatient() {
     const config = new MatDialogConfig();
     config.disableClose = false;
     config.role = 'dialog';
     config.maxWidth = '100vw';
     config.maxHeight = '98vh';
-    // config.width = '950px';
+    
     config.panelClass = 'full-screen-modal';
 
     const dialogRef = this.dialog.open(PartientFormComponent, config);
-    dialogRef.afterClosed().subscribe(() => {
-      this.loadPatients();
-    });
+    dialogRef.afterClosed().subscribe(result => {
+    if (result?.success && result?.patient) {
+      // ✅ Open medical history immediately
+      this.openAddMedicalHistory(result.patient);
+    }
+  });
   }
 
   // updatePatient(data: any) {

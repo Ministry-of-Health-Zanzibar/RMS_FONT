@@ -93,14 +93,10 @@ export class AddmedicalhistoryComponent implements OnInit, OnDestroy {
     console.log('Dialog received data:', this.data);
 
     const patient = this.data;
-    console.log('Patient Name:', patient.name);
-    console.log('Patient Matibabu Card:', patient.matibabu_card);
-    console.log('Patient Phone:', patient.phone);
-    console.log('Patient Gender:', patient.gender);
-    console.log('Patient Location:', patient.location);
+  
 
     const filePatientId = patient.patient_id;
-    console.log('Patient ID from file:', filePatientId);
+    
 
     this.buildForm(patient);
     this.loadDiagnoses();
