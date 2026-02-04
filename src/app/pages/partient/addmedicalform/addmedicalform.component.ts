@@ -49,6 +49,8 @@ export class AddmedicalformComponent implements OnInit, OnDestroy {
   diagnosesList: any[] = [];
   filteredDiagnoses: any[] = [];
   diagnosisSearch = '';
+  loadingDiagnoses = false;
+
   private onDestroy$ = new Subject<void>();
 
   constructor(
@@ -102,27 +104,33 @@ ngOnInit(): void {
     });
   }
 
-  loadDiagnoses() {
-    this.diagnosisService.getAllDiagnosis().subscribe({
-      next: (res: any) => {
-        this.diagnosesList = res.data || [];
-        this.filteredDiagnoses = [...this.diagnosesList];
-      },
-      error: (err) => console.error('Failed to load diagnoses', err),
-    });
-  }
+ loadDiagnoses() {
+  this.loadingDiagnoses = true;
 
-  onDiagnosesDropdownOpened() {
-    this.filteredDiagnoses = [...this.diagnosesList];
-    this.diagnosisSearch = '';
-  }
+  this.diagnosisService.getAllDiagnosis().subscribe({
+    next: (res: any) => {
+      this.diagnosesList = res.data || [];
+      this.filteredDiagnoses = [...this.diagnosesList];
+      this.loadingDiagnoses = false;
+    },
+    error: (err) => {
+      console.error('Failed to load diagnoses', err);
+      this.loadingDiagnoses = false;
+    },
+  });
+}
 
-  filterDiagnoses() {
-    const term = this.diagnosisSearch.toLowerCase();
-    this.filteredDiagnoses = this.diagnosesList.filter((d) =>
-      d.diagnosis_name.toLowerCase().includes(term)
-    );
-  }
+onDiagnosesDropdownOpened() {
+  this.filteredDiagnoses = [...this.diagnosesList];
+  this.diagnosisSearch = '';
+}
+
+filterDiagnoses() {
+  const term = this.diagnosisSearch.toLowerCase();
+  this.filteredDiagnoses = this.diagnosesList.filter((d) =>
+    d.diagnosis_name.toLowerCase().includes(term)
+  );
+}
 
   onCancel() {
     this.dialogRef.close();
