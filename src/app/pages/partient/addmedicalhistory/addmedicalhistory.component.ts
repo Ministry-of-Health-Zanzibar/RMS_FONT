@@ -78,6 +78,7 @@ export class AddmedicalhistoryComponent implements OnInit, OnDestroy {
   diagnosesList: any[] = [];
   filteredDiagnoses: any[] = [];
   diagnosisSearch = '';
+  loadingDiagnoses = false;
   private onDestroy$ = new Subject<void>();
 
   constructor(
@@ -135,14 +136,31 @@ export class AddmedicalhistoryComponent implements OnInit, OnDestroy {
   }
 
   loadDiagnoses() {
-    this.diagnosisService.getAllDiagnosis().subscribe({
-      next: (res: any) => {
-        this.diagnosesList = res.data || [];
-        this.filteredDiagnoses = [...this.diagnosesList];
-      },
-      error: (err) => console.error('Failed to load diagnoses', err),
-    });
-  }
+  this.loadingDiagnoses = true;
+
+  this.diagnosisService.getAllDiagnosis().subscribe({
+    next: (res: any) => {
+      this.diagnosesList = res.data || [];
+      this.filteredDiagnoses = [...this.diagnosesList];
+      this.loadingDiagnoses = false;
+    },
+    error: (err) => {
+      console.error('Failed to load diagnoses', err);
+      this.loadingDiagnoses = false;
+    },
+  });
+}
+
+
+  // loadDiagnoses() {
+  //   this.diagnosisService.getAllDiagnosis().subscribe({
+  //     next: (res: any) => {
+  //       this.diagnosesList = res.data || [];
+  //       this.filteredDiagnoses = [...this.diagnosesList];
+  //     },
+  //     error: (err) => console.error('Failed to load diagnoses', err),
+  //   });
+  // }
 
   onDiagnosesSelected(event: any) {
     console.log('Diagnoses selected:', event.value);
@@ -151,10 +169,14 @@ export class AddmedicalhistoryComponent implements OnInit, OnDestroy {
     });
   }
 
-  onDiagnosesDropdownOpened() {
-    this.filteredDiagnoses = [...this.diagnosesList];
-    this.diagnosisSearch = '';
+ onDiagnosesDropdownOpened() {
+  if (!this.diagnosesList.length) {
+    this.loadDiagnoses();
   }
+  this.filteredDiagnoses = [...this.diagnosesList];
+  this.diagnosisSearch = '';
+}
+
 
   filterDiagnoses() {
     const term = this.diagnosisSearch.toLowerCase();

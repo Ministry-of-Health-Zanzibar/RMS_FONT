@@ -105,12 +105,7 @@
     </div>
 
     <!-- Board Comments -->
-    <!-- <div class="grid grid-cols-1">
-      <mat-form-field appearance="outline" class="w-full">
-        <mat-label>Board Comments</mat-label>
-        <textarea matInput rows="3" formControlName="board_comments"></textarea>
-      </mat-form-field>
-    </div> -->
+   
 
     <!-- Diagnoses Section -->
      <div>
@@ -123,35 +118,47 @@
 </mat-form-field>
 
      </div>
-    <div>
+     <div>
       <mat-form-field appearance="outline" class="w-full">
-        <mat-label>Select Diagnoses</mat-label>
-        <mat-select
-          formControlName="diagnosis_ids"
-          multiple
-          (openedChange)="onDiagnosesDropdownOpened()"
-        >
-          <!-- Search Input Inside Dropdown -->
-          <mat-option>
-            <input
-              matInput
-              placeholder="Search diagnoses..."
-              [(ngModel)]="diagnosisSearch"
-              (keyup)="filterDiagnoses()"
-              class="w-full px-2 py-1 border border-gray-300 rounded"
-            />
-          </mat-option>
+  <mat-label>Select Diagnoses</mat-label>
 
-          <!-- Filtered Diagnoses -->
-          <mat-option
-            *ngFor="let d of filteredDiagnoses"
-            [value]="d.diagnosis_id"
-          >
-            {{ d.diagnosis_name }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
+  <mat-select
+    formControlName="diagnosis_ids"
+    multiple
+    [disabled]="loadingDiagnoses"
+    (openedChange)="onDiagnosesDropdownOpened()"
+  >
+    <!-- Loading -->
+    <mat-option *ngIf="loadingDiagnoses" disabled>
+      <div class="flex items-center gap-2">
+        <mat-spinner diameter="18"></mat-spinner>
+        <span>Loading diagnoses…</span>
+      </div>
+    </mat-option>
+
+    <!-- Search (disabled option) -->
+    <mat-option *ngIf="!loadingDiagnoses" disabled>
+      <input
+        matInput
+        placeholder="Search diagnoses..."
+        [(ngModel)]="diagnosisSearch"
+        (keyup)="filterDiagnoses()"
+        class="w-full px-2 py-1 border border-gray-300 rounded"
+      />
+    </mat-option>
+
+    <!-- Diagnoses -->
+    <mat-option
+      *ngFor="let d of filteredDiagnoses"
+      [value]="d.diagnosis_id"
+    >
+      {{ d.diagnosis_name }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+     </div>
+
+
 
     <!-- File Upload -->
     <div>
