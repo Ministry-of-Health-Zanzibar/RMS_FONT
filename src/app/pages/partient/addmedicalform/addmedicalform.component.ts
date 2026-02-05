@@ -124,13 +124,37 @@ onDiagnosesDropdownOpened() {
   this.filteredDiagnoses = [...this.diagnosesList];
   this.diagnosisSearch = '';
 }
+normalize(text: string): string {
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, ' '); // remove extra spaces
+}
+
+
+// filterDiagnoses() {
+//   const term = this.normalize(this.diagnosisSearch);
+
+//   if (!term) {
+//     this.filteredDiagnoses = [...this.diagnosesList];
+//     return;
+//   }
+
+//   this.filteredDiagnoses = this.diagnosesList.filter(d =>
+//     this.normalize(d.diagnosis_name).includes(term)
+//   );
+// }
 
 filterDiagnoses() {
-  const term = this.diagnosisSearch.toLowerCase();
-  this.filteredDiagnoses = this.diagnosesList.filter((d) =>
-    d.diagnosis_name.toLowerCase().includes(term)
-  );
+  const terms = this.normalize(this.diagnosisSearch).split(' ');
+
+  this.filteredDiagnoses = this.diagnosesList.filter(d => {
+    const name = this.normalize(d.diagnosis_name);
+    return terms.every(t => name.includes(t));
+  });
 }
+
+
 
   onCancel() {
     this.dialogRef.close();

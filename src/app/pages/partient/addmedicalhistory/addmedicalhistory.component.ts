@@ -152,15 +152,7 @@ export class AddmedicalhistoryComponent implements OnInit, OnDestroy {
 }
 
 
-  // loadDiagnoses() {
-  //   this.diagnosisService.getAllDiagnosis().subscribe({
-  //     next: (res: any) => {
-  //       this.diagnosesList = res.data || [];
-  //       this.filteredDiagnoses = [...this.diagnosesList];
-  //     },
-  //     error: (err) => console.error('Failed to load diagnoses', err),
-  //   });
-  // }
+
 
   onDiagnosesSelected(event: any) {
     console.log('Diagnoses selected:', event.value);
@@ -179,11 +171,25 @@ export class AddmedicalhistoryComponent implements OnInit, OnDestroy {
 
 
   filterDiagnoses() {
-    const term = this.diagnosisSearch.toLowerCase();
-    this.filteredDiagnoses = this.diagnosesList.filter((d) =>
-      d.diagnosis_name.toLowerCase().includes(term)
-    );
+  const term = this.normalize(this.diagnosisSearch);
+
+  if (!term) {
+    this.filteredDiagnoses = [...this.diagnosesList];
+    return;
   }
+
+  this.filteredDiagnoses = this.diagnosesList.filter(d =>
+    this.normalize(d.diagnosis_name).includes(term)
+  );
+}
+
+normalize(text: string): string {
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, ' '); // remove extra spaces
+}
+
 
   onFileSelected(event: any) {
     const file = event.target.files[0];
