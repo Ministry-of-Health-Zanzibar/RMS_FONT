@@ -24,7 +24,6 @@ export class PartientService {
 
 
 
-
   constructor(private http: HttpClient) {}
   //body list
   public getAllBodyList(): Observable<any> {
@@ -68,9 +67,16 @@ export class PartientService {
     return this.http.get<any>(this.hrefee);
   }
 
-  public addPartient(Partient: any): Observable<any> {
-    return this.http.post(this.href, Partient);
+  // public addPartient(Partient: any): Observable<any> {
+  //   return this.http.post(this.href, Partient);
+  // }
+  public addPartient(Partient: any):Observable<any>{
+    return this.http.post(`${this.href}/storePatientAndHistory`,Partient)
   }
+
+  //  public addPartient(Partient: any): Observable<any> {
+  //   return this.http.post(this.href, Partient);
+  // }
 
   public getPartientById(id: any) {
     return this.http.get<any>(`${this.hrefe}patient-histories/${id}`);
@@ -184,4 +190,20 @@ public forwardToDG(id: number, comment: any): Observable<any> {
   public unblockPatientInsurances(data: any, id: any): Observable<any> {
     return this.http.patch(`${this.baseUrl}patients/unblock/${id}`, data);
   }
+
+  public searchPatientEligibility(payload: any) {
+  return this.http.post(
+    `${environment.baseUrl}patients/search-eligibility`,
+    payload
+  );
+}
+
+//  For get method
+// public searchPatientEligibility(params: any) {
+//   return this.http.get(
+//     `${environment.baseUrl}patients/search-eligibility`,
+//     { params }
+//   );
+// }
+
 }

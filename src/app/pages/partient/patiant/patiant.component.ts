@@ -65,7 +65,7 @@ export class PatiantComponent {
     public permission: PermissionService,
     private userService: PartientService,
     private dialog: MatDialog,
-    private router: Router
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -99,7 +99,7 @@ export class PatiantComponent {
         (error) => {
           this.loading = false;
           console.log('Failed to load patient data', error);
-        }
+        },
       );
   }
 
@@ -122,7 +122,10 @@ export class PatiantComponent {
     const config = new MatDialogConfig();
     config.disableClose = false;
     config.role = 'dialog';
-    config.maxWidth = '100vw';
+    config.width = '80vw'; // full viewport width
+    config.height = '80vh'; // full viewport height
+    config.maxWidth = '80vw'; // override default 80%
+
     config.maxHeight = '98vh';
     // config.width = '950px';
     config.panelClass = 'full-screen-modal';
@@ -197,7 +200,7 @@ export class PatiantComponent {
         },
         (err) => {
           Swal.fire('Error', 'Failed to unblock patient', 'error');
-        }
+        },
       );
     } else {
       this.userService.deletePatients(data?.patient_id).subscribe(
@@ -207,7 +210,7 @@ export class PatiantComponent {
         },
         (err) => {
           Swal.fire('Error', 'Failed to delete patient', 'error');
-        }
+        },
       );
     }
   }

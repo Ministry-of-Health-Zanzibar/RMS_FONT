@@ -1,0 +1,29 @@
+.eligibility-box {
+  margin-top: 4px;
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: 13px;
+  display: inline-block;
+  min-width: 200px;
+}
+
+.eligibility-box.success {
+  background-color: #e8f5e9 !important; /* light green */
+  color: #2e7d32 !important;           /* dark green text */
+  border: 1px solid #2e7d32 !important;
+}
+
+.eligibility-box.warning {
+  background-color: #fff3e0 !important; /* light orange */
+  color: #ef6c00 !important;           /* dark orange text */
+  border: 1px solid #ef6c00 !important;
+}
+.eligibility-box {
+  margin-top: 0;
+  margin-left: 8px;
+  padding: 4px 8px;
+  font-size: 13px;
+  border-radius: 4px;
+  display: inline-block;
+  vertical-align: top;
+}
