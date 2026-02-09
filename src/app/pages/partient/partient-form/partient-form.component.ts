@@ -75,7 +75,7 @@ export class PartientFormComponent implements OnInit {
         date_of_birth: ['', Validators.required],
         gender: ['', Validators.required],
         phone: [''],
-        location_id: [null], // Set to null initially
+        location_id: [''], // Set to null initially
         job: [''],
         position: [''],
       }),
@@ -169,7 +169,7 @@ export class PartientFormComponent implements OnInit {
 
   displayLocation(locationId: any): string {
     if (!locationId) return '';
-    const loc = this.locations.find(l => l.id === locationId);
+    const loc = this.locations.find(l => l.location_id === locationId);
     return loc ? loc.label : '';
   }
 
