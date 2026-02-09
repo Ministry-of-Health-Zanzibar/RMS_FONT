@@ -110,15 +110,37 @@ export class PartientFormComponent implements OnInit {
     if (charCode < 48 || charCode > 57) event.preventDefault();
   }
 
+  // private listenToMatibabuCard() {
+  //   this.patientForm.get('basicInfo.matibabu_card')?.valueChanges
+  //     .pipe(debounceTime(300), distinctUntilChanged())
+  //     .subscribe((value: string) => {
+  //       if (value && value.length === 12) {
+  //         this.checkEligibility(value);
+  //       }
+  //     });
+  // }
   private listenToMatibabuCard() {
-    this.patientForm.get('basicInfo.matibabu_card')?.valueChanges
-      .pipe(debounceTime(300), distinctUntilChanged())
-      .subscribe((value: string) => {
-        if (value && value.length === 12) {
-          this.checkEligibility(value);
-        }
-      });
-  }
+  this.patientForm.get('basicInfo.matibabu_card')?.valueChanges
+    .pipe(debounceTime(300), distinctUntilChanged())
+    .subscribe((value: string) => {
+      if (value && value.length === 12) {
+        this.checkEligibility(value);
+      } else {
+        
+        this.patientForm.get('basicInfo')?.patchValue({
+          name: '',
+          zan_id: '',
+          date_of_birth: '',
+          gender: '',
+          phone: '',
+          location_id: null,
+          job: '',
+          position: ''
+        });
+      }
+    });
+}
+
 
   private checkEligibility(matibabuCard: string) {
     this.patientService.searchPatientEligibility({ matibabu_card: matibabuCard }).subscribe({
