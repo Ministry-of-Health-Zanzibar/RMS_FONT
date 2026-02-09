@@ -1,185 +1,171 @@
-<div class="p-6 max-w-5xl mx-auto">
-  <mat-card class="shadow-lg rounded-2xl">
-    <mat-card-header>
-      <mat-card-title class="text-2xl font-bold text-gray-800">
-        {{ data?.patient ? 'Edit Patient' : 'Add New Patient' }}
-      </mat-card-title>
-      <mat-card-subtitle class="text-gray-600">
-        Please fill in all required details
-      </mat-card-subtitle>
-    </mat-card-header>
-
+<div class="p-6 w-full h-full">
+  <mat-card class="w-full shadow-lg rounded-2xl">
     <mat-card-content>
-      <form [formGroup]="patientForm" (ngSubmit)="onSubmit()" class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+      <form [formGroup]="patientForm" (ngSubmit)="onSubmit()">
+        <mat-horizontal-stepper linear #stepper>
+          
+          <mat-step [stepControl]="patientForm.get('basicInfo')">
+            <div formGroupName="basicInfo">
+              <ng-template matStepLabel>Patient Information</ng-template>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                
+                <mat-form-field appearance="outline">
+                  <mat-label>Matibabu Card</mat-label>
+                  <input matInput formControlName="matibabu_card" maxlength="12" (keypress)="allowOnlyNumbers($event)" />
+                  <mat-error *ngIf="patientForm.get('basicInfo.matibabu_card')?.hasError('required')">Required</mat-error>
+                  <mat-error *ngIf="patientForm.get('basicInfo.matibabu_card')?.hasError('pattern')">12 digits required</mat-error>
+                </mat-form-field>
 
-        <!-- Name -->
-        <mat-form-field appearance="outline" class="w-full">
-          <mat-label>Full Name</mat-label>
-          <input matInput formControlName="name" placeholder="Enter full name" />
-          <mat-error *ngIf="patientForm.get('name')?.hasError('required')">Name is required</mat-error>
-        </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Full Name *</mat-label>
+                  <input matInput formControlName="name" />
+                </mat-form-field>
 
-        <!-- Phone -->
-        <mat-form-field appearance="outline" class="w-full">
-          <mat-label>Phone</mat-label>
-          <input matInput type="tel" formControlName="phone" maxlength="10" placeholder="Enter 10-digit phone number" />
-          <mat-error *ngIf="patientForm.get('phone')?.hasError('required')">Phone number is required</mat-error>
-          <mat-error *ngIf="patientForm.get('phone')?.hasError('pattern')">Phone number must be exactly 10 digits</mat-error>
-        </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Date of Birth *</mat-label>
+                  <input matInput [matDatepicker]="dobPicker" formControlName="date_of_birth" placeholder="DD/MM/YYYY" />
+                  <mat-datepicker-toggle matIconSuffix [for]="dobPicker"></mat-datepicker-toggle>
+                  <mat-datepicker #dobPicker></mat-datepicker>
+                </mat-form-field>
 
-        <!-- Gender -->
-        <mat-form-field appearance="outline" class="w-full">
-          <mat-label>Gender</mat-label>
-          <mat-select formControlName="gender">
-            <mat-option value="male">Male</mat-option>
-            <mat-option value="female">Female</mat-option>
-          </mat-select>
-          <mat-error *ngIf="patientForm.get('gender')?.hasError('required')">Gender is required</mat-error>
-        </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Gender *</mat-label>
+                  <mat-select formControlName="gender">
+                    <mat-option value="Male">Male</mat-option>
+                    <mat-option value="Female">Female</mat-option>
+                  </mat-select>
+                </mat-form-field>
 
-        <!-- Matibabu Card -->
-        <mat-form-field appearance="outline" class="w-full">
-          <mat-label>Matibabu Card</mat-label>
-          <input matInput formControlName="matibabu_card" maxlength="12" placeholder="Enter card number" />
-        </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Phone</mat-label>
+                  <input matInput formControlName="phone" />
+                </mat-form-field>
 
-        <!-- DOB Type -->
-        <div class="col-span-2 flex space-x-4 items-center">
-          <label class="font-medium">Date of Birth:</label>
-          <mat-radio-group formControlName="dob_type" class="flex space-x-6 items-center">
-            <mat-radio-button value="known">Known Date</mat-radio-button>
-            <mat-radio-button value="unknown">Estimated Age</mat-radio-button>
-          </mat-radio-group>
-        </div>
+                <mat-form-field appearance="outline">
+                  <mat-label>Location</mat-label>
+                  <input type="text" matInput formControlName="location_id" [matAutocomplete]="auto" />
+                  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayLocation.bind(this)">
+                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option.location_id">
+                      {{ option.label }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
 
-        <!-- Date or Age -->
-        <mat-form-field appearance="outline" *ngIf="patientForm.get('dob_type')?.value === 'known'" class="w-full">
-          <mat-label>Date of Birth</mat-label>
-          <input matInput [matDatepicker]="dobPicker" formControlName="date_of_birth" />
-          <mat-datepicker-toggle matSuffix [for]="dobPicker"></mat-datepicker-toggle>
-          <mat-datepicker #dobPicker></mat-datepicker>
-        </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Job</mat-label>
+                  <input matInput formControlName="job" />
+                </mat-form-field>
 
-        <mat-form-field appearance="outline" *ngIf="patientForm.get('dob_type')?.value === 'unknown'" class="w-full">
-          <mat-label>Estimated Age</mat-label>
-          <input matInput type="number" formControlName="date_of_birth" placeholder="Enter estimated age" />
-        </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Position</mat-label>
+                  <input matInput formControlName="position" />
+                </mat-form-field>
+              </div>
+              
+              <div class="flex justify-end mt-6">
+                <button type="button" mat-raised-button color="primary" matStepperNext>Next</button>
+              </div>
+            </div>
+          </mat-step>
 
-        <!-- Job -->
-        <mat-form-field appearance="outline" class="w-full">
-          <mat-label>Job</mat-label>
-          <input matInput formControlName="job" placeholder="Enter job" />
-        </mat-form-field>
+          <mat-step [stepControl]="patientForm.get('historyInfo')">
+            <div formGroupName="historyInfo">
+              <ng-template matStepLabel>Patient History</ng-template>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                
+                <mat-form-field appearance="outline">
+                  <mat-label>Reason *</mat-label>
+                  <mat-select formControlName="reason_id">
+                    <mat-option *ngFor="let reason of reasonList" [value]="reason.reason_id">
+                      {{ reason.referral_reason_name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
 
-        <!-- Position -->
-        <mat-form-field appearance="outline" class="w-full">
-          <mat-label>Position</mat-label>
-          <input matInput formControlName="position" placeholder="Enter position" />
-        </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Diagnosis</mat-label>
+                  <mat-select formControlName="diagnosis_ids" multiple>
+                    <mat-option *ngFor="let diag of diagnosesList" [value]="diag.diagnosis_id">
+                      {{ diag.diagnosis_name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
 
-        <!-- Location -->
-        <mat-form-field appearance="outline" class="w-full">
-          <mat-label>Location</mat-label>
-          <input matInput placeholder="Search location" formControlName="location_id" [matAutocomplete]="auto" />
-          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-            <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-              {{ option.label }}
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Case Type</mat-label>
+                  <mat-select formControlName="case_type">
+                    <mat-option value="Emergency">Emergency</mat-option>
+                    <mat-option value="Routine">Routine</mat-option>
+                  </mat-select>
+                </mat-form-field>
 
-        <!-- ZanID -->
-        <mat-form-field appearance="outline" class="w-full">
-          <mat-label>ZanID</mat-label>
-          <input matInput formControlName="zan_id" maxlength="9" placeholder="Enter ZanID" />
-        </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>File Number</mat-label>
+                  <input matInput formControlName="file_number" />
+                </mat-form-field>
 
-   <mat-form-field appearance="outline" class="w-full">
-    <mat-label>Upload Patient File</mat-label>
+                <mat-form-field appearance="outline">
+                  <mat-label>Referring Date</mat-label>
+                  <input matInput [matDatepicker]="refDate" formControlName="referring_date" />
+                  <mat-datepicker-toggle matIconSuffix [for]="refDate"></mat-datepicker-toggle>
+                  <mat-datepicker #refDate></mat-datepicker>
+                </mat-form-field>
 
-    <input
-      matInput
-      type="text"
-      formControlName="patient_file"
-      readonly
-      placeholder="No file chosen"
-      (click)="fileInput.click()"
-    />
+                <mat-form-field appearance="outline" class="col-span-2">
+                  <mat-label>History of Presenting Illness</mat-label>
+                  <textarea matInput rows="3" formControlName="history_of_presenting_illness"></textarea>
+                </mat-form-field>
 
-    <input
-      type="file"
-      accept=".pdf,.doc,.docx,.jpg,.png"
-      hidden
-      #fileInput
-      (change)="onAttachmentSelected($event)"
-    />
+                <div class="col-span-2">
+                  <label class="block mb-2 font-medium">Upload History File</label>
+                  <input type="file" (change)="onFileSelected($event)" class="text-sm" />
+                </div>
+              </div>
 
-    <mat-icon matSuffix style="cursor: pointer" (click)="fileInput.click()">
-      attach_file
-    </mat-icon>
+              <div class="flex justify-between mt-6">
+                <button type="button" mat-button matStepperPrevious>Back</button>
+                <button type="button" mat-raised-button color="primary" matStepperNext>Next</button>
+              </div>
+            </div>
+          </mat-step>
 
-    <mat-error
-      *ngIf="
-        patientForm.get('patient_file')?.invalid &&
-        patientForm.get('patient_file')?.touched
-      "
-    >
-      File is required
-    </mat-error>
-  </mat-form-field>
+          <mat-step [stepControl]="patientForm.get('insuranceInfo')">
+            <div formGroupName="insuranceInfo">
+              <ng-template matStepLabel>Insurance</ng-template>
+              <div class="mt-4">
+                <label class="block mb-2 font-medium">Do you have insurance?</label>
+                <mat-radio-group formControlName="has_insurance" class="flex gap-4">
+                  <mat-radio-button [value]="true">Yes</mat-radio-button>
+                  <mat-radio-button [value]="false">No</mat-radio-button>
+                </mat-radio-group>
+              </div>
 
+              <div *ngIf="patientForm.get('insuranceInfo.has_insurance')?.value" class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+                <mat-form-field appearance="outline">
+                  <mat-label>Provider</mat-label>
+                  <input matInput formControlName="insurance_provider_name" />
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Card Number</mat-label>
+                  <input matInput formControlName="card_number" />
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Valid Until</mat-label>
+                  <input matInput [matDatepicker]="insDate" formControlName="valid_until" />
+                  <mat-datepicker-toggle matIconSuffix [for]="insDate"></mat-datepicker-toggle>
+                  <mat-datepicker #insDate></mat-datepicker>
+                </mat-form-field>
+              </div>
 
-        <!-- Insurance -->
-        <div class="col-span-2">
-          <label class="font-medium block mb-2">Do you have insurance?</label>
-          <mat-radio-group formControlName="has_insurance" class="flex space-x-6 items-center">
-            <mat-radio-button [value]="true">Yes</mat-radio-button>
-            <mat-radio-button [value]="false">No</mat-radio-button>
-          </mat-radio-group>
-        </div>
-
-        <div *ngIf="patientForm.get('has_insurance')?.value === true" class="col-span-2 grid grid-cols-1 md:grid-cols-3 gap-4">
-          <mat-form-field appearance="outline">
-            <mat-label>Insurance Provider</mat-label>
-            <mat-select formControlName="insurance_provider_name">
-              <mat-option value="ZHSF">ZHSF</mat-option>
-              <mat-option value="NHIF">NHIF</mat-option>
-             
-            </mat-select>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label>Card Number</mat-label>
-            <input matInput formControlName="card_number" maxlength="10" placeholder="Enter card number" />
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label>Valid Until</mat-label>
-            <input matInput [matDatepicker]="picker" formControlName="valid_until" />
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-          </mat-form-field>
-        </div>
-
-        <!-- File Upload -->
-
-
-
-        <!-- Existing file -->
-        <div *ngIf="currentFileName" class="col-span-2">
-          Current File: <a [href]="currentFilePath" target="_blank">{{ currentFileName }}</a>
-        </div>
-
-        <!-- Actions -->
-        <div class="col-span-2 flex justify-end space-x-3 mt-6">
-          <button mat-stroked-button color="warn" type="button" (click)="onCancel()">Cancel</button>
-          <button mat-raised-button color="primary" type="submit" [disabled]="loading || !patientForm.valid">
-            <span *ngIf="loading">
-              <mat-spinner diameter="20"></mat-spinner> Processing...
-            </span>
-            <span *ngIf="!loading">Save</span>
-          </button>
-        </div>
+              <div class="flex justify-between mt-6">
+                <button type="button" mat-button matStepperPrevious>Back</button>
+                <button type="submit" mat-raised-button color="primary" [disabled]="loading">
+                  {{ loading ? "Saving..." : "Save Patient" }}
+                </button>
+              </div>
+            </div>
+          </mat-step>
+        </mat-horizontal-stepper>
       </form>
     </mat-card-content>
   </mat-card>
