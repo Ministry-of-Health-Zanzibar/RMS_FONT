@@ -3,10 +3,15 @@
     <mat-card-content>
       <form [formGroup]="patientForm" (ngSubmit)="onSubmit()">
         <mat-horizontal-stepper linear>
+
+          <!-- ================= BASIC INFO ================= -->
           <mat-step [stepControl]="patientForm.get('basicInfo')">
             <div formGroupName="basicInfo">
               <ng-template matStepLabel>Patient Information</ng-template>
+
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+
+                <!-- Matibabu Card -->
                 <mat-form-field appearance="outline">
                   <mat-label>Matibabu Card</mat-label>
                   <input
@@ -15,72 +20,63 @@
                     maxlength="12"
                     (keypress)="allowOnlyNumbers($event)"
                   />
-                  <mat-error
-                    *ngIf="
-                      patientForm
-                        .get('basicInfo.matibabu_card')
-                        ?.hasError('required')
-                    "
-                    >Required</mat-error
-                  >
-                  <mat-error
-                    *ngIf="
-                      patientForm
-                        .get('basicInfo.matibabu_card')
-                        ?.hasError('pattern')
-                    "
-                    >12 digits required</mat-error
-                  >
+                  <mat-error *ngIf="patientForm.get('basicInfo.matibabu_card')?.hasError('required')">
+                    Required
+                  </mat-error>
+                  <mat-error *ngIf="patientForm.get('basicInfo.matibabu_card')?.hasError('pattern')">
+                    12 digits required
+                  </mat-error>
                 </mat-form-field>
 
+                <!-- Full Name -->
                 <mat-form-field appearance="outline">
                   <mat-label>Full Name *</mat-label>
                   <input matInput formControlName="name" />
-                  <mat-error *ngIf="patientForm.get('basicInfo.name')?.invalid"
-                    >Full name required</mat-error
-                  >
+                  <mat-error *ngIf="patientForm.get('basicInfo.name')?.invalid">
+                    Full name required
+                  </mat-error>
                 </mat-form-field>
 
+                <!-- DOB -->
                 <mat-form-field appearance="outline">
                   <mat-label>Date of Birth *</mat-label>
                   <input
                     matInput
                     [matDatepicker]="dobPicker"
                     formControlName="date_of_birth"
-                    placeholder="DD/MM/YYYY"
                   />
-                  <mat-datepicker-toggle
-                    matIconSuffix
-                    [for]="dobPicker"
-                  ></mat-datepicker-toggle>
+                  <mat-datepicker-toggle matIconSuffix [for]="dobPicker"></mat-datepicker-toggle>
                   <mat-datepicker #dobPicker></mat-datepicker>
-                  <mat-error
-                    *ngIf="patientForm.get('basicInfo.date_of_birth')?.invalid"
-                    >DOB required</mat-error
-                  >
+                  <mat-error *ngIf="patientForm.get('basicInfo.date_of_birth')?.invalid">
+                    Date of Birth required
+                  </mat-error>
                 </mat-form-field>
 
+                <!-- Gender -->
                 <mat-form-field appearance="outline">
                   <mat-label>Gender *</mat-label>
                   <mat-select formControlName="gender">
-                    <mat-option value="Male">Male</mat-option>
-                    <mat-option value="Female">Female</mat-option>
+                    <mat-option [value]="'Male'">Male</mat-option>
+                    <mat-option [value]="'Female'">Female</mat-option>
                   </mat-select>
-                  <mat-error
-                    *ngIf="patientForm.get('basicInfo.gender')?.invalid"
-                    >Gender required</mat-error
-                  >
+                  <mat-error *ngIf="patientForm.get('basicInfo.gender')?.invalid">
+                    Gender required
+                  </mat-error>
                 </mat-form-field>
 
-                <mat-form-field appearance="outline"
-                  ><mat-label>Phone</mat-label
-                  ><input matInput formControlName="phone" maxlength="10"
-                /></mat-form-field>
-                <mat-form-field appearance="outline"
-                  ><mat-label>Zan ID</mat-label
-                  ><input matInput formControlName="zan_id" maxlength="9"
-                /></mat-form-field>
+                <!-- Phone -->
+                <mat-form-field appearance="outline">
+                  <mat-label>Phone</mat-label>
+                  <input matInput formControlName="phone" maxlength="10" />
+                </mat-form-field>
 
+                <!-- Zan ID -->
+                <mat-form-field appearance="outline">
+                  <mat-label>Zan ID</mat-label>
+                  <input matInput formControlName="zan_id" maxlength="9" />
+                </mat-form-field>
+
+                <!-- Location -->
                 <mat-form-field appearance="outline">
                   <mat-label>Location *</mat-label>
                   <mat-select formControlName="location_id">
@@ -91,65 +87,99 @@
                       {{ option.label }}
                     </mat-option>
                   </mat-select>
-                  <mat-error
-                    *ngIf="patientForm.get('basicInfo.location_id')?.invalid"
-                  >
+                  <mat-error *ngIf="patientForm.get('basicInfo.location_id')?.invalid">
                     Location is required
                   </mat-error>
                 </mat-form-field>
 
-                <mat-form-field appearance="outline"
-                  ><mat-label>Job</mat-label
-                  ><input matInput formControlName="job"
-                /></mat-form-field>
-                <mat-form-field appearance="outline"
-                  ><mat-label>Position</mat-label
-                  ><input matInput formControlName="position"
-                /></mat-form-field>
+                <!-- Job -->
+                <mat-form-field appearance="outline">
+                  <mat-label>Job</mat-label>
+                  <input matInput formControlName="job" />
+                </mat-form-field>
+
+                <!-- Position -->
+                <mat-form-field appearance="outline">
+                  <mat-label>Position</mat-label>
+                  <input matInput formControlName="position" />
+                </mat-form-field>
+
               </div>
+
               <div class="flex justify-end mt-6">
-                <button
-                  type="button"
-                  mat-raised-button
-                  color="primary"
-                  matStepperNext
-                >
+                <button type="button" mat-raised-button color="primary" matStepperNext>
                   Next
                 </button>
               </div>
             </div>
           </mat-step>
 
+          <!-- ================= HISTORY ================= -->
           <mat-step [stepControl]="patientForm.get('historyInfo')">
             <div formGroupName="historyInfo">
               <ng-template matStepLabel>Patient History</ng-template>
+
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+
+                <!-- Reason -->
                 <mat-form-field appearance="outline">
                   <mat-label>Reason *</mat-label>
                   <mat-select formControlName="reason_id">
                     <mat-option
                       *ngFor="let reason of reasonList"
                       [value]="reason.reason_id"
-                      >{{ reason.referral_reason_name }}</mat-option
                     >
+                      {{ reason.referral_reason_name }}
+                    </mat-option>
                   </mat-select>
-                  <mat-error
-                    *ngIf="patientForm.get('historyInfo.reason_id')?.invalid"
-                    >Reason required</mat-error
-                  >
+                  <mat-error *ngIf="patientForm.get('historyInfo.reason_id')?.invalid">
+                    Reason required
+                  </mat-error>
                 </mat-form-field>
 
+                <!-- Diagnosis with Chips -->
                 <mat-form-field appearance="outline">
                   <mat-label>Diagnosis</mat-label>
-                  <mat-select formControlName="diagnosis_ids" multiple>
-                    <mat-option
-                      *ngFor="let diag of diagnosesList"
-                      [value]="diag.diagnosis_id"
-                      >{{ diag.diagnosis_name }}</mat-option
+
+                  <mat-chip-grid #chipGrid>
+                    <mat-chip-row
+                      *ngFor="let diag of selectedDiagnoses"
+                      [removable]="true"
+                      (removed)="removeDiagnosis(diag)"
                     >
-                  </mat-select>
+                      {{ diag.diagnosis_name }}
+                      <button matChipRemove>
+                        <mat-icon>close</mat-icon>
+                      </button>
+                    </mat-chip-row>
+
+                    <input
+                      matInput
+                      placeholder="Search diagnosis..."
+                      [formControl]="diagnosisSearchCtrl"
+                      [matAutocomplete]="auto"
+                      [matChipInputFor]="chipGrid"
+                    />
+                  </mat-chip-grid>
+
+                  <mat-autocomplete
+                    #auto="matAutocomplete"
+                    (optionSelected)="addDiagnosis($event.option.value)"
+                  >
+                    <mat-option
+                      *ngFor="let diag of filteredDiagnoses"
+                      [value]="diag"
+                    >
+                      {{ diag.diagnosis_name }}
+                    </mat-option>
+
+                    <mat-option *ngIf="filteredDiagnoses.length === 0" disabled>
+                      No results found
+                    </mat-option>
+                  </mat-autocomplete>
                 </mat-form-field>
 
+                <!-- Case Type -->
                 <mat-form-field appearance="outline">
                   <mat-label>Case Type</mat-label>
                   <mat-select formControlName="case_type">
@@ -158,140 +188,54 @@
                   </mat-select>
                 </mat-form-field>
 
-                <mat-form-field appearance="outline"
-                  ><mat-label>File Number</mat-label
-                  ><input matInput formControlName="file_number"
-                /></mat-form-field>
-
+                <!-- Referring Date -->
                 <mat-form-field appearance="outline">
-                  <mat-label>Referring Date</mat-label>
+                  <mat-label>Referring Date *</mat-label>
                   <input
                     matInput
                     [matDatepicker]="refDate"
                     formControlName="referring_date"
                   />
-                  <mat-datepicker-toggle
-                    matIconSuffix
-                    [for]="refDate"
-                  ></mat-datepicker-toggle>
+                  <mat-datepicker-toggle matIconSuffix [for]="refDate"></mat-datepicker-toggle>
                   <mat-datepicker #refDate></mat-datepicker>
                 </mat-form-field>
 
-                <mat-form-field appearance="outline" class="col-span-2"
-                  ><mat-label>History of Presenting Illness</mat-label
-                  ><textarea
-                    matInput
-                    rows="3"
-                    formControlName="history_of_presenting_illness"
-                  ></textarea>
-                </mat-form-field>
-                <mat-form-field appearance="outline" class="col-span-2"
-                  ><mat-label>Physical Findings</mat-label
-                  ><textarea
-                    matInput
-                    rows="3"
-                    formControlName="physical_findings"
-                  ></textarea>
-                </mat-form-field>
-                <mat-form-field appearance="outline" class="col-span-2"
-                  ><mat-label>Investigations</mat-label
-                  ><textarea
-                    matInput
-                    rows="3"
-                    formControlName="investigations"
-                  ></textarea>
-                </mat-form-field>
-                <mat-form-field appearance="outline" class="col-span-2"
-                  ><mat-label>Management Done</mat-label
-                  ><textarea
-                    matInput
-                    rows="3"
-                    formControlName="management_done"
-                  ></textarea>
-                </mat-form-field>
-
-               <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-start">
-  <!-- Upload -->
-  <div class="col-span-2">
-    <label class="block mb-2 font-medium">
-      Upload History File
-    </label>
-
-    <input
-      type="file"
-      accept="application/pdf"
-      (change)="onFileSelected($event)"
-      class="text-sm text-gray-500
-             file:mr-4 file:py-2 file:px-4
-             file:rounded-full file:border-0
-             file:text-sm file:font-semibold
-             file:bg-primary file:text-white
-             hover:file:bg-primary-dark"
-    />
-  </div>
-
-  <!-- Description -->
-  <div class="text-sm text-gray-600 space-y-2">
-    <p>📄 File must be <strong>PDF format</strong></p>
-    <p>📦 Maximum file size: <strong>1 MB</strong></p>
-    <p>
-      🔗 If your file is large, compress it using
-      <a
-        href="https://www.ilovepdf.com/compress_pdf"
-        target="_blank"
-        class="text-primary-600 font-semibold hover:underline"
-      >
-        iLovePDF
-      </a>
-    </p>
-  </div>
-</div>
-
               </div>
+
               <div class="flex justify-between mt-6">
                 <button type="button" mat-button matStepperPrevious>
                   Back
                 </button>
-                <button
-                  type="button"
-                  mat-raised-button
-                  color="primary"
-                  matStepperNext
-                >
+                <button type="button" mat-raised-button color="primary" matStepperNext>
                   Next
                 </button>
               </div>
             </div>
           </mat-step>
 
+          <!-- ================= INSURANCE ================= -->
           <mat-step [stepControl]="patientForm.get('insuranceInfo')">
             <div formGroupName="insuranceInfo">
               <ng-template matStepLabel>Insurance</ng-template>
-              <div class="mt-4">
-                <label class="block mb-2 font-medium"
-                  >Do you have insurance?</label
-                >
-                <mat-radio-group
-                  formControlName="has_insurance"
-                  class="flex gap-4"
-                >
-                  <mat-radio-button [value]="true">Yes</mat-radio-button>
-                  <mat-radio-button [value]="false">No</mat-radio-button>
-                </mat-radio-group>
-              </div>
+
+              <mat-radio-group formControlName="has_insurance" class="flex gap-4 mt-4">
+                <mat-radio-button [value]="true">Yes</mat-radio-button>
+                <mat-radio-button [value]="false">No</mat-radio-button>
+              </mat-radio-group>
 
               <div
                 *ngIf="patientForm.get('insuranceInfo.has_insurance')?.value"
                 class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6"
               >
-                <mat-form-field appearance="outline"
-                  ><mat-label>Provider</mat-label
-                  ><input matInput formControlName="insurance_provider_name"
-                /></mat-form-field>
-                <mat-form-field appearance="outline"
-                  ><mat-label>Card Number</mat-label
-                  ><input matInput formControlName="card_number"
-                /></mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Provider</mat-label>
+                  <input matInput formControlName="insurance_provider_name" />
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Card Number</mat-label>
+                  <input matInput formControlName="card_number" />
+                </mat-form-field>
 
                 <mat-form-field appearance="outline">
                   <mat-label>Valid Until</mat-label>
@@ -300,10 +244,7 @@
                     [matDatepicker]="insDate"
                     formControlName="valid_until"
                   />
-                  <mat-datepicker-toggle
-                    matIconSuffix
-                    [for]="insDate"
-                  ></mat-datepicker-toggle>
+                  <mat-datepicker-toggle matIconSuffix [for]="insDate"></mat-datepicker-toggle>
                   <mat-datepicker #insDate></mat-datepicker>
                 </mat-form-field>
               </div>
@@ -318,11 +259,13 @@
                   color="primary"
                   [disabled]="loading"
                 >
-                  {{ loading ? "Saving..." : "Save Patient" }}
+                  {{ loading ? 'Saving...' : 'Save Patient' }}
                 </button>
               </div>
+
             </div>
           </mat-step>
+
         </mat-horizontal-stepper>
       </form>
     </mat-card-content>
