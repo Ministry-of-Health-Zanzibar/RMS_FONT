@@ -74,7 +74,7 @@ export class ReferralStatusDialogComponent implements OnInit, OnDestroy {
   configForm() {
     this.statusForm = new FormGroup({
       referral_id: new FormControl(this.id || 0),
-      hospital_id: new FormControl(null),
+       hospital_id: new FormControl<number>(0),
       letter_text: new FormControl(null, [Validators.required]),
       status: new FormControl(null, [Validators.required]),
       start_date: new FormControl(null, ),
