@@ -22,6 +22,7 @@ import { PartientService } from '../../../services/partient/partient.service';
 import { LocationService } from '../../../services/system-configuration/location.service';
 import { ReasonsService } from '../../../services/system-configuration/reasons.service';
 import { DiagnosisService } from '../../../services/system-configuration/diagnosis.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-partient-form',
@@ -45,6 +46,7 @@ import { DiagnosisService } from '../../../services/system-configuration/diagnos
 export class PartientFormComponent implements OnInit {
 
   patientForm!: FormGroup;
+  isMatibabuLoading = false;
   loading = false;
   selectedFile!: File | null;
 
@@ -64,23 +66,27 @@ export class PartientFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+
+    
     this.patientForm = this.fb.group({
       basicInfo: this.fb.group({
         name: ['', Validators.required],
         matibabu_card: ['', [Validators.required, Validators.pattern(/^\d{12}$/)]],
-        zan_id: [''],
-        date_of_birth: ['', Validators.required],
+        zan_id: ['',[Validators.pattern(/^\d{9}$/)]],
+         date_of_birth: ['dob', Validators.required], // default = DOB
+
+      
         gender: ['', Validators.required],
-        phone: [''],
-        location_id: [null, Validators.required],
+        phone: ['',[Validators.required,Validators.pattern(/^\d{10}$/)]],
+        location_id: ['',Validators.required], 
         job: [''],
         position: [''],
       }),
       historyInfo: this.fb.group({
         referring_doctor: [''],
         file_number: [''],
-        referring_date: [''],
-        reason_id: [null, Validators.required],
+        referring_date: ['',Validators.required],
+        reason_id: ['', Validators.required],
         diagnosis_ids: [[]],
         case_type: ['Routine', Validators.required],
         history_of_presenting_illness: [''],
@@ -96,11 +102,15 @@ export class PartientFormComponent implements OnInit {
       }),
     });
 
+   
     this.loadLocations();
     this.loadReasons();
     this.loadDiagnoses();
     this.listenToMatibabuCard();
   }
+ 
+
+
 
   allowOnlyNumbers(event: KeyboardEvent) {
     if (!/^[0-9]$/.test(event.key)) {

@@ -330,58 +330,7 @@ export class BodyListMoreComponent implements OnInit, AfterViewInit {
     }
   }
 
-// openAddMedicalHistory(patient: any) {
-//   const config = new MatDialogConfig();
-//   config.disableClose = false;
-//   config.role = 'dialog';
-//   config.maxWidth = '100vw';
-//   config.maxHeight = '98vh';
-//   config.panelClass = 'full-screen-modal';
 
-//   // Safely extract latest history ID
-//   const patientHistoryId = patient?.latest_history?.patient_histories_id || null;
-
-//   console.log('➡️ Patient sent to dialog:', patient);
-//   console.log('➡️ History ID sent to dialog:', patientHistoryId);
-
-//   // Send both patient object and history ID
-//   config.data = {
-//     patient,
-//     patientHistoryId
-//   };
-
-//   const dialogRef = this.dialog.open(AddmedicalformComponent, config);
-
-//   dialogRef.afterClosed().subscribe((result) => {
-//     if (result && result.success) {
-//       console.log('✅ New medical history saved:', result.data);
-//       Swal.fire({
-//         title: 'Medical History Added',
-//         text: 'The patient medical history was saved successfully!',
-//         icon: 'success',
-//         confirmButtonColor: '#4690eb',
-//       });
-//     } else {
-//       console.log('Dialog closed without saving.');
-//     }
-//   });
-// }
-
-
-
-
-  //  openAddMedicalHistory(patient: any) {
-  //     const config = new MatDialogConfig();
-  //     console.log('Element sent to dialog:', patient);
-  //     config.data = patient;
-  //     config.width = '100vw';
-  //     config.height = '98vh';
-
-  //     this.dialog
-  //       .open(AddmedicalhistoryComponent, config)
-  //       .afterClosed()
-
-  //   }
 
   openAddMedicalHistory(patient: any) {
   const config = new MatDialogConfig();
