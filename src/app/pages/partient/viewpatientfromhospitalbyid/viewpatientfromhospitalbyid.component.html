@@ -335,7 +335,14 @@
               Referring Doctor
             </th>
             <td class="border border-gray-300 p-4">
-              {{ medicalHistory.referring_doctor }}
+             {{ 
+                medicalHistory?.patient?.creator?.first_name 
+              }} {{ 
+                medicalHistory?.patient?.creator?.middle_name 
+              }} {{ 
+                medicalHistory?.patient?.creator?.last_name 
+              }}
+
             </td>
             <th class="border border-gray-300 p-4 text-left w-1/4">
               File Number

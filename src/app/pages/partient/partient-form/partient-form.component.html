@@ -74,11 +74,11 @@
 
                 <mat-form-field appearance="outline"
                   ><mat-label>Phone</mat-label
-                  ><input matInput formControlName="phone"
+                  ><input matInput formControlName="phone" maxlength="10"
                 /></mat-form-field>
                 <mat-form-field appearance="outline"
                   ><mat-label>Zan ID</mat-label
-                  ><input matInput formControlName="zan_id"
+                  ><input matInput formControlName="zan_id" maxlength="9"
                 /></mat-form-field>
 
                 <mat-form-field appearance="outline">
@@ -210,16 +210,43 @@
                   ></textarea>
                 </mat-form-field>
 
-                <div class="col-span-2">
-                  <label class="block mb-2 font-medium"
-                    >Upload History File</label
-                  >
-                  <input
-                    type="file"
-                    (change)="onFileSelected($event)"
-                    class="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-primary-dark"
-                  />
-                </div>
+               <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-start">
+  <!-- Upload -->
+  <div class="col-span-2">
+    <label class="block mb-2 font-medium">
+      Upload History File
+    </label>
+
+    <input
+      type="file"
+      accept="application/pdf"
+      (change)="onFileSelected($event)"
+      class="text-sm text-gray-500
+             file:mr-4 file:py-2 file:px-4
+             file:rounded-full file:border-0
+             file:text-sm file:font-semibold
+             file:bg-primary file:text-white
+             hover:file:bg-primary-dark"
+    />
+  </div>
+
+  <!-- Description -->
+  <div class="text-sm text-gray-600 space-y-2">
+    <p>📄 File must be <strong>PDF format</strong></p>
+    <p>📦 Maximum file size: <strong>1 MB</strong></p>
+    <p>
+      🔗 If your file is large, compress it using
+      <a
+        href="https://www.ilovepdf.com/compress_pdf"
+        target="_blank"
+        class="text-primary-600 font-semibold hover:underline"
+      >
+        iLovePDF
+      </a>
+    </p>
+  </div>
+</div>
+
               </div>
               <div class="flex justify-between mt-6">
                 <button type="button" mat-button matStepperPrevious>

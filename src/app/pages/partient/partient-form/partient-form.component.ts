@@ -23,6 +23,7 @@ import { PartientService } from '../../../services/partient/partient.service';
 import { LocationService } from '../../../services/system-configuration/location.service';
 import { ReasonsService } from '../../../services/system-configuration/reasons.service';
 import { DiagnosisService } from '../../../services/system-configuration/diagnosis.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-partient-form',
@@ -46,6 +47,7 @@ import { DiagnosisService } from '../../../services/system-configuration/diagnos
 })
 export class PartientFormComponent implements OnInit {
   patientForm!: FormGroup;
+  isMatibabuLoading = false;
   loading = false;
   selectedFiles: File[] = [];
 
@@ -67,22 +69,26 @@ export class PartientFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+
+    
     this.patientForm = this.fb.group({
       basicInfo: this.fb.group({
         name: ['', Validators.required],
         matibabu_card: ['', [Validators.required, Validators.pattern(/^\d{12}$/)]],
-        zan_id: [''],
-        date_of_birth: ['', Validators.required],
+        zan_id: ['',[Validators.pattern(/^\d{9}$/)]],
+         date_of_birth: ['dob', Validators.required], // default = DOB
+
+      
         gender: ['', Validators.required],
-        phone: [''],
-        location_id: [''], // Set to null initially
+        phone: ['',[Validators.required,Validators.pattern(/^\d{10}$/)]],
+        location_id: ['',Validators.required], 
         job: [''],
         position: [''],
       }),
       historyInfo: this.fb.group({
         referring_doctor: [''],
         file_number: [''],
-        referring_date: [''],
+        referring_date: ['',Validators.required],
         reason_id: ['', Validators.required],
         diagnosis_ids: [[]],
         case_type: ['Routine', Validators.required],
@@ -99,11 +105,15 @@ export class PartientFormComponent implements OnInit {
       }),
     });
 
+   
     this.loadLocations();
     this.loadReasons();
     this.loadDiagnoses();
     this.listenToMatibabuCard();
   }
+ 
+
+
 
   allowOnlyNumbers(event: KeyboardEvent) {
     const charCode = event.charCode;
@@ -196,9 +206,44 @@ export class PartientFormComponent implements OnInit {
   }
 
   onFileSelected(event: any) { 
-    const files = event.target.files; 
-    if (files.length > 0) this.selectedFiles = [files[0]]; 
+  const files: FileList = event.target.files; 
+  if (files.length === 0) return;
+
+  const file = files[0];
+  const maxSizeMB = 1;
+  const maxSizeBytes = maxSizeMB * 1024 * 1024;
+
+  if (file.size > maxSizeBytes) {
+    // File too large, show alert and clear input
+    Swal.fire({
+      icon: 'error',
+      title: 'File Too Large',
+      text: `File must be less than ${maxSizeMB} MB`,
+      confirmButtonColor: '#3085d6',
+    });
+    event.target.value = ''; // Clear the input
+    this.selectedFiles = []; // Clear selected files
+    return;
   }
+
+  // File size is OK, save it
+  this.selectedFiles = [file];
+
+  Swal.fire({
+    icon: 'success',
+    title: 'File Selected',
+    text: file.name,
+    confirmButtonColor: '#3085d6',
+  });
+
+  console.log('Selected file:', file);
+}
+
+
+  // onFileSelected(event: any) { 
+  //   const files = event.target.files; 
+  //   if (files.length > 0) this.selectedFiles = [files[0]]; 
+  // }
 
   private formatDate(value: any): string { 
     if (!value) return ''; 

@@ -73,13 +73,7 @@
               <td mat-cell *matCellDef="let element">{{ element.phone }}</td>
             </ng-container>
 
-            <!-- ZanID  Column -->
-            <ng-container matColumnDef="referring_doctor">
-              <th mat-header-cell *matHeaderCellDef>Referring Doctor</th>
-              <td mat-cell *matCellDef="let element">
-                {{ element.latest_history?.referring_doctor || "N/A" }}
-              </td>
-            </ng-container>
+          
 
             <ng-container matColumnDef="hospital">
               <th mat-header-cell *matHeaderCellDef>Hospital</th>
