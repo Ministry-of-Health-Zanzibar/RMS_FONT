@@ -16,9 +16,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { Observable, startWith, map, debounceTime, distinctUntilChanged } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { PartientService } from '../../../services/partient/partient.service';
 import { LocationService } from '../../../services/system-configuration/location.service';
 import { ReasonsService } from '../../../services/system-configuration/reasons.service';
@@ -40,20 +39,18 @@ import Swal from 'sweetalert2';
     MatDatepickerModule,
     MatNativeDateModule,
     MatCardModule,
-    MatAutocompleteModule,
     MatSnackBarModule,
   ],
   templateUrl: './partient-form.component.html',
 })
 export class PartientFormComponent implements OnInit {
+
   patientForm!: FormGroup;
   isMatibabuLoading = false;
   loading = false;
-  selectedFiles: File[] = [];
+  selectedFile!: File | null;
 
   locations: any[] = [];
-  filteredOptions!: Observable<any[]>;
-
   reasonList: any[] = [];
   diagnosesList: any[] = [];
 
@@ -98,7 +95,7 @@ export class PartientFormComponent implements OnInit {
         management_done: [''],
       }),
       insuranceInfo: this.fb.group({
-        has_insurance: [false, Validators.required],
+        has_insurance: [false],
         insurance_provider_name: [''],
         card_number: [''],
         valid_until: [''],
@@ -116,197 +113,149 @@ export class PartientFormComponent implements OnInit {
 
 
   allowOnlyNumbers(event: KeyboardEvent) {
-    const charCode = event.charCode;
-    if (charCode < 48 || charCode > 57) event.preventDefault();
+    if (!/^[0-9]$/.test(event.key)) {
+      event.preventDefault();
+    }
   }
 
-  // private listenToMatibabuCard() {
-  //   this.patientForm.get('basicInfo.matibabu_card')?.valueChanges
-  //     .pipe(debounceTime(300), distinctUntilChanged())
-  //     .subscribe((value: string) => {
-  //       if (value && value.length === 12) {
-  //         this.checkEligibility(value);
-  //       }
-  //     });
-  // }
   private listenToMatibabuCard() {
-  this.patientForm.get('basicInfo.matibabu_card')?.valueChanges
-    .pipe(debounceTime(300), distinctUntilChanged())
-    .subscribe((value: string) => {
-      if (value && value.length === 12) {
-        this.checkEligibility(value);
-      } else {
-        
-        this.patientForm.get('basicInfo')?.patchValue({
-          name: '',
-          zan_id: '',
-          date_of_birth: '',
-          gender: '',
-          phone: '',
-          location_id: null,
-          job: '',
-          position: ''
-        });
-      }
-    });
-}
+    this.patientForm.get('basicInfo.matibabu_card')?.valueChanges
+      .pipe(debounceTime(300), distinctUntilChanged())
+      .subscribe((value: string) => {
 
+        if (value?.length === 12) {
+          this.checkEligibility(value);
+        } else {
+          this.patientForm.get('basicInfo')?.patchValue({
+            name: '',
+            zan_id: '',
+            date_of_birth: '',
+            gender: '',
+            phone: '',
+            location_id: null,
+            job: '',
+            position: ''
+          }, { emitEvent: false });
+        }
+      });
+  }
 
   private checkEligibility(matibabuCard: string) {
-    this.patientService.searchPatientEligibility({ matibabu_card: matibabuCard }).subscribe({
-      next: (res: any) => {
-        const patient = res.data;
-        this.snackBar.open(res.message || 'Patient is eligible', 'Close', { duration: 4000 });
+    this.patientService.searchPatientEligibility({ matibabu_card: matibabuCard })
+      .subscribe({
+        next: (res: any) => {
+          const patient = res.data;
 
-        this.patientForm.get('basicInfo')?.patchValue({
-          name: patient.name,
-          zan_id: patient.zan_id,
-          date_of_birth: patient.date_of_birth,
-          gender: patient.gender === 'male' || patient.gender === 'Male' ? 'Male' : 'Female',
-          phone: patient.phone,
-          location_id: patient.location_id ? String(patient.location_id) : null, 
-          job: patient.job,
-          position: patient.position
-        });
-      },
-      error: (err) => {
-        if (err.status === 404) {
-          this.snackBar.open(err.error?.message || 'No patient found', 'Close', { duration: 4000 });
+          this.snackBar.open(res.message || 'Patient is eligible', 'Close', { duration: 4000 });
+
+          this.patientForm.get('basicInfo')?.patchValue({
+            name: patient?.name || '',
+            zan_id: patient?.zan_id || '',
+            date_of_birth: patient?.date_of_birth || '',
+            gender: patient?.gender === 'male' ? 'Male' : 'Female',
+            phone: patient?.phone || '',
+            location_id: patient?.location_id ?? null,
+            job: patient?.job || '',
+            position: patient?.position || '',
+          });
+        },
+        error: (err) => {
+          this.snackBar.open(
+            err?.error?.message || 'No patient found',
+            'Close',
+            { duration: 4000 }
+          );
         }
-      }
-    });
+      });
   }
 
-  loadReasons() { this.reasonService.getAllReasons().subscribe({ next: (res: any) => this.reasonList = res.data || [] }); }
-  loadDiagnoses() { this.diagnosisService.getAllDiagnosis().subscribe({ next: (res: any) => this.diagnosesList = res.data || [] }); }
-
-  private loadLocations() {
+  loadLocations() {
     this.locationService.getLocation().subscribe({
-      next: (res: any) => {
-        this.locations = res.data || [];
-        this.filteredOptions = this.patientForm.get('basicInfo.location_id')!.valueChanges.pipe(
-          startWith(''),
-          map(value => this._filterLocations(value))
-        );
-      }
+      next: (res: any) => this.locations = res.data || []
     });
   }
 
-  private _filterLocations(value: any): any[] {
-    const filterValue = typeof value === 'string' ? value.toLowerCase() : '';
-    return this.locations.filter(option => 
-      option.label.toLowerCase().includes(filterValue)
-    );
+  loadReasons() {
+    this.reasonService.getAllReasons()
+      .subscribe(res => this.reasonList = res.data || []);
   }
 
-  displayLocation(locationId: any): string {
-    if (!locationId) return '';
-    const loc = this.locations.find(l => l.location_id === locationId);
-    return loc ? loc.label : '';
+  loadDiagnoses() {
+    this.diagnosisService.getAllDiagnosis()
+      .subscribe(res => this.diagnosesList = res.data || []);
   }
 
-  onFileSelected(event: any) { 
-  const files: FileList = event.target.files; 
-  if (files.length === 0) return;
-
-  const file = files[0];
-  const maxSizeMB = 1;
-  const maxSizeBytes = maxSizeMB * 1024 * 1024;
-
-  if (file.size > maxSizeBytes) {
-    // File too large, show alert and clear input
-    Swal.fire({
-      icon: 'error',
-      title: 'File Too Large',
-      text: `File must be less than ${maxSizeMB} MB`,
-      confirmButtonColor: '#3085d6',
-    });
-    event.target.value = ''; // Clear the input
-    this.selectedFiles = []; // Clear selected files
-    return;
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    this.selectedFile = file ? file : null;
   }
 
-  // File size is OK, save it
-  this.selectedFiles = [file];
-
-  Swal.fire({
-    icon: 'success',
-    title: 'File Selected',
-    text: file.name,
-    confirmButtonColor: '#3085d6',
-  });
-
-  console.log('Selected file:', file);
-}
-
-
-  // onFileSelected(event: any) { 
-  //   const files = event.target.files; 
-  //   if (files.length > 0) this.selectedFiles = [files[0]]; 
-  // }
-
-  private formatDate(value: any): string { 
-    if (!value) return ''; 
-    const d = new Date(value);
-    return d.toISOString().split('T')[0]; 
+  private formatDate(value: any): string {
+    if (!value) return '';
+    return new Date(value).toISOString().split('T')[0];
   }
 
   onSubmit() {
+
     if (this.patientForm.invalid) {
       this.patientForm.markAllAsTouched();
       return;
     }
 
     this.loading = true;
-    const { basicInfo, historyInfo, insuranceInfo } = this.patientForm.value;
     const formData = new FormData();
+    const { basicInfo, historyInfo, insuranceInfo } = this.patientForm.value;
 
+    // BASIC INFO
     Object.keys(basicInfo).forEach(key => {
-      let val = basicInfo[key];
-      if (val !== null && val !== '') {
-        if (key === 'date_of_birth') {
-          formData.append(key, this.formatDate(val));
-        } else if (key === 'location_id') {
-
-          if (!isNaN(Number(val))) {
-            formData.append(key, val.toString());
-          }
-        } else {
-          formData.append(key, val);
-        }
+      let value = basicInfo[key];
+      if (value !== null && value !== '') {
+        formData.append(
+          key,
+          key === 'date_of_birth' ? this.formatDate(value) : value
+        );
       }
     });
 
- 
+    // HISTORY INFO
     Object.keys(historyInfo).forEach(key => {
-      let val = historyInfo[key];
-      if (val !== null && val !== '') {
+      let value = historyInfo[key];
+
+      if (value !== null && value !== '') {
+
         if (key === 'referring_date') {
-          formData.append(key, this.formatDate(val));
-        } else if (key === 'diagnosis_ids' && Array.isArray(val)) {
-          val.forEach((id: any) => formData.append('diagnosis_ids[]', id));
-        } else {
-          formData.append(key, val);
+          formData.append(key, this.formatDate(value));
+        }
+        else if (key === 'diagnosis_ids') {
+          value.forEach((id: any) =>
+            formData.append('diagnosis_ids[]', id)
+          );
+        }
+        else {
+          formData.append(key, value);
         }
       }
     });
 
-    
+    // INSURANCE INFO
     Object.keys(insuranceInfo).forEach(key => {
-      let val = insuranceInfo[key];
+      let value = insuranceInfo[key];
+
       if (key === 'has_insurance') {
-        formData.append(key, val ? '1' : '0'); 
-      } else if (val !== null && val !== '') {
-        if (key === 'valid_until') {
-            formData.append(key, this.formatDate(val));
-        } else {
-            formData.append(key, val);
-        }
+        formData.append(key, value ? '1' : '0');
+      }
+      else if (value) {
+        formData.append(
+          key,
+          key === 'valid_until' ? this.formatDate(value) : value
+        );
       }
     });
 
-    if (this.selectedFiles.length > 0) {
-      formData.append('history_file', this.selectedFiles[0]);
+    // FILE (IMPORTANT)
+    if (this.selectedFile) {
+      formData.append('medical_history_file', this.selectedFile);
+    
     }
 
     this.patientService.addPartient(formData).subscribe({
@@ -317,12 +266,16 @@ export class PartientFormComponent implements OnInit {
       },
       error: (err) => {
         this.loading = false;
-        
-        const errorMsg = err.error?.errors?.location_id?.[0] || err.error?.message || 'Error occurred';
-        this.snackBar.open(errorMsg, 'Close', { duration: 5000 });
+        this.snackBar.open(
+          err?.error?.message || 'Error occurred',
+          'Close',
+          { duration: 5000 }
+        );
       }
     });
   }
 
-  onCancel() { this.dialogRef.close(); }
+  onCancel() {
+    this.dialogRef.close();
+  }
 }
