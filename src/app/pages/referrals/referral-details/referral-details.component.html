@@ -201,14 +201,16 @@
       {{ referral.patient?.patient_list?.[0]?.board_type || "N/A" }}
     </p>
 
-     <p *ngIf="referral.patient?.patient_list?.[0]?.patient_list_file">
-    <a
-      (click)="viewPatientListPDF(referral.patient.patient_list[0].patient_list_file)"
-      class="inline-flex items-center gap-1 text-indigo-600 hover:text-indigo-800 cursor-pointer"
-    >
-      <mat-icon>picture_as_pdf</mat-icon> View Board Members List sign PDF
-    </a>
-  </p>
+    <p *ngIf="referral.patient?.patient_list?.[0]?.patient_list_file">
+  <a
+    (click)="viewPatientListPDF(referral.patient.patient_list[0].patient_list_file)"
+    class="inline-flex items-center gap-1 text-indigo-600 hover:text-indigo-800 cursor-pointer"
+  >
+    <mat-icon>picture_as_pdf</mat-icon>
+    View Board Members List PDF
+  </a>
+</p>
+
 
     </div>
 <div class="mt-6" *ngIf="boardMembers.length > 0">

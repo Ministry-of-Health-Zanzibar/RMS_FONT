@@ -27,6 +27,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-partient-form',
@@ -54,7 +55,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 export class PartientFormComponent implements OnInit {
   patientForm!: FormGroup;
   loading = false;
-  selectedFile!: File | null;
+  selectedFile: File | null = null;
+
   locations: any[] = [];
   reasonList: any[] = [];
   diagnosesList: any[] = [];
@@ -252,10 +254,32 @@ export class PartientFormComponent implements OnInit {
       ?.setValue(this.selectedDiagnoses.map((d) => d.diagnosis_id));
   }
 
-  onFileSelected(event: any) {
-    const file = event.target.files[0];
-    this.selectedFile = file ? file : null;
+onFileSelected(event: Event) {
+  const file = (event.target as HTMLInputElement).files?.[0];
+  if (!file) return;
+
+  const maxSize = 1 * 1024 * 1024; // 1 MB
+
+  if (file.size > maxSize) {
+    Swal.fire({
+      icon: 'error',
+      title: 'File Too Large',
+      text: 'File must be less than 1 MB',
+    });
+    (event.target as HTMLInputElement).value = '';
+    this.selectedFile = null;
+    return;
   }
+
+  this.selectedFile = file;
+}
+
+
+
+  // onFileSelected(event: any) {
+  //   const file = event.target.files[0];
+  //   this.selectedFile = file ? file : null;
+  // }
 
   private formatDate(value: any): string {
     if (!value) return '';

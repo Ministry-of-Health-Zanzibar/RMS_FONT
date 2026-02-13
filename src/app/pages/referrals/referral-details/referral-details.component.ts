@@ -152,17 +152,14 @@ boardMembers: any[] = [];
     });
   }
 
-viewPatientListPDF(referral: any) {
-  const list = referral?.patient?.patient_list;
-
-  if (list && list.length > 0) {
-    const filePath = list[0].patient_list_file;
-
-    if (filePath) {
-      const url = this.documentUrl + filePath;
-      window.open(url, '_blank'); // open in browser tab
-    }
+viewPatientListPDF(filePath: string) {
+  if (!filePath) {
+    console.error('No file path provided');
+    return;
   }
+
+  const url = this.documentUrl + filePath;
+  window.open(url, '_blank');
 }
 
 

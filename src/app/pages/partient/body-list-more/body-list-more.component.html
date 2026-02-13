@@ -129,7 +129,8 @@
         'bg-red-600': p.latest_history?.status === 'requested',
         'bg-blue-600': p.latest_history?.status === 'approved',
         'bg-indigo-600': p.latest_history?.status === 'confirmed',
-        'bg-red-800': p.latest_history?.status === 'rejected'
+        'bg-red-800': p.latest_history?.status === 'rejected',
+        'bg-green-800': p.latest_history?.status === 'assigned'
       }"
     >
       {{ p.latest_history?.status?.toUpperCase() || 'N/A' }}
@@ -150,7 +151,7 @@
       (click)="openAddMedicalHistory(p)"
       matTooltip="Add Medical History"
       class="!bg-blue-600 hover:!bg-blue-700 text-white rounded-full transition-all"
-      [disabled]="p.latest_history?.status?.toLowerCase() !== 'reviewed'"
+      [disabled]="p.latest_history?.status?.toLowerCase() !== 'assigned'"
     >
       <mat-icon>note_add</mat-icon>
     </button>
