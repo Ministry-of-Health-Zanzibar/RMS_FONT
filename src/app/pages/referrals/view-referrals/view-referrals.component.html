@@ -1,5 +1,5 @@
-<div class="p-10 space-y-8">
-  <div class="flex items-center justify-between">
+<div  class="p-4 md:p-10 space-y-6 md:space-y-8">
+  <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
     <h1 class="text-lg font-bold">Referrals </h1>
   </div>
   <div class="w-full">
@@ -7,7 +7,7 @@
       <div class="font-semibold pb-2.5 border-b-2 border-b-secondary-400">
         View Referrals
       </div>
-      <div class="mt-4 flex items-center justify-between">
+      <div class="mt-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div class="flex items-center gap-1.5">
           <div
             class="size-9 rounded-full border bg-surface flex flex items-center justify-center"
@@ -20,7 +20,7 @@
           <input
             type="text"
             placeholder="Search..."
-            class="border-b h-10 w-96 text-sm bg-transparent dark:border-b-inverse outline-0 focus-within:border-neutral-950"
+            class="border-b h-10 w-full md:w-96 text-sm bg-transparent dark:border-b-inverse outline-0 focus-within:border-neutral-950"
             matInput
             (keyup)="applyFilter($event)"
             #input
@@ -37,8 +37,8 @@
         </div> -->
       </div>
 
-      <div class="border dark:border-inverse rounded-lg overflow-hidden mt-4">
-        <table mat-table [dataSource]="dataSource" class="not-prose">
+      <div class="border dark:border-inverse rounded-lg overflow-x-auto mt-4">
+       <table mat-table [dataSource]="dataSource" class="not-prose min-w-[1000px] md:min-w-full">
           <!-- Position Column -->
           <ng-container matColumnDef="id">
             <th
