@@ -27,7 +27,6 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-partient-form',
@@ -55,8 +54,7 @@ import Swal from 'sweetalert2';
 export class PartientFormComponent implements OnInit {
   patientForm!: FormGroup;
   loading = false;
-  selectedFile: File | null = null;
-
+  selectedFile!: File | null;
   locations: any[] = [];
   reasonList: any[] = [];
   diagnosesList: any[] = [];
@@ -170,7 +168,7 @@ export class PartientFormComponent implements OnInit {
             name: patient?.name || '',
             zan_id: patient?.zan_id || '',
             date_of_birth: patient?.date_of_birth
-              ? new Date(patient.date_of_birth) // ✅ important
+              ? new Date(patient.date_of_birth) 
               : '',
             gender: patient?.gender
               ? patient.gender.toLowerCase() === 'male'
@@ -254,32 +252,10 @@ export class PartientFormComponent implements OnInit {
       ?.setValue(this.selectedDiagnoses.map((d) => d.diagnosis_id));
   }
 
-onFileSelected(event: Event) {
-  const file = (event.target as HTMLInputElement).files?.[0];
-  if (!file) return;
-
-  const maxSize = 1 * 1024 * 1024; // 1 MB
-
-  if (file.size > maxSize) {
-    Swal.fire({
-      icon: 'error',
-      title: 'File Too Large',
-      text: 'File must be less than 1 MB',
-    });
-    (event.target as HTMLInputElement).value = '';
-    this.selectedFile = null;
-    return;
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    this.selectedFile = file ? file : null;
   }
-
-  this.selectedFile = file;
-}
-
-
-
-  // onFileSelected(event: any) {
-  //   const file = event.target.files[0];
-  //   this.selectedFile = file ? file : null;
-  // }
 
   private formatDate(value: any): string {
     if (!value) return '';
@@ -358,6 +334,8 @@ onFileSelected(event: Event) {
       },
     });
   }
+
+  
 
   onCancel() {
     this.dialogRef.close();
