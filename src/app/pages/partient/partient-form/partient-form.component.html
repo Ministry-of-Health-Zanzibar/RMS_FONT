@@ -149,10 +149,57 @@
                 </mat-form-field>
               </div>
 
-              <div class="mt-6">
+              <!-- <div class="mt-6">
                 <label class="block mb-2 font-medium">Attach History File</label>
                 <input type="file" (change)="onFileSelected($event)" class="block w-full border rounded p-2" />
-              </div>
+              </div> -->
+
+        <div class="col-span-2">
+          <label class="block mb-2 font-medium">
+            Upload History File
+          </label>
+
+          <input
+            type="file"
+            accept="application/pdf"
+            (change)="onFileSelected($event)"
+            class="text-sm text-gray-500
+                  file:mr-4 file:py-2 file:px-4
+                  file:rounded-full file:border-0
+                  file:text-sm file:font-semibold
+                  file:bg-primary file:text-white
+                  hover:file:bg-primary-dark"
+          />
+          <p *ngIf="fileError" class="text-red-600 text-xs mt-1">
+          {{ fileError }}
+        </p>
+
+
+        <div class="mt-2 text-xs text-gray-600 space-y-1">
+          <p>
+            📄 Please upload a <strong>PDF file</strong> with a maximum size of
+            <strong>1 MB</strong>.
+          </p>
+
+          <p>
+            ⚠️ Files larger than 1 MB will not be accepted.
+          </p>
+
+          <p>
+            🛠️ If your PDF file is large, you can reduce its size using
+            <a
+              href="https://www.ilovepdf.com/compress_pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-blue-600 underline hover:text-blue-800"
+            >
+              iLovePDF – Compress PDF
+            </a>.
+          </p>
+        </div>
+
+        </div>
+
 
               <div class="flex justify-between mt-8">
                 <button type="button" mat-button matStepperPrevious>Back</button>

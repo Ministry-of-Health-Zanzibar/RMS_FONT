@@ -27,6 +27,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-partient-form',
@@ -55,6 +56,9 @@ export class PartientFormComponent implements OnInit {
   patientForm!: FormGroup;
   loading = false;
   isEligible = false;
+  
+fileError: string = '';
+
   selectedFile: File | null = null;
   locations: any[] = [];
   reasonList: any[] = [];
@@ -96,15 +100,15 @@ export class PartientFormComponent implements OnInit {
         position: [''],
       }),
       historyInfo: this.fb.group({
-        file_number: [''],
+        file_number: ['',Validators.required],
         referring_date: ['', Validators.required],
         reason_id: ['', Validators.required],
-        diagnosis_ids: [[]],
+        diagnosis_ids: [[],Validators.required],
         case_type: ['Routine', Validators.required],
-        history_of_presenting_illness: [''],
-        physical_findings: [''],
-        investigations: [''],
-        management_done: [''],
+        history_of_presenting_illness: ['',Validators.required],
+        physical_findings: ['',Validators.required],
+        investigations: ['',Validators.required],
+        management_done: ['',Validators.required],
       }),
       insuranceInfo: this.fb.group({
         has_insurance: [false],
@@ -218,10 +222,39 @@ export class PartientFormComponent implements OnInit {
     this.patientForm.get('historyInfo.diagnosis_ids')?.setValue(this.selectedDiagnoses.map((d) => d.diagnosis_id));
   }
 
-  onFileSelected(event: any) {
-    const file = event.target.files[0];
-    this.selectedFile = file ? file : null;
+ onFileSelected(event: Event) {
+  const file = (event.target as HTMLInputElement).files?.[0];
+
+  if (!file) {
+    this.selectedFile = null;
+    this.fileError = 'History file is required';
+    return;
   }
+
+  const maxSize = 1 * 1024 * 1024; // 1 MB
+
+  if (file.size > maxSize) {
+    Swal.fire({
+      icon: 'error',
+      title: 'File Too Large',
+      text: 'File must be less than 1 MB',
+    });
+
+    (event.target as HTMLInputElement).value = '';
+    this.selectedFile = null;
+    this.fileError = 'File must be less than 1 MB';
+    return;
+  }
+
+  this.selectedFile = file;
+  this.fileError = '';
+}
+
+
+  // onFileSelected(event: any) {
+  //   const file = event.target.files[0];
+  //   this.selectedFile = file ? file : null;
+  // }
 
   private formatDate(value: any): string {
     if (!value) return '';
@@ -229,64 +262,87 @@ export class PartientFormComponent implements OnInit {
     return date.toISOString().split('T')[0];
   }
 
-  onSubmit() {
-    if (this.patientForm.invalid) {
-      this.patientForm.markAllAsTouched();
-      return;
-    }
+ onSubmit() {
 
-    this.loading = true;
-    const formData = new FormData();
-    const { basicInfo, historyInfo, insuranceInfo } = this.patientForm.value;
-
-    // Append Basic Info
-    Object.keys(basicInfo).forEach((key) => {
-      let value = basicInfo[key];
-      if (value !== null && value !== '') {
-        formData.append(key, key === 'date_of_birth' ? this.formatDate(value) : value);
-      }
-    });
-
-    // Append History Info
-    Object.keys(historyInfo).forEach((key) => {
-      let value = historyInfo[key];
-      if (value !== null && value !== '') {
-        if (key === 'referring_date') {
-          formData.append(key, this.formatDate(value));
-        } else if (key === 'diagnosis_ids') {
-          value.forEach((id: any) => formData.append('diagnosis_ids[]', id));
-        } else {
-          formData.append(key, value);
-        }
-      }
-    });
-
-    // Append Insurance Info
-    Object.keys(insuranceInfo).forEach((key) => {
-      let value = insuranceInfo[key];
-      if (key === 'has_insurance') {
-        formData.append(key, value ? '1' : '0');
-      } else if (value) {
-        formData.append(key, key === 'valid_until' ? this.formatDate(value) : value);
-      }
-    });
-
-    if (this.selectedFile) {
-      formData.append('history_file', this.selectedFile);
-    }
-
-    this.patientService.addPartient(formData).subscribe({
-      next: (res) => {
-        this.loading = false;
-        this.snackBar.open('Patient saved successfully', 'Close', { duration: 4000 });
-        this.dialogRef.close(res);
-      },
-      error: (err) => {
-        this.loading = false;
-        this.snackBar.open(err?.error?.message || 'Error occurred', 'Close', { duration: 5000 });
-      },
-    });
+  if (this.patientForm.invalid) {
+    this.patientForm.markAllAsTouched();
+    return;
   }
+
+  // ✅ NEW: File Required Validation
+  if (!this.selectedFile) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Missing File',
+      text: 'Please upload the History PDF file (Max 1MB)',
+    });
+    return;
+  }
+
+  this.loading = true;
+  const formData = new FormData();
+  const { basicInfo, historyInfo, insuranceInfo } = this.patientForm.value;
+
+  // Append Basic Info
+  Object.keys(basicInfo).forEach((key) => {
+    let value = basicInfo[key];
+    if (value !== null && value !== '') {
+      formData.append(
+        key,
+        key === 'date_of_birth' ? this.formatDate(value) : value
+      );
+    }
+  });
+
+  // Append History Info
+  Object.keys(historyInfo).forEach((key) => {
+    let value = historyInfo[key];
+    if (value !== null && value !== '') {
+      if (key === 'referring_date') {
+        formData.append(key, this.formatDate(value));
+      } else if (key === 'diagnosis_ids') {
+        value.forEach((id: any) =>
+          formData.append('diagnosis_ids[]', id)
+        );
+      } else {
+        formData.append(key, value);
+      }
+    }
+  });
+
+  // Append Insurance Info
+  Object.keys(insuranceInfo).forEach((key) => {
+    let value = insuranceInfo[key];
+    if (key === 'has_insurance') {
+      formData.append(key, value ? '1' : '0');
+    } else if (value) {
+      formData.append(
+        key,
+        key === 'valid_until' ? this.formatDate(value) : value
+      );
+    }
+  });
+
+  // ✅ File is guaranteed here
+  formData.append('history_file', this.selectedFile);
+
+  this.patientService.addPartient(formData).subscribe({
+    next: (res) => {
+      this.loading = false;
+      this.snackBar.open('Patient saved successfully', 'Close', { duration: 4000 });
+      this.dialogRef.close(res);
+    },
+    error: (err) => {
+      this.loading = false;
+      this.snackBar.open(
+        err?.error?.message || 'Error occurred',
+        'Close',
+        { duration: 5000 }
+      );
+    },
+  });
+}
+
 
   onCancel() {
     this.dialogRef.close();
