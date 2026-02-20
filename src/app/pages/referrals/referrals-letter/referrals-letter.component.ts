@@ -31,33 +31,48 @@ export class ReferralsLetterComponent implements OnInit {
   referralID: string | null = null;
   referral: any = null;
 
-calculateAge(dobOrAge: string | number | null): string {
-  if (!dobOrAge) return 'N/A';
+// calculateAge(dobOrAge: string | number | null): string {
+//   if (!dobOrAge) return 'N/A';
 
-  // ✅ If backend already sends age (e.g. "6" or 6)
-  if (!isNaN(Number(dobOrAge))) {
-    const age = Number(dobOrAge);
-    return `${age} year${age !== 1 ? 's' : ''}`;
+  
+//   if (!isNaN(Number(dobOrAge))) {
+//     const age = Number(dobOrAge);
+//     return `${age} year${age !== 1 ? 's' : ''}`;
+//   }
+
+
+//   const dob = new Date(dobOrAge as string);
+//   if (isNaN(dob.getTime())) return 'N/A';
+
+//   const today = new Date();
+//   let age = today.getFullYear() - dob.getFullYear();
+//   const monthDiff = today.getMonth() - dob.getMonth();
+
+//   if (
+//     monthDiff < 0 ||
+//     (monthDiff === 0 && today.getDate() < dob.getDate())
+//   ) {
+//     age--;
+//   }
+
+//   return `${age} year${age !== 1 ? 's' : ''}`;
+// }
+
+formatAge(ageDetails: any): string {
+  if (!ageDetails) return 'N/A';
+
+  const { years, months, days } = ageDetails;
+
+  if (years > 0) {
+    return `${years} year${years !== 1 ? 's' : ''}`;
   }
 
-  // ✅ If backend sends date (e.g. "2021-06-09")
-  const dob = new Date(dobOrAge as string);
-  if (isNaN(dob.getTime())) return 'N/A';
-
-  const today = new Date();
-  let age = today.getFullYear() - dob.getFullYear();
-  const monthDiff = today.getMonth() - dob.getMonth();
-
-  if (
-    monthDiff < 0 ||
-    (monthDiff === 0 && today.getDate() < dob.getDate())
-  ) {
-    age--;
+  if (months > 0) {
+    return `${months} month${months !== 1 ? 's' : ''}`;
   }
 
-  return `${age} year${age !== 1 ? 's' : ''}`;
+  return `${days} day${days !== 1 ? 's' : ''}`;
 }
-
 
 
   constructor(
@@ -68,6 +83,7 @@ calculateAge(dobOrAge: string | number | null): string {
 
   email = 'info@mohz.go.tz'
   dg = 'dg@mohz.go.tz'
+  katibu= 'ps@mohz.go.tz'
 
   ngOnInit(): void {
   console.log("Injected dialog data:", this.data);

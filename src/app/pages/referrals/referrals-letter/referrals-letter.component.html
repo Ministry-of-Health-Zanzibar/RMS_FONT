@@ -1,8 +1,9 @@
 <div
   id="print-section"
   *ngIf="referral"
-  class="p-10 bg-white shadow-lg rounded-lg max-w-4xl mx-auto text-gray-900"
+  class="p-10 bg-white rounded-lg text-gray-900 print:ml-40 print:w-[70%]"
 >
+
   <div class="flex justify-center mb-4">
     <img src="../../../../assets/img/smz.png" alt="" class="w-auto h-24" />
   </div>
@@ -57,11 +58,15 @@
   </div>
 
   <div class="mb-4 text-center">
-    <p class="font-semibold uppercase">
-      Kuh: KUMPATIA MATIBABU MGONJWA {{ referral.patient?.name || "N/A" }} {{ calculateAge(referral.patient?.date_of_birth) }}
+  <p class="font-semibold uppercase">
+    Kuh: KUMPATIA MATIBABU MGONJWA
+    {{ referral.patient?.name || "N/A" }}
+    {{ formatAge(referral.patient?.age_details) }}
+  </p>
+</div>
 
-    </p>
-  </div>
+
+
 
   <div class="space-y-3 text-sm">
     <p>Tafadhali naomba uhusike na mada ya hapo juu.</p>
@@ -85,6 +90,7 @@
       Aidha Wizara ya Afya inaomba ripoti kamili iwasilishwe mwishoni mwa
       matibabu.
     </p>
+    <p>Kumbukumbu zake za matibabu zimeambatanishwa kwa urahisi wa kurejea.</p>
     <p>Naomba kuwasiliana kwa hatua.</p>
     <p><strong>Ahsante,</strong></p>
   </div>
@@ -102,7 +108,7 @@
   <div class="text-xs text-gray-600 text-center">
     <p><em><strong>Kwa mawasiliano ya moja kwa moja:</strong></em></p>
     <p>
-      Waziri ..........., Katibu Mkuu .........., Mkurugenzi Mkuu barua pepe:
+      Waziri ....., Katibu Mkuu {{katibu}} , Mkurugenzi Mkuu barua pepe:
       <a [href]="'mailto:' + (dg || 'dg@mohz.go.tz')" class="text-blue-600 hover:underline">
         {{ dg || "dg@mohz.go.tz" }}
       </a>

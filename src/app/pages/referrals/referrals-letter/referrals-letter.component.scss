@@ -11,4 +11,21 @@
       display: none;
     }
   }
+
+  @media print {
+  #print-section {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    width: 80% !important;
+  }
+}
+
+
+
+@media print {
+  body {
+    margin: 0;
+  }
+}
+
   

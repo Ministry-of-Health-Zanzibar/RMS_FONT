@@ -68,7 +68,7 @@ boardMembers: any[] = [];
 
   ngOnInit() {
     this.referralID = this.route.snapshot.paramMap.get('id');
-    console.log('inafika value', this.referralID);
+   // console.log('inafika value', this.referralID);
     if (this.referralID) {
       this.getMoreData();
     }
