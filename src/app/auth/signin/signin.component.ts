@@ -160,8 +160,6 @@ showChat=false;
   //   );
   // }
 
-  openSupportModal(){ this.showSupport=true; }
-toggleChat(){ this.showChat=!this.showChat; }
 
   loginSubmit() {
     this.loading = true;
