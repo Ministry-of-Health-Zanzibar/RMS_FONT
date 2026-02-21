@@ -51,6 +51,11 @@ export class SigninComponent implements OnInit {
   loginForm: any = FormGroup;
   loading = false;
   passwordVisible: boolean = false;
+  lang: 'en' | 'sw' = 'en';
+
+  showSupport=false;
+showChat=false;
+
 
   constructor(
     private formBuilder: FormBuilder,
@@ -154,6 +159,9 @@ export class SigninComponent implements OnInit {
   //     }
   //   );
   // }
+
+  openSupportModal(){ this.showSupport=true; }
+toggleChat(){ this.showChat=!this.showChat; }
 
   loginSubmit() {
     this.loading = true;

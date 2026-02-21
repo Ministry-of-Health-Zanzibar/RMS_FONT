@@ -1,138 +1,240 @@
-<div class="flex flex-wrap">
-  <div class="flex w-full flex-col md:w-1/2">
-    <div
-      class="lg:w-[30rem] mx-auto my-auto flex flex-col justify-center pt-8 md:justify-start md:px-6 md:pt-0"
-    >
-      <div class="container flex justify-center items-center">
-        <img src="../../../assets/img/smz.png" class="w-52" alt="smz" />
-      </div>
-    <h1 class="text-3xl font-bold text-center tracking-wide text-gray-800">
-        EXTERNAL REFERRAL SYSTEM
-      </h1>
+<div class="flex flex-wrap min-h-screen bg-gray-50">
 
-      <p class="mt-2 text-center text-gray-500 text-sm">
-        Welcome back, please enter your details
+<!-- LEFT DESCRIPTION -->
+<div
+  class="flex w-full md:w-1/2 items-center justify-center px-10
+  bg-gradient-to-br from-blue-50 via-white to-green-50"
+>
+
+<div class="fixed bottom-6 right-6 flex flex-col gap-3 z-50">
+
+  <!-- WHATSAPP -->
+  <a
+    href="https://wa.me/255777783420"
+    target="_blank"
+    class="support-btn whatsapp"
+  >
+    <mat-icon>whatsapp</mat-icon>
+  </a>
+
+
+
+</div>
+
+
+  <div class="max-w-lg animate-fadeIn">
+
+    <!-- FLOATING SUPPORT -->
+
+
+    <!-- HERO TITLE -->
+    <h1 class="text-4xl font-extrabold text-gray-900 leading-tight">
+      {{ lang === 'en'
+        ? 'External Referral System'
+        : 'Mfumo wa Rufaa za Nje' }}
+    </h1>
+
+    <!-- DESCRIPTION -->
+    <p class="mt-4 text-gray-600 text-lg">
+      {{
+        lang === 'en'
+          ? 'ERIS improves coordination of patient referrals between health facilities, ensuring faster treatment and better healthcare outcomes.'
+          : 'ERIS huboresha uratibu wa rufaa za wagonjwa kati ya vituo vya afya, kuhakikisha huduma za haraka na matokeo bora ya afya.'
+      }}
+    </p>
+
+    <!-- FEATURE BULLETS -->
+  <ul class="mt-6 space-y-4 font-extrabold text-gray-800 dark:text-gray-200">
+  <li class="flex items-center gap-3 animate-slide text-blue-600">
+    <mat-icon class="text-current">verified</mat-icon>
+    {{ lang === 'en'
+      ? 'Secure referral management'
+      : 'Usimamizi salama wa rufaa' }}
+  </li>
+
+  <li class="flex items-center gap-3 animate-slide delay-100 text-green-600">
+    <mat-icon class="text-current">schedule</mat-icon>
+    {{ lang === 'en'
+      ? 'Real-time referral tracking'
+      : 'Ufuatiliaji wa rufaa kwa wakati halisi' }}
+  </li>
+
+  <li class="flex items-center gap-3 animate-slide delay-200 text-red-600">
+    <mat-icon class="text-current">local_hospital</mat-icon>
+    {{ lang === 'en'
+      ? 'Improved hospital collaboration'
+      : 'Ushirikiano bora wa hospitali' }}
+  </li>
+
+  <li class="flex items-center gap-3 animate-slide delay-300 text-green-600">
+    <mat-icon class="text-current">description</mat-icon>
+    {{ lang === 'en'
+      ? 'Fast approval and documentation'
+      : 'Uidhinishaji na nyaraka za haraka' }}
+  </li>
+</ul>
+
+
+    <!-- USER MANUAL -->
+<div class="mt-8 text-left">
+  <a
+    href="assets/documents/User manual ERIS.pdf"
+    target="_blank"
+    class="inline-flex items-center gap-2 text-sm text-blue-600 hover:text-blue-800 hover:underline dark:text-blue-400"
+  >
+    <mat-icon class="text-base">description</mat-icon>
+    {{ lang === 'en' ? 'View User Manual' : 'Angalia Mwongozo wa Mtumiaji' }}
+  </a>
+</div>
+
+
+
+<div class="mt-8 p-6 rounded-xl bg-white/60 backdrop-blur border shadow-sm max-w-md">
+  <div class="flex flex-col gap-4 text-gray-800 dark:text-gray-200">
+
+    <!-- TITLE -->
+    <div class="flex items-center gap-3">
+      <mat-icon class="text-green-600">support_agent</mat-icon>
+      <p class="font-extrabold text-lg">
+        {{ lang === 'en' ? 'System Support' : 'Msaada wa Mfumo' }}
+      </p>
+    </div>
+
+    <!-- PRIMARY SUPPORT NUMBER → WhatsApp -->
+    <div class="flex items-center gap-2">
+      <mat-icon class="text-green-500">whatsapp</mat-icon>
+      <p class="text-sm font-extrabold text-gray-700 dark:text-gray-300">
+        {{ lang === 'en' ? 'Chat support on WhatsApp:' : 'Msaada kupitia WhatsApp:' }}
+        <a href="https://wa.me/255777783420" target="_blank" class="text-green-600 font-semibold hover:underline">
+          0777783420
+        </a>
+      </p>
+    </div>
+
+    <!-- BACKUP NUMBER → Call -->
+    <div class="flex items-center gap-2">
+      <mat-icon class="text-red-600">phone_disabled</mat-icon>
+      <p class="text-sm font-extrabold text-gray-700 dark:text-gray-300">
+        {{ lang === 'en' ? 'If system unavailable, call:' : 'Ikiwa mfumo haupatikani, piga namba:' }}
+        <a href="https://wa.me/255777783420" target="_blank" class="text-red-600 font-semibold hover:underline">
+          0676194199
+        </a>
+      </p>
+    </div>
+
+    <!-- EMAIL SUPPORT -->
+    <!-- <div class="flex items-center gap-2">
+      <mat-icon class="text-indigo-600">email</mat-icon>
+      <p class="text-sm font-extrabold text-gray-700 dark:text-gray-300">
+        {{ lang === 'en' ? 'Email:' : 'Barua pepe:' }}
+        <a href="mailto:support@eris.go.tz" class="text-indigo-600 font-semibold hover:underline">
+          support@eris.go.tz
+        </a>
+      </p>
+    </div> -->
+
+    <!-- SUPPORT HOURS -->
+    <div class="flex items-center gap-2 mt-3">
+      <mat-icon class="text-orange-600">schedule</mat-icon>
+      <p class="font-bold text-lg text-orange-600 dark:text-orange-400">
+        {{ lang === 'en' ? 'Support Hours: 08:00 a.m - 16:00 p.m' : 'Saa za msaada: 08:00 a.m - 16:00 p.m' }}
+      </p>
+    </div>
+    
+  </div>
+</div>
+
+
+
+
+
+
+
+
+    <!-- LANGUAGE SWITCH -->
+   <div class="mt-8 flex gap-3">
+  <button
+    (click)="lang='en'"
+    [ngClass]="{
+      'bg-green-600 text-white hover:bg-green-700': lang==='en',
+      'bg-white text-gray-800 hover:bg-gray-100': lang!=='en'
+    }"
+    class="px-4 py-2 rounded-lg border shadow font-extrabold transition"
+  >
+    English
+  </button>
+
+  <button
+    (click)="lang='sw'"
+    [ngClass]="{
+      'bg-blue-600 text-white hover:bg-blue-700': lang==='sw',
+      'bg-white text-gray-800 hover:bg-gray-100': lang!=='sw'
+    }"
+    class="px-4 py-2 rounded-lg border shadow font-extrabold transition"
+  >
+    Kiswahili
+  </button>
+</div>
+
+  </div>
+</div>
+
+
+  <!-- RIGHT LOGIN -->
+  <div class="flex w-full md:w-1/2 items-center justify-center">
+    <div
+      class="w-full max-w-md bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-gray-200 p-8"
+    >
+
+      <!-- LOGO -->
+      <div class="flex justify-center mb-4">
+        <div class="bg-gradient-to-br from-white to-gray-100 p-5 rounded-3xl shadow-lg border">
+          <img src="../../../assets/img/smz.png" class="w-44 drop-shadow-md" />
+        </div>
+      </div>
+
+      <!-- TITLE -->
+      <h2 class="text-2xl font-bold text-center text-gray-900">
+        Welcome Back
+      </h2>
+
+      <p class="text-center text-gray-500 text-sm mt-1">
+        Please login to continue
       </p>
 
-      <emr-h-divider class="mt-6 text-primary-600 font-semibold tracking-widest">
-        ERIS
-      </emr-h-divider>
+      <!-- FORM -->
+      <form class="flex flex-col pt-4" [formGroup]="loginForm">
 
-      <form class="flex flex-col pt-3 md:pt-8" [formGroup]="loginForm">
-        <mat-form-field>
+        <mat-form-field appearance="outline">
           <mat-label>Email</mat-label>
-          <input
-            type="email"
-            formControlName="email"
-            matInput
-            placeholder="Ex. someone@mohz.go.tz"
-          />
-          <button type="button" mat-icon-button matSuffix class="mr-1">
-            <mat-icon class="font-icon">email</mat-icon>
+          <input matInput formControlName="email" />
+          <button mat-icon-button matSuffix>
+            <mat-icon>email</mat-icon>
           </button>
-          <mat-error
-            *ngIf="
-              loginForm.controls.email.touched &&
-              loginForm.controls.email.invalid
-            "
-          >
-            <span *ngIf="loginForm.controls.email.errors.required"
-              >This field is mandatory</span
-            >
-            <span *ngIf="loginForm.controls.email.errors.pattern"
-              >This field is invalid (must be an email)</span
-            >
-          </mat-error>
         </mat-form-field>
-        <mat-form-field class="mt-2">
+
+        <mat-form-field appearance="outline" class="mt-3">
           <mat-label>Password</mat-label>
-          <input
-            [type]="passwordVisible ? 'text' : 'password'"
-            matInput
-            formControlName="password"
-          />
-          <!-- <a
-            routerLink="/auth/forgot-password"
-            matSuffix
-            class="mr-3 underline-offset-4 text-xs font-semibold text-neutral-800 dark:text-neutral-300 hover:underline hover:text-accent"
-            >Forgot?</a
-          > -->
-          <button
-            type="button"
-            mat-icon-button
-            matSuffix
-            class="mr-1"
-            (click)="togglePasswordVisibility()"
-            matTooltip="View Password"
-          >
-            <mat-icon class="font-icon">visibility</mat-icon>
+          <input [type]="passwordVisible ? 'text' : 'password'" matInput formControlName="password" />
+          <button mat-icon-button matSuffix (click)="togglePasswordVisibility()">
+            <mat-icon>visibility</mat-icon>
           </button>
-          <mat-error
-            *ngIf="
-              loginForm.controls.password.touched &&
-              loginForm.controls.password.invalid
-            "
-          >
-            <span *ngIf="loginForm.controls.password.errors.required"
-              >This field is mandatory</span
-            >
-          </mat-error>
         </mat-form-field>
-        <!-- <button mat-flat-button color="primary" (click)="loginSubmit()" 
-        [disabled]="!(loginForm.valid && loginForm.dirty)" type="submit" class="!h-12 mt-5">Log in</button> -->
 
         <button
           mat-flat-button
           color="primary"
-          class="!h-12 mt-5 flex items-center justify-center"
+          class="!h-12 mt-5 rounded-xl shadow-md hover:shadow-lg transition"
           [disabled]="loading || !loginForm.valid"
           (click)="loginSubmit()"
-          type="button"
         >
-          <ng-container *ngIf="!loading; else loadingTpl">
-            Log in
-          </ng-container>
-
+          <ng-container *ngIf="!loading; else loadingTpl">Log in</ng-container>
           <ng-template #loadingTpl>
-            <mat-progress-spinner
-              diameter="20"
-              color="accent"
-              mode="indeterminate"
-            ></mat-progress-spinner>
+            <mat-progress-spinner diameter="20" mode="indeterminate"></mat-progress-spinner>
           </ng-template>
         </button>
 
-        <!-- User Manual Link - Added here -->
-        <div class="mt-4 text-center">
-          <a
-            href="assets/documents/User manual ERIS.pdf"
-            target="_blank"
-            class="inline-flex items-center text-sm text-blue-600 hover:text-blue-800 hover:underline dark:text-blue-400"
-          >
-            <mat-icon
-              class="mr-1 text-base"
-              style="font-size: 16px; height: 16px; width: 16px"
-              >description</mat-icon
-            >
-            View User Manual
-          </a>
-        </div>
       </form>
-      <emr-h-divider class="mt-8"
-        >© 2025 ICT (Ministry of Health)</emr-h-divider
-      >
     </div>
-  </div>
-  <div
-    class="pointer-events-none relative hidden h-screen select-none bg-black md:block md:w-1/2"
-  >
-    <div class="absolute bottom-0 z-10 px-16 py-12 text-white opacity-100">
-      <p class="">All right reserved,</p>
-      <p class="mb-7 text-sm opacity-70">ICT Department</p>
-    </div>
-    <img
-      class="-z-1 absolute top-0 h-full w-full object-cover opacity-90"
-      src="../../../assets/img/domore.jpg"
-    />
   </div>
 </div>
