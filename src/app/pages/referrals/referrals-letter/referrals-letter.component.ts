@@ -64,14 +64,14 @@ formatAge(ageDetails: any): string {
   const { years, months, days } = ageDetails;
 
   if (years > 0) {
-    return `${years} year${years !== 1 ? 's' : ''}`;
+    return `MIAKA ${years} ${years !== 1 ? '' : ''}`;
   }
 
   if (months > 0) {
-    return `${months} month${months !== 1 ? 's' : ''}`;
+    return `MIEZI ${months} ${months !== 1 ? '' : ''}`;
   }
 
-  return `${days} day${days !== 1 ? 's' : ''}`;
+  return `SIKU ${days} ${days !== 1 ? '' : ''}`;
 }
 
 

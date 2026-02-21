@@ -14,8 +14,9 @@
 
     <div class="grid grid-cols-2 gap-4 text-sm text-left">
       <div>
-        <p>6 Barabara ya Health Office, S.L.P 236 MNANZIMMOJA</p>
-        <p>POSTIKODI: 70467 Mjini Magharibi Zanzibar</p>
+        <p>6 Barabara ya Health Office</p>
+        <p>S.L.P 236 MNANZIMMOJA</p>
+        <p>POSTIKODI 70467 Mjini Magharibi Zanzibar</p>
       </div>
       <div class="text-right">
         <p>
@@ -37,10 +38,10 @@
     </div>
   </div>
 
-  <hr />
+  <hr style="border-top: 3px solid black;" />
 
   <div class="flex justify-between text-sm font-medium my-4">
-    <p>KUMB: CDA.25/254/01</p>
+    <p style="font-weight:bold ;">KUMB: CDA.25/254/01</p>
     <p class="font-semibold uppercase">
       TAREHE: {{ referral.referral_letters?.start_date || 'N/A' | date:'dd-MM-yyyy' }}
     </p>
@@ -51,7 +52,7 @@
     <p class="font-semibold uppercase">
       {{ referral.hospital?.hospital_name || "N/A" }},
     </p>
-    <p class="font-semibold uppercase">
+    <p class="font-semibold uppercase underline decoration-2">
       {{ referral.hospital?.hospital_address || "N/A" }}
     </p>
     
@@ -60,7 +61,7 @@
   <div class="mb-4 text-center">
   <p class="font-semibold uppercase">
     Kuh: KUMPATIA MATIBABU MGONJWA
-    {{ referral.patient?.name || "N/A" }}
+    {{ referral.patient?.name || "N/A" }} <br>
     {{ formatAge(referral.patient?.age_details) }}
   </p>
 </div>
@@ -96,22 +97,23 @@
   </div>
 
   <div class="mt-8">
-    <p class="font-semibold">DKT. AMOUR S. MOHAMED</p>
-    <p class="font-semibold">MKURUGENZI MKUU</p>
-    <p class="font-semibold">WIZARA YA AFYA</p>
-    <p class="font-semibold">ZANZIBAR</p>
+    <p class="font-semibold">DKT. AMOUR S. MOHAMED,</p>
+    <p class="font-semibold">MKURUGENZI MKUU,</p>
+    <p class="font-semibold">WIZARA YA AFYA,</p>
+   <p class="font-semibold underline decoration-2">ZANZIBAR</p>
+
   </div>
 
-  <mat-divider class="my-6"></mat-divider>
+  <hr style="border-top: 3px solid black;" />
+
 
   <!-- Footer Info -->
   <div class="text-xs text-gray-600 text-center">
     <p><em><strong>Kwa mawasiliano ya moja kwa moja:</strong></em></p>
     <p>
-      Waziri ....., Katibu Mkuu {{katibu}} , Mkurugenzi Mkuu barua pepe:
-      <a [href]="'mailto:' + (dg || 'dg@mohz.go.tz')" class="text-blue-600 hover:underline">
+      Waziri ..........., Katibu Mkuu {{katibu}} , Mkurugenzi Mkuu barua pepe</p>
+      <p>
         {{ dg || "dg@mohz.go.tz" }}
-      </a>
     </p>
   </div>
 
