@@ -119,21 +119,21 @@
       <!-- Status -->
   <ng-container matColumnDef="latest_history">
   <th mat-header-cell *matHeaderCellDef>Status</th>
-  <td mat-cell *matCellDef="let p">
+   <td mat-cell *matCellDef="let p">
     <span
       class="px-3 py-1 rounded-full text-white"
       [ngClass]="{
         'bg-gray-400': !p.latest_history?.status,   
-        'bg-green-600': p.latest_history?.status === 'pending',
-        'bg-yellow-500': p.latest_history?.status === 'reviewed',
-        'bg-red-600': p.latest_history?.status === 'requested',
-        'bg-blue-600': p.latest_history?.status === 'approved',
-        'bg-indigo-600': p.latest_history?.status === 'confirmed',
-        'bg-red-800': p.latest_history?.status === 'rejected',
+        'bg-yellow-500': p.latest_history?.status === 'pending',
+        'bg-yellow-600': p.latest_history?.status === 'reviewed',
+        'bg-blue-600': p.latest_history?.status === 'requested',
+        'bg-green-600': p.latest_history?.status === 'approved',
+        'bg-green-400': p.latest_history?.status === 'confirmed',
+        'bg-red-600': p.latest_history?.status === 'rejected',
         'bg-green-800': p.latest_history?.status === 'assigned'
       }"
     >
-      {{ p.latest_history?.status?.toUpperCase() || 'N/A' }}
+      {{ p.latest_history?.status || 'N/A' }}
     </span>
   </td>
 </ng-container>

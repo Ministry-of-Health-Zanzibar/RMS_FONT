@@ -88,8 +88,41 @@ export class ViewReferralsComponent implements OnInit, OnDestroy {
     this.getReferrals();
   }
 
- getReferrals() {
+//  getReferrals() {
+//   this.loading = true;
+//   this.referralService
+//     .getAllRefferal()
+//     .pipe(takeUntil(this.onDestroy))
+//     .subscribe(
+//       (response: any) => {
+//         this.loading = false;
+
+//         let dataToShow: any[] = [];
+
+//         if (response && Array.isArray(response.data)) {
+//           dataToShow = [...response.data].reverse();
+//         } else if (Array.isArray(response)) {
+//           dataToShow = [...response].reverse();
+//         } else {
+//           console.warn('Unexpected response format:', response);
+//           return;
+//         }
+
+//         this.dataSource = new MatTableDataSource(dataToShow);
+//         this.dataSource.paginator = this.paginator;
+//         this.dataSource.sort = this.sort;
+//       },
+//       (error) => {
+//         this.loading = false;
+//         console.error('Failed to load referrals.', error);
+//         this.router.navigateByUrl('/');
+//       }
+//     );
+// }
+
+getReferrals() {
   this.loading = true;
+
   this.referralService
     .getAllRefferal()
     .pipe(takeUntil(this.onDestroy))
@@ -100,9 +133,9 @@ export class ViewReferralsComponent implements OnInit, OnDestroy {
         let dataToShow: any[] = [];
 
         if (response && Array.isArray(response.data)) {
-          dataToShow = [...response.data].reverse();
+          dataToShow = [...response.data]; // removed reverse()
         } else if (Array.isArray(response)) {
-          dataToShow = [...response].reverse();
+          dataToShow = [...response]; // removed reverse()
         } else {
           console.warn('Unexpected response format:', response);
           return;
@@ -110,7 +143,8 @@ export class ViewReferralsComponent implements OnInit, OnDestroy {
 
         this.dataSource = new MatTableDataSource(dataToShow);
         this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
+
+        // ❌ removed this.dataSource.sort = this.sort;
       },
       (error) => {
         this.loading = false;
