@@ -157,8 +157,10 @@ export class PatiantComponent {
     const config = new MatDialogConfig();
     config.disableClose = false;
     config.role = 'dialog';
-    config.maxHeight = '98vh';
-    config.width = '850px';
+    config.width = '80vw'; // full viewport width
+    config.height = '80vh'; // full viewport height
+    config.maxWidth = '80vw'; // override default 80%
+
     config.panelClass = 'full-screen-modal';
 
     config.data = { patient: patientData };

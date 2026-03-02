@@ -22,8 +22,6 @@ export class PartientService {
 
   private addMultiple = `${this.baseUrl}patient-lists/assign-patients`;
 
-
-
   constructor(private http: HttpClient) {}
   //body list
   public getAllBodyList(): Observable<any> {
@@ -70,8 +68,8 @@ export class PartientService {
   // public addPartient(Partient: any): Observable<any> {
   //   return this.http.post(this.href, Partient);
   // }
-  public addPartient(Partient: any):Observable<any>{
-    return this.http.post(`${this.href}/storePatientAndHistory`,Partient)
+  public addPartient(Partient: any): Observable<any> {
+    return this.http.post(`${this.href}/storePatientAndHistory`, Partient);
   }
 
   //  public addPartient(Partient: any): Observable<any> {
@@ -87,35 +85,41 @@ export class PartientService {
   }
 
   updateStatus(id: any, payload: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}patient-histories/update-status/${id}`, payload);
+    return this.http.post(
+      `${this.baseUrl}patient-histories/update-status/${id}`,
+      payload,
+    );
   }
 
-public forwardToDG(id: number, comment: any): Observable<any> {
-  return this.http.put(
-    `${this.baseUrl}patient-histories/${id}/mkurugenzi-tiba`,
-    comment
-  );
-}
+  public forwardToDG(id: number, comment: any): Observable<any> {
+    return this.http.put(
+      `${this.baseUrl}patient-histories/${id}/mkurugenzi-tiba`,
+      comment,
+    );
+  }
 
+  public showForUpdate(patientId: number): Observable<any> {
+    return this.http.get(`${this.hrefe}patients/showForUpdate/${patientId}`);
+  }
+
+
+  updatePatient(patient_id: number, data: FormData) {
+  return this.http.post(`${this.hrefe}patients/updatePatientAndHistory/${patient_id}`,data);
+}
 
   //   public forwardToDG( id: number,comment: any): Observable<any> {
   //   return this.http.put(`${this.baseUrl}patient-histories/${id}/mkurugenzi-tiba`, comment);
   // }
 
-//   public forwardToDG(patientHistoryId: number, comments: string) {
-//   const formData = new FormData();
-//   formData.append('mkurugenzi_tiba_comments', comments);
+  //   public forwardToDG(patientHistoryId: number, comments: string) {
+  //   const formData = new FormData();
+  //   formData.append('mkurugenzi_tiba_comments', comments);
 
-//   return this.http.put(
-//     `${this.baseUrl}patient-histories/${patientHistoryId}/mkurugenzi-tiba`,
-//     formData
-//   );
-// }
-
-
-
-
-
+  //   return this.http.put(
+  //     `${this.baseUrl}patient-histories/${patientHistoryId}/mkurugenzi-tiba`,
+  //     formData
+  //   );
+  // }
 
   public deletePatients(id: any): Observable<any> {
     return this.http.delete(`${this.href}/${id}`);
@@ -136,27 +140,25 @@ public forwardToDG(id: number, comment: any): Observable<any> {
   //   return this.http.post(`${this.href}/update/${id}`, patient);
   // }
 
-
   public updatePartient(patient: any, id: number): Observable<any> {
     return this.http.post(`${this.href}/update/${id}`, patient);
   }
-//   public addMultiplePartient(patient: any, id: number): Observable<any> {
-//   return this.http.post(`${this.baseUrl}patient-lists/assign-patients/${id}`, patient);
+  //   public addMultiplePartient(patient: any, id: number): Observable<any> {
+  //   return this.http.post(`${this.baseUrl}patient-lists/assign-patients/${id}`, patient);
 
-// }
+  // }
 
-
-    public addMultiplePartient(patient: any, id: number): Observable<any> {
+  public addMultiplePartient(patient: any, id: number): Observable<any> {
     return this.http.post(`${this.addMultiple}/${id}`, patient);
   }
 
   public updateMedicalBoard(
     patient: any,
-    patient_list_id: any
+    patient_list_id: any,
   ): Observable<any> {
     return this.http.post(
       `${this.baseForBoard}/update/${patient_list_id}`,
-      patient
+      patient,
     );
   }
 
@@ -178,7 +180,7 @@ public forwardToDG(id: number, comment: any): Observable<any> {
           }
         } else if (event.type === HttpEventType.Response) {
         }
-      })
+      }),
     );
   }
   // public getPatientInsurances(): Observable<any> {
@@ -192,18 +194,17 @@ public forwardToDG(id: number, comment: any): Observable<any> {
   }
 
   public searchPatientEligibility(payload: any) {
-  return this.http.post(
-    `${environment.baseUrl}patients/search-eligibility`,
-    payload
-  );
-}
+    return this.http.post(
+      `${environment.baseUrl}patients/search-eligibility`,
+      payload,
+    );
+  }
 
-//  For get method
-// public searchPatientEligibility(params: any) {
-//   return this.http.get(
-//     `${environment.baseUrl}patients/search-eligibility`,
-//     { params }
-//   );
-// }
-
+  //  For get method
+  // public searchPatientEligibility(params: any) {
+  //   return this.http.get(
+  //     `${environment.baseUrl}patients/search-eligibility`,
+  //     { params }
+  //   );
+  // }
 }

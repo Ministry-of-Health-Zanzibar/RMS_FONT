@@ -6,6 +6,7 @@ import {
   Validators,
   ReactiveFormsModule,
   FormControl,
+  FormArray,
 } from '@angular/forms';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatButtonModule } from '@angular/material/button';
@@ -56,9 +57,9 @@ export class PartientFormComponent implements OnInit {
   patientForm!: FormGroup;
   loading = false;
   isEligible = false;
-  
-fileError: string = '';
-
+  id: any;
+  fileError: string = '';
+  isEditMode = false;
   selectedFile: File | null = null;
   locations: any[] = [];
   reasonList: any[] = [];
@@ -75,22 +76,33 @@ fileError: string = '';
     private diagnosisService: DiagnosisService,
     private snackBar: MatSnackBar,
     public dialogRef: MatDialogRef<PartientFormComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
   ) {}
 
-  ngOnInit(): void {
-    this.initForm();
-    this.loadLocations();
-    this.loadReasons();
-    this.loadDiagnoses();
-    this.listenToMatibabuCard();
+
+ ngOnInit(): void {
+  this.initForm();
+  this.loadLocations();
+  this.loadReasons();
+  this.loadDiagnoses();
+
+  if (this.data?.patient?.patient_id) {
+     this.isEditMode = true;
+    this.id = this.data.patient.patient_id;
+    this.getPatientById(this.id);
+  } else {
+    this.listenToMatibabuCard(); 
   }
+}
 
   private initForm() {
     this.patientForm = this.fb.group({
       basicInfo: this.fb.group({
         name: ['', Validators.required],
-        matibabu_card: ['', [Validators.required, Validators.pattern(/^\d{12}$/)]],
+        matibabu_card: [
+          '',
+          [Validators.required, Validators.pattern(/^\d{12}$/)],
+        ],
         zan_id: ['', [Validators.pattern(/^\d{9}$/)]],
         date_of_birth: ['', Validators.required],
         gender: ['', Validators.required],
@@ -100,15 +112,15 @@ fileError: string = '';
         position: [''],
       }),
       historyInfo: this.fb.group({
-        file_number: ['',Validators.required],
+        file_number: ['', Validators.required],
         referring_date: ['', Validators.required],
         reason_id: ['', Validators.required],
-        diagnosis_ids: [[],Validators.required],
+        diagnosis_ids: [[], Validators.required],
         case_type: ['Routine', Validators.required],
-        history_of_presenting_illness: ['',Validators.required],
-        physical_findings: ['',Validators.required],
-        investigations: ['',Validators.required],
-        management_done: ['',Validators.required],
+        history_of_presenting_illness: ['', Validators.required],
+        physical_findings: ['', Validators.required],
+        investigations: ['', Validators.required],
+        management_done: ['', Validators.required],
       }),
       insuranceInfo: this.fb.group({
         has_insurance: [false],
@@ -118,6 +130,77 @@ fileError: string = '';
       }),
     });
   }
+
+ getPatientById(id: any) {
+  if (!id) return;
+
+  this.patientService.showForUpdate(id).subscribe({
+    next: (response: any) => {
+      if (!response?.data) return;
+
+      const patient = response.data.patient;
+      const history = response.data.history;
+      const insurance = response.data.insurance;
+
+      // ✅ PATCH NESTED FORM STRUCTURE
+      this.patientForm.patchValue({
+        basicInfo: {
+          name: patient?.name || '',
+          matibabu_card: patient?.matibabu_card || '',
+          zan_id: patient?.zan_id || '',
+          date_of_birth: patient?.date_of_birth
+            ? new Date(patient.date_of_birth)
+            : '',
+          gender: patient?.gender || '',
+          phone: patient?.phone || '',
+          job: patient?.job || '',
+          position: patient?.position || '',
+          location_id: patient?.location_details?.location_id
+            ? Number(patient.location_details.location_id)
+            : null,
+        },
+
+        historyInfo: {
+          file_number: history?.file_number || '',
+          referring_date: history?.referring_date
+            ? new Date(history.referring_date)
+            : '',
+          case_type: history?.case_type || 'Routine',
+          history_of_presenting_illness:
+            history?.history_of_presenting_illness || '',
+          physical_findings: history?.physical_findings || '',
+          investigations: history?.investigations || '',
+          management_done: history?.management_done || '',
+          reason_id: history?.reason_details?.reason_id || '',
+        },
+
+        insuranceInfo: {
+          has_insurance: insurance?.has_insurance || false,
+          insurance_provider_name:
+            insurance?.insurance_provider_name || '',
+          card_number: insurance?.card_number || '',
+          valid_until: insurance?.valid_until
+            ? new Date(insurance.valid_until)
+            : '',
+        },
+      });
+
+      // ✅ HANDLE DIAGNOSES (you are using diagnosis_ids array, not FormArray)
+      if (history?.diagnoses?.length) {
+        this.selectedDiagnoses = history.diagnoses;
+
+        this.patientForm
+          .get('historyInfo.diagnosis_ids')
+          ?.setValue(
+            history.diagnoses.map((d: any) => d.diagnosis_id)
+          );
+      }
+    },
+    error: (err) => {
+      console.error('Error loading patient:', err);
+    },
+  });
+}
 
   allowOnlyNumbers(event: KeyboardEvent) {
     if (!/^[0-9]$/.test(event.key)) {
@@ -140,43 +223,62 @@ fileError: string = '';
   }
 
   private clearBasicInfo() {
-    this.patientForm.get('basicInfo')?.patchValue({
-      name: '',
-      zan_id: '',
-      date_of_birth: '',
-      gender: '',
-      phone: '',
-      location_id: null,
-      job: '',
-      position: '',
-    }, { emitEvent: false });
+    this.patientForm.get('basicInfo')?.patchValue(
+      {
+        name: '',
+        zan_id: '',
+        date_of_birth: '',
+        gender: '',
+        phone: '',
+        location_id: null,
+        job: '',
+        position: '',
+      },
+      { emitEvent: false },
+    );
   }
 
   private checkEligibility(matibabuCard: string) {
-    this.patientService.searchPatientEligibility({ matibabu_card: matibabuCard }).subscribe({
-      next: (res: any) => {
-        const patient = res.data;
-        this.isEligible = res.success === false;
-        
-        this.snackBar.open(res.message || 'Patient found', 'Close', { duration: 4000 });
+    this.patientService
+      .searchPatientEligibility({ matibabu_card: matibabuCard })
+      .subscribe({
+        next: (res: any) => {
+          const patient = res.data;
+          this.isEligible = res.success === false;
 
-        this.patientForm.get('basicInfo')?.patchValue({
-          name: patient?.name || '',
-          zan_id: patient?.zan_id || '',
-          date_of_birth: patient?.date_of_birth ? new Date(patient.date_of_birth) : '',
-          gender: patient?.gender ? (patient.gender.toLowerCase() === 'male' ? 'Male' : 'Female') : '',
-          phone: patient?.phone || '',
-          location_id: patient?.location_id ? Number(patient.location_id) : null,
-          job: patient?.job || '',
-          position: patient?.position || '',
-        });
-      },
-      error: (err) => {
-        this.isEligible = false;
-        this.clearBasicInfo();
-        this.snackBar.open(err?.error?.message || 'No patient found', 'Close', { duration: 4000 });
-      },
-    });
+          this.snackBar.open(res.message || 'Patient found', 'Close', {
+            duration: 4000,
+          });
+
+          this.patientForm.get('basicInfo')?.patchValue({
+            name: patient?.name || '',
+            zan_id: patient?.zan_id || '',
+            date_of_birth: patient?.date_of_birth
+              ? new Date(patient.date_of_birth)
+              : '',
+            gender: patient?.gender
+              ? patient.gender.toLowerCase() === 'male'
+                ? 'Male'
+                : 'Female'
+              : '',
+            phone: patient?.phone || '',
+            location_id: patient?.location_id
+              ? Number(patient.location_id)
+              : null,
+            job: patient?.job || '',
+            position: patient?.position || '',
+          });
+        },
+        error: (err) => {
+          this.isEligible = false;
+          this.clearBasicInfo();
+          this.snackBar.open(
+            err?.error?.message || 'No patient found',
+            'Close',
+            { duration: 4000 },
+          );
+        },
+      });
   }
 
   loadLocations() {
@@ -186,7 +288,9 @@ fileError: string = '';
   }
 
   loadReasons() {
-    this.reasonService.getAllReasons().subscribe((res) => (this.reasonList = res.data || []));
+    this.reasonService
+      .getAllReasons()
+      .subscribe((res) => (this.reasonList = res.data || []));
   }
 
   loadDiagnoses() {
@@ -203,53 +307,60 @@ fileError: string = '';
           return;
         }
         this.filteredDiagnoses = this.diagnosesList.filter((diag) =>
-          diag.diagnosis_name.toLowerCase().includes(search.toLowerCase())
+          diag.diagnosis_name.toLowerCase().includes(search.toLowerCase()),
         );
       });
   }
 
   addDiagnosis(diagnosis: any) {
-    const exists = this.selectedDiagnoses.find((d) => d.diagnosis_id === diagnosis.diagnosis_id);
+    const exists = this.selectedDiagnoses.find(
+      (d) => d.diagnosis_id === diagnosis.diagnosis_id,
+    );
     if (!exists) {
       this.selectedDiagnoses.push(diagnosis);
-      this.patientForm.get('historyInfo.diagnosis_ids')?.setValue(this.selectedDiagnoses.map((d) => d.diagnosis_id));
+      this.patientForm
+        .get('historyInfo.diagnosis_ids')
+        ?.setValue(this.selectedDiagnoses.map((d) => d.diagnosis_id));
     }
     this.diagnosisSearchCtrl.setValue('');
   }
 
   removeDiagnosis(diagnosis: any) {
-    this.selectedDiagnoses = this.selectedDiagnoses.filter((d) => d.diagnosis_id !== diagnosis.diagnosis_id);
-    this.patientForm.get('historyInfo.diagnosis_ids')?.setValue(this.selectedDiagnoses.map((d) => d.diagnosis_id));
+    this.selectedDiagnoses = this.selectedDiagnoses.filter(
+      (d) => d.diagnosis_id !== diagnosis.diagnosis_id,
+    );
+    this.patientForm
+      .get('historyInfo.diagnosis_ids')
+      ?.setValue(this.selectedDiagnoses.map((d) => d.diagnosis_id));
   }
 
- onFileSelected(event: Event) {
-  const file = (event.target as HTMLInputElement).files?.[0];
+  onFileSelected(event: Event) {
+    const file = (event.target as HTMLInputElement).files?.[0];
 
-  if (!file) {
-    this.selectedFile = null;
-    this.fileError = 'History file is required';
-    return;
+    if (!file) {
+      this.selectedFile = null;
+      this.fileError = 'History file is required';
+      return;
+    }
+
+    const maxSize = 1 * 1024 * 1024; // 1 MB
+
+    if (file.size > maxSize) {
+      Swal.fire({
+        icon: 'error',
+        title: 'File Too Large',
+        text: 'File must be less than 1 MB',
+      });
+
+      (event.target as HTMLInputElement).value = '';
+      this.selectedFile = null;
+      this.fileError = 'File must be less than 1 MB';
+      return;
+    }
+
+    this.selectedFile = file;
+    this.fileError = '';
   }
-
-  const maxSize = 1 * 1024 * 1024; // 1 MB
-
-  if (file.size > maxSize) {
-    Swal.fire({
-      icon: 'error',
-      title: 'File Too Large',
-      text: 'File must be less than 1 MB',
-    });
-
-    (event.target as HTMLInputElement).value = '';
-    this.selectedFile = null;
-    this.fileError = 'File must be less than 1 MB';
-    return;
-  }
-
-  this.selectedFile = file;
-  this.fileError = '';
-}
-
 
   // onFileSelected(event: any) {
   //   const file = event.target.files[0];
@@ -262,15 +373,90 @@ fileError: string = '';
     return date.toISOString().split('T')[0];
   }
 
- onSubmit() {
+  // onSubmit() {
+  //   if (this.patientForm.invalid) {
+  //     this.patientForm.markAllAsTouched();
+  //     return;
+  //   }
 
+   
+  //   if (!this.selectedFile) {
+  //     Swal.fire({
+  //       icon: 'error',
+  //       title: 'Missing File',
+  //       text: 'Please upload the History PDF file (Max 1MB)',
+  //     });
+  //     return;
+  //   }
+
+  //   this.loading = true;
+  //   const formData = new FormData();
+  //   const { basicInfo, historyInfo, insuranceInfo } = this.patientForm.value;
+
+   
+  //   Object.keys(basicInfo).forEach((key) => {
+  //     let value = basicInfo[key];
+  //     if (value !== null && value !== '') {
+  //       formData.append(
+  //         key,
+  //         key === 'date_of_birth' ? this.formatDate(value) : value,
+  //       );
+  //     }
+  //   });
+
+  //   Object.keys(historyInfo).forEach((key) => {
+  //     let value = historyInfo[key];
+  //     if (value !== null && value !== '') {
+  //       if (key === 'referring_date') {
+  //         formData.append(key, this.formatDate(value));
+  //       } else if (key === 'diagnosis_ids') {
+  //         value.forEach((id: any) => formData.append('diagnosis_ids[]', id));
+  //       } else {
+  //         formData.append(key, value);
+  //       }
+  //     }
+  //   });
+ 
+  //   Object.keys(insuranceInfo).forEach((key) => {
+  //     let value = insuranceInfo[key];
+  //     if (key === 'has_insurance') {
+  //       formData.append(key, value ? '1' : '0');
+  //     } else if (value) {
+  //       formData.append(
+  //         key,
+  //         key === 'valid_until' ? this.formatDate(value) : value,
+  //       );
+  //     }
+  //   });
+
+    
+  //   formData.append('history_file', this.selectedFile);
+
+  //   this.patientService.addPartient(formData).subscribe({
+  //     next: (res) => {
+  //       this.loading = false;
+  //       this.snackBar.open('Patient saved successfully', 'Close', {
+  //         duration: 4000,
+  //       });
+  //       this.dialogRef.close(res);
+  //     },
+  //     error: (err) => {
+  //       this.loading = false;
+  //       this.snackBar.open(err?.error?.message || 'Error occurred', 'Close', {
+  //         duration: 5000,
+  //       });
+  //     },
+  //   });
+  // }
+
+  onSubmit() {
   if (this.patientForm.invalid) {
     this.patientForm.markAllAsTouched();
     return;
   }
 
-  // ✅ NEW: File Required Validation
-  if (!this.selectedFile) {
+  // ✅ File only required in CREATE mode
+  if (!this.isEditMode && !this.selectedFile) {
     Swal.fire({
       icon: 'error',
       title: 'Missing File',
@@ -281,20 +467,23 @@ fileError: string = '';
 
   this.loading = true;
   const formData = new FormData();
-  const { basicInfo, historyInfo, insuranceInfo } = this.patientForm.value;
+  const { basicInfo, historyInfo, insuranceInfo } =
+    this.patientForm.value;
 
-  // Append Basic Info
+  // 🔹 Append Basic Info
   Object.keys(basicInfo).forEach((key) => {
     let value = basicInfo[key];
     if (value !== null && value !== '') {
       formData.append(
         key,
-        key === 'date_of_birth' ? this.formatDate(value) : value
+        key === 'date_of_birth'
+          ? this.formatDate(value)
+          : value,
       );
     }
   });
 
-  // Append History Info
+  // 🔹 Append History Info
   Object.keys(historyInfo).forEach((key) => {
     let value = historyInfo[key];
     if (value !== null && value !== '') {
@@ -302,7 +491,7 @@ fileError: string = '';
         formData.append(key, this.formatDate(value));
       } else if (key === 'diagnosis_ids') {
         value.forEach((id: any) =>
-          formData.append('diagnosis_ids[]', id)
+          formData.append('diagnosis_ids[]', id),
         );
       } else {
         formData.append(key, value);
@@ -310,7 +499,7 @@ fileError: string = '';
     }
   });
 
-  // Append Insurance Info
+  // 🔹 Append Insurance Info
   Object.keys(insuranceInfo).forEach((key) => {
     let value = insuranceInfo[key];
     if (key === 'has_insurance') {
@@ -318,18 +507,33 @@ fileError: string = '';
     } else if (value) {
       formData.append(
         key,
-        key === 'valid_until' ? this.formatDate(value) : value
+        key === 'valid_until'
+          ? this.formatDate(value)
+          : value,
       );
     }
   });
 
-  // ✅ File is guaranteed here
-  formData.append('history_file', this.selectedFile);
+  
+  if (this.selectedFile) {
+    formData.append('history_file', this.selectedFile);
+  }
 
-  this.patientService.addPartient(formData).subscribe({
+  
+  const request = this.isEditMode
+    ? this.patientService.updatePatient(this.id, formData)
+    : this.patientService.addPartient(formData);
+
+  request.subscribe({
     next: (res) => {
       this.loading = false;
-      this.snackBar.open('Patient saved successfully', 'Close', { duration: 4000 });
+      this.snackBar.open(
+        this.isEditMode
+          ? 'Patient updated successfully'
+          : 'Patient saved successfully',
+        'Close',
+        { duration: 4000 },
+      );
       this.dialogRef.close(res);
     },
     error: (err) => {
@@ -337,12 +541,11 @@ fileError: string = '';
       this.snackBar.open(
         err?.error?.message || 'Error occurred',
         'Close',
-        { duration: 5000 }
+        { duration: 5000 },
       );
     },
   });
 }
-
 
   onCancel() {
     this.dialogRef.close();
