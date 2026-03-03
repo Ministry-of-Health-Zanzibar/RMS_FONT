@@ -67,6 +67,9 @@ export class PartientFormComponent implements OnInit {
   diagnosisSearchCtrl = new FormControl('');
   filteredDiagnoses: any[] = [];
   selectedDiagnoses: any[] = [];
+  history_file?: string;
+  historyFileUrl: string | null = null;
+
 
   constructor(
     private fb: FormBuilder,
@@ -79,21 +82,22 @@ export class PartientFormComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) {}
 
+  ngOnInit(): void {
+    this.initForm();
+    this.loadLocations();
+    this.loadReasons();
+    this.loadDiagnoses();
 
- ngOnInit(): void {
-  this.initForm();
-  this.loadLocations();
-  this.loadReasons();
-  this.loadDiagnoses();
-
-  if (this.data?.patient?.patient_id) {
-     this.isEditMode = true;
-    this.id = this.data.patient.patient_id;
-    this.getPatientById(this.id);
-  } else {
-    this.listenToMatibabuCard(); 
+    if (this.data?.patient?.patient_id) {
+      this.isEditMode = true;
+      this.id = this.data.patient.patient_id;
+      this.getPatientById(this.id);
+    } else {
+      this.listenToMatibabuCard();
+    }
   }
-}
+
+  
 
   private initForm() {
     this.patientForm = this.fb.group({
@@ -131,7 +135,75 @@ export class PartientFormComponent implements OnInit {
     });
   }
 
- getPatientById(id: any) {
+  // getPatientById(id: any) {
+  //   if (!id) return;
+
+  //   this.patientService.showForUpdate(id).subscribe({
+  //     next: (response: any) => {
+  //       if (!response?.data) return;
+
+  //       const patient = response.data.patient;
+  //       const history = response.data.history;
+  //       const insurance = response.data.insurance;
+  //       const historyFile = response.data.history?.history_file;
+
+  //       this.patientForm.patchValue({
+  //         basicInfo: {
+  //           name: patient?.name || '',
+  //           matibabu_card: patient?.matibabu_card || '',
+  //           zan_id: patient?.zan_id || '',
+  //           date_of_birth: patient?.date_of_birth
+  //             ? new Date(patient.date_of_birth)
+  //             : '',
+  //           gender: patient?.gender || '',
+  //           phone: patient?.phone || '',
+  //           job: patient?.job || '',
+  //           position: patient?.position || '',
+  //           location_id: patient?.location_details?.location_id
+  //             ? Number(patient.location_details.location_id)
+  //             : null,
+  //         },
+
+  //         historyInfo: {
+  //           file_number: history?.file_number || '',
+  //           referring_date: history?.referring_date
+  //             ? new Date(history.referring_date)
+  //             : '',
+  //           case_type: history?.case_type || 'Routine',
+  //           history_of_presenting_illness:
+  //             history?.history_of_presenting_illness || '',
+  //           physical_findings: history?.physical_findings || '',
+  //           investigations: history?.investigations || '',
+  //           management_done: history?.management_done || '',
+  //           reason_id: history?.reason_details?.reason_id || '',
+            
+  //         },
+
+  //         insuranceInfo: {
+  //           has_insurance: insurance?.has_insurance || false,
+  //           insurance_provider_name: insurance?.insurance_provider_name || '',
+  //           card_number: insurance?.card_number || '',
+  //           valid_until: insurance?.valid_until
+  //             ? new Date(insurance.valid_until)
+  //             : '',
+  //         },
+  //       });
+
+  //       if (history?.diagnoses?.length) {
+  //         this.selectedDiagnoses = history.diagnoses;
+
+  //         this.patientForm
+  //           .get('historyInfo.diagnosis_ids')
+  //           ?.setValue(history.diagnoses.map((d: any) => d.diagnosis_id));
+  //       }
+  //     },
+  //     error: (err) => {
+  //       console.error('Error loading patient:', err);
+  //     },
+  //   });
+  // }
+
+  getPatientById(id: any) {
   if (!id) return;
 
   this.patientService.showForUpdate(id).subscribe({
@@ -142,7 +214,13 @@ export class PartientFormComponent implements OnInit {
       const history = response.data.history;
       const insurance = response.data.insurance;
 
-      // ✅ PATCH NESTED FORM STRUCTURE
+      // ✅ History file URL
+      const historyFile = response.data.history?.history_file;
+      console.log('History file URL:', historyFile);
+
+      // optional: save to property (utatumia HTML)
+      this.historyFileUrl = historyFile;
+
       this.patientForm.patchValue({
         basicInfo: {
           name: patient?.name || '',
@@ -176,8 +254,7 @@ export class PartientFormComponent implements OnInit {
 
         insuranceInfo: {
           has_insurance: insurance?.has_insurance || false,
-          insurance_provider_name:
-            insurance?.insurance_provider_name || '',
+          insurance_provider_name: insurance?.insurance_provider_name || '',
           card_number: insurance?.card_number || '',
           valid_until: insurance?.valid_until
             ? new Date(insurance.valid_until)
@@ -185,15 +262,12 @@ export class PartientFormComponent implements OnInit {
         },
       });
 
-      // ✅ HANDLE DIAGNOSES (you are using diagnosis_ids array, not FormArray)
       if (history?.diagnoses?.length) {
         this.selectedDiagnoses = history.diagnoses;
 
         this.patientForm
           .get('historyInfo.diagnosis_ids')
-          ?.setValue(
-            history.diagnoses.map((d: any) => d.diagnosis_id)
-          );
+          ?.setValue(history.diagnoses.map((d: any) => d.diagnosis_id));
       }
     },
     error: (err) => {
@@ -343,7 +417,7 @@ export class PartientFormComponent implements OnInit {
       return;
     }
 
-    const maxSize = 1 * 1024 * 1024; // 1 MB
+    const maxSize = 1 * 1024 * 1024;
 
     if (file.size > maxSize) {
       Swal.fire({
@@ -362,11 +436,6 @@ export class PartientFormComponent implements OnInit {
     this.fileError = '';
   }
 
-  // onFileSelected(event: any) {
-  //   const file = event.target.files[0];
-  //   this.selectedFile = file ? file : null;
-  // }
-
   private formatDate(value: any): string {
     if (!value) return '';
     const date = new Date(value);
@@ -379,7 +448,6 @@ export class PartientFormComponent implements OnInit {
   //     return;
   //   }
 
-   
   //   if (!this.selectedFile) {
   //     Swal.fire({
   //       icon: 'error',
@@ -393,7 +461,6 @@ export class PartientFormComponent implements OnInit {
   //   const formData = new FormData();
   //   const { basicInfo, historyInfo, insuranceInfo } = this.patientForm.value;
 
-   
   //   Object.keys(basicInfo).forEach((key) => {
   //     let value = basicInfo[key];
   //     if (value !== null && value !== '') {
@@ -416,7 +483,7 @@ export class PartientFormComponent implements OnInit {
   //       }
   //     }
   //   });
- 
+
   //   Object.keys(insuranceInfo).forEach((key) => {
   //     let value = insuranceInfo[key];
   //     if (key === 'has_insurance') {
@@ -429,7 +496,6 @@ export class PartientFormComponent implements OnInit {
   //     }
   //   });
 
-    
   //   formData.append('history_file', this.selectedFile);
 
   //   this.patientService.addPartient(formData).subscribe({
@@ -450,102 +516,87 @@ export class PartientFormComponent implements OnInit {
   // }
 
   onSubmit() {
-  if (this.patientForm.invalid) {
-    this.patientForm.markAllAsTouched();
-    return;
-  }
-
-  // ✅ File only required in CREATE mode
-  if (!this.isEditMode && !this.selectedFile) {
-    Swal.fire({
-      icon: 'error',
-      title: 'Missing File',
-      text: 'Please upload the History PDF file (Max 1MB)',
-    });
-    return;
-  }
-
-  this.loading = true;
-  const formData = new FormData();
-  const { basicInfo, historyInfo, insuranceInfo } =
-    this.patientForm.value;
-
-  // 🔹 Append Basic Info
-  Object.keys(basicInfo).forEach((key) => {
-    let value = basicInfo[key];
-    if (value !== null && value !== '') {
-      formData.append(
-        key,
-        key === 'date_of_birth'
-          ? this.formatDate(value)
-          : value,
-      );
+    if (this.patientForm.invalid) {
+      this.patientForm.markAllAsTouched();
+      return;
     }
-  });
 
-  // 🔹 Append History Info
-  Object.keys(historyInfo).forEach((key) => {
-    let value = historyInfo[key];
-    if (value !== null && value !== '') {
-      if (key === 'referring_date') {
-        formData.append(key, this.formatDate(value));
-      } else if (key === 'diagnosis_ids') {
-        value.forEach((id: any) =>
-          formData.append('diagnosis_ids[]', id),
+    if (!this.isEditMode && !this.selectedFile) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Missing File',
+        text: 'Please upload the History PDF file (Max 1MB)',
+      });
+      return;
+    }
+
+    this.loading = true;
+    const formData = new FormData();
+    const { basicInfo, historyInfo, insuranceInfo } = this.patientForm.value;
+
+    Object.keys(basicInfo).forEach((key) => {
+      let value = basicInfo[key];
+      if (value !== null && value !== '') {
+        formData.append(
+          key,
+          key === 'date_of_birth' ? this.formatDate(value) : value,
         );
-      } else {
-        formData.append(key, value);
       }
-    }
-  });
+    });
 
-  // 🔹 Append Insurance Info
-  Object.keys(insuranceInfo).forEach((key) => {
-    let value = insuranceInfo[key];
-    if (key === 'has_insurance') {
-      formData.append(key, value ? '1' : '0');
-    } else if (value) {
-      formData.append(
-        key,
-        key === 'valid_until'
-          ? this.formatDate(value)
-          : value,
-      );
-    }
-  });
+    Object.keys(historyInfo).forEach((key) => {
+      let value = historyInfo[key];
+      if (value !== null && value !== '') {
+        if (key === 'referring_date') {
+          formData.append(key, this.formatDate(value));
+        } else if (key === 'diagnosis_ids') {
+          value.forEach((id: any) => formData.append('diagnosis_ids[]', id));
+        } else {
+          formData.append(key, value);
+        }
+      }
+    });
 
-  
-  if (this.selectedFile) {
-    formData.append('history_file', this.selectedFile);
+    Object.keys(insuranceInfo).forEach((key) => {
+      let value = insuranceInfo[key];
+      if (key === 'has_insurance') {
+        formData.append(key, value ? '1' : '0');
+      } else if (value) {
+        formData.append(
+          key,
+          key === 'valid_until' ? this.formatDate(value) : value,
+        );
+      }
+    });
+
+    if (this.selectedFile) {
+      formData.append('history_file', this.selectedFile);
+    }
+
+    const request = this.isEditMode
+      ? this.patientService.updatePatient(this.id, formData)
+      : this.patientService.addPartient(formData);
+
+    request.subscribe({
+      next: (res) => {
+        this.loading = false;
+        this.snackBar.open(
+          this.isEditMode
+            ? 'Patient updated successfully'
+            : 'Patient saved successfully',
+          'Close',
+          { duration: 4000 },
+        );
+        this.dialogRef.close(res);
+      },
+      error: (err) => {
+        this.loading = false;
+        this.snackBar.open(err?.error?.message || 'Error occurred', 'Close', {
+          duration: 5000,
+        });
+      },
+    });
   }
-
-  
-  const request = this.isEditMode
-    ? this.patientService.updatePatient(this.id, formData)
-    : this.patientService.addPartient(formData);
-
-  request.subscribe({
-    next: (res) => {
-      this.loading = false;
-      this.snackBar.open(
-        this.isEditMode
-          ? 'Patient updated successfully'
-          : 'Patient saved successfully',
-        'Close',
-        { duration: 4000 },
-      );
-      this.dialogRef.close(res);
-    },
-    error: (err) => {
-      this.loading = false;
-      this.snackBar.open(
-        err?.error?.message || 'Error occurred',
-        'Close',
-        { duration: 5000 },
-      );
-    },
-  });
-}
 
   onCancel() {
     this.dialogRef.close();

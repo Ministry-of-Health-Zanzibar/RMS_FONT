@@ -10,6 +10,7 @@ import { SeoService } from '@elementar/components';
 import { PageLoadingBarComponent } from '@elementar/components';
 import { InactivityTrackerService } from '@elementar/components';
 
+
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -64,6 +65,10 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  //    if (localStorage.getItem('isLogin') === 'true') {
+  //   this.inactivityService.startWatching();
+  // }
+
     this._themeManager.setColorScheme(this._themeManager.getPreferredColorScheme());
 
     if (isPlatformBrowser(this._platformId)) {
@@ -74,4 +79,5 @@ export class AppComponent implements OnInit {
 
     this._seoService.trackCanonicalChanges(this._envService.getValue('siteUrl'));
   }
+  
 }

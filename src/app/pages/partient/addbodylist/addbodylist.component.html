@@ -34,9 +34,8 @@
           </mat-form-field>
         </div>
 
-
         <!-- Board Date -->
-        <div class="form-row">
+        <!-- <div class="form-row">
           <mat-form-field class="form-field w-full">
             <mat-label>Board Date</mat-label>
             <input
@@ -59,8 +58,56 @@
               Board date is required
             </mat-error>
           </mat-form-field>
-        </div>
+        </div> -->
 
+        <div class="form-row">
+          <mat-form-field class="form-field w-full">
+            <mat-label>Board Date</mat-label>
+            <input
+              matInput
+              [matDatepicker]="picker"
+              formControlName="board_date"
+              placeholder="Select Date"
+              [min]="minDate"
+              [max]="maxDate"
+            />
+
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="picker"
+            ></mat-datepicker-toggle>
+
+            <mat-datepicker #picker></mat-datepicker>
+
+            <!-- Required error -->
+            <mat-error
+              *ngIf="
+                patientForm.get('board_date')?.hasError('required') &&
+                patientForm.get('board_date')?.touched
+              "
+            >
+              Board date is required
+            </mat-error>
+
+            <!-- Min date error -->
+            <mat-error
+              *ngIf="
+                patientForm.get('board_date')?.hasError('matDatepickerMin')
+              "
+            >
+              Date cannot be more than 14 days before today
+            </mat-error>
+
+            <!-- Max date error -->
+            <mat-error
+              *ngIf="
+                patientForm.get('board_date')?.hasError('matDatepickerMax')
+              "
+            >
+              Future date is not allowed
+            </mat-error>
+          </mat-form-field>
+        </div>
         <!-- Number of Patients -->
         <div class="form-row">
           <mat-form-field class="form-field w-full">
@@ -119,88 +166,90 @@
           </mat-form-field>
         </div>
         <!-- User Selection -->
-<div class="form-row">
-  <mat-form-field class="form-field w-full">
-    <mat-label>Select Medical Board Members</mat-label>
-    <mat-select
-      multiple
-      (selectionChange)="onUserSelected($event)"
-      (openedChange)="onUserDropdownOpened()"
-    >
-      <!-- 🔄 Show loader if fetching users -->
-      <mat-option *ngIf="isLoadingUsers" disabled>
-        <mat-progress-spinner
-          diameter="24"
-          mode="indeterminate"
-        ></mat-progress-spinner>
-        &nbsp;Loading users...
-      </mat-option>
+        <div class="form-row">
+          <mat-form-field class="form-field w-full">
+            <mat-label>Select Medical Board Members</mat-label>
+            <mat-select
+              multiple
+              (selectionChange)="onUserSelected($event)"
+              (openedChange)="onUserDropdownOpened()"
+            >
+              <!-- 🔄 Show loader if fetching users -->
+              <mat-option *ngIf="isLoadingUsers" disabled>
+                <mat-progress-spinner
+                  diameter="24"
+                  mode="indeterminate"
+                ></mat-progress-spinner>
+                &nbsp;Loading users...
+              </mat-option>
 
-      <!-- 🔍 Search box appears only if users exist -->
-      <ng-container *ngIf="!isLoadingUsers && userList.length > 0">
-        <mat-option>
-          <input
-            matInput
-            placeholder="Search user..."
-            [(ngModel)]="userSearch"
-            (ngModelChange)="filterUser()"
-            class="w-full px-2 py-1 text-sm border rounded-md"
-          />
-        </mat-option>
+              <!-- 🔍 Search box appears only if users exist -->
+              <ng-container *ngIf="!isLoadingUsers && userList.length > 0">
+                <mat-option>
+                  <input
+                    matInput
+                    placeholder="Search user..."
+                    [(ngModel)]="userSearch"
+                    (ngModelChange)="filterUser()"
+                    class="w-full px-2 py-1 text-sm border rounded-md"
+                  />
+                </mat-option>
 
-        <!-- 👤 Show filtered users -->
-        <mat-option
-          *ngFor="let u of filteredUser"
-          [value]="u.user_id"
-        >
-          {{ u.full_name }}
-        </mat-option>
+                <!-- 👤 Show filtered users -->
+                <mat-option *ngFor="let u of filteredUser" [value]="u.user_id">
+                  {{ u.full_name }}
+                </mat-option>
 
-        <!-- 🚫 Show message if no match -->
-        <mat-option *ngIf="filteredUser.length === 0" disabled>
-          No users found
-        </mat-option>
-      </ng-container>
+                <!-- 🚫 Show message if no match -->
+                <mat-option *ngIf="filteredUser.length === 0" disabled>
+                  No users found
+                </mat-option>
+              </ng-container>
 
-      <!-- 🚫 Show message if API returned empty -->
-      <mat-option *ngIf="!isLoadingUsers && userList.length === 0" disabled>
-        No users available
-      </mat-option>
-    </mat-select>
+              <!-- 🚫 Show message if API returned empty -->
+              <mat-option
+                *ngIf="!isLoadingUsers && userList.length === 0"
+                disabled
+              >
+                No users available
+              </mat-option>
+            </mat-select>
 
-    <mat-error
-      *ngIf="patientForm.get('user_id')?.invalid && patientForm.get('user_id')?.touched"
-    >
-      Please select at least one user
-    </mat-error>
-  </mat-form-field>
-</div>
-
-
+            <mat-error
+              *ngIf="
+                patientForm.get('user_id')?.invalid &&
+                patientForm.get('user_id')?.touched
+              "
+            >
+              Please select at least one user
+            </mat-error>
+          </mat-form-field>
+        </div>
       </form>
 
-    <mat-dialog-actions align="end">
-  <button mat-button (click)="onClose()" [disabled]="loading">Cancel</button>
+      <mat-dialog-actions align="end">
+        <button mat-button (click)="onClose()" [disabled]="loading">
+          Cancel
+        </button>
 
-  <!-- Save/Update Button -->
-  <button
-    *ngIf="!loading"
-    mat-flat-button
-    color="primary"
-    [disabled]="patientForm.invalid"
-    (click)="patientData ? updatePatient() : savePatient()"
-  >
-    {{ patientData ? "Update" : "Save" }}
-  </button>
+        <!-- Save/Update Button -->
+        <button
+          *ngIf="!loading"
+          mat-flat-button
+          color="primary"
+          [disabled]="patientForm.invalid"
+          (click)="patientData ? updatePatient() : savePatient()"
+        >
+          {{ patientData ? "Update" : "Save" }}
+        </button>
 
-  <!-- Spinner while saving -->
-  <mat-progress-spinner
-    *ngIf="loading"
-    diameter="28"
-    mode="indeterminate"
-  ></mat-progress-spinner>
-</mat-dialog-actions>
-
+        <!-- Spinner while saving -->
+        <mat-progress-spinner
+          *ngIf="loading"
+          diameter="28"
+          mode="indeterminate"
+        ></mat-progress-spinner>
+      </mat-dialog-actions>
     </div>
   </div>
 </div>
