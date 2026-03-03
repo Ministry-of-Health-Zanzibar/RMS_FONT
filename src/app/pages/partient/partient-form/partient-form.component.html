@@ -77,10 +77,13 @@
                   <mat-label>Zan ID</mat-label>
                   <input matInput formControlName="zan_id" maxlength="9" />
                 </mat-form-field>
-
                 <mat-form-field appearance="outline" class="w-full">
                   <mat-label>Location *</mat-label>
-                  <mat-select formControlName="location_id">
+
+                  <mat-select
+                    formControlName="location_id"
+                    [compareWith]="compareLocation"
+                  >
                     <mat-option
                       *ngFor="let option of locations"
                       [value]="option.location_id"

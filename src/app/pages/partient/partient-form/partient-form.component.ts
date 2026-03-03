@@ -70,7 +70,6 @@ export class PartientFormComponent implements OnInit {
   history_file?: string;
   historyFileUrl: string | null = null;
 
-
   constructor(
     private fb: FormBuilder,
     private patientService: PartientService,
@@ -84,20 +83,21 @@ export class PartientFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForm();
-    this.loadLocations();
     this.loadReasons();
     this.loadDiagnoses();
 
     if (this.data?.patient?.patient_id) {
       this.isEditMode = true;
       this.id = this.data.patient.patient_id;
-      this.getPatientById(this.id);
+
+      this.loadLocations(() => {
+        this.getPatientById(this.id);
+      });
     } else {
+      this.loadLocations();
       this.listenToMatibabuCard();
     }
   }
-
-  
 
   private initForm() {
     this.patientForm = this.fb.group({
@@ -176,7 +176,7 @@ export class PartientFormComponent implements OnInit {
   //           investigations: history?.investigations || '',
   //           management_done: history?.management_done || '',
   //           reason_id: history?.reason_details?.reason_id || '',
-            
+
   //         },
 
   //         insuranceInfo: {
@@ -204,77 +204,75 @@ export class PartientFormComponent implements OnInit {
   // }
 
   getPatientById(id: any) {
-  if (!id) return;
+    if (!id) return;
 
-  this.patientService.showForUpdate(id).subscribe({
-    next: (response: any) => {
-      if (!response?.data) return;
+    this.patientService.showForUpdate(id).subscribe({
+      next: (response: any) => {
+        if (!response?.data) return;
 
-      const patient = response.data.patient;
-      const history = response.data.history;
-      const insurance = response.data.insurance;
+        const patient = response.data.patient;
+        const history = response.data.history;
+        const insurance = response.data.insurance;
 
-      // ✅ History file URL
-      const historyFile = response.data.history?.history_file;
-      console.log('History file URL:', historyFile);
+        const historyFile = response.data.history?.history_file;
+        console.log('History file URL:', historyFile);
 
-      // optional: save to property (utatumia HTML)
-      this.historyFileUrl = historyFile;
+        this.historyFileUrl = historyFile;
 
-      this.patientForm.patchValue({
-        basicInfo: {
-          name: patient?.name || '',
-          matibabu_card: patient?.matibabu_card || '',
-          zan_id: patient?.zan_id || '',
-          date_of_birth: patient?.date_of_birth
-            ? new Date(patient.date_of_birth)
-            : '',
-          gender: patient?.gender || '',
-          phone: patient?.phone || '',
-          job: patient?.job || '',
-          position: patient?.position || '',
-          location_id: patient?.location_details?.location_id
-            ? Number(patient.location_details.location_id)
-            : null,
-        },
+        this.patientForm.patchValue({
+          basicInfo: {
+            name: patient?.name || '',
+            matibabu_card: patient?.matibabu_card || '',
+            zan_id: patient?.zan_id || '',
+            date_of_birth: patient?.date_of_birth
+              ? new Date(patient.date_of_birth)
+              : '',
+            gender: patient?.gender || '',
+            phone: patient?.phone || '',
+            job: patient?.job || '',
+            position: patient?.position || '',
+            location_id: patient?.location_details?.location_id
+              ? Number(patient.location_details.location_id)
+              : null,
+          },
 
-        historyInfo: {
-          file_number: history?.file_number || '',
-          referring_date: history?.referring_date
-            ? new Date(history.referring_date)
-            : '',
-          case_type: history?.case_type || 'Routine',
-          history_of_presenting_illness:
-            history?.history_of_presenting_illness || '',
-          physical_findings: history?.physical_findings || '',
-          investigations: history?.investigations || '',
-          management_done: history?.management_done || '',
-          reason_id: history?.reason_details?.reason_id || '',
-        },
+          historyInfo: {
+            file_number: history?.file_number || '',
+            referring_date: history?.referring_date
+              ? new Date(history.referring_date)
+              : '',
+            case_type: history?.case_type || 'Routine',
+            history_of_presenting_illness:
+              history?.history_of_presenting_illness || '',
+            physical_findings: history?.physical_findings || '',
+            investigations: history?.investigations || '',
+            management_done: history?.management_done || '',
+            reason_id: history?.reason_details?.reason_id || '',
+          },
 
-        insuranceInfo: {
-          has_insurance: insurance?.has_insurance || false,
-          insurance_provider_name: insurance?.insurance_provider_name || '',
-          card_number: insurance?.card_number || '',
-          valid_until: insurance?.valid_until
-            ? new Date(insurance.valid_until)
-            : '',
-        },
-      });
+          insuranceInfo: {
+            has_insurance: insurance?.has_insurance || false,
+            insurance_provider_name: insurance?.insurance_provider_name || '',
+            card_number: insurance?.card_number || '',
+            valid_until: insurance?.valid_until
+              ? new Date(insurance.valid_until)
+              : '',
+          },
+        });
 
-      if (history?.diagnoses?.length) {
-        this.selectedDiagnoses = history.diagnoses;
+        if (history?.diagnoses?.length) {
+          this.selectedDiagnoses = history.diagnoses;
 
-        this.patientForm
-          .get('historyInfo.diagnosis_ids')
-          ?.setValue(history.diagnoses.map((d: any) => d.diagnosis_id));
-      }
-    },
-    error: (err) => {
-      console.error('Error loading patient:', err);
-    },
-  });
-}
+          this.patientForm
+            .get('historyInfo.diagnosis_ids')
+            ?.setValue(history.diagnoses.map((d: any) => d.diagnosis_id));
+        }
+      },
+      error: (err) => {
+        console.error('Error loading patient:', err);
+      },
+    });
+  }
 
   allowOnlyNumbers(event: KeyboardEvent) {
     if (!/^[0-9]$/.test(event.key)) {
@@ -355,11 +353,21 @@ export class PartientFormComponent implements OnInit {
       });
   }
 
-  loadLocations() {
+  loadLocations(callback?: () => void) {
     this.locationService.getLocation().subscribe({
-      next: (res: any) => (this.locations = res.data || []),
+      next: (res: any) => {
+        this.locations = res.data || [];
+
+        if (callback) {
+          callback();
+        }
+      },
     });
   }
+
+  compareLocation = (a: any, b: any): boolean => {
+    return Number(a) === Number(b);
+  };
 
   loadReasons() {
     this.reasonService
