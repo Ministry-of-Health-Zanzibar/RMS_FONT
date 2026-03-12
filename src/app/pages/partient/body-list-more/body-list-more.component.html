@@ -173,6 +173,10 @@
           : 'Add Medical History'
       "
       class="!bg-blue-600 hover:!bg-blue-700 text-white rounded-full transition-all"
+      [disabled]="
+        p.latest_history?.status === 'confirmed' ||
+        p.latest_history?.status === 'rejected'
+      "
     >
       <mat-icon>
         {{
