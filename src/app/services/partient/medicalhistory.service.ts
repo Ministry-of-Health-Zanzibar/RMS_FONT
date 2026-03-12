@@ -18,9 +18,25 @@ export class MedicalhistoryService {
   constructor(private http: HttpClient) {}
 
 
-public updateMedicals(patientHistoryId: number, medicalData: any): Observable<any> {
-  const url = `${this.baseUrl}patient-histories/${patientHistoryId}/medical-board`;
-  return this.http.put(url, medicalData); // send JSON
+// public updateMedicals(patientHistoryId: number, medicalData: FornData): Observable<any> {
+//   const url = `${this.baseUrl}patient-histories/${patientHistoryId}/medical-board`;
+//   return this.http.post(url, medicalData); // send JSON
+// }
+
+
+
+addMedicalHistory(id:number,payload: any) {
+  return this.http.post(
+    `${this.baseUrl}patient-histories/${id}/medical-board`,
+    payload
+  );
+}
+
+updateMedicalHistory(id: number, payload: any) {
+  return this.http.post(
+     `${this.baseUrl}patient-histories/${id}/medical-board/update`,
+    payload
+  );
 }
 
   public addMedical(Medical: any): Observable<any> {

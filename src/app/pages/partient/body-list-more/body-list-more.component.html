@@ -142,7 +142,7 @@
 
 
       <!-- Medical History Button -->
-   <ng-container matColumnDef="files">
+   <!-- <ng-container matColumnDef="files">
   <th mat-header-cell *matHeaderCellDef>Actions</th>
   <td mat-cell *matCellDef="let p">
     <button
@@ -156,9 +156,35 @@
       <mat-icon>note_add</mat-icon>
     </button>
   </td>
+</ng-container> -->
+
+<ng-container matColumnDef="files">
+  <th mat-header-cell *matHeaderCellDef>Actions</th>
+
+  <td mat-cell *matCellDef="let p">
+    <button
+      mat-icon-button
+      color="primary"
+      (click)="openMedicalHistory(p)"
+      [matTooltip]="
+        p.latest_history?.status === 'requested' ||
+        p.latest_history?.status === 'approved'
+          ? 'Edit Medical History'
+          : 'Add Medical History'
+      "
+      class="!bg-blue-600 hover:!bg-blue-700 text-white rounded-full transition-all"
+    >
+      <mat-icon>
+        {{
+          p.latest_history?.status === 'requested' ||
+          p.latest_history?.status === 'approved'
+            ? 'edit'
+            : 'note_add'
+        }}
+      </mat-icon>
+    </button>
+  </td>
 </ng-container>
-
-
 
       <!-- Render Rows -->
       <tr mat-header-row *matHeaderRowDef="displayedPatientColumns"></tr>

@@ -1,5 +1,7 @@
 <div class="p-6 bg-white rounded-lg shadow-md w-[800px] mx-auto">
-  <h2 class="text-lg font-semibold mb-6 text-center">Add Medical Board Information</h2>
+  <h2 class="text-lg font-semibold mb-6 text-center">
+  {{ mode === 'edit' ? 'Edit Medical Board Information' : 'Add Medical Board Information' }}
+</h2>
 
   <form [formGroup]="medicalForm" (ngSubmit)="onSubmit()" class="space-y-4">
     <!-- <p class="text-xs text-gray-500">
@@ -73,7 +75,28 @@
   </mat-select>
 </mat-form-field>
 
+
     </div>
+
+    <!-- Upload File -->
+<div class="col-span-2 mt-3">
+  <label class="block mb-2 font-medium">Upload Patient File</label>
+
+  <input
+    type="file"
+    (change)="onFileSelected($event)"
+    accept=".pdf,.jpg,.png,.doc,.docx"
+    class="border p-2 rounded w-full"
+  />
+
+  <small class="text-gray-500">
+    File must be PDF, JPG, PNG, DOC, DOCX (Max 1MB)
+  </small>
+
+  <div *ngIf="selectedFile" class="mt-1 text-green-600">
+    Selected: {{ selectedFile.name }}
+  </div>
+</div>
 
 
 
@@ -91,15 +114,14 @@
       </button>
 
       <!-- Save Button / Spinner -->
-      <button
-        *ngIf="!loading"
-        mat-raised-button
-        color="primary"
-        (click)="onSubmit()"
-        [disabled]="medicalForm.invalid"
-      >
-        Save
-      </button>
+    <button
+  *ngIf="!loading"
+  mat-raised-button
+  color="primary"
+  type="submit"
+>
+  {{ mode === 'edit' ? 'Update' : 'Save' }}
+</button>
 
       <mat-progress-spinner
         *ngIf="loading"

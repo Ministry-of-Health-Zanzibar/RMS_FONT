@@ -41,6 +41,7 @@ import { MedicalhistoryService } from '../../../services/partient/medicalhistory
   styleUrl: './addmedicalform.component.scss',
 })
 export class AddmedicalformComponent implements OnInit, OnDestroy {
+  mode: 'add' | 'edit' = 'add';
   medicalForm!: FormGroup;
   loading = false;
   backendErrors: any = {};
@@ -63,17 +64,49 @@ export class AddmedicalformComponent implements OnInit, OnDestroy {
   ) {}
 
 ngOnInit(): void {
-  console.log('Dialog received data:', this.data);
 
-  const patient = this.data.patient; // full patient object
-  const patientHistoryId = this.data.patientHistoryId;
+  const patient = this.data.patient;
 
-  console.log('Patient Matibabu Card:', patient.matibabu_card);
-  console.log('Latest history ID:', patientHistoryId);
+  this.mode = this.data.mode;
 
-  this.buildForm(patient); // send full patient to form builder
+  this.buildForm(patient);
+
   this.loadDiagnoses();
   this.loadReasons();
+
+  if (this.mode === 'edit') {
+    this.patchMedicalData(patient);
+  }
+}
+
+patchMedicalData(patient: any) {
+
+  const history = patient.latest_history;
+
+  this.medicalForm.patchValue({
+    board_comments: history.board_comments,
+    board_reason_id: history.board_reason_id,
+    board_diagnosis_ids: history.board_diagnoses?.map((d: any) => d.diagnosis_id) || []
+  });
+
+}
+
+onFileSelected(event: any) {
+  const file = event.target.files[0];
+
+  if (file) {
+    const maxSize = 1 * 1024 * 1024; // 1 MB
+
+    if (file.size > maxSize) {
+      Swal.fire('Error', 'File must be 1MB or less', 'error');
+      // Reset selected file
+      this.selectedFile = null;
+      event.target.value = ''; // Clear input
+      return;
+    }
+
+    this.selectedFile = file;
+  }
 }
 
 
@@ -132,19 +165,6 @@ normalize(text: string): string {
 }
 
 
-// filterDiagnoses() {
-//   const term = this.normalize(this.diagnosisSearch);
-
-//   if (!term) {
-//     this.filteredDiagnoses = [...this.diagnosesList];
-//     return;
-//   }
-
-//   this.filteredDiagnoses = this.diagnosesList.filter(d =>
-//     this.normalize(d.diagnosis_name).includes(term)
-//   );
-// }
-
 filterDiagnoses() {
   const terms = this.normalize(this.diagnosisSearch).split(' ');
 
@@ -161,6 +181,7 @@ filterDiagnoses() {
   }
 
 onSubmit() {
+
   if (this.medicalForm.invalid) {
     this.medicalForm.markAllAsTouched();
     return;
@@ -170,34 +191,99 @@ onSubmit() {
 
   const formValue = this.medicalForm.value;
 
-  // Prepare JSON payload
-  const payload = {
-    board_comments: formValue.board_comments,
-    board_reason_id: formValue.board_reason_id,
-    board_diagnosis_ids: formValue.board_diagnosis_ids,
-  };
+  const formData = new FormData();
 
-  // If you have a file, you need a separate endpoint or use FormData + multipart
-  // For now, sending JSON only
+  formData.append('board_comments', formValue.board_comments);
+  formData.append('board_reason_id', formValue.board_reason_id);
+
+  formValue.board_diagnosis_ids.forEach((id: any) => {
+    formData.append('board_diagnosis_ids[]', id);
+  });
+
+  if (this.selectedFile) {
+    formData.append('patient_file', this.selectedFile);
+  }
 
   const patientHistoryId = this.data.patientHistoryId;
 
-  console.log('Payload:', payload);
+  // EDIT
+  if (this.mode === 'edit') {
 
-  this.medicalHistoryService.updateMedicals(patientHistoryId, payload).subscribe({
-    next: (res) => {
-      Swal.fire('Success', 'Medical history updated successfully', 'success');
-      this.loading = false;
-      this.dialogRef.close({ success: true, data: res });
-    },
-    error: (err) => {
-      console.log('Validation Errors:', err.error.errors);
-      this.backendErrors = err.error.errors || {};
-      Swal.fire('Error', 'Failed to update medical history', 'error');
-      this.loading = false;
-    }
-  });
+    this.medicalHistoryService
+      .updateMedicalHistory(patientHistoryId, formData)
+      .subscribe({
+        next: (res: any) => {
+          Swal.fire('Success', 'Medical history updated successfully', 'success');
+          this.loading = false;
+          this.dialogRef.close(true);
+        },
+        error: (err) => {
+          this.backendErrors = err.error.errors || {};
+          this.loading = false;
+        },
+      });
+
+  }
+
+  // ADD
+  else {
+
+    this.medicalHistoryService
+      .addMedicalHistory(patientHistoryId, formData)
+      .subscribe({
+        next: (res: any) => {
+          Swal.fire('Success', 'Medical history added successfully', 'success');
+          this.loading = false;
+          this.dialogRef.close(true);
+        },
+        error: (err) => {
+          this.backendErrors = err.error.errors || {};
+          this.loading = false;
+        },
+      });
+
+  }
+
 }
+
+// onSubmit() {
+//   if (this.medicalForm.invalid) {
+//     this.medicalForm.markAllAsTouched();
+//     return;
+//   }
+
+//   this.loading = true;
+
+//   const formValue = this.medicalForm.value;
+
+//   // Prepare JSON payload
+//   const payload = {
+//     board_comments: formValue.board_comments,
+//     board_reason_id: formValue.board_reason_id,
+//     board_diagnosis_ids: formValue.board_diagnosis_ids,
+//   };
+
+//   // If you have a file, you need a separate endpoint or use FormData + multipart
+//   // For now, sending JSON only
+
+//   const patientHistoryId = this.data.patientHistoryId;
+
+//   console.log('Payload:', payload);
+
+//   this.medicalHistoryService.updateMedicals(patientHistoryId, payload).subscribe({
+//     next: (res) => {
+//       Swal.fire('Success', 'Medical history updated successfully', 'success');
+//       this.loading = false;
+//       this.dialogRef.close({ success: true, data: res });
+//     },
+//     error: (err) => {
+//       console.log('Validation Errors:', err.error.errors);
+//       this.backendErrors = err.error.errors || {};
+//       Swal.fire('Error', 'Failed to update medical history', 'error');
+//       this.loading = false;
+//     }
+//   });
+// }
 
 
 

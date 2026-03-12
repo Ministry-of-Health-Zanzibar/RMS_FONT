@@ -26,6 +26,7 @@ import { PartientFormComponent } from '../partient-form/partient-form.component'
 import { AddmultiplepatientComponent, AddMultiplePatientDialogData } from '../addmultiplepatient/addmultiplepatient.component';
 import { AddmedicalformComponent } from '../addmedicalform/addmedicalform.component';
 
+
 interface BodyList {
   patient_list_id: number;
   patient_list_title: string;
@@ -332,31 +333,56 @@ export class BodyListMoreComponent implements OnInit, AfterViewInit {
 
 
 
-  openAddMedicalHistory(patient: any) {
+//   openMedicalHistory(patient: any) {
+//   const config = new MatDialogConfig();
+//   config.disableClose = false;
+//   config.role = 'dialog';
+//   config.maxWidth = '100vw';
+//   config.maxHeight = '98vh';
+//   config.panelClass = 'full-screen-modal';
+
+//   const patientHistoryId = patient?.latest_history?.patient_histories_id || null;
+
+//   // Send both patient object and history ID
+//   config.data = {
+//     patient,
+//     patientHistoryId
+//   };
+
+//   const dialogRef = this.dialog.open(AddmedicalformComponent, config);
+
+//   // No success alert or console logs here
+//   dialogRef.afterClosed().subscribe((result) => {
+//     // You can handle refreshing data if needed without showing messages
+//     if (result && result.success) {
+//       this.refreshPatients(this.patient_list_id!); // optional: refresh patient table
+//     }
+//   });
+// }
+openMedicalHistory(patient: any) {
+
+  const mode =
+    patient.latest_history?.status === 'requested' ||
+    patient.latest_history?.status === 'approved'
+      ? 'edit'
+      : 'add';
+
   const config = new MatDialogConfig();
-  config.disableClose = false;
-  config.role = 'dialog';
+
   config.maxWidth = '100vw';
   config.maxHeight = '98vh';
+ 
   config.panelClass = 'full-screen-modal';
 
-  const patientHistoryId = patient?.latest_history?.patient_histories_id || null;
-
-  // Send both patient object and history ID
   config.data = {
-    patient,
-    patientHistoryId
+    patient: patient,
+    patientHistoryId: patient.latest_history?.patient_histories_id,
+    mode: mode
   };
 
-  const dialogRef = this.dialog.open(AddmedicalformComponent, config);
-
-  // No success alert or console logs here
-  dialogRef.afterClosed().subscribe((result) => {
-    // You can handle refreshing data if needed without showing messages
-    if (result && result.success) {
-      this.refreshPatients(this.patient_list_id!); // optional: refresh patient table
-    }
-  });
+  this.dialog.open(AddmedicalformComponent, config);
 }
+
+
 
 }
