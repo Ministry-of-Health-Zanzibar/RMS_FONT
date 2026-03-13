@@ -96,8 +96,8 @@ patchMedicalData(patient: any) {
   });
 
   // ✅ Patch diagnoses from API response
-  const selectedDiagnoses = history.diagnoses?.map((d: any) => d.diagnosis_id) || [];
-  console.log('Board diagnoses from patient history:', history.diagnoses);
+  const selectedDiagnoses = history.board_diagnoses?.map((d: any) => d.diagnosis_id) || [];
+  console.log('Board diagnoses from patient history:', history.board_diagnoses);
   console.log('Selected diagnosis IDs to patch:', selectedDiagnoses);
 
   this.medicalForm.get('board_diagnosis_ids')?.setValue(selectedDiagnoses);
@@ -122,7 +122,7 @@ loadDiagnoses() {
       // Patch diagnoses baada ya list kupakia
       if (this.mode === 'edit') {
         const patient = this.data.patient;
-        const selectedDiagnoses = patient.latest_history.diagnoses?.map((d: { diagnosis_id: number }) => d.diagnosis_id) || [];
+        const selectedDiagnoses = patient.latest_history.board_diagnoses?.map((d: { diagnosis_id: number }) => d.diagnosis_id) || [];
         this.medicalForm.get('board_diagnosis_ids')?.setValue(selectedDiagnoses);
       }
 

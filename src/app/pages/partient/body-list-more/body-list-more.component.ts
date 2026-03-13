@@ -371,7 +371,6 @@ openMedicalHistory(patient: any) {
 
   config.maxWidth = '100vw';
   config.maxHeight = '98vh';
- 
   config.panelClass = 'full-screen-modal';
 
   config.data = {
@@ -380,9 +379,15 @@ openMedicalHistory(patient: any) {
     mode: mode
   };
 
-  this.dialog.open(AddmedicalformComponent, config);
-}
+  const dialogRef = this.dialog.open(AddmedicalformComponent, config);
 
+  // ✅ Refresh data automatically after dialog close
+  dialogRef.afterClosed().subscribe((result) => {
+    if (result && this.patient_id) {
+      this.getBodyListFileAndPatient(this.patient_id);
+    }
+  });
+}
 
 
 }
