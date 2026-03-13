@@ -58,9 +58,9 @@ export class ViewReferralsComponent implements OnInit, OnDestroy {
 
   displayedColumns: string[] = [
     'id',
+    'patient_name',
     'referral_number',
     'matibabu_card',
-    'patient_name',
     'referral_reason_name',
     'status',
     'action',
@@ -88,38 +88,6 @@ export class ViewReferralsComponent implements OnInit, OnDestroy {
     this.getReferrals();
   }
 
-//  getReferrals() {
-//   this.loading = true;
-//   this.referralService
-//     .getAllRefferal()
-//     .pipe(takeUntil(this.onDestroy))
-//     .subscribe(
-//       (response: any) => {
-//         this.loading = false;
-
-//         let dataToShow: any[] = [];
-
-//         if (response && Array.isArray(response.data)) {
-//           dataToShow = [...response.data].reverse();
-//         } else if (Array.isArray(response)) {
-//           dataToShow = [...response].reverse();
-//         } else {
-//           console.warn('Unexpected response format:', response);
-//           return;
-//         }
-
-//         this.dataSource = new MatTableDataSource(dataToShow);
-//         this.dataSource.paginator = this.paginator;
-//         this.dataSource.sort = this.sort;
-//       },
-//       (error) => {
-//         this.loading = false;
-//         console.error('Failed to load referrals.', error);
-//         this.router.navigateByUrl('/');
-//       }
-//     );
-// }
-
 getReferrals() {
   this.loading = true;
 
@@ -133,18 +101,23 @@ getReferrals() {
         let dataToShow: any[] = [];
 
         if (response && Array.isArray(response.data)) {
-          dataToShow = [...response.data]; // removed reverse()
+          dataToShow = [...response.data];
         } else if (Array.isArray(response)) {
-          dataToShow = [...response]; // removed reverse()
+          dataToShow = [...response];
         } else {
           console.warn('Unexpected response format:', response);
           return;
         }
 
         this.dataSource = new MatTableDataSource(dataToShow);
+
         this.dataSource.paginator = this.paginator;
 
-        // ❌ removed this.dataSource.sort = this.sort;
+        // ✅ FIX SEARCH BY PATIENT NAME
+        this.dataSource.filterPredicate = (data: any, filter: string) => {
+          const patientName = data.patient?.name?.toLowerCase() || '';
+          return patientName.includes(filter);
+        };
       },
       (error) => {
         this.loading = false;
@@ -154,15 +127,15 @@ getReferrals() {
     );
 }
 
+applyFilter(event: Event) {
+  const filterValue = (event.target as HTMLInputElement).value;
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+  this.dataSource.filter = filterValue.trim().toLowerCase();
 
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
+  if (this.dataSource.paginator) {
+    this.dataSource.paginator.firstPage();
   }
+}
 
   addReferrals() {
     let config = new MatDialogConfig();
