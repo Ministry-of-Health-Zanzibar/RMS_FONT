@@ -34,7 +34,10 @@ export class ForwarddialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.form = this.fb.group({
-      mkurugenzi_tiba_comments: ['', Validators.required]
+     mkurugenzi_tiba_comments: [
+      data?.comment || '',  // ✅ preload existing message
+      Validators.required
+     ]
     });
   }
 

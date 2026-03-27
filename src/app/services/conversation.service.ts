@@ -32,4 +32,10 @@ export class ConversationService {
       `${this.baseUrl}patient-history-conversations/${patientHistoryId}/individual-chat`
     );
   }
+
+  getMkurugenziComments(id: number) {
+  return this.http.get(
+    `${this.baseUrl}patient-histories/${id}/mkurugenzi-comments`
+  );
+}
 }

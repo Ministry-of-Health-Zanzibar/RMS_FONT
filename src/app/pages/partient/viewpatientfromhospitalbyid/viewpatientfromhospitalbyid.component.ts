@@ -13,6 +13,7 @@ import { AddmedicalhistoryComponent } from '../addmedicalhistory/addmedicalhisto
 import { ForwarddialogComponent } from '../forwarddialog/forwarddialog.component';
 import { ConversationModalComponent } from '../../referrals/conversation-modal/conversation-modal.component';
 import { MkurugenziConversationComponent } from '../../referrals/mkurugenzi-conversation/mkurugenzi-conversation.component';
+import { ConversationService } from '../../../services/conversation.service';
 
 
 @Component({
@@ -31,6 +32,7 @@ export class ViewpatientfromhospitalbyidComponent implements OnInit {
     private route: ActivatedRoute,
     private patientService: PartientService,
     private dialog: MatDialog,
+     private conversationService: ConversationService,
 
     private http: HttpClient
   ) {}
@@ -152,6 +154,37 @@ openForwardDialog() {
 }
 
 
+openViewEditDialog() {
+  const patientHistoryId = this.medicalHistory?.patient_histories_id;
+
+  this.conversationService
+    .getMkurugenziComments(patientHistoryId)
+    .subscribe((res: any) => {
+
+      const dialogRef = this.dialog.open(ForwarddialogComponent, {
+        width: '450px',
+        disableClose: true,
+        data: {
+          editMode: true,
+          comment: res?.data?.mkurugenzi_tiba_comments || ''
+        }
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          this.forwardToRequestedStatus(result); // ✅ reuse + refresh inside
+        }
+      });
+
+    });
+}
+reloadData() {
+  const id = this.medicalHistory?.patient_histories_id;
+  if (id) {
+    this.fetchPatientHistory(id);
+  }
+}
+
 forwardToRequestedStatus(data: any) {
   const patientHistoryId = this.medicalHistory.patient_histories_id;
 
@@ -170,6 +203,9 @@ forwardToRequestedStatus(data: any) {
       });
 
       console.log("Forwarded successfully", res);
+
+      // ✅ ✅ REFRESH HERE (CORRECT PLACE)
+      this.reloadData();
     },
 
     error: (err) => {
@@ -191,7 +227,6 @@ forwardToRequestedStatus(data: any) {
     }
   });
 }
-
 
 
 
