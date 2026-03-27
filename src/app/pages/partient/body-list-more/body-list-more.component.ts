@@ -25,6 +25,7 @@ import { AddmedicalhistoryComponent } from '../addmedicalhistory/addmedicalhisto
 import { PartientFormComponent } from '../partient-form/partient-form.component';
 import { AddmultiplepatientComponent, AddMultiplePatientDialogData } from '../addmultiplepatient/addmultiplepatient.component';
 import { AddmedicalformComponent } from '../addmedicalform/addmedicalform.component';
+import { ConversationModalComponent } from '../../referrals/conversation-modal/conversation-modal.component';
 
 
 interface BodyList {
@@ -386,6 +387,15 @@ openMedicalHistory(patient: any) {
     if (result && this.patient_id) {
       this.getBodyListFileAndPatient(this.patient_id);
     }
+  });
+}
+
+openConversationModal(patientHistoryId: number) {
+  if (!patientHistoryId) return; // safety check
+
+  this.dialog.open(ConversationModalComponent, {
+    width: '600px',
+    data: { patientHistoryId }
   });
 }
 

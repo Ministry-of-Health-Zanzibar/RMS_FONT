@@ -26,6 +26,17 @@
     />
   </div>
 
+  <!-- Example in your patient list table / details page -->
+ <button
+      mat-raised-button
+      color="primary"
+      (click)="openConversationModal(medicalHistory.patient_histories_id)">
+      View Conversation
+    </button>
+
+    <!-- Example in your patient list table / details page -->
+ 
+
   <!-- ➕ Forward Button -->
  <div class="flex justify-end" *ngIf="medicalHistory?.status === 'pending'">
   <button
@@ -38,6 +49,15 @@
     <mat-icon class="!text-white mr-2">forward</mat-icon>
     {{ loading ? 'Forwarding...' : 'Forward' }}
   </button>
+
+      <!-- <button
+      mat-raised-button
+      color="primary"
+      (click)="openConversationModal(medicalHistory.patient_histories_id)">
+      View Conversation
+    </button> -->
+
+   
 </div>
 
 
@@ -53,6 +73,14 @@
     <mat-icon class="!text-white mr-2">forward</mat-icon>
     {{ loading ? 'Forwarding...' : 'Forward' }}
   </button>
+
+ <!-- <button
+      mat-raised-button
+      color="primary"
+      (click)="openConversationModal(medicalHistory.patient_histories_id)">
+      View Conversation
+    </button> -->
+
 </div>
 
    <!-- Status Tracking Section -->
@@ -434,6 +462,15 @@
               {{ medicalHistory.board_comments }}
             </td>
           </tr>
+           <tr>
+            <th class="border border-gray-300 p-4 text-left">
+              Mkurugenzi Comments
+            </th>
+            <td colspan="3" class="border border-gray-300 p-4">
+              {{ medicalHistory.mkurugenzi_tiba_comments }}
+            </td>
+          </tr>
+
            <tr>
             <th class="border border-gray-300 p-4 text-left">
               DG Comments

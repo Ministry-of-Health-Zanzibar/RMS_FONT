@@ -30,6 +30,12 @@
         <mat-icon class="!text-white mr-1">add</mat-icon> Add Medical History
       </button>
     </div> -->
+     <button
+      mat-raised-button
+      color="primary"
+      (click)="openConversationModal(medicalHistory.patient_histories_id)">
+      View Conversation
+    </button>
 
     <!-- Status Tracking Section -->
 <mat-card class="shadow-lg rounded-2xl border border-gray-200">

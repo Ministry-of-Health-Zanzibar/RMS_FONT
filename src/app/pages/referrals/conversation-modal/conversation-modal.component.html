@@ -1,0 +1,101 @@
+<h2 mat-dialog-title>Conversation</h2>
+
+<mat-dialog-content class="h-[400px] overflow-y-auto space-y-4">
+
+  <div *ngFor="let msg of conversations" class="mb-4">
+
+    <!-- Sender + Date -->
+    <div class="flex justify-between text-sm text-gray-600">
+      <span class="font-semibold">{{ msg.sender_full_name }}</span>
+      <span class="text-xs">{{ msg.date }}</span>
+    </div>
+
+    <!-- Message -->
+    <div class="bg-gray-100 p-3 rounded-xl mt-1">
+      {{ msg.message }}
+    </div>
+
+    <!-- Reply Button -->
+    <button mat-button color="primary" (click)="openReplyBox(msg)">
+      Reply
+    </button>
+
+    <!-- ✅ Inline Reply Box -->
+    <div *ngIf="activeReplyId === msg.conversation_id" class="mt-2 ml-4 border-l-2 pl-4">
+
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Reply message</mat-label>
+        <textarea matInput [(ngModel)]="replyMessage"></textarea>
+      </mat-form-field>
+
+      <div class="flex gap-2">
+        <button mat-raised-button color="primary" (click)="sendReply(msg)">
+          Send Reply
+        </button>
+
+        <button mat-button color="warn" (click)="cancelReply()">
+          Cancel
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Replies -->
+    <div *ngIf="msg.replies?.length" class="ml-6 mt-2">
+      <div *ngFor="let reply of msg.replies" class="mb-2">
+
+        <div class="flex justify-between text-xs text-blue-600">
+          <span class="font-semibold">{{ reply.sender_full_name }}</span>
+          <span>{{ reply.date }}</span>
+        </div>
+
+        <div class="bg-blue-50 p-2 rounded-lg">
+          {{ reply.message }}
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+</mat-dialog-content>
+
+<!-- ✅ MAIN SEND AREA (ONLY ONCE) -->
+<mat-dialog-actions class="flex flex-col gap-3">
+
+  <!-- Only show receiver when NOT replying -->
+<!-- ✅ ONLY show if NOT replying AND allowed -->
+<mat-form-field
+  *ngIf="!activeReplyId && canStartConversation()"
+  appearance="outline"
+  class="w-full"
+>
+  <mat-label>Send To</mat-label>
+
+  <mat-select [(ngModel)]="receiver">
+
+    <mat-option *ngFor="let r of getReceivers()" [value]="r">
+      {{ r | titlecase }}
+    </mat-option>
+
+  </mat-select>
+
+</mat-form-field>
+
+  <!-- Message -->
+  <mat-form-field appearance="outline" class="w-full">
+    <mat-label>Message</mat-label>
+    <textarea matInput [(ngModel)]="message"></textarea>
+  </mat-form-field>
+
+  <!-- Send -->
+ <button
+  mat-raised-button
+  color="primary"
+  (click)="sendMessage()"
+  [disabled]="isHospital() && !activeReplyId"
+>
+  Send
+</button>
+
+</mat-dialog-actions>

@@ -187,6 +187,18 @@
         }}
       </mat-icon>
     </button>
+
+      <!-- New Conversation Button -->
+  <button
+    mat-icon-button
+    color="accent"
+    (click)="openConversationModal(p.latest_history?.patient_histories_id)"
+    [disabled]="!p.latest_history?.patient_histories_id"
+    matTooltip="View Conversations"
+    class="!bg-green-600 hover:!bg-green-700 text-white rounded-full transition-all"
+  >
+    <mat-icon>chat</mat-icon>
+  </button>
   </td>
 </ng-container>
 

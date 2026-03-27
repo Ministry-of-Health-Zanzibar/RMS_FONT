@@ -9,6 +9,7 @@ import { PartientService } from '../../../services/partient/partient.service';
 import { environment } from '../../../../environments/environment.prod';
 import { AddmedicalhistoryComponent } from '../addmedicalhistory/addmedicalhistory.component';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { ConversationModalComponent } from '../../referrals/conversation-modal/conversation-modal.component';
 
 @Component({
   selector: 'app-patient-details',
@@ -96,6 +97,13 @@ export class PatientDetailsComponent implements OnInit {
       } else {
         console.log('Dialog closed without saving.');
       }
+    });
+  }
+
+   openConversationModal(patientHistoryId: number) {
+    this.dialog.open(ConversationModalComponent, {
+      width: '600px',
+      data: { patientHistoryId }
     });
   }
 }

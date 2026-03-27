@@ -11,6 +11,8 @@ import { PartientService } from '../../../services/partient/partient.service';
 import { environment } from '../../../../environments/environment.prod';
 import { AddmedicalhistoryComponent } from '../addmedicalhistory/addmedicalhistory.component';
 import { ForwarddialogComponent } from '../forwarddialog/forwarddialog.component';
+import { ConversationModalComponent } from '../../referrals/conversation-modal/conversation-modal.component';
+import { MkurugenziConversationComponent } from '../../referrals/mkurugenzi-conversation/mkurugenzi-conversation.component';
 
 
 @Component({
@@ -216,4 +218,18 @@ forwardToRequestedStatus(data: any) {
       }
     });
   }
+
+  openConversationModal(patientHistoryId: number) {
+  this.dialog.open(ConversationModalComponent, {
+    width: '600px',
+    data: { patientHistoryId }
+  });
+}
+
+openReplyModal(patientHistoryId: number) {
+  this.dialog.open(MkurugenziConversationComponent, {
+    width: '600px',
+    data: { patientHistoryId }
+  });
+}
 }

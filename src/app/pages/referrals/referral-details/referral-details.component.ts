@@ -16,6 +16,7 @@ import { ReferralsLetterComponent } from '../referrals-letter/referrals-letter.c
 import { environment } from '../../../../environments/environment.prod';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { ConversationModalComponent } from '../conversation-modal/conversation-modal.component';
 
 @Component({
   selector: 'app-referral-details',
@@ -176,5 +177,15 @@ viewFiles(file: any) {
     const url = this.documentUrl + file.history_file;
     window.open(url, '_blank');
   }
+}
+
+openConversationModal(referral: any) {
+  const patientHistoryId = referral.patient.patient_histories[0].patient_histories_id;
+  console.log("naipata id husika",patientHistoryId)
+
+  this.dialog.open(ConversationModalComponent, {
+    width: '700px',
+    data: { patientHistoryId }
+  });
 }
 }
