@@ -9,6 +9,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { ReactiveFormsModule, FormControl } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
+import { ConversationService } from '../../../services/conversation.service';
 
 @Component({
   selector: 'app-conversation-modal',
@@ -39,7 +40,8 @@ role: string = '';
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private http: HttpClient
+    private http: HttpClient,
+    private conversationService: ConversationService
   ) {}
 
   ngOnInit() {
@@ -87,10 +89,11 @@ getReceivers(): string[] {
 }
 
   loadMessages() {
-  this.http.get(`http://127.0.0.1:8000/api/patient-history-conversations?patient_history_id=${this.data.patientHistoryId}`)
+  this.conversationService
+    .getConversations(this.data.patientHistoryId)
     .subscribe((res: any) => {
       this.conversations = res.data || [];
-      console.log("CONVERSATIONS:", this.conversations);
+      console.log('CONVERSATIONS:', this.conversations);
     });
 }
 sendMessage() {
@@ -99,10 +102,10 @@ sendMessage() {
   const payload: any = {
     patient_history_id: this.data.patientHistoryId,
     message: this.message,
-    receiver: this.receiver // only for NEW messages
+    receiver: this.receiver
   };
 
-  this.http.post('http://127.0.0.1:8000/api/patient-history-conversations', payload)
+  this.conversationService.sendMessage(payload)
     .subscribe(() => {
       this.message = '';
       this.loadMessages();
@@ -136,7 +139,7 @@ sendReply(msg: any) {
     parent_id: msg.conversation_id   // ✅ THIS triggers reply logic in backend
   };
 
-  this.http.post('http://127.0.0.1:8000/api/patient-history-conversations', payload)
+  this.conversationService.sendMessage(payload)
     .subscribe(() => {
       this.replyMessage = '';
       this.activeReplyId = null;
