@@ -410,7 +410,7 @@ export class FinanceComponent implements OnInit {
         if (!data) return;
         const hospitalMap: { [key: string]: string } = {
           totalReferralsByLumumba:
-          'totalReferralsByLumumba',
+          'totalReferrals By Lumumba',
           totalReferralsByMuhimbiliOrthopaedicInstitute:
             'Muhimbili Orthopaedic Institute',
           totalReferralsByJakayaKikweteCardiacInstitute:
@@ -422,9 +422,9 @@ export class FinanceComponent implements OnInit {
           totalReferralsByKilimanjaroChristianMedicalCentre:
             'Kilimanjaro Christian Medical Centre',
           totalReferralsByMadrasInstituteOfOrthopaedicsAndTraumatology:
-            'totalReferralsBy MIOT',
+            'total Referrals By MIOT',
           totalReferralsBySIMS:
-          'totalReferralsBySIMS'
+          'total Referrals By SIMS'
         };
         this.pieLabels = Object.keys(hospitalMap).map(
           (key) => hospitalMap[key]
