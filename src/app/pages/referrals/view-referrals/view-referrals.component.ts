@@ -56,15 +56,15 @@ export class ViewReferralsComponent implements OnInit, OnDestroy {
   private readonly onDestroy = new Subject<void>();
   loading: boolean = false;
 
-  displayedColumns: string[] = [
-    'id',
-    'patient_name',
-    'referral_number',
-    'matibabu_card',
-    'referral_reason_name',
-    'status',
-    'action',
-  ];
+displayedColumns: string[] = [
+  'id',
+  'patient_name',
+  'case_type',
+  'board_comments',
+  'diagnoses',
+  'status',
+  'action',
+];
   dataSource: MatTableDataSource<any> = new MatTableDataSource();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -109,11 +109,34 @@ getReferrals() {
           return;
         }
 
-        this.dataSource = new MatTableDataSource(dataToShow);
+       dataToShow = dataToShow.map((item: any) => {
+  const histories = item.patient?.patient_histories || [];
 
+  const latestHistory = histories.length
+    ? histories.sort(
+        (a: any, b: any) =>
+          new Date(b.created_at).getTime() -
+          new Date(a.created_at).getTime()
+      )[0]
+    : null;
+
+      const diagnosesArray = item.diagnoses?.map((d: any) => d.diagnosis_name) || [];
+
+      return {
+        ...item,
+        case_type: latestHistory?.case_type || 'N/A',
+        board_comments: latestHistory?.board_comments || 'N/A',
+
+        // ✅ keep both formats
+        diagnosesArray,
+        diagnoses: diagnosesArray.join(', ') || 'N/A',
+      };
+    });
+
+        this.dataSource = new MatTableDataSource(dataToShow);
         this.dataSource.paginator = this.paginator;
 
-        // ✅ FIX SEARCH BY PATIENT NAME
+        // ✅ SEARCH (still works)
         this.dataSource.filterPredicate = (data: any, filter: string) => {
           const patientName = data.patient?.name?.toLowerCase() || '';
           return patientName.includes(filter);
@@ -126,7 +149,6 @@ getReferrals() {
       }
     );
 }
-
 applyFilter(event: Event) {
   const filterValue = (event.target as HTMLInputElement).value;
 
@@ -135,6 +157,20 @@ applyFilter(event: Event) {
   if (this.dataSource.paginator) {
     this.dataSource.paginator.firstPage();
   }
+}
+
+limitWords(text: string, wordLimit: number = 8): string {
+  if (!text) return 'N/A';
+
+  const words = text.split(' ');
+  return words.length > wordLimit
+    ? words.slice(0, wordLimit).join(' ') + '...'
+    : text;
+}
+
+getDiagnoses(diagnoses: any[]): string {
+  if (!diagnoses || !diagnoses.length) return 'N/A';
+  return diagnoses.map(d => d.diagnosis_name).join(', ');
 }
 
   addReferrals() {
