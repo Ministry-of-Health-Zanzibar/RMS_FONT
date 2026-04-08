@@ -30,6 +30,9 @@ import { ConversationService } from '../../../services/conversation.service';
   styleUrl: './conversation-modal.component.scss'
 })
 export class ConversationModalComponent implements OnInit {
+
+  sendingMessage: boolean = false;
+sendingReply: boolean = false;
   conversations: any[] = [];
   message: string = '';
   receiver: string = '';
@@ -105,26 +108,24 @@ sendMessage() {
     receiver: this.receiver
   };
 
+  this.sendingMessage = true; // ✅ start loader
+
   this.conversationService.sendMessage(payload)
-    .subscribe(() => {
-      this.message = '';
-      this.loadMessages();
+    .subscribe({
+      next: () => {
+        this.message = '';
+        this.loadMessages();
+      },
+      error: (err) => {
+        console.error(err);
+      },
+      complete: () => {
+        this.sendingMessage = false; // ✅ stop loader
+      }
     });
 }
 
-  // sendMessage() {
-  //   const payload = {
-  //     patient_history_id: this.data.patientHistoryId,
-  //     message: this.message,
-  //     receiver: this.receiver
-  //   };
 
-  //   this.http.post(`http://127.0.0.1:8000/api/patient-history-conversations`, payload)
-  //     .subscribe(() => {
-  //       this.message = '';
-  //       this.loadMessages();
-  //     });
-  // }
   cancelReply() {
   this.activeReplyId = null;
   this.replyMessage = '';
@@ -136,16 +137,25 @@ sendReply(msg: any) {
   const payload = {
     patient_history_id: this.data.patientHistoryId,
     message: this.replyMessage,
-    parent_id: msg.conversation_id   // ✅ THIS triggers reply logic in backend
+    parent_id: msg.conversation_id
   };
 
+  this.sendingReply = true; // ✅ start loader
+
   this.conversationService.sendMessage(payload)
-    .subscribe(() => {
-      this.replyMessage = '';
-      this.activeReplyId = null;
-      this.loadMessages(); // reload chat
+    .subscribe({
+      next: () => {
+        this.replyMessage = '';
+        this.activeReplyId = null;
+        this.loadMessages();
+      },
+      error: (err) => {
+        console.error(err);
+      },
+      complete: () => {
+        this.sendingReply = false; // ✅ stop loader
+      }
     });
 }
-
 
 }

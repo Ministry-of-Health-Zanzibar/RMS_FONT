@@ -29,13 +29,25 @@
       </mat-form-field>
 
       <div class="flex gap-2">
-        <button mat-raised-button color="primary" (click)="sendReply(msg)">
-          Send Reply
+
+        <!-- ✅ SEND REPLY (CORRECT PLACE) -->
+        <button mat-raised-button color="primary"
+                (click)="sendReply(msg)"
+                [disabled]="sendingReply">
+
+          <span *ngIf="!sendingReply">Send Reply</span>
+
+          <span *ngIf="sendingReply" class="flex items-center gap-2">
+            <mat-icon class="animate-spin">autorenew</mat-icon>
+            Sending...
+          </span>
+
         </button>
 
         <button mat-button color="warn" (click)="cancelReply()">
           Cancel
         </button>
+
       </div>
 
     </div>
@@ -60,27 +72,24 @@
 
 </mat-dialog-content>
 
-<!-- ✅ MAIN SEND AREA (ONLY ONCE) -->
+<!-- ✅ MAIN SEND AREA -->
 <mat-dialog-actions class="flex flex-col gap-3">
 
-  <!-- Only show receiver when NOT replying -->
-<!-- ✅ ONLY show if NOT replying AND allowed -->
-<mat-form-field
-  *ngIf="!activeReplyId && canStartConversation()"
-  appearance="outline"
-  class="w-full"
->
-  <mat-label>Send To</mat-label>
+  <!-- Receiver -->
+  <mat-form-field
+    *ngIf="!activeReplyId && canStartConversation()"
+    appearance="outline"
+    class="w-full"
+  >
+    <mat-label>Send To</mat-label>
 
-  <mat-select [(ngModel)]="receiver">
+    <mat-select [(ngModel)]="receiver">
+      <mat-option *ngFor="let r of getReceivers()" [value]="r">
+        {{ r | titlecase }}
+      </mat-option>
+    </mat-select>
 
-    <mat-option *ngFor="let r of getReceivers()" [value]="r">
-      {{ r | titlecase }}
-    </mat-option>
-
-  </mat-select>
-
-</mat-form-field>
+  </mat-form-field>
 
   <!-- Message -->
   <mat-form-field appearance="outline" class="w-full">
@@ -88,14 +97,19 @@
     <textarea matInput [(ngModel)]="message"></textarea>
   </mat-form-field>
 
-  <!-- Send -->
- <button
-  mat-raised-button
-  color="primary"
-  (click)="sendMessage()"
-  [disabled]="isHospital() && !activeReplyId"
->
-  Send
-</button>
+  <!-- ✅ SEND MESSAGE (NOT REPLY) -->
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="sendMessage()"
+    [disabled]="sendingMessage || (isHospital() && !activeReplyId)"
+  >
+    <span *ngIf="!sendingMessage">Send</span>
+
+    <span *ngIf="sendingMessage" class="flex items-center gap-2">
+      <mat-icon class="animate-spin">autorenew</mat-icon>
+      Sending...
+    </span>
+  </button>
 
 </mat-dialog-actions>
