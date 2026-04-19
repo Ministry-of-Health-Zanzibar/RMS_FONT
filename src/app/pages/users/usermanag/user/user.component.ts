@@ -216,6 +216,7 @@ addPatient(userId: number) {
   const config = new MatDialogConfig();
   config.disableClose = false;
   config.role = 'dialog';
+   config.width = '50vw';  
   config.maxWidth = '100vw';
   config.maxHeight = '98vh';
   config.panelClass = 'full-screen-modal';
