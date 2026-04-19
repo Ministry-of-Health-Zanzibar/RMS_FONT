@@ -48,7 +48,10 @@ export class AssignUserHospitalComponent implements OnInit {
     'Urology',
     'Ophthalmology',
     'Neuro surg',
-    'Dermatologist'
+    'Dermatologist',
+    'Cardiology',
+    'Physician'
+
   ];
   loading = false;
 
