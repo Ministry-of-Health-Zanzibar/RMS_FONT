@@ -77,7 +77,7 @@ maxDate: Date | null = null;
 
   // ✅ Ruhusu dates zote (past + future)
   this.minDate = null;
-  this.maxDate = null;
+ this.maxDate = today;
 
   if (this.data?.data) {
     this.patientData = this.data.data;
