@@ -58,8 +58,8 @@ export class AddbodylistComponent implements OnInit, OnDestroy {
   filteredUser: any[] = [];
   userSearch: string = '';
   isLoadingUsers = false;
-  minDate!: Date;
-  maxDate!: Date;
+ minDate: Date | null = null;
+maxDate: Date | null = null;
 
   constructor(
     private patientService: PartientService,
@@ -68,65 +68,40 @@ export class AddbodylistComponent implements OnInit, OnDestroy {
     private dialogRef: MatDialogRef<AddbodylistComponent>,
   ) {}
 
-  // ngOnInit(): void {
-  //   this.configForm();
-  //   this.loadUsers();
+ 
+ ngOnInit(): void {
+  this.configForm();
+  this.loadUsers();
 
-  //   if (this.data?.data) {
-  //     this.patientData = this.data.data;
-  //     if (this.patientData.board_date) {
-  //       this.patientData.board_date = new Date(this.patientData.board_date);
-  //     }
+  const today = new Date();
 
-  //     this.patientForm.patchValue({
-  //       board_type: this.patientData.board_type,
-  //       board_date: this.patientData.board_date,
-  //       no_of_patients: this.patientData.no_of_patients,
-  //     });
+  // ✅ Ruhusu dates zote (past + future)
+  this.minDate = null;
+  this.maxDate = null;
 
-  //     if (this.patientData.users?.length) {
-  //       const formArray = this.patientForm.get('user_id') as FormArray;
-  //       this.patientData.users.forEach((user: any) =>
-  //         formArray.push(new FormControl(user.user_id)),
-  //       );
-  //     }
-  //   }
-  // }
-  ngOnInit(): void {
-    this.configForm();
-    this.loadUsers();
+  if (this.data?.data) {
+    this.patientData = this.data.data;
 
-    const today = new Date();
-
-    this.maxDate = today;
-
-    const twoWeeksAgo = new Date();
-    twoWeeksAgo.setDate(today.getDate() - 14);
-    this.minDate = twoWeeksAgo;
-
-    if (this.data?.data) {
-      this.patientData = this.data.data;
-
-      if (this.patientData.board_date) {
-        this.patientData.board_date = new Date(this.patientData.board_date);
-      }
-
-      this.patientForm.patchValue({
-        board_type: this.patientData.board_type,
-        board_date: this.patientData.board_date,
-        no_of_patients: this.patientData.no_of_patients,
-      });
-
-      if (this.patientData.users?.length) {
-        const formArray = this.patientForm.get('user_id') as FormArray;
-        this.patientData.users.forEach((user: any) =>
-          formArray.push(new FormControl(user.user_id)),
-        );
-      }
-    } else {
-      this.patientForm.get('board_date')?.setValue(today);
+    if (this.patientData.board_date) {
+      this.patientData.board_date = new Date(this.patientData.board_date);
     }
+
+    this.patientForm.patchValue({
+      board_type: this.patientData.board_type,
+      board_date: this.patientData.board_date,
+      no_of_patients: this.patientData.no_of_patients,
+    });
+
+    if (this.patientData.users?.length) {
+      const formArray = this.patientForm.get('user_id') as FormArray;
+      this.patientData.users.forEach((user: any) =>
+        formArray.push(new FormControl(user.user_id)),
+      );
+    }
+  } else {
+    this.patientForm.get('board_date')?.setValue(today);
   }
+}
 
   ngOnDestroy(): void {
     this.onDestroy.next();
@@ -221,73 +196,7 @@ export class AddbodylistComponent implements OnInit, OnDestroy {
     }
   }
 
-  // onAttachmentSelected(event: any): void {
-  //   const file = event.target.files?.[0] ?? null;
-  //   if (file) {
-  //     this.selectedAttachement = file;
-  //     this.patientForm.patchValue({ patient_list_file: file.name });
-  //     const control = this.patientForm.get('patient_list_file');
-  //     control?.markAsDirty();
-  //     control?.markAsTouched();
-  //     control?.updateValueAndValidity();
-  //   }
-  // }
-
-  // savePatient() {
-  //   if (this.patientForm.invalid) return;
-
-  //   this.loading = true;
-
-  //   const formData = new FormData();
-  //   Object.keys(this.patientForm.controls).forEach((key) => {
-  //     if (key === 'patient_list_file') {
-  //       if (this.selectedAttachement) {
-  //         formData.append('patient_list_file', this.selectedAttachement);
-  //       }
-  //     } else if (key === 'user_id') {
-  //       const userIds = this.patientForm.get('user_id')?.value || [];
-  //       userIds.forEach((id: number) =>
-  //         formData.append('user_id[]', id.toString()),
-  //       );
-  //     } else {
-  //       const value = this.patientForm.get(key)?.value;
-  //       formData.append(key, value ?? '');
-  //     }
-  //   });
-
-  //   this.patientService.addBodyList(formData).subscribe({
-  //     next: (response) => {
-  //       this.loading = false;
-  //       if (response.statusCode === 200) {
-  //         Swal.fire({
-  //           title: 'Success',
-  //           text: response.message,
-  //           icon: 'success',
-  //           confirmButtonColor: '#4690eb',
-  //           confirmButtonText: 'Close',
-  //         });
-  //         this.dialogRef.close(true);
-  //       } else {
-  //         Swal.fire({
-  //           title: 'Error',
-  //           text: response.message,
-  //           icon: 'error',
-  //           confirmButtonColor: '#4690eb',
-  //           confirmButtonText: 'Close',
-  //         });
-  //       }
-  //     },
-  //     error: (err) => {
-  //       console.error('Error saving patient:', err);
-  //       this.loading = false;
-  //       Swal.fire({
-  //         title: 'Error',
-  //         text: 'Something went wrong. Please try again.',
-  //         icon: 'error',
-  //       });
-  //     },
-  //   });
-  // }
+ 
   savePatient() {
     if (this.patientForm.invalid) return;
 
