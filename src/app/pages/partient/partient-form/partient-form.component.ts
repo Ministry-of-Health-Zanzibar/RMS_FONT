@@ -57,6 +57,7 @@ export class PartientFormComponent implements OnInit {
   patientForm!: FormGroup;
   loading = false;
   isEligible = false;
+  emails:any;
   id: any;
   fileError: string = '';
   isEditMode = false;
@@ -85,6 +86,8 @@ export class PartientFormComponent implements OnInit {
     this.initForm();
     this.loadReasons();
     this.loadDiagnoses();
+    this.emails = localStorage.getItem('email');
+    this.applyMatibabuCardValidation();
 
     if (this.data?.patient?.patient_id) {
       this.isEditMode = true;
@@ -99,13 +102,35 @@ export class PartientFormComponent implements OnInit {
     }
   }
 
+  applyMatibabuCardValidation() {
+  const control = this.patientForm.get('basicInfo.matibabu_card');
+
+  if (!control) return;
+
+  if (this.emails === 'hospital@mohz.go.tz') {
+    // ❌ NOT required (only pattern if value exists)
+    control.setValidators([
+      Validators.pattern(/^\d{12}$/) // optional but must be 12 digits if filled
+    ]);
+  } else {
+    // ✅ REQUIRED + 12 digits
+    control.setValidators([
+      Validators.required,
+      Validators.pattern(/^\d{12}$/)
+    ]);
+  }
+
+  control.updateValueAndValidity();
+}
+
+
   private initForm() {
     this.patientForm = this.fb.group({
       basicInfo: this.fb.group({
         name: ['', Validators.required],
         matibabu_card: [
           '',
-          [Validators.required, Validators.pattern(/^\d{12}$/)],
+         
         ],
         zan_id: ['', [Validators.pattern(/^\d{9}$/)]],
         date_of_birth: ['', Validators.required],
@@ -135,73 +160,7 @@ export class PartientFormComponent implements OnInit {
     });
   }
 
-  // getPatientById(id: any) {
-  //   if (!id) return;
 
-  //   this.patientService.showForUpdate(id).subscribe({
-  //     next: (response: any) => {
-  //       if (!response?.data) return;
-
-  //       const patient = response.data.patient;
-  //       const history = response.data.history;
-  //       const insurance = response.data.insurance;
-  //       const historyFile = response.data.history?.history_file;
-
-  //       this.patientForm.patchValue({
-  //         basicInfo: {
-  //           name: patient?.name || '',
-  //           matibabu_card: patient?.matibabu_card || '',
-  //           zan_id: patient?.zan_id || '',
-  //           date_of_birth: patient?.date_of_birth
-  //             ? new Date(patient.date_of_birth)
-  //             : '',
-  //           gender: patient?.gender || '',
-  //           phone: patient?.phone || '',
-  //           job: patient?.job || '',
-  //           position: patient?.position || '',
-  //           location_id: patient?.location_details?.location_id
-  //             ? Number(patient.location_details.location_id)
-  //             : null,
-  //         },
-
-  //         historyInfo: {
-  //           file_number: history?.file_number || '',
-  //           referring_date: history?.referring_date
-  //             ? new Date(history.referring_date)
-  //             : '',
-  //           case_type: history?.case_type || 'Routine',
-  //           history_of_presenting_illness:
-  //             history?.history_of_presenting_illness || '',
-  //           physical_findings: history?.physical_findings || '',
-  //           investigations: history?.investigations || '',
-  //           management_done: history?.management_done || '',
-  //           reason_id: history?.reason_details?.reason_id || '',
-
-  //         },
-
-  //         insuranceInfo: {
-  //           has_insurance: insurance?.has_insurance || false,
-  //           insurance_provider_name: insurance?.insurance_provider_name || '',
-  //           card_number: insurance?.card_number || '',
-  //           valid_until: insurance?.valid_until
-  //             ? new Date(insurance.valid_until)
-  //             : '',
-  //         },
-  //       });
-
-  //       if (history?.diagnoses?.length) {
-  //         this.selectedDiagnoses = history.diagnoses;
-
-  //         this.patientForm
-  //           .get('historyInfo.diagnosis_ids')
-  //           ?.setValue(history.diagnoses.map((d: any) => d.diagnosis_id));
-  //       }
-  //     },
-  //     error: (err) => {
-  //       console.error('Error loading patient:', err);
-  //     },
-  //   });
-  // }
 
   getPatientById(id: any) {
     if (!id) return;
@@ -450,78 +409,7 @@ export class PartientFormComponent implements OnInit {
     return date.toISOString().split('T')[0];
   }
 
-  // onSubmit() {
-  //   if (this.patientForm.invalid) {
-  //     this.patientForm.markAllAsTouched();
-  //     return;
-  //   }
-
-  //   if (!this.selectedFile) {
-  //     Swal.fire({
-  //       icon: 'error',
-  //       title: 'Missing File',
-  //       text: 'Please upload the History PDF file (Max 1MB)',
-  //     });
-  //     return;
-  //   }
-
-  //   this.loading = true;
-  //   const formData = new FormData();
-  //   const { basicInfo, historyInfo, insuranceInfo } = this.patientForm.value;
-
-  //   Object.keys(basicInfo).forEach((key) => {
-  //     let value = basicInfo[key];
-  //     if (value !== null && value !== '') {
-  //       formData.append(
-  //         key,
-  //         key === 'date_of_birth' ? this.formatDate(value) : value,
-  //       );
-  //     }
-  //   });
-
-  //   Object.keys(historyInfo).forEach((key) => {
-  //     let value = historyInfo[key];
-  //     if (value !== null && value !== '') {
-  //       if (key === 'referring_date') {
-  //         formData.append(key, this.formatDate(value));
-  //       } else if (key === 'diagnosis_ids') {
-  //         value.forEach((id: any) => formData.append('diagnosis_ids[]', id));
-  //       } else {
-  //         formData.append(key, value);
-  //       }
-  //     }
-  //   });
-
-  //   Object.keys(insuranceInfo).forEach((key) => {
-  //     let value = insuranceInfo[key];
-  //     if (key === 'has_insurance') {
-  //       formData.append(key, value ? '1' : '0');
-  //     } else if (value) {
-  //       formData.append(
-  //         key,
-  //         key === 'valid_until' ? this.formatDate(value) : value,
-  //       );
-  //     }
-  //   });
-
-  //   formData.append('history_file', this.selectedFile);
-
-  //   this.patientService.addPartient(formData).subscribe({
-  //     next: (res) => {
-  //       this.loading = false;
-  //       this.snackBar.open('Patient saved successfully', 'Close', {
-  //         duration: 4000,
-  //       });
-  //       this.dialogRef.close(res);
-  //     },
-  //     error: (err) => {
-  //       this.loading = false;
-  //       this.snackBar.open(err?.error?.message || 'Error occurred', 'Close', {
-  //         duration: 5000,
-  //       });
-  //     },
-  //   });
-  // }
+ 
 
   onSubmit() {
     if (this.patientForm.invalid) {

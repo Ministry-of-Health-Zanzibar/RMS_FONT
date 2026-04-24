@@ -31,32 +31,7 @@ export class ReferralsLetterComponent implements OnInit {
   referralID: string | null = null;
   referral: any = null;
 
-// calculateAge(dobOrAge: string | number | null): string {
-//   if (!dobOrAge) return 'N/A';
 
-  
-//   if (!isNaN(Number(dobOrAge))) {
-//     const age = Number(dobOrAge);
-//     return `${age} year${age !== 1 ? 's' : ''}`;
-//   }
-
-
-//   const dob = new Date(dobOrAge as string);
-//   if (isNaN(dob.getTime())) return 'N/A';
-
-//   const today = new Date();
-//   let age = today.getFullYear() - dob.getFullYear();
-//   const monthDiff = today.getMonth() - dob.getMonth();
-
-//   if (
-//     monthDiff < 0 ||
-//     (monthDiff === 0 && today.getDate() < dob.getDate())
-//   ) {
-//     age--;
-//   }
-
-//   return `${age} year${age !== 1 ? 's' : ''}`;
-// }
 
 formatAge(ageDetails: any): string {
   if (!ageDetails) return 'N/A';

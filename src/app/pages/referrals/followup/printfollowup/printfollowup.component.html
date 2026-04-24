@@ -1,22 +1,22 @@
 <div
   id="print-section"
   *ngIf="referral"
-  class="p-10 bg-white shadow-lg rounded-lg max-w-4xl mx-auto text-gray-900"
+  class="p-10 bg-white rounded-lg text-gray-900 print:ml-40 print:w-[70%]"
 >
-  <!-- Logo -->
-  <div class="flex justify-center mb-4">
-    <img src="../../../../assets/img/smz.png" alt="SMZ Logo" class="w-auto h-24" />
+ 
+ <div class="flex justify-center mb-4">
+    <img src="../../../../assets/img/smz.png" alt="" class="w-auto h-24" />
   </div>
 
-  <!-- Header -->
   <div class="text-center space-y-1 mb-6">
     <p class="text-lg font-semibold">SERIKALI YA MAPINDUZI YA ZANZIBAR</p>
     <p class="text-lg font-semibold">WIZARA YA AFYA</p>
 
     <div class="grid grid-cols-2 gap-4 text-sm text-left">
       <div>
-        <p>6 Barabara ya Health Office, S.L.P 236 MNANZIMMOJA</p>
-        <p>POSTIKODI: 70467 Mjini Magharibi Zanzibar</p>
+        <p>6 Barabara ya Health Office</p>
+        <p>S.L.P 236 MNANZIMMOJA</p>
+        <p>POSTIKODI 70467 Mjini Magharibi Zanzibar</p>
       </div>
       <div class="text-right">
         <p>
@@ -28,17 +28,17 @@
         <p>
           Barua pepe:
           <a
-            [href]="'mailto:' + (email || 'info@mohz.go.tz')"
+            href="mailto:{{ email || 'N/A' }}"
             class="text-blue-600 hover:underline"
           >
-            {{ email || "info@mohz.go.tz" }}
+            {{ email || "N/A" }}
           </a>
         </p>
       </div>
     </div>
   </div>
 
-  <hr class="border-gray-300 my-4" />
+  <hr style="border-top: 3px solid black;" />
 
   <!-- Reference Info -->
   <div class="flex justify-between text-sm font-medium my-4">
@@ -63,13 +63,13 @@
     </p>
   </div>
 
-  <!-- Patient Information -->
   <div class="mb-4 text-center">
-    <p class="font-semibold uppercase">
-      Kuh: KUMPATIA MATIBABU MGONJWA
-      {{ referral.patient?.name || "N/A" }}
-    </p>
-  </div>
+  <p class="font-semibold uppercase">
+    Kuh: KUMPATIA MATIBABU MGONJWA
+    {{ referral.patient?.name || "N/A" }} <br>
+   {{ formatAge(referral?.patient?.ageDetails) }}
+  </p>
+</div>
 
   <!-- Body Content -->
   <div class="space-y-3 text-sm leading-relaxed">
@@ -99,23 +99,24 @@
     <p><strong>Ahsante,</strong></p>
   </div>
 
-  <!-- Signature -->
   <div class="mt-8">
-    <p class="font-semibold">DKT. AMOUR S. MOHAMED</p>
-    <p class="uppercase">MKURUGENZI MKUU</p>
-    <p>WIZARA YA AFYA, ZANZIBAR</p>
+    <p class="font-semibold">DKT. AMOUR S. MOHAMED,</p>
+    <p class="font-semibold">MKURUGENZI MKUU,</p>
+    <p class="font-semibold">WIZARA YA AFYA,</p>
+   <p class="font-semibold underline decoration-2">ZANZIBAR</p>
+
   </div>
 
-  <mat-divider class="my-6"></mat-divider>
+  <hr style="border-top: 3px solid black;" />
+
 
   <!-- Footer Info -->
   <div class="text-xs text-gray-600 text-center">
     <p><em><strong>Kwa mawasiliano ya moja kwa moja:</strong></em></p>
     <p>
-      Waziri ..........., Katibu Mkuu .........., Mkurugenzi Mkuu barua pepe:
-      <a [href]="'mailto:' + (dg || 'dg@mohz.go.tz')" class="text-blue-600 hover:underline">
+      Waziri ..........., Katibu Mkuu {{katibu}} , Mkurugenzi Mkuu barua pepe</p>
+      <p>
         {{ dg || "dg@mohz.go.tz" }}
-      </a>
     </p>
   </div>
 

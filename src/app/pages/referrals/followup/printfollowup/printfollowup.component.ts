@@ -35,6 +35,48 @@ export class PrintfollowupComponent implements OnInit {
   email = 'info@mohz.go.tz';
   dg = 'dg@mohz.go.tz';
 
+  calculateAge(dob: string) {
+  if (!dob) return null;
+
+  const birthDate = new Date(dob);
+  const today = new Date();
+
+  let years = today.getFullYear() - birthDate.getFullYear();
+  let months = today.getMonth() - birthDate.getMonth();
+  let days = today.getDate() - birthDate.getDate();
+
+  // Adjust days
+  if (days < 0) {
+    months--;
+    const prevMonth = new Date(today.getFullYear(), today.getMonth(), 0);
+    days += prevMonth.getDate();
+  }
+
+  // Adjust months
+  if (months < 0) {
+    years--;
+    months += 12;
+  }
+
+  return { years, months, days };
+}
+
+formatAge(ageDetails: any): string {
+  if (!ageDetails) return 'N/A';
+
+  const { years, months, days } = ageDetails;
+
+  if (years > 0) {
+    return `MIAKA ${years}`;
+  }
+
+  if (months > 0) {
+    return `MIEZI ${months}`;
+  }
+
+  return `SIKU ${days}`;
+}
+
   constructor(
     private printService: FollowsService,
     private referralsService: ReferralService,
@@ -46,26 +88,32 @@ export class PrintfollowupComponent implements OnInit {
    this.referral = this.data;
    }
 
-   getReferralData(): void {
-     this.referralsService.getReferralById(this.referralID!).subscribe(
-       (response: any) => {
-         console.log('API response:', response);
+ 
+
+  getReferralData(): void {
+  this.referralsService.getReferralById(this.referralID!).subscribe(
+    (response: any) => {
+      console.log('API response:', response);
 
       this.referral = response.data;
 
-      // Pick first hospital from hospitals array
+      // ✅ Set hospital
       if (this.referral?.hospitals?.length > 0) {
         this.referral.hospital = this.referral.hospitals[0];
       }
 
+      // ✅ Calculate age from DOB
+      const dob = this.referral?.patient?.date_of_birth;
+      this.referral.patient.ageDetails = this.calculateAge(dob);
+
       console.log('Referral hospital:', this.referral.hospital);
-       },
-       error => {
-         console.error('Failed to load referral data:', error);
-         Swal.fire('Error', 'Unable to fetch referral data', 'error');
-       }
-     );
-   }
+    },
+    error => {
+      console.error('Failed to load referral data:', error);
+      Swal.fire('Error', 'Unable to fetch referral data', 'error');
+    }
+  );
+}
 
 
    print(): void {

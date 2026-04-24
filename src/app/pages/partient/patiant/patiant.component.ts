@@ -137,21 +137,7 @@ export class PatiantComponent {
     });
   }
 
-  // updatePatient(data: any) {
-  //   const config = new MatDialogConfig();
-  //   config.disableClose = false;
-  //   config.role = 'dialog';
-
-  //   config.maxHeight = '98vh';
-  //   config.width = '850px';
-  //   config.panelClass = 'full-screen-modal';
-  //   config.data = { data };
-
-  //   const dialogRef = this.dialog.open(PartientFormComponent, config);
-  //   dialogRef.afterClosed().subscribe(() => {
-  //     this.loadPatients();
-  //   });
-  // }
+ 
 
   updatePatient(patientData: any) {
     const config = new MatDialogConfig();
