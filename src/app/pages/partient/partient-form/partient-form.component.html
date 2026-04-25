@@ -77,21 +77,31 @@
                   <mat-label>Zan ID</mat-label>
                   <input matInput formControlName="zan_id" maxlength="9" />
                 </mat-form-field>
-                <mat-form-field appearance="outline" class="w-full">
-                  <mat-label>Location *</mat-label>
+               <mat-form-field appearance="outline" class="w-full">
+  <mat-label>Location *</mat-label>
 
-                  <mat-select
-                    formControlName="location_id"
-                    [compareWith]="compareLocation"
-                  >
-                    <mat-option
-                      *ngFor="let option of locations"
-                      [value]="option.location_id"
-                    >
-                      {{ option.label }}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
+  <mat-select formControlName="location_id" [compareWith]="compareLocation">
+
+    <!-- 🔍 Search Input -->
+    <mat-option>
+      <input
+        matInput
+        placeholder="Search location..."
+        [formControl]="locationFilterCtrl"
+        (click)="$event.stopPropagation()"
+      />
+          </mat-option>
+
+          <!-- 📍 Filtered Locations -->
+         <mat-option
+        *ngFor="let option of filteredLocations"
+        [value]="option.location_id"
+      >
+        {{ option.location_name || option.label }}
+      </mat-option>
+
+        </mat-select>
+      </mat-form-field>
 
                 <mat-form-field appearance="outline" class="w-full">
                   <mat-label>Job</mat-label>

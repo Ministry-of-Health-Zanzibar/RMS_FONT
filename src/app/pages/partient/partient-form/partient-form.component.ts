@@ -63,6 +63,9 @@ export class PartientFormComponent implements OnInit {
   isEditMode = false;
   selectedFile: File | null = null;
   locations: any[] = [];
+  locationFilterCtrl = new FormControl('');
+  filteredLocations: any[] = [];
+
   reasonList: any[] = [];
   diagnosesList: any[] = [];
   diagnosisSearchCtrl = new FormControl('');
@@ -312,18 +315,37 @@ export class PartientFormComponent implements OnInit {
       });
   }
 
-  loadLocations(callback?: () => void) {
-    this.locationService.getLocation().subscribe({
-      next: (res: any) => {
-        this.locations = res.data || [];
+ loadLocations(callback?: () => void) {
+  this.locationService.getLocation().subscribe({
+    next: (res: any) => {
+      this.locations = res.data || [];
+      this.filteredLocations = [...this.locations]; // 👈 muhimu
 
-        if (callback) {
-          callback();
-        }
-      },
+      this.listenToLocationSearch(); // 👈 add this
+
+      if (callback) {
+        callback();
+      }
+    },
+  });
+}
+
+listenToLocationSearch() {
+  this.locationFilterCtrl.valueChanges.subscribe((search: string | null) => {
+
+    const searchValue = (search || '').toLowerCase().trim(); // ✔ fix null
+
+    if (!searchValue) {
+      this.filteredLocations = [...this.locations];
+      return;
+    }
+
+    this.filteredLocations = this.locations.filter((loc) => {
+      const name = (loc.location_name || loc.label || '').toLowerCase();
+      return name.includes(searchValue);
     });
-  }
-
+  });
+}
   compareLocation = (a: any, b: any): boolean => {
     return Number(a) === Number(b);
   };
