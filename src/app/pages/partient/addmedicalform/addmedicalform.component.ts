@@ -6,6 +6,7 @@ import {
   FormBuilder,
   Validators,
   FormsModule,
+  FormControl,
 } from '@angular/forms';
 import {
   MatDialogModule,
@@ -22,6 +23,11 @@ import Swal from 'sweetalert2';
 import { DiagnosisService } from '../../../services/system-configuration/diagnosis.service';
 import { ReasonsService } from '../../../services/system-configuration/reasons.service';
 import { MedicalhistoryService } from '../../../services/partient/medicalhistory.service';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatIconModule } from '@angular/material/icon';
+
 
 @Component({
   selector: 'app-addmedicalform',
@@ -36,6 +42,13 @@ import { MedicalhistoryService } from '../../../services/partient/medicalhistory
     MatInputModule,
     MatSelectModule,
     MatProgressSpinnerModule,
+    MatChipsModule,
+    MatAutocompleteModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatIconModule,
+    ReactiveFormsModule,
+    FormsModule
   ],
   templateUrl: './addmedicalform.component.html',
   styleUrls: ['./addmedicalform.component.scss'],
@@ -51,6 +64,8 @@ export class AddmedicalformComponent implements OnInit, OnDestroy {
   diagnosisSearch = '';
   loadingDiagnoses = false;
   selectedFile: File | null = null;
+  diagnosisSearchCtrl = new FormControl('');
+  selectedDiagnoses: any[] = [];
   private onDestroy$ = new Subject<void>();
 
   constructor(
@@ -59,7 +74,7 @@ export class AddmedicalformComponent implements OnInit, OnDestroy {
     private reasonServices: ReasonsService,
     private medicalHistoryService: MedicalhistoryService,
     public dialogRef: MatDialogRef<AddmedicalformComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
   ) {}
 
   ngOnInit(): void {
@@ -85,26 +100,30 @@ export class AddmedicalformComponent implements OnInit, OnDestroy {
     });
   }
 
-patchMedicalData(patient: any) {
-  const history = patient.latest_history;
-  if (!history) return;
+  patchMedicalData(patient: any) {
+    const history = patient.latest_history;
+    if (!history) return;
 
-  // Patch comments and reason
-  this.medicalForm.patchValue({
-    board_comments: history.board_comments,
-    board_reason_id: history.board_reason_id,
-  });
+    // Patch comments and reason
+    this.medicalForm.patchValue({
+      board_comments: history.board_comments,
+      board_reason_id: history.board_reason_id,
+    });
 
-  // ✅ Patch diagnoses from API response
-  const selectedDiagnoses = history.board_diagnoses?.map((d: any) => d.diagnosis_id) || [];
-  console.log('Board diagnoses from patient history:', history.board_diagnoses);
-  console.log('Selected diagnosis IDs to patch:', selectedDiagnoses);
+    // ✅ Patch diagnoses from API response
+    const selectedDiagnoses =
+      history.board_diagnoses?.map((d: any) => d.diagnosis_id) || [];
+    console.log(
+      'Board diagnoses from patient history:',
+      history.board_diagnoses,
+    );
+    console.log('Selected diagnosis IDs to patch:', selectedDiagnoses);
 
-  this.medicalForm.get('board_diagnosis_ids')?.setValue(selectedDiagnoses);
+    this.medicalForm.get('board_diagnosis_ids')?.setValue(selectedDiagnoses);
 
-  // Clear previously selected file (optional)
-  this.selectedFile = null;
-}
+    // Clear previously selected file (optional)
+    this.selectedFile = null;
+  }
   loadReasons() {
     this.reasonServices.getAllReasons().subscribe({
       next: (res: any) => (this.reasonList = res.data || []),
@@ -112,28 +131,27 @@ patchMedicalData(patient: any) {
     });
   }
 
-loadDiagnoses() {
-  this.loadingDiagnoses = true;
-  this.diagnosisService.getAllDiagnosis().subscribe({
-    next: (res: any) => {
-      this.diagnosesList = res.data || [];
-      this.filteredDiagnoses = [...this.diagnosesList];
+  // loadDiagnoses() {
+  //   this.loadingDiagnoses = true;
+  //   this.diagnosisService.getAllDiagnosis().subscribe({
+  //     next: (res: any) => {
+  //       this.diagnosesList = res.data || [];
+  //       this.filteredDiagnoses = [...this.diagnosesList];
 
-      // Patch diagnoses baada ya list kupakia
-      if (this.mode === 'edit') {
-        const patient = this.data.patient;
-        const selectedDiagnoses = patient.latest_history.board_diagnoses?.map((d: { diagnosis_id: number }) => d.diagnosis_id) || [];
-        this.medicalForm.get('board_diagnosis_ids')?.setValue(selectedDiagnoses);
-      }
+  //       if (this.mode === 'edit') {
+  //         const patient = this.data.patient;
+  //         const selectedDiagnoses = patient.latest_history.board_diagnoses?.map((d: { diagnosis_id: number }) => d.diagnosis_id) || [];
+  //         this.medicalForm.get('board_diagnosis_ids')?.setValue(selectedDiagnoses);
+  //       }
 
-      this.loadingDiagnoses = false;
-    },
-    error: (err) => {
-      console.error('Failed to load diagnoses', err);
-      this.loadingDiagnoses = false;
-    },
-  });
-}
+  //       this.loadingDiagnoses = false;
+  //     },
+  //     error: (err) => {
+  //       console.error('Failed to load diagnoses', err);
+  //       this.loadingDiagnoses = false;
+  //     },
+  //   });
+  // }
   onDiagnosesDropdownOpened() {
     this.filteredDiagnoses = [...this.diagnosesList];
     this.diagnosisSearch = '';
@@ -189,12 +207,22 @@ loadDiagnoses() {
 
     const request$ =
       this.mode === 'edit'
-        ? this.medicalHistoryService.updateMedicalHistory(patientHistoryId, formData)
-        : this.medicalHistoryService.addMedicalHistory(patientHistoryId, formData);
+        ? this.medicalHistoryService.updateMedicalHistory(
+            patientHistoryId,
+            formData,
+          )
+        : this.medicalHistoryService.addMedicalHistory(
+            patientHistoryId,
+            formData,
+          );
 
     request$.subscribe({
       next: () => {
-        Swal.fire('Success', `Medical history ${this.mode}ed successfully`, 'success');
+        Swal.fire(
+          'Success',
+          `Medical history ${this.mode}ed successfully`,
+          'success',
+        );
         this.loading = false;
         this.dialogRef.close(true);
       },
@@ -208,5 +236,46 @@ loadDiagnoses() {
   ngOnDestroy(): void {
     this.onDestroy$.next();
     this.onDestroy$.complete();
+  }
+
+  loadDiagnoses() {
+    this.diagnosisService.getAllDiagnosis().subscribe((res) => {
+      this.diagnosesList = res.data || [];
+      this.filteredDiagnoses = [...this.diagnosesList];
+    });
+
+    this.diagnosisSearchCtrl.valueChanges
+      .pipe(debounceTime(300), distinctUntilChanged())
+      .subscribe((search: any) => {
+        if (!search || typeof search !== 'string') {
+          this.filteredDiagnoses = [...this.diagnosesList];
+          return;
+        }
+        this.filteredDiagnoses = this.diagnosesList.filter((diag) =>
+          diag.diagnosis_name.toLowerCase().includes(search.toLowerCase()),
+        );
+      });
+  }
+
+  addDiagnosis(diagnosis: any) {
+    const exists = this.selectedDiagnoses.find(
+      (d) => d.diagnosis_id === diagnosis.diagnosis_id,
+    );
+    if (!exists) {
+      this.selectedDiagnoses.push(diagnosis);
+      this.medicalForm
+        .get('historyInfo.diagnosis_ids')
+        ?.setValue(this.selectedDiagnoses.map((d) => d.diagnosis_id));
+    }
+    this.diagnosisSearchCtrl.setValue('');
+  }
+
+  removeDiagnosis(diagnosis: any) {
+    this.selectedDiagnoses = this.selectedDiagnoses.filter(
+      (d) => d.diagnosis_id !== diagnosis.diagnosis_id,
+    );
+    this.medicalForm
+      .get('historyInfo.diagnosis_ids')
+      ?.setValue(this.selectedDiagnoses.map((d) => d.diagnosis_id));
   }
 }
