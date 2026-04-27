@@ -201,11 +201,11 @@ export class FinanceComponent implements OnInit {
       '#FEB019',
       '#00E396',
       '#FF4560',
-      '#775DD0',
-      '#546E7A',
-      '#26A69A',
+      '#060312ff',
+      '#7a6054ff',
+      '#2664a6ff',
       '#D10CE8',
-      '#8D6E63',
+      '#69d3ebff',
       '#1E88E5',
     ],
     tooltip: {
@@ -293,53 +293,7 @@ export class FinanceComponent implements OnInit {
     );
   }
 
-  // fetchReferralByMonth(): void {
-  //   this.reportService.getMonthRefferalByGender().subscribe(
-  //     (response) => {
-  //       const chartData = response?.data || [];
-
-  //       const monthNames = [
-  //         'January',
-  //         'February',
-  //         'March',
-  //         'April',
-  //         'May',
-  //         'June',
-  //         'July',
-  //         'August',
-  //         'September',
-  //         'October',
-  //         'November',
-  //         'December',
-  //       ];
-
-  //       const months = chartData.map((item: any) => {
-  //         const [year, month] = item.month.split('-');
-  //         return monthNames[parseInt(month) - 1];
-  //       });
-
-  //       const maleReferrals = chartData.map(
-  //         (item: any) => item.male_referrals || 0
-  //       );
-  //       const femaleReferrals = chartData.map(
-  //         (item: any) => item.female_referrals || 0
-  //       );
-
-  //       this.barChartOptions = {
-  //         ...this.barChartOptions,
-  //         series: [
-  //           { name: 'Male', data: maleReferrals },
-  //           { name: 'Female', data: femaleReferrals },
-  //         ],
-  //         xaxis: {
-  //           ...this.barChartOptions.xaxis,
-  //           categories: months,
-  //         },
-  //       };
-  //     },
-  //     (error) => console.error('Error fetching referral data:', error)
-  //   );
-  // }
+ 
 
   fetchReferralByMonth(): void {
     this.reportService.getMonthRefferalByGender().subscribe(
@@ -423,8 +377,7 @@ export class FinanceComponent implements OnInit {
             'Kilimanjaro Christian Medical Centre',
           totalReferralsByMadrasInstituteOfOrthopaedicsAndTraumatology:
             'total Referrals By MIOT',
-          totalReferralsBySIMS:
-          'total Referrals By SIMS'
+       
         };
         this.pieLabels = Object.keys(hospitalMap).map(
           (key) => hospitalMap[key]
