@@ -60,57 +60,16 @@ export type ApexChartOptions = {
 export class FinanceComponent implements OnInit {
   referral: any = {};
 
-  // barChartOptions: ApexChartOptions = {
-  //   series: [
-  //     { name: 'Male', data: [] },
-  //     { name: 'Female', data: [] },
-  //   ],
-  //   chart: {
-  //     type: 'bar',
-  //     height: 350,
-  //     stacked: false,
-  //     toolbar: { show: true },
-  //   },
-  //   plotOptions: {
-  //     bar: {
-  //       horizontal: false,
-  //       columnWidth: '55%',
-  //       borderRadius: 6,
-  //       borderRadiusApplication: 'end',
-  //     },
-  //   },
-  //   dataLabels: { enabled: false },
-  //   xaxis: {
-  //     categories: [],
-  //     title: { text: 'Month' },
-  //     labels: { style: { fontSize: '12px' } },
-  //   },
-  //   yaxis: {
-  //     title: { text: 'Patients' },
-  //     labels: { style: { fontSize: '12px' } },
-  //   },
-  //   fill: { opacity: 1 },
-  //   legend: {
-  //     position: 'top',
-  //     horizontalAlign: 'center',
-  //     fontSize: '14px',
-  //   },
-  //   tooltip: {
-  //     y: {
-  //       formatter: (val: number, opts?: any) => {
-  //         const gender = opts?.seriesIndex === 0 ? 'Male' : 'Female';
-  //         const month = opts?.w.globals.labels[opts.dataPointIndex];
-  //         return `${month} - ${gender}: ${val}`;
-  //       },
-  //     },
-  //   },
-  //   colors: ['#4FD1C5', '#9AE6B4'],
-  //   title: {
-  //     text: 'Monthly Referrals by Gender',
-  //     align: 'center',
-  //     style: { fontSize: '18px', fontWeight: 'bold', color: '#333' },
-  //   },
-  // };
+  pieColors: string[] = [
+    '#008FFB', // Blue
+    '#00E396', // Green
+    '#FEB019', // Orange
+    '#FF4560', // Red
+    '#775DD0', // Purple
+    '#3F51B5', // Indigo
+    '#00D9E9', // Cyan
+    '#FF66C4', // Pink
+  ];
 
   barChartOptions: ApexChartOptions = {
     series: [
@@ -120,7 +79,7 @@ export class FinanceComponent implements OnInit {
     chart: {
       type: 'bar',
       height: 350,
-      stacked: true, 
+      stacked: true,
       toolbar: { show: true },
     },
     plotOptions: {
@@ -133,7 +92,7 @@ export class FinanceComponent implements OnInit {
     },
     dataLabels: { enabled: false },
     xaxis: {
-      categories: [], 
+      categories: [],
       title: { text: 'Month' },
       labels: { style: { fontSize: '12px' } },
     },
@@ -223,7 +182,7 @@ export class FinanceComponent implements OnInit {
 
   constructor(
     private dashboardService: StatisticalService,
-    private reportService: GraphreportService
+    private reportService: GraphreportService,
   ) {}
 
   ngOnInit(): void {
@@ -279,7 +238,7 @@ export class FinanceComponent implements OnInit {
       },
       (error) => {
         console.error('Error fetching referral trend:', error);
-      }
+      },
     );
   }
 
@@ -289,11 +248,9 @@ export class FinanceComponent implements OnInit {
         this.referral = response;
         console.log('Data fetched successfully:', this.referral);
       },
-      (error) => console.error('Error fetching data:', error)
+      (error) => console.error('Error fetching data:', error),
     );
   }
-
- 
 
   fetchReferralByMonth(): void {
     this.reportService.getMonthRefferalByGender().subscribe(
@@ -323,10 +280,10 @@ export class FinanceComponent implements OnInit {
         });
 
         const maleReferrals = chartData.map(
-          (item: any) => item.male_referrals || 0
+          (item: any) => item.male_referrals || 0,
         );
         const femaleReferrals = chartData.map(
-          (item: any) => item.female_referrals || 0
+          (item: any) => item.female_referrals || 0,
         );
 
         this.barChartOptions = {
@@ -342,7 +299,7 @@ export class FinanceComponent implements OnInit {
           },
         };
       },
-      (error) => console.error('Error fetching referral data:', error)
+      (error) => console.error('Error fetching referral data:', error),
     );
   }
 
@@ -351,10 +308,19 @@ export class FinanceComponent implements OnInit {
   pieChart: ApexChart = { type: 'pie', height: 350, width: 600 };
   pieTitle: ApexTitleSubtitle = { text: 'Referrals by Hospitals' };
   pieLegend: ApexLegend = { position: 'right' };
-  pieResponsive: ApexResponsive[] = [
+//   pieLegend: ApexLegend = {
+//   position: 'bottom', 
+//   horizontalAlign: 'center',
+//   fontSize: '12px',
+//   formatter: function(val, opts) {
+//     return val + " - " + opts.w.globals.series[opts.seriesIndex];
+//   }
+// };
+
+pieResponsive: ApexResponsive[] = [
     {
       breakpoint: 480,
-      options: { chart: { width: 300 }, legend: { position: 'bottom' } },
+      options: { chart: { width: '100%' }, legend: { position: 'bottom' } },
     },
   ];
 
@@ -377,14 +343,23 @@ export class FinanceComponent implements OnInit {
             'Kilimanjaro Christian Medical Centre',
           totalReferralsByMadrasInstituteOfOrthopaedicsAndTraumatology:
             'total Referrals By MIOT',
-       
+
         };
+        // const hospitalMap: { [key: string]: string } = {
+        //   totalReferralsByLumumba: 'Lumumba',
+        //   totalReferralsByMuhimbiliOrthopaedicInstitute: 'MOI',
+        //   totalReferralsByJakayaKikweteCardiacInstitute: 'JKCI',
+        //   totalReferralsByMuhimbiliNationalHospital: 'MNH',
+        //   totalReferralsByOceanRoadCancerInstitute: 'ORCI',
+        //   totalReferralsByKilimanjaroChristianMedicalCentre: 'KCMC',
+        //   totalReferralsByMadrasInstituteOfOrthopaedicsAndTraumatology: 'MIOT',
+        // };
         this.pieLabels = Object.keys(hospitalMap).map(
-          (key) => hospitalMap[key]
+          (key) => hospitalMap[key],
         );
         this.pieSeries = Object.keys(hospitalMap).map((key) => data[key] || 0);
       },
-      (error) => console.error('Error fetching referral summary', error)
+      (error) => console.error('Error fetching referral summary', error),
     );
   }
 
@@ -412,7 +387,7 @@ export class FinanceComponent implements OnInit {
         this.reasonSeries = Object.keys(reasonMap).map((key) => data[key] || 0);
       },
       (error) =>
-        console.error('Error fetching referral summary by reason', error)
+        console.error('Error fetching referral summary by reason', error),
     );
   }
 }
