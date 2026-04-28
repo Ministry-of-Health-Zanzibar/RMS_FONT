@@ -29,7 +29,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import Swal from 'sweetalert2';
-import { switchMap, of } from 'rxjs';
+import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import { ViewChild } from '@angular/core';
 
 
 
@@ -56,6 +57,7 @@ import { switchMap, of } from 'rxjs';
   ],
   templateUrl: './partient-form.component.html',
 })
+
 export class PartientFormComponent implements OnInit {
   patientForm!: FormGroup;
   loading = false;
@@ -77,6 +79,9 @@ export class PartientFormComponent implements OnInit {
   selectedDiagnoses: any[] = [];
   history_file?: string;
   historyFileUrl: string | null = null;
+
+  @ViewChild(MatAutocompleteTrigger) autoTrigger!: MatAutocompleteTrigger;
+  @ViewChild('diagInput') diagInput!: any;
 
   constructor(
     private fb: FormBuilder,
@@ -109,27 +114,30 @@ export class PartientFormComponent implements OnInit {
     }
   }
 
-  applyMatibabuCardValidation() {
-  const control = this.patientForm.get('basicInfo.matibabu_card');
-
-  if (!control) return;
-
-  if (this.emails === 'hospital@mohz.go.tz') {
-    // ❌ NOT required (only pattern if value exists)
-    control.setValidators([
-      Validators.pattern(/^\d{12}$/) // optional but must be 12 digits if filled
-    ]);
-  } else {
-    // ✅ REQUIRED + 12 digits
-    control.setValidators([
-      Validators.required,
-      Validators.pattern(/^\d{12}$/)
-    ]);
+  onLocationSelected(location: any) {
+    this.patientForm.get('basicInfo.location_id')?.setValue(location);
+    this.locationFilterCtrl.setValue(location); // 🔥 THIS IS WHAT FIXES EDIT DISPLAY
   }
 
-  control.updateValueAndValidity();
-}
+  applyMatibabuCardValidation() {
+    const control = this.patientForm.get('basicInfo.matibabu_card');
 
+    if (!control) return;
+
+    if (this.emails === 'hospital@mohz.go.tz') {
+      // NOT required (only pattern if value exists)
+      control.setValidators([
+        Validators.pattern(/^\d{12}$/) // optional but must be 12 digits if filled
+      ]);
+    } else {
+      // REQUIRED + 12 digits
+      control.setValidators([
+        Validators.required,
+        Validators.pattern(/^\d{12}$/)
+      ]);
+    }
+    control.updateValueAndValidity();
+  }
 
   private initForm() {
     this.patientForm = this.fb.group({
@@ -166,11 +174,9 @@ export class PartientFormComponent implements OnInit {
     });
   }
 
-
-
   getPatientById(id: any) {
     if (!id) return;
-
+    
     this.patientService.showForUpdate(id).subscribe({
       next: (response: any) => {
         if (!response?.data) return;
@@ -179,8 +185,8 @@ export class PartientFormComponent implements OnInit {
         const history = response.data.history;
         const insurance = response.data.insurance;
 
+        this.locationFilterCtrl.setValue(patient?.location_details || '');
         const historyFile = response.data.history?.history_file;
-        console.log('History file URL:', historyFile);
 
         this.historyFileUrl = historyFile;
 
@@ -196,9 +202,7 @@ export class PartientFormComponent implements OnInit {
             phone: patient?.phone || '',
             job: patient?.job || '',
             position: patient?.position || '',
-            location_id: patient?.location_details?.location_id
-              ? Number(patient.location_details.location_id)
-              : null,
+            location_id: patient?.location_details || null,
           },
 
           historyInfo: {
@@ -318,37 +322,50 @@ export class PartientFormComponent implements OnInit {
       });
   }
 
- loadLocations(callback?: () => void) {
-  this.locationService.getLocation().subscribe({
-    next: (res: any) => {
-      this.locations = res.data || [];
-      this.filteredLocations = [...this.locations]; // 👈 muhimu
+  loadLocations(callback?: () => void) {
+    this.locationService.getLocation().subscribe({
+      next: (res: any) => {
+        this.locations = res.data || [];
+        this.filteredLocations = [...this.locations]; // 👈 muhimu
 
-      this.listenToLocationSearch(); // 👈 add this
+        this.listenToLocationSearch(); // 👈 add this
 
-      if (callback) {
-        callback();
-      }
-    },
-  });
-}
-
-listenToLocationSearch() {
-  this.locationFilterCtrl.valueChanges.subscribe((search: string | null) => {
-
-    const searchValue = (search || '').toLowerCase().trim(); // ✔ fix null
-
-    if (!searchValue) {
-      this.filteredLocations = [...this.locations];
-      return;
-    }
-
-    this.filteredLocations = this.locations.filter((loc) => {
-      const name = (loc.location_name || loc.label || '').toLowerCase();
-      return name.includes(searchValue);
+        if (callback) {
+          callback();
+        }
+      },
     });
-  });
-}
+  }
+
+  displayLocation(location: any): string {
+    if (!location) return '';
+    return typeof location === 'string'
+      ? location
+      : location.location_name || '';
+  }
+  
+  listenToLocationSearch() {
+    this.locationFilterCtrl.valueChanges.subscribe((search: any) => {
+  
+      const searchValue =
+        typeof search === 'string'
+          ? search
+          : search?.location_name || '';
+  
+      const value = searchValue.toLowerCase().trim();
+  
+      if (!value) {
+        this.filteredLocations = [...this.locations];
+        return;
+      }
+  
+      this.filteredLocations = this.locations.filter(loc => {
+        const name = (loc.location_name || loc.label || '').toLowerCase();
+        return name.includes(value);
+      });
+    });
+  }
+
   compareLocation = (a: any, b: any): boolean => {
     return Number(a) === Number(b);
   };
@@ -358,53 +375,6 @@ listenToLocationSearch() {
       .getAllReasons()
       .subscribe((res) => (this.reasonList = res.data || []));
   }
-
-  // loadDiagnoses() {
-  //   this.diagnosisService.getAllDiagnosis().subscribe((res) => {
-  //     this.diagnosesList = res.data || [];
-  //     this.filteredDiagnoses = [...this.diagnosesList];
-  //   });
-
-  //   this.diagnosisSearchCtrl.valueChanges
-  //     .pipe(debounceTime(300), distinctUntilChanged())
-  //     .subscribe((search: any) => {
-  //       if (!search || typeof search !== 'string') {
-  //         this.filteredDiagnoses = [...this.diagnosesList];
-  //         return;
-  //       }
-  //       this.filteredDiagnoses = this.diagnosesList.filter((diag) =>
-  //         diag.diagnosis_name.toLowerCase().includes(search.toLowerCase()),
-  //       );
-  //     });
-  // }
-  // loadDiagnoses() {
-  //   this.diagnosisSearchCtrl.valueChanges
-  //     .pipe(
-  //       debounceTime(300),
-  //       distinctUntilChanged()
-  //     )
-  //     .subscribe((search: any) => {
-  
-  //       if (!search || search.length < 2) {
-  //         this.filteredDiagnoses = [];
-  //         return;
-  //       }
-  
-  //       this.isLoadingDiagnoses = true;
-  
-  //       this.diagnosisService.searchDiagnosis(search).subscribe({
-  //         next: (res) => {
-  //           this.filteredDiagnoses = res.data || [];
-  //           this.isLoadingDiagnoses = false;
-  //         },
-  //         error: () => {
-  //           this.filteredDiagnoses = [];
-  //           this.isLoadingDiagnoses = false;
-  //         }
-  //       });
-  
-  //     });
-  // }
 
   loadDiagnoses() {
     this.diagnosisSearchCtrl.valueChanges
@@ -438,15 +408,43 @@ listenToLocationSearch() {
 
   addDiagnosis(diagnosis: any) {
     const exists = this.selectedDiagnoses.find(
-      (d) => d.diagnosis_id === diagnosis.diagnosis_id,
+      (d) => d.diagnosis_id === diagnosis.diagnosis_id
     );
+  
     if (!exists) {
       this.selectedDiagnoses.push(diagnosis);
+  
+      const ids = this.selectedDiagnoses.map(d => d.diagnosis_id);
+  
       this.patientForm
         .get('historyInfo.diagnosis_ids')
-        ?.setValue(this.selectedDiagnoses.map((d) => d.diagnosis_id));
+        ?.setValue(ids);
+  
+      this.patientForm
+        .get('historyInfo.diagnosis_ids')
+        ?.markAsDirty();
+  
+      this.patientForm
+        .get('historyInfo.diagnosis_ids')
+        ?.updateValueAndValidity();
     }
+  
+    // ✅ 1. clear text input (Reactive Form)
     this.diagnosisSearchCtrl.setValue('');
+  
+    // ✅ 2. clear dropdown results
+    this.filteredDiagnoses = [];
+  
+    // ✅ 3. close autocomplete panel properly
+    this.autoTrigger?.closePanel();
+  
+    // ✅ 4. force DOM reset (fix stuck text issue)
+    setTimeout(() => {
+      if (this.diagInput?.nativeElement) {
+        this.diagInput.nativeElement.value = '';
+        this.diagInput.nativeElement.focus(); // ✅ keep typing without click
+      }
+    });
   }
 
   removeDiagnosis(diagnosis: any) {
@@ -492,8 +490,6 @@ listenToLocationSearch() {
     return date.toISOString().split('T')[0];
   }
 
- 
-
   onSubmit() {
     if (this.patientForm.invalid) {
       this.patientForm.markAllAsTouched();
@@ -515,6 +511,11 @@ listenToLocationSearch() {
 
     Object.keys(basicInfo).forEach((key) => {
       let value = basicInfo[key];
+
+      if (key === 'location_id') {
+        value = basicInfo.location_id?.location_id;
+      }
+
       if (value !== null && value !== '') {
         formData.append(
           key,

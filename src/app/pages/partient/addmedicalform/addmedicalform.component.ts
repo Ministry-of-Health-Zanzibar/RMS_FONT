@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
+import { Component, Inject, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import {
   ReactiveFormsModule,
   FormGroup,
@@ -27,6 +27,8 @@ import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatIconModule } from '@angular/material/icon';
+import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
+
 
 @Component({
   selector: 'app-addmedicalform',
@@ -60,6 +62,8 @@ export class AddmedicalformComponent implements OnInit, OnDestroy {
   diagnosisSearchCtrl = new FormControl('');
   selectedDiagnoses: any[] = [];
   private onDestroy$ = new Subject<void>();
+  @ViewChild(MatAutocompleteTrigger) autoTrigger!: MatAutocompleteTrigger;
+  @ViewChild('diagInput') diagInput!: any;
 
   constructor(
     private fb: FormBuilder,
@@ -124,11 +128,6 @@ export class AddmedicalformComponent implements OnInit, OnDestroy {
   }
 
   loadDiagnoses() {
-    this.diagnosisService.getAllDiagnosis().pipe(takeUntil(this.onDestroy$)).subscribe((res) => {
-      this.diagnosesList = res.data || [];
-      this.filteredDiagnoses = [...this.diagnosesList];
-    });
-
     this.diagnosisSearchCtrl.valueChanges
       .pipe(
         debounceTime(300),
@@ -136,33 +135,58 @@ export class AddmedicalformComponent implements OnInit, OnDestroy {
         takeUntil(this.onDestroy$)
       )
       .subscribe((search: any) => {
-        if (!search || typeof search !== 'string') {
-          this.filteredDiagnoses = [...this.diagnosesList];
+  
+        const query = (search || '').trim();
+  
+        if (query.length < 2) {
+          this.filteredDiagnoses = [];
           return;
         }
-        const lowerSearch = search.toLowerCase();
-        this.filteredDiagnoses = this.diagnosesList.filter((diag) =>
-          diag.diagnosis_name.toLowerCase().includes(lowerSearch)
-        );
+  
+        this.diagnosisService.searchDiagnosis(query).subscribe({
+          next: (res) => {
+            this.filteredDiagnoses = res.data || [];
+          },
+          error: () => {
+            this.filteredDiagnoses = [];
+          }
+        });
+  
       });
   }
-
+  
   addDiagnosis(diagnosis: any) {
     const exists = this.selectedDiagnoses.find(
       (d) => d.diagnosis_id === diagnosis.diagnosis_id
     );
-
+  
     if (!exists) {
       this.selectedDiagnoses.push(diagnosis);
-
-      // Sync IDs to the form control
-      const ids = this.selectedDiagnoses.map((d) => d.diagnosis_id);
-      this.medicalForm.get('board_diagnosis_ids')?.setValue(ids);
-      
-      // Mark as dirty to trigger validation update
-      this.medicalForm.get('board_diagnosis_ids')?.markAsDirty();
+  
+      const ids = this.selectedDiagnoses.map(d => d.diagnosis_id);
+  
+      const control = this.medicalForm.get('board_diagnosis_ids');
+      control?.setValue(ids);
+      control?.markAsDirty();
+      control?.updateValueAndValidity();
     }
+  
+    // ✅ 1. clear input text
     this.diagnosisSearchCtrl.setValue('');
+  
+    // ✅ 2. clear results
+    this.filteredDiagnoses = [];
+  
+    // ✅ 3. CLOSE dropdown properly
+    this.autoTrigger.closePanel();
+  
+    // ✅ 4. RESET input DOM (important fix for "stuck text")
+    setTimeout(() => {
+      if (this.diagInput?.nativeElement) {
+        this.diagInput.nativeElement.value = '';
+        this.diagInput.nativeElement.focus(); // optional UX improvement
+      }
+    });
   }
 
   removeDiagnosis(diagnosis: any) {
@@ -175,7 +199,7 @@ export class AddmedicalformComponent implements OnInit, OnDestroy {
     this.medicalForm.get('board_diagnosis_ids')?.setValue(ids);
     
     if (ids.length === 0) {
-       this.medicalForm.get('board_diagnosis_ids')?.setErrors({ required: true });
+      this.medicalForm.get('board_diagnosis_ids')?.setErrors({ required: true });
     }
   }
 
