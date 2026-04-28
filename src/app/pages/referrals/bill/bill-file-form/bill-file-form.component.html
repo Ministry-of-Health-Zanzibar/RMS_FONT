@@ -2,8 +2,20 @@
   <div class="w-full">
     <div class="relative h-full rounded-lg group p-6">
       <!-- Title -->
-      <div class="font-semibold" *ngIf="!billData">CREATE NEW BILL FILE</div>
-      <div class="font-semibold" *ngIf="billData">UPDATE BILL FILE</div>
+     <div class="flex items-center justify-between mb-4">
+      <div>
+        <h2 class="text-xl font-semibold text-gray-800">
+          {{ billData ? 'Update Bill File' : 'Create Bill File' }}
+        </h2>
+        <p class="text-sm text-gray-500">
+          Fill the form below to {{ billData ? 'update' : 'create' }} a bill record
+        </p>
+      </div>
+
+      <button mat-icon-button (click)="onClose()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
 
       <!-- Form -->
       <form
@@ -158,14 +170,20 @@
       <!-- Actions -->
       <mat-dialog-actions align="end">
         <button mat-button (click)="onClose()">Cancel</button>
-        <button
-          mat-flat-button
-          color="primary"
-          [disabled]="billForm.invalid"
-          (click)="billData ? updateBill() : saveBill()"
-        >
+       <button
+        mat-flat-button
+        color="primary"
+        [disabled]="billForm.invalid || isLoading"
+        (click)="billData ? updateBill() : saveBill()"
+      >
+        <ng-container *ngIf="!isLoading">
           {{ billData ? "Update" : "Save" }}
-        </button>
+        </ng-container>
+
+        <ng-container *ngIf="isLoading">
+          <mat-spinner diameter="20"></mat-spinner>
+        </ng-container>
+      </button>
       </mat-dialog-actions>
     </div>
   </div>

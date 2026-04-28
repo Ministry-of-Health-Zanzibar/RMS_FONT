@@ -22,6 +22,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { BillFileService } from '../../../../services/Bills/bill-file.service';
 import Swal from 'sweetalert2';
 import { HospitalService } from '../../../../services/system-configuration/hospital.service';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-bill-file-form',
@@ -37,6 +38,7 @@ import { HospitalService } from '../../../../services/system-configuration/hospi
     MatSelectModule,
     MatDatepickerModule,
     MatIconModule,
+    MatProgressSpinnerModule
   ],
   templateUrl: './bill-file-form.component.html',
   styleUrls: ['./bill-file-form.component.scss'],
@@ -46,6 +48,7 @@ export class BillFileFormComponent {
   readonly data = inject<any>(MAT_DIALOG_DATA);
 
   billForm: FormGroup;
+  isLoading = false;
   selectedAttachment: File | null = null;
   billData: any;
 
@@ -77,12 +80,7 @@ export class BillFileFormComponent {
     }
 
     this.fetchAllHospitals();
-    //  this.getHospital();
-    // this.billForm.get('hospital_id')?.valueChanges
-    //   .pipe(takeUntil(this.onDestroy))
-    //   .subscribe((hospitalId) => {
-    //     this.onHospitalSelected(hospitalId);
-    //   });
+   
   }
 
   ngOnDestroy(): void {
@@ -122,13 +120,7 @@ export class BillFileFormComponent {
     return d >= startDate;
   };
 
-  // onAttachmentSelected(event: any): void {
-  //   const file = event.target.files?.[0] ?? null;
-  //   if (file) {
-  //     this.billForm.patchValue({ bill_file: file.name });
-  //     this.selectedAttachment = file;
-  //   }
-  // }
+ 
 
   onAttachmentSelected(event: any): void {
     const file = event.target.files?.[0] ?? null;
@@ -155,57 +147,77 @@ export class BillFileFormComponent {
     }
   }
 
-  saveBill() {
-    if (this.billForm.invalid) return;
+ saveBill() {
+  if (this.billForm.invalid) return;
 
-    const formData = new FormData();
-    Object.keys(this.billForm.controls).forEach((key) => {
-      if (key === 'bill_file') {
-        if (this.selectedAttachment) {
-          formData.append('bill_file', this.selectedAttachment);
-        }
-      } else {
-        const value = this.billForm.get(key)?.value;
-        formData.append(key, value ?? '');
+  this.isLoading = true; // 🔥 start loader
+
+  const formData = new FormData();
+  Object.keys(this.billForm.controls).forEach((key) => {
+    if (key === 'bill_file') {
+      if (this.selectedAttachment) {
+        formData.append('bill_file', this.selectedAttachment);
       }
-    });
+    } else {
+      const value = this.billForm.get(key)?.value;
+      formData.append(key, value ?? '');
+    }
+  });
 
-    this.billService.addBillFiles(formData).subscribe((response) => {
+  this.billService.addBillFiles(formData).subscribe({
+    next: (response) => {
+      this.isLoading = false; // 🔥 stop loader
+
       if (response.statusCode === 201) {
         Swal.fire('Success', response.message, 'success');
         this.dialogRef.close(true);
       } else {
         Swal.fire('Error', response.message, 'error');
       }
-    });
-  }
+    },
+    error: () => {
+      this.isLoading = false; // 🔥 stop loader on error
+      Swal.fire('Error', 'Something went wrong', 'error');
+    }
+  });
+}
 
-  updateBill() {
-    if (this.billForm.invalid) return;
+updateBill() {
+  if (this.billForm.invalid) return;
 
-    const formData = new FormData();
-    Object.keys(this.billForm.controls).forEach((key) => {
-      if (key === 'bill_file') {
-        if (this.selectedAttachment) {
-          formData.append('bill_file', this.selectedAttachment);
-        }
-      } else {
-        const value = this.billForm.get(key)?.value;
-        formData.append(key, value ?? '');
+  this.isLoading = true;
+
+  const formData = new FormData();
+  Object.keys(this.billForm.controls).forEach((key) => {
+    if (key === 'bill_file') {
+      if (this.selectedAttachment) {
+        formData.append('bill_file', this.selectedAttachment);
       }
-    });
+    } else {
+      const value = this.billForm.get(key)?.value;
+      formData.append(key, value ?? '');
+    }
+  });
 
-    this.billService
-      .updatebillFiles(formData, this.billData.bill_file_id)
-      .subscribe((response) => {
+  this.billService
+    .updatebillFiles(formData, this.billData.bill_file_id)
+    .subscribe({
+      next: (response) => {
+        this.isLoading = false;
+
         if (response.statusCode === 200) {
           Swal.fire('Success', response.message, 'success');
           this.dialogRef.close(true);
         } else {
           Swal.fire('Error', response.message, 'error');
         }
-      });
-  }
+      },
+      error: () => {
+        this.isLoading = false;
+        Swal.fire('Error', 'Something went wrong', 'error');
+      }
+    });
+}
 
   getHospital() {
     this.hospitalService
