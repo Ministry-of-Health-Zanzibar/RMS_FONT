@@ -56,6 +56,7 @@ import Swal from 'sweetalert2';
 export class PartientFormComponent implements OnInit {
   patientForm!: FormGroup;
   loading = false;
+  isLoadingDiagnoses: boolean = false;
   isEligible = false;
   emails:any;
   id: any;
@@ -356,22 +357,50 @@ listenToLocationSearch() {
       .subscribe((res) => (this.reasonList = res.data || []));
   }
 
-  loadDiagnoses() {
-    this.diagnosisService.getAllDiagnosis().subscribe((res) => {
-      this.diagnosesList = res.data || [];
-      this.filteredDiagnoses = [...this.diagnosesList];
-    });
+  // loadDiagnoses() {
+  //   this.diagnosisService.getAllDiagnosis().subscribe((res) => {
+  //     this.diagnosesList = res.data || [];
+  //     this.filteredDiagnoses = [...this.diagnosesList];
+  //   });
 
+  //   this.diagnosisSearchCtrl.valueChanges
+  //     .pipe(debounceTime(300), distinctUntilChanged())
+  //     .subscribe((search: any) => {
+  //       if (!search || typeof search !== 'string') {
+  //         this.filteredDiagnoses = [...this.diagnosesList];
+  //         return;
+  //       }
+  //       this.filteredDiagnoses = this.diagnosesList.filter((diag) =>
+  //         diag.diagnosis_name.toLowerCase().includes(search.toLowerCase()),
+  //       );
+  //     });
+  // }
+  loadDiagnoses() {
     this.diagnosisSearchCtrl.valueChanges
-      .pipe(debounceTime(300), distinctUntilChanged())
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged()
+      )
       .subscribe((search: any) => {
-        if (!search || typeof search !== 'string') {
-          this.filteredDiagnoses = [...this.diagnosesList];
+  
+        if (!search || search.length < 2) {
+          this.filteredDiagnoses = [];
           return;
         }
-        this.filteredDiagnoses = this.diagnosesList.filter((diag) =>
-          diag.diagnosis_name.toLowerCase().includes(search.toLowerCase()),
-        );
+  
+        this.isLoadingDiagnoses = true;
+  
+        this.diagnosisService.searchDiagnosis(search).subscribe({
+          next: (res) => {
+            this.filteredDiagnoses = res.data || [];
+            this.isLoadingDiagnoses = false;
+          },
+          error: () => {
+            this.filteredDiagnoses = [];
+            this.isLoadingDiagnoses = false;
+          }
+        });
+  
       });
   }
 

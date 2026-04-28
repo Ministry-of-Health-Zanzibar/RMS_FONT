@@ -8,17 +8,22 @@ import { environment } from '../../../environments/environment.prod';
 })
 export class DiagnosisService {
 
- private baseUrl: string = `${environment.baseUrl}`;
+  private baseUrl: string = `${environment.baseUrl}`;
   private href = `${this.baseUrl}diagnoses`;
   private href_upload = `${this.baseUrl}diagnoses/import`;
 
   constructor(private http: HttpClient) {}
 
+  searchDiagnosis(query: string) {
+    const params = { q: query };
+    return this.http.get<any>(`${this.href}/search`, { params });
+  }
+
   public getAllDiagnosis(): Observable<any> {
     return this.http.get<any>(this.href);
   }
 
-   public addDiagnoses(diagnosis: any): Observable<any> {
+  public addDiagnoses(diagnosis: any): Observable<any> {
     return this.http.post(this.href, diagnosis);
   }
 
