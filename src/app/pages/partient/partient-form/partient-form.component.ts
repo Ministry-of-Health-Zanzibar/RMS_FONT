@@ -29,6 +29,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import Swal from 'sweetalert2';
+import { switchMap, of } from 'rxjs';
+
+
 
 @Component({
   selector: 'app-partient-form',
@@ -134,7 +137,6 @@ export class PartientFormComponent implements OnInit {
         name: ['', Validators.required],
         matibabu_card: [
           '',
-         
         ],
         zan_id: ['', [Validators.pattern(/^\d{9}$/)]],
         date_of_birth: ['', Validators.required],
@@ -375,33 +377,63 @@ listenToLocationSearch() {
   //       );
   //     });
   // }
+  // loadDiagnoses() {
+  //   this.diagnosisSearchCtrl.valueChanges
+  //     .pipe(
+  //       debounceTime(300),
+  //       distinctUntilChanged()
+  //     )
+  //     .subscribe((search: any) => {
+  
+  //       if (!search || search.length < 2) {
+  //         this.filteredDiagnoses = [];
+  //         return;
+  //       }
+  
+  //       this.isLoadingDiagnoses = true;
+  
+  //       this.diagnosisService.searchDiagnosis(search).subscribe({
+  //         next: (res) => {
+  //           this.filteredDiagnoses = res.data || [];
+  //           this.isLoadingDiagnoses = false;
+  //         },
+  //         error: () => {
+  //           this.filteredDiagnoses = [];
+  //           this.isLoadingDiagnoses = false;
+  //         }
+  //       });
+  
+  //     });
+  // }
+
   loadDiagnoses() {
     this.diagnosisSearchCtrl.valueChanges
-      .pipe(
-        debounceTime(300),
-        distinctUntilChanged()
-      )
-      .subscribe((search: any) => {
-  
-        if (!search || search.length < 2) {
+    .pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+    )
+    .subscribe((search: string | null) => {
+
+      const value = (search || '').trim();
+
+      if (value.length < 2) {
+        this.filteredDiagnoses = [];
+        return;
+      }
+
+      this.isLoadingDiagnoses = true;
+
+      this.diagnosisService.searchDiagnosis(value).subscribe({
+        next: (res) => {
+          this.filteredDiagnoses = res.data || [];
+          this.isLoadingDiagnoses = false;
+        },
+        error: () => {
           this.filteredDiagnoses = [];
-          return;
+          this.isLoadingDiagnoses = false;
         }
-  
-        this.isLoadingDiagnoses = true;
-  
-        this.diagnosisService.searchDiagnosis(search).subscribe({
-          next: (res) => {
-            this.filteredDiagnoses = res.data || [];
-            this.isLoadingDiagnoses = false;
-          },
-          error: () => {
-            this.filteredDiagnoses = [];
-            this.isLoadingDiagnoses = false;
-          }
-        });
-  
       });
+    });
   }
 
   addDiagnosis(diagnosis: any) {
