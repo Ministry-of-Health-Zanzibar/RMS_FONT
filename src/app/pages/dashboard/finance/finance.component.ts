@@ -61,14 +61,14 @@ export class FinanceComponent implements OnInit {
   referral: any = {};
 
   pieColors: string[] = [
-    '#008FFB', // Blue
-    '#00E396', // Green
-    '#FEB019', // Orange
-    '#FF4560', // Red
-    '#775DD0', // Purple
-    '#3F51B5', // Indigo
-    '#00D9E9', // Cyan
-    '#FF66C4', // Pink
+  '#1E88E5', // Strong Blue
+  '#43A047', // Green
+  '#FB8C00', // Deep Orange
+  '#E53935', // Red
+  '#8E24AA', // Purple
+  '#3949AB', // Indigo (darker)
+  '#00897B', // Teal (instead of cyan)
+  '#F4511E'
   ];
 
   barChartOptions: ApexChartOptions = {
@@ -330,7 +330,7 @@ pieResponsive: ApexResponsive[] = [
         if (!data) return;
         const hospitalMap: { [key: string]: string } = {
           totalReferralsByLumumba:
-          'totalReferrals By Lumumba',
+          'Lumumba Regional Hospital',
           totalReferralsByMuhimbiliOrthopaedicInstitute:
             'Muhimbili Orthopaedic Institute',
           totalReferralsByJakayaKikweteCardiacInstitute:
@@ -342,7 +342,7 @@ pieResponsive: ApexResponsive[] = [
           totalReferralsByKilimanjaroChristianMedicalCentre:
             'Kilimanjaro Christian Medical Centre',
           totalReferralsByMadrasInstituteOfOrthopaedicsAndTraumatology:
-            'total Referrals By MIOT',
+            'MIOT International Hospital',
 
         };
         // const hospitalMap: { [key: string]: string } = {

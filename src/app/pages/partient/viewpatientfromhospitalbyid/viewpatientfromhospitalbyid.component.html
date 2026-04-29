@@ -386,7 +386,7 @@
   <mat-card-header>
     <mat-card-title class="text-2xl font-bold text-indigo-800 flex items-center">
       <mat-icon class="mr-2">list</mat-icon>
-      Patient List (Board Meetings)
+      Board Meetings
     </mat-card-title>
   </mat-card-header>
 
@@ -436,7 +436,7 @@
           (click)="viewPDF(list.patient_list_file)"
         >
           <mat-icon>picture_as_pdf</mat-icon>
-          View Patient List File
+          View Board File
         </button>
       </div>
 
@@ -513,6 +513,59 @@
 
   </mat-card-content>
 </mat-card>
+
+<!-- ================= PATIENT FILES ================= -->
+<mat-card class="shadow-xl rounded-3xl border border-gray-200 mt-6">
+  <mat-card-header>
+    <mat-card-title class="text-2xl font-bold text-blue-800 flex items-center">
+      <mat-icon class="mr-2">folder</mat-icon>
+       Patient Files From Board
+    </mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content class="p-6">
+
+    <!-- Files List -->
+    <div *ngIf="medicalHistory.patient.files?.length; else noFiles">
+
+      <div
+        *ngFor="let file of medicalHistory.patient.files"
+        class="flex items-center justify-between p-4 mb-3 rounded-xl border bg-gradient-to-r from-blue-50 to-white shadow-sm hover:shadow-md transition-all"
+      >
+        <!-- File Info -->
+        <div>
+          <p class="font-semibold text-gray-800">
+            {{ file.file_name }}
+          </p>
+          <p class="text-sm text-gray-500">
+            Uploaded: {{ file.created_at | date:'medium' }}
+          </p>
+        </div>
+
+        <!-- Button -->
+        <button
+          mat-stroked-button
+          color="primary"
+          (click)="viewPDF(file.file_path)"
+        >
+          <mat-icon>picture_as_pdf</mat-icon>
+          View File
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Empty State -->
+    <ng-template #noFiles>
+      <div class="text-center text-gray-500 italic">
+        No files available
+      </div>
+    </ng-template>
+
+  </mat-card-content>
+</mat-card>
+
+
 
 
 
