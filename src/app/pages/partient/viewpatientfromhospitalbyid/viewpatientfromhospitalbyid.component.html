@@ -3,28 +3,49 @@
   class="max-w-[1400px] mx-auto p-10 space-y-12 bg-gradient-to-b from-blue-50 via-white to-blue-100 rounded-3xl shadow-2xl"
 >
   <!-- 🩺 Header Banner -->
-  <div
-    class="relative bg-gradient-to-r from-blue-700 to-cyan-500 text-white rounded-3xl shadow-2xl p-12 flex flex-col items-center justify-center overflow-hidden"
-  >
-    <img
-      src="../../../../assets/img/doctor.png"
-      alt="Doctor"
-      class="absolute left-8 top-1/2 transform -translate-y-1/2 w-32 h-32 opacity-90 rounded-full shadow-2xl border-4 border-white"
-    />
-    <div class="text-center z-10">
-      <h1 class="text-5xl font-extrabold tracking-wide drop-shadow-lg">
-        Medical History Details
-      </h1>
-      <p class="mt-3 text-xl opacity-90 font-medium">
-        Comprehensive overview of the patient record
-      </p>
-    </div>
-    <img
-      src="../../../../assets/img/objective3.png"
-      alt="Patient"
-      class="absolute right-8 top-1/2 transform -translate-y-1/2 w-32 h-32 opacity-90 rounded-full shadow-2xl border-4 border-white"
-    />
+ <div
+  class="relative bg-gradient-to-r from-blue-700 to-cyan-500 text-white rounded-2xl md:rounded-3xl shadow-2xl 
+         px-4 py-8 md:p-10 lg:p-12 
+         flex flex-col items-center justify-center overflow-hidden text-center"
+>
+
+  <!-- LEFT IMAGE -->
+  <img
+    src="../../../../assets/img/doctor.png"
+    alt="Doctor"
+    class="hidden md:block absolute left-4 lg:left-8 top-1/2 -translate-y-1/2 
+           w-16 h-16 md:w-24 md:h-24 lg:w-32 lg:h-32 
+           opacity-90 rounded-full shadow-xl border-4 border-white"
+  />
+
+  <!-- TEXT -->
+  <div class="z-10 max-w-xl">
+    <h1
+      class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl 
+             font-extrabold tracking-wide drop-shadow-lg"
+    >
+      Medical History Details
+    </h1>
+
+    <p
+      class="mt-2 md:mt-3 
+             text-sm sm:text-base md:text-lg lg:text-xl 
+             opacity-90 font-medium"
+    >
+      Comprehensive overview of the patient record
+    </p>
   </div>
+
+  <!-- RIGHT IMAGE -->
+  <img
+    src="../../../../assets/img/objective3.png"
+    alt="Patient"
+    class="hidden md:block absolute right-4 lg:right-8 top-1/2 -translate-y-1/2 
+           w-16 h-16 md:w-24 md:h-24 lg:w-32 lg:h-32 
+           opacity-90 rounded-full shadow-xl border-4 border-white"
+  />
+
+</div>
 
   <!-- Example in your patient list table / details page -->
  <button
@@ -103,18 +124,6 @@
 
 </div>
 
-<!-- <div class="flex justify-end" *ngIf="medicalHistory?.status === 'approved'">
-  <button
-    mat-raised-button
-    color="primary"
-    class="!bg-gradient-to-r from-blue-600 to-cyan-500 !text-white px-8 py-3 text-lg font-semibold shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300 rounded-full"
-    (click)="openForwardDialog()"
-    [disabled]="loading"
-  >
-    <mat-icon class="!text-white mr-2">edit</mat-icon>
-    {{ loading ? 'Forwarding...' : 'Edit' }}
-  </button>
-</div> -->
 
    <!-- Status Tracking Section -->
 <mat-card class="shadow-lg rounded-2xl border border-gray-200">
@@ -373,9 +382,142 @@
   </mat-card-content>
 </mat-card>
 
+<mat-card class="shadow-xl rounded-3xl border border-gray-200 mt-6">
+  <mat-card-header>
+    <mat-card-title class="text-2xl font-bold text-indigo-800 flex items-center">
+      <mat-icon class="mr-2">list</mat-icon>
+      Patient List (Board Meetings)
+    </mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content class="p-6 space-y-6">
+
+    <div *ngFor="let list of medicalHistory.patient.patient_list"
+         class="p-5 rounded-2xl border bg-gradient-to-br from-indigo-50 to-white shadow-sm">
+
+      <!-- List Info -->
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
+        <div>
+          <p class="text-sm text-gray-500">Reference Number</p>
+          <p class="font-semibold text-indigo-800">{{ list.reference_number }}</p>
+        </div>
+
+        <div>
+          <p class="text-sm text-gray-500">Board Type</p>
+          <p class="font-semibold">{{ list.board_type }}</p>
+        </div>
+
+        <div>
+          <p class="text-sm text-gray-500">Board Date</p>
+          <p class="font-semibold">
+            {{ list.board_date | date:'mediumDate' }}
+          </p>
+        </div>
+
+        <div>
+          <p class="text-sm text-gray-500">Total Patients</p>
+          <p class="font-semibold">{{ list.no_of_patients }}</p>
+        </div>
+
+        <div class="col-span-2">
+          <p class="text-sm text-gray-500">Title</p>
+          <p class="font-semibold text-lg text-gray-800">
+            {{ list.patient_list_title }}
+          </p>
+        </div>
+      </div>
+
+      <!-- File -->
+      <div class="mb-4">
+        <button
+          *ngIf="list.patient_list_file"
+          mat-stroked-button
+          color="primary"
+          (click)="viewPDF(list.patient_list_file)"
+        >
+          <mat-icon>picture_as_pdf</mat-icon>
+          View Patient List File
+        </button>
+      </div>
+
+     <div>
+  <h3 class="text-xl font-bold text-green-700 mb-4 flex items-center">
+    <mat-icon class="mr-2">groups</mat-icon>
+    Board Members (Full Details)
+  </h3>
+
+  <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+    <div *ngFor="let member of list.board_members"
+         class="bg-white rounded-3xl p-5 shadow-lg border hover:shadow-xl transition-all">
+
+      <!-- Header (Avatar + Name) -->
+      <div class="flex items-center gap-4 mb-4">
+
+        <!-- Avatar -->
+        <div
+          class="w-14 h-14 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white flex items-center justify-center font-bold text-xl shadow">
+          {{ member.first_name[0] }}{{ member.last_name[0] }}
+        </div>
+
+        <!-- Name -->
+        <div>
+          <p class="font-bold text-lg text-gray-800">
+            {{ member.full_name }}
+          </p>
+
+       
+        </div>
+      </div>
+
+      <!-- Details -->
+      <div class="space-y-2 text-sm text-gray-700">
+
+        <div class="flex items-center gap-2">
+          <mat-icon class="text-gray-500">email</mat-icon>
+          <span>{{ member.email }}</span>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <mat-icon class="text-gray-500">phone</mat-icon>
+          <span>{{ member.phone_no }}</span>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <mat-icon class="text-gray-500">wc</mat-icon>
+          <span>{{ member.gender }}</span>
+        </div>
+
+       
+      
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!list.board_members?.length"
+       class="text-gray-500 italic mt-3 text-center">
+    No board members found
+  </div>
+</div>
+
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="!medicalHistory.patient.patient_list?.length"
+         class="text-center text-gray-500 italic">
+      No patient list available
+    </div>
+
+  </mat-card-content>
+</mat-card>
+
 
 
   <!-- 📄 Medical History Details -->
+   <div class="overflow-x-auto hidden md:block">
   <mat-card
     class="shadow-2xl rounded-3xl border border-gray-200 bg-gradient-to-br from-white to-blue-50"
   >
@@ -540,4 +682,110 @@
       </table>
     </mat-card-content>
   </mat-card>
+  </div>
+
+  <div class="md:hidden space-y-4">
+
+  <!-- Referring Doctor -->
+  <div class="bg-white p-4 rounded-xl shadow border">
+    <p class="text-sm text-gray-500">Referring Doctor</p>
+    <p class="font-semibold">
+      {{ medicalHistory?.patient?.creator?.first_name }}
+      {{ medicalHistory?.patient?.creator?.middle_name }}
+      {{ medicalHistory?.patient?.creator?.last_name }}
+    </p>
+  </div>
+
+  <!-- File Number -->
+  <div class="bg-white p-4 rounded-xl shadow border">
+    <p class="text-sm text-gray-500">File Number</p>
+    <p class="font-semibold">{{ medicalHistory.file_number }}</p>
+  </div>
+
+  <!-- Hospital -->
+  <div class="bg-white p-4 rounded-xl shadow border">
+    <p class="text-sm text-gray-500">Hospital Name</p>
+    <p class="font-semibold">{{ medicalHistory.hospital }}</p>
+  </div>
+
+  <!-- Doctor Role -->
+  <div class="bg-white p-4 rounded-xl shadow border">
+    <p class="text-sm text-gray-500">Doctor Role</p>
+    <p class="font-semibold">{{ medicalHistory.hospital_role }}</p>
+  </div>
+
+  <!-- Phone -->
+  <div class="bg-white p-4 rounded-xl shadow border">
+    <p class="text-sm text-gray-500">Doctor Phone</p>
+    <p class="font-semibold">
+      {{ medicalHistory.patient.creator.phone_no }}
+    </p>
+  </div>
+
+  <!-- Email -->
+  <div class="bg-white p-4 rounded-xl shadow border">
+    <p class="text-sm text-gray-500">Doctor Email</p>
+    <p class="font-semibold">
+      {{ medicalHistory.patient.creator.email }}
+    </p>
+  </div>
+
+  <!-- Case Type -->
+  <div class="bg-white p-4 rounded-xl shadow border">
+    <p class="text-sm text-gray-500">Case Type</p>
+    <p class="font-semibold">{{ medicalHistory.case_type }}</p>
+  </div>
+
+  <!-- Long Text Fields -->
+  <div class="bg-white p-4 rounded-xl shadow border">
+    <p class="text-sm text-gray-500">Presenting Illness</p>
+    <p>{{ medicalHistory.history_of_presenting_illness }}</p>
+  </div>
+
+  <div class="bg-white p-4 rounded-xl shadow border">
+    <p class="text-sm text-gray-500">Physical Findings</p>
+    <p>{{ medicalHistory.physical_findings }}</p>
+  </div>
+
+  <div class="bg-white p-4 rounded-xl shadow border">
+    <p class="text-sm text-gray-500">Investigations</p>
+    <p>{{ medicalHistory.investigations }}</p>
+  </div>
+
+  <div class="bg-white p-4 rounded-xl shadow border">
+    <p class="text-sm text-gray-500">Management Done</p>
+    <p>{{ medicalHistory.management_done }}</p>
+  </div>
+
+  <!-- Comments -->
+  <div class="bg-white p-4 rounded-xl shadow border">
+    <p class="text-sm text-gray-500">Board Comments</p>
+    <p>{{ medicalHistory.board_comments }}</p>
+  </div>
+
+  <div class="bg-white p-4 rounded-xl shadow border">
+    <p class="text-sm text-gray-500">DG Comments</p>
+    <p>{{ medicalHistory.dg_comments }}</p>
+  </div>
+
+  <!-- File -->
+  <div class="bg-white p-4 rounded-xl shadow border">
+    <p class="text-sm text-gray-500">History File</p>
+
+    <button
+      *ngIf="medicalHistory.history_file"
+      mat-stroked-button
+      color="primary"
+      class="mt-2 rounded-full px-4 py-2 text-sm"
+      (click)="viewPDF(medicalHistory.history_file)"
+    >
+      View File
+    </button>
+
+    <p *ngIf="!medicalHistory.history_file" class="text-gray-400 italic">
+      No file available
+    </p>
+  </div>
+
+</div>
 </div>
