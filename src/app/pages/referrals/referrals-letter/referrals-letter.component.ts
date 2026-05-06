@@ -61,7 +61,7 @@ formatAge(ageDetails: any): string {
   katibu= 'ps@mohz.go.tz'
 
   ngOnInit(): void {
-  console.log("Injected dialog data:", this.data);
+  // console.log("Injected dialog data:", this.data);
   this.referral = this.data;
   }
 

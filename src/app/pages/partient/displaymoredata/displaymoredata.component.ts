@@ -48,7 +48,7 @@ export class DisplaymoredataComponent implements OnInit{
 
   ngOnInit() {
     this.patientID = this.route.snapshot.paramMap.get('id');
-    console.log("inafika value",this.patientID) // Get complaint ID from URL
+    // console.log("inafika value",this.patientID) // Get complaint ID from URL
     if (this.patientID) {
       this.getMoreData();
       //this.getFeedbackById();
@@ -63,7 +63,7 @@ export class DisplaymoredataComponent implements OnInit{
 
     this.displayServices.getPatientInsurances(this.patientID).subscribe(
       response => {
-        console.log('Full API Response:', response);
+        // console.log('Full API Response:', response);
         this.patient = response;
 
 

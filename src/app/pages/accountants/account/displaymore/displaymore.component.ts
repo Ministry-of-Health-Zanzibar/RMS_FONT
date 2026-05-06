@@ -49,15 +49,15 @@ export class DisplaymoreComponent implements OnInit{
 
   ngOnInit() {
     this.docuID = this.route.snapshot.paramMap.get('id');
-    console.log("inafika value",this.docuID) // Get complaint ID from URL
+    // console.log("inafika value",this.docuID) // Get complaint ID from URL
     if (this.docuID) {
       this.documentServices.getDocumentById(this.docuID).subscribe(
         (response: any) => {
-          console.log('response: ', response.data);
+          // console.log('response: ', response.data);
           this.documentForm = response.data;
         },
         (errorResponse: HttpErrorResponse) => {
-          console.log(errorResponse.error.message);
+          // console.log(errorResponse.error.message);
         }
       );
      // this.getMoreData();

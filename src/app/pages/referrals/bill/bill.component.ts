@@ -60,7 +60,7 @@ private router: Router
     // this.data = this.dialogData?.data;
     if (this.data) {
       this.id = this.data.id; // This is your referral_id
-      console.log('referral_id (from dialog): ', this.id);
+      // console.log('referral_id (from dialog): ', this.id);
     }
 
     this.billsForm = new FormGroup({

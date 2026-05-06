@@ -96,7 +96,7 @@ getReceivers(): string[] {
     .getConversations(this.data.patientHistoryId)
     .subscribe((res: any) => {
       this.conversations = res.data || [];
-      console.log('CONVERSATIONS:', this.conversations);
+      // console.log('CONVERSATIONS:', this.conversations);
     });
 }
 sendMessage() {

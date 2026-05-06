@@ -28,6 +28,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatIconModule } from '@angular/material/icon';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 
 @Component({
@@ -46,6 +47,7 @@ import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
     MatChipsModule,
     MatAutocompleteModule,
     MatIconModule,
+    MatCheckboxModule,
   ],
   templateUrl: './addmedicalform.component.html',
   styleUrls: ['./addmedicalform.component.scss'],
@@ -95,6 +97,7 @@ export class AddmedicalformComponent implements OnInit, OnDestroy {
       board_comments: ['', Validators.required],
       board_reason_id: ['', Validators.required],
       board_diagnosis_ids: [[], Validators.required], // This is the control used for validation
+      create_referral_record: [true],
     });
   }
 
@@ -106,6 +109,7 @@ export class AddmedicalformComponent implements OnInit, OnDestroy {
     this.medicalForm.patchValue({
       board_comments: history.board_comments,
       board_reason_id: history.board_reason_id,
+      create_referral_record: history.referrals && history.referrals.length > 0
     });
 
     // 2. Populate Selected Diagnoses (the visual chips)
@@ -118,6 +122,11 @@ export class AddmedicalformComponent implements OnInit, OnDestroy {
     }
 
     this.selectedFile = null;
+
+      // ✅ OPTIONAL: lock checkbox if referral already exists
+    if (history.referrals && history.referrals.length > 0) {
+      this.medicalForm.get('create_referral_record')?.disable();
+    }
   }
 
   loadReasons() {
@@ -226,11 +235,13 @@ export class AddmedicalformComponent implements OnInit, OnDestroy {
     }
 
     this.loading = true;
-    const formValue = this.medicalForm.value;
+    // const formValue = this.medicalForm.value;
+    const formValue = this.medicalForm.getRawValue();
     const formData = new FormData();
     
     formData.append('board_comments', formValue.board_comments);
     formData.append('board_reason_id', formValue.board_reason_id);
+    formData.append('create_referral_record',formValue.create_referral_record ? '1' : '0');
     
     // Append diagnosis IDs correctly for PHP/Spring/Node backend arrays
     formValue.board_diagnosis_ids.forEach((id: any) => {

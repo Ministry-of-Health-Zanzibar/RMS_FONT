@@ -238,7 +238,7 @@ updateBill() {
           }
         },
         (error) => {
-          console.log('hospital api failed to load');
+          // console.log('hospital api failed to load');
         }
       );
   }

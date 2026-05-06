@@ -80,8 +80,8 @@ export class ViewFollowUpComponent implements OnInit {
 
           this.status = this.follow.status;
 
-          console.log('Referral ID:', this.referralId);
-          console.log('Status:', this.status);
+          // console.log('Referral ID:', this.referralId);
+          // console.log('Status:', this.status);
 
           this.hospitalLetters = this.follow.hospital_letters || [];
         } else {
@@ -104,77 +104,10 @@ export class ViewFollowUpComponent implements OnInit {
     }
   }
 
-  // getFeedbackById() {
-  //   this.loading = true;
-
-  //   this.followService.getFollowListById(this.followListId).subscribe(
-  //     (response: any) => {
-  //       this.loading = false;
-
-  //       if (response?.data) {
-  //         this.follow = { data: response.data };
-
-  //         // ✅ Get referralId from first record
-  //         this.referralId = this.follow.data[0]?.referral_id;
-  //         console.log("Referral ID:", this.referralId);
-  //       } else {
-  //         this.follow = { data: [] };
-  //         this.referralId = null;
-  //       }
-  //     },
-  //     (error) => {
-  //       this.loading = false;
-  //       console.error('Error fetching follow details:', error);
-  //     }
-  //   );
-  // }
-
-  // addFollow(referral_id: any) {
-  //   console.log("Add follow for referral ID:", referral_id);
-  //   let config = new MatDialogConfig();
-  //   config.disableClose = false;
-  //   config.role = 'dialog';
-  //   config.maxWidth = '100vw';
-  //   config.maxHeight = '100vh';
-  //   config.width = '850px';
-  //   config.panelClass = 'full-screen-modal';
-  //   config.data = { referral_id };
-
-  //   const dialogRef = this.dialog.open(AddFollowUpComponent, config);
-  //  dialogRef.afterClosed().subscribe(result => {
-  //     if (result === true) {
-  //       this.getFeedbackById();
-  //     }
-  //   });
-  // }
-
-  // addFollowWithOutcome(referral_id: any, outcome: string) {
-  //   console.log(
-  //     'Adding follow-up for referral:',
-  //     referral_id,
-  //     'with outcome:',
-  //     outcome
-  //   );
-
-  //   const config = new MatDialogConfig();
-  //   config.disableClose = false;
-  //   config.role = 'dialog';
-  //   config.width = '850px';
-  //   config.maxWidth = '8000px';
-  //   config.data = { referral_id, outcome };
-
-  //   const dialogRef = this.dialog.open(AddFollowUpComponent, config);
-  //   dialogRef.afterClosed().subscribe((result) => {
-  //     if (result === true) {
-  //       this.getFeedbackById();
-  //     }
-  //   });
-  // }
-
   addFollowWithOutcome(referral_id: any, outcome: string) {
-    console.log(
-      `Adding follow-up for referral ${referral_id} with outcome ${outcome}`
-    );
+    // console.log(
+    //   `Adding follow-up for referral ${referral_id} with outcome ${outcome}`
+    // );
 
     const config = new MatDialogConfig();
     config.disableClose = false;
@@ -200,7 +133,7 @@ export class ViewFollowUpComponent implements OnInit {
       maxHeight: '100vh',
       data: data,
     });
-    console.log('napata data', data);
+    // console.log('napata data', data);
 
     dialogRef.afterClosed().subscribe((result) => {});
   }

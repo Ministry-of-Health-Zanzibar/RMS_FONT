@@ -75,7 +75,7 @@ export class WorkStationComponent {
         this.dataSource.sort = this.sort;
       }if(response.statusCode==401){
         this.route.navigateByUrl("/")
-        console.log(response.message)
+        // console.log(response.message)
       }
     },(error)=>{
       this.route.navigateByUrl("/")

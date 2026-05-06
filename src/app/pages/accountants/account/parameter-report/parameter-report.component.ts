@@ -149,7 +149,7 @@ export class ParameterReportComponent implements OnInit, OnDestroy {
         this.loading = false;
         this.dataSource.data = response.data;
         this.dataSource.paginator = this.paginator;
-        console.log('Response Data:', response.data);
+        // console.log('Response Data:', response.data);
       });
     }
   }

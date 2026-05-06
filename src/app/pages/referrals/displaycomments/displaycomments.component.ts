@@ -59,7 +59,7 @@ export class DisplaycommentsComponent {
 
      if(this.data){
        this.id = this.data.id;
-     console.log("comment ID   here  ",this.id);
+    //  console.log("comment ID   here  ",this.id);
     // console.log("comment amount   here  ",this.data);
 
      }

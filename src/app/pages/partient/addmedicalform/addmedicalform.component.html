@@ -63,6 +63,16 @@
       </mat-form-field>
     </div>
 
+    <!-- Create Referral Checkbox -->
+    <div class="mt-4">
+      <mat-checkbox formControlName="create_referral_record">
+        Create Referral (Uncheck for recommendation only)
+      </mat-checkbox>
+    </div>
+    <div *ngIf="medicalForm.get('create_referral_record')?.disabled" class="text-xs text-gray-500">
+      Referral already created — cannot be changed
+    </div>
+
     <!-- Upload File -->
     <div class="col-span-2 mt-3">
       <label class="block mb-2 font-medium">Upload Patient File</label>

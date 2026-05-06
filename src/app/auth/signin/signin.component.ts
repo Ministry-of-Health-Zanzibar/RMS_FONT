@@ -85,81 +85,6 @@ showChat=false;
   togglePasswordVisibility(): void {
     this.passwordVisible = !this.passwordVisible;
   }
-  //   loginSubmit() {
-  //   if (this.loginForm.invalid) {
-  //     Swal.fire({
-  //       title: 'Error',
-  //       text: 'Please fill in both email and password.',
-  //       icon: 'error',
-  //       confirmButtonText: 'OK',
-  //     });
-  //     return;
-  //   }
-
-  //   // 🔄 Show loading before API call
-  //   Swal.fire({
-  //     title: 'Signing in...',
-  //     text: 'Please wait while we check your credentials.',
-  //     allowOutsideClick: false,
-  //     didOpen: () => {
-  //       Swal.showLoading();
-  //     }
-  //   });
-
-  //   this.authService.loginAuthenticate(this.loginForm.value).subscribe(
-  //     (response) => {
-  //       Swal.close(); // ✅ close loading
-
-  //       if (response && response.data && response.data.statusCode === 200) {
-  //         // success
-  //         localStorage.setItem("token", `Bearer ${response.data.token}`);
-  //         this.authService.setPermissions(response.data.permissions);
-  //         localStorage.setItem("user_id", response.data.user_id);
-  //         localStorage.setItem("full_name", response.data.full_name);
-  //         localStorage.setItem("email", response.data.email);
-  //         localStorage.setItem("roles", response.data.roles[0]?.name || 'Default Role');
-  //         localStorage.setItem("isLogin","true");
-
-  //         Swal.fire({
-  //           icon: "success",
-  //           title: "Login Successfully",
-  //           toast: true,
-  //           position: "top-end",
-  //           showConfirmButton: false,
-  //           timer: 3000,
-  //         });
-
-  //         this.route.navigateByUrl("pages");
-  //       }
-  //       else if (response && (response.statusCode === 401 || response.data?.statusCode === 401)) {
-  //         Swal.fire({
-  //           icon: "error",
-  //           title: "Invalid Credentials",
-  //           text: "The email or password you entered is incorrect.",
-  //           confirmButtonText: "Try Again",
-  //         });
-  //       }
-  //       else {
-  //         Swal.fire({
-  //           icon: "error",
-  //           title: "Login Failed",
-  //           text: response?.message || "Something went wrong. Please try again.",
-  //           confirmButtonText: "OK",
-  //         });
-  //       }
-  //     },
-  //     (error) => {
-  //       Swal.close(); // ✅ close loading if error
-  //       Swal.fire({
-  //         title: 'Warning!',
-  //         text: GlobalConstants.genericErrorConnectFail,
-  //         icon: 'warning',
-  //         confirmButtonText: 'OK',
-  //       });
-  //     }
-  //   );
-  // }
-
 
   loginSubmit() {
     this.loading = true;
@@ -167,7 +92,7 @@ showChat=false;
       (response) => {
         this.loading = false;
         if (response && response.error) {
-          console.log('Server returned an error:', response.error);
+          // console.log('Server returned an error:', response.error);
         } else {
           if (response.statusCode != 401 && response.data.statusCode == 200) {
             localStorage.setItem('token', `Bearer ${response.data.token}`);

@@ -1,4 +1,4 @@
-<div *ngIf="follow" class="max-w-7xl mx-auto p-6">
+<div *ngIf="follow" class="mx-auto p-6">
   <!-- Banner Header -->
   <div
     class="relative bg-gradient-to-r from-blue-700 to-blue-500 text-white rounded-2xl shadow-lg p-10 mb-8 flex items-center justify-center overflow-hidden"
@@ -91,21 +91,6 @@
         Follow-up Records
       </h3>
 
-      <!-- <button
-        (click)="addFollow(referralId)"
-        *ngIf="
-          referralId &&
-          permission.parmissionMatched(['Create FollowUp']) &&
-          follow?.status !== 'Closed'
-        "
-        matTooltip="Add Follow-up"
-        class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-all"
-      >
-        <mat-icon>add_circle</mat-icon>
-        Add Follow-up
-      </button> -->
-
-      <!-- Table -->
       <!-- Table -->
       <table
         *ngIf="hospitalLetters && hospitalLetters.length > 0; else nofollow"
@@ -144,10 +129,6 @@
               >
               Letter File
             </th>
-            <!-- <th class="border border-gray-300 p-2 text-center">
-        <mat-icon class="text-gray-600 align-middle">history</mat-icon>
-        Follow-ups
-      </th> -->
             <th class="border border-gray-300 p-2 text-center">
               <mat-icon class="text-gray-600 align-middle">print</mat-icon>
               Print
@@ -192,17 +173,6 @@
                 <span class="text-gray-400">No File</span>
               </ng-template>
             </td>
-            <!-- <td class="border border-gray-300 p-2 text-center">
-        <ul *ngIf="letter.followups && letter.followups.length > 0; else noFollowups"
-            class="list-disc list-inside text-left text-sm text-gray-600">
-          <li *ngFor="let f of letter.followups">
-            {{ f.followup_date }}
-          </li>
-        </ul>
-        <ng-template #noFollowups>
-          <span class="text-gray-400">No Follow-ups</span>
-        </ng-template>
-      </td> -->
             <td class="border border-gray-300 p-2 text-center">
               <mat-icon
                 class="cursor-pointer text-indigo-600 hover:text-indigo-800 transition"

@@ -119,7 +119,7 @@ boardMembers: any[] = [];
      this.boardMembers =
         response.data.patient?.patient_list?.[0]?.board_members || [];
 
-      console.log('Board Members:', this.boardMembers);
+      // console.log('Board Members:', this.boardMembers);
     },
     (error) => {
       console.error('Failed to load patient data', error);
@@ -149,7 +149,7 @@ boardMembers: any[] = [];
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed');
+      // console.log('The dialog was closed');
     });
   }
 
@@ -181,7 +181,7 @@ viewFiles(file: any) {
 
 openConversationModal(referral: any) {
   const patientHistoryId = referral.patient.patient_histories[0].patient_histories_id;
-  console.log("naipata id husika",patientHistoryId)
+  // console.log("naipata id husika",patientHistoryId)
 
   this.dialog.open(ConversationModalComponent, {
     width: '700px',

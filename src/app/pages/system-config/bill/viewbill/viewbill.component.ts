@@ -71,17 +71,17 @@ export class ViewbillComponent {
   getBill() {
     this.billService.getAllBill().pipe(takeUntil(this.onDestroy)).subscribe((response: any)=>{
       if(response.statusCode==200){
-        console.log('bill data', response.data)
+        // console.log('bill data', response.data)
         this.dataSource = new MatTableDataSource(response.data);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       }if(response.statusCode==401){
         this.route.navigateByUrl("/")
-        console.log(response.message)
+        // console.log(response.message)
       }
     },(error)=>{
       this.route.navigateByUrl("/")
-      console.log('country getAway api fail to load')
+      // console.log('country getAway api fail to load')
     })
   }
 

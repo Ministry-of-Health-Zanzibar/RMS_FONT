@@ -75,11 +75,11 @@ export class EmployerTypeComponent {
         this.dataSource.sort = this.sort;
       }if(response.statusCode==401){
         this.route.navigateByUrl("/")
-        console.log(response.message)
+        // console.log(response.message)
       }
     },(error)=>{
       this.route.navigateByUrl("/")
-      console.log('country getAway api fail to load')
+      // console.log('country getAway api fail to load')
     })
   }
 

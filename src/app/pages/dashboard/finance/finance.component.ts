@@ -196,7 +196,7 @@ export class FinanceComponent implements OnInit {
   fetchReferralTrends(): void {
     this.reportService.getAnalyticalReferalTrend().subscribe(
       (response) => {
-        console.log('Raw response:', response);
+        // console.log('Raw response:', response);
 
         if (!response || !response.data) return;
 
@@ -212,8 +212,8 @@ export class FinanceComponent implements OnInit {
           }),
         }));
 
-        console.log('Processed Series:', series);
-        console.log('Categories:', categories);
+        // console.log('Processed Series:', series);
+        // console.log('Categories:', categories);
 
         this.lineChartOptions = {
           ...this.lineChartOptions,
@@ -246,7 +246,7 @@ export class FinanceComponent implements OnInit {
     this.reportService.getCount().subscribe(
       (response) => {
         this.referral = response;
-        console.log('Data fetched successfully:', this.referral);
+        // console.log('Data fetched successfully:', this.referral);
       },
       (error) => console.error('Error fetching data:', error),
     );

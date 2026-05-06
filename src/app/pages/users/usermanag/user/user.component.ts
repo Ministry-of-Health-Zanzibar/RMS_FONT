@@ -75,16 +75,16 @@ export class UserComponent {
   userDataTable() {
     this.userService.getAllUsers().pipe(takeUntil(this.onDestroy)).subscribe((response: any)=>{
       if(response.data){
-        console.log(response)
+        // console.log(response)
         this.dataSource = new MatTableDataSource(response.data);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       }
       else{
-        console.log('permission response errors')
+        // console.log('permission response errors')
       }
     },(error)=>{
-      console.log('permision getAway api fail to load')
+      // console.log('permision getAway api fail to load')
     })
   }
 

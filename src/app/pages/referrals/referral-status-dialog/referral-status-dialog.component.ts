@@ -135,7 +135,7 @@ export class ReferralStatusDialogComponent implements OnInit, OnDestroy {
     this.hospitalService.getAllHospital().subscribe({
       next: (response: any) => {
         this.hospitals = response.data;
-        console.log('Hospitals fetched:', this.hospitals);
+        // console.log('Hospitals fetched:', this.hospitals);
       },
       error: (err) => {
         console.error('Error fetching hospitals:', err);

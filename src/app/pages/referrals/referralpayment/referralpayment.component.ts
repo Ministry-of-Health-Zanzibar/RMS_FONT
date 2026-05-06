@@ -84,7 +84,7 @@ export class ReferralpaymentComponent {
 
     if (this.data) {
       this.id = Number(this.data.bill_file_id);
-      console.log('Bill File data:', this.data);
+      // console.log('Bill File data:', this.data);
 
       this.clientForm.patchValue({
         bill_file_id: this.id,
@@ -106,7 +106,7 @@ export class ReferralpaymentComponent {
     this.billFileService.getAllBillFiles().subscribe((response: any) => {
       if (response.statusCode === 200 && response.data) {
         this.billFile = response.data;
-        console.log('Available Bill Files:', this.billFile);
+        // console.log('Available Bill Files:', this.billFile);
       }
     });
   }
@@ -129,7 +129,7 @@ export class ReferralpaymentComponent {
       (response: any) => {
         if (response.statusCode === 200 && response.data) {
           this.bill = response.data;
-          console.log('Bill data:', this.bill);
+          // console.log('Bill data:', this.bill);
         }
       },
       (error) => {
@@ -137,36 +137,6 @@ export class ReferralpaymentComponent {
       }
     );
   }
-
-  // savePayment() {
-  //   if (this.clientForm.valid) {
-  //     const formData = {
-  //       ...this.clientForm.value,
-  //       bill_file_id: this.id,
-  //     };
-
-  //     this.paymentService.addPayment(formData).subscribe((response) => {
-  //       if (response.statusCode === 201) {
-  //         Swal.fire({
-  //           title: 'Success',
-  //           text: response.message,
-  //           icon: 'success',
-  //           confirmButtonColor: '#4690eb',
-  //           confirmButtonText: 'Continue',
-  //         });
-  //         this.dialogRef.close(true);
-  //       } else {
-  //         Swal.fire({
-  //           title: 'Error',
-  //           text: response.message,
-  //           icon: 'error',
-  //           confirmButtonColor: '#d33',
-  //           confirmButtonText: 'Try Again',
-  //         });
-  //       }
-  //     });
-  //   }
-  // }
 
   savePayment() {
   if (this.clientForm.valid) {

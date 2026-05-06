@@ -82,10 +82,10 @@ export class RolePermissionBoardComponent implements OnInit,OnDestroy{
         this.dataSource.sort = this.sort;
       }
       else{
-        console.log('role-permission response errors')
+        // console.log('role-permission response errors')
       }
     },(error)=>{
-      console.log('role-permision getAway api fail to load')
+      // console.log('role-permision getAway api fail to load')
 
     })
   }

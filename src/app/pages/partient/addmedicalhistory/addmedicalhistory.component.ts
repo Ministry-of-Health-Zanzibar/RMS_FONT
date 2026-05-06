@@ -91,7 +91,7 @@ export class AddmedicalhistoryComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    console.log('Dialog received data:', this.data);
+    // console.log('Dialog received data:', this.data);
 
     const patient = this.data;
   
@@ -155,7 +155,7 @@ export class AddmedicalhistoryComponent implements OnInit, OnDestroy {
 
 
   onDiagnosesSelected(event: any) {
-    console.log('Diagnoses selected:', event.value);
+    // console.log('Diagnoses selected:', event.value);
     this.medicalForm.patchValue({
       diagnosis_ids: event.value
     });
@@ -205,9 +205,9 @@ normalize(text: string): string {
   }
 
   onSubmit() {
-    console.log('Form submitted');
+    // console.log('Form submitted');
     if (this.medicalForm.invalid) {
-      console.log('Form is invalid');
+      // console.log('Form is invalid');
       this.medicalForm.markAllAsTouched();
       return;
     }
@@ -241,11 +241,11 @@ normalize(text: string): string {
       formData.append('history_file', this.selectedFile, this.selectedFile.name);
     }
 
-    console.log('Submitting form data...');
+    // console.log('Submitting form data...');
 
     this.medicalHistoryService.addMedical(formData).subscribe({
       next: (res: any) => {
-        console.log('Success response:', res);
+        // console.log('Success response:', res);
         this.loading = false;
 
 

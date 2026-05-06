@@ -35,7 +35,7 @@ export class IndividualreportComponent implements OnInit {
 
   ngOnInit(): void {
     const referralId = this.route.snapshot.paramMap.get('id');
-    console.log("naipata hapa    ....",referralId)
+    // console.log("naipata hapa    ....",referralId)
     this.getReferralDetails(referralId);
   }
 
