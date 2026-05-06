@@ -345,15 +345,7 @@ pieResponsive: ApexResponsive[] = [
             'MIOT International Hospital',
 
         };
-        // const hospitalMap: { [key: string]: string } = {
-        //   totalReferralsByLumumba: 'Lumumba',
-        //   totalReferralsByMuhimbiliOrthopaedicInstitute: 'MOI',
-        //   totalReferralsByJakayaKikweteCardiacInstitute: 'JKCI',
-        //   totalReferralsByMuhimbiliNationalHospital: 'MNH',
-        //   totalReferralsByOceanRoadCancerInstitute: 'ORCI',
-        //   totalReferralsByKilimanjaroChristianMedicalCentre: 'KCMC',
-        //   totalReferralsByMadrasInstituteOfOrthopaedicsAndTraumatology: 'MIOT',
-        // };
+       
         this.pieLabels = Object.keys(hospitalMap).map(
           (key) => hospitalMap[key],
         );
