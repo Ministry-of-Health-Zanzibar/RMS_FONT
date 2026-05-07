@@ -65,17 +65,17 @@ formatAge(ageDetails: any): string {
   this.referral = this.data;
   }
 
-  getReferralData(): void {
-    this.referralsService.getReferralById(this.referralID!).subscribe(
-      (response: any) => {
-        this.referral = response.data ? response.data : response;
-      },
-      error => {
-        console.error('Failed to load referral data:', error);
-        Swal.fire('Error', 'Unable to fetch referral data', 'error');
-      }
-    );
-  }
+  // getReferralData(): void {
+  //   this.referralsService.getReferralById(this.referralID!).subscribe(
+  //     (response: any) => {
+  //       this.referral = response.data ? response.data : response;
+  //     },
+  //     error => {
+  //       console.error('Failed to load referral data:', error);
+  //       Swal.fire('Error', 'Unable to fetch referral data', 'error');
+  //     }
+  //   );
+  // }
   
 
   print(): void {
