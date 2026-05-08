@@ -12,9 +12,9 @@ export class ReferralService {
 
   private baseUrl: string = `${environment.baseUrl}`;
   private href = `${this.baseUrl}referrals`;
-   private href_byid = `${this.baseUrl}patient-histories`;
+  private href_byid = `${this.baseUrl}patient-histories`;
   private bill = `${this.baseUrl}bills`;
-   private comment = `${this.baseUrl}referralLetters/comment/referral`;
+  private comment = `${this.baseUrl}referralLetters/comment/referral`;
   private href_withBill = `${this.baseUrl}referralwithbills`;
   private href_letter = `${this.baseUrl}referralLetters`;
 

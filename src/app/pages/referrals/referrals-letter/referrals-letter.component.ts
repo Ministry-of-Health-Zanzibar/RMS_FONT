@@ -61,8 +61,15 @@ formatAge(ageDetails: any): string {
   katibu= 'ps@mohz.go.tz'
 
   ngOnInit(): void {
-  // console.log("Injected dialog data:", this.data);
-  this.referral = this.data;
+    this.referral = this.data;
+  
+    // ✅ Safety fallback
+    if (!this.referral) {
+      console.warn('No referral data passed');
+    }
+  
+    // ✅ Ensure boardedOut flag exists
+    this.referral.is_boarded_out = !!this.referral?.is_boarded_out;
   }
 
   // getReferralData(): void {
