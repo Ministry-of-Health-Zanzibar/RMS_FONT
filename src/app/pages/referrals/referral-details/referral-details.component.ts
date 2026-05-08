@@ -32,14 +32,14 @@ import { ConversationModalComponent } from '../conversation-modal/conversation-m
     MatIcon,
     MatDialogModule,
     MatCardModule,
-     MatExpansionModule,
+    MatExpansionModule,
     MatIconModule,
     MatTooltipModule,
-
   ],
   templateUrl: './referral-details.component.html',
   styleUrl: './referral-details.component.scss',
 })
+
 export class ReferralDetailsComponent {
   public displayRoleForm!: FormGroup;
   referralID: string | null = null;
@@ -49,16 +49,12 @@ export class ReferralDetailsComponent {
   diagnoses: any[] = [];
   userRole: string | null;
   public documentUrl = environment.fileUrl;
-
   history = this.referral?.patient?.patient_histories?.[0];
-
-hospitalDiagnoses = this.history?.diagnoses || [];
-boardDiagnoses = this.history?.board_diagnoses || [];
-
-hospitalReason = this.history?.reason;
-boardReason = this.history?.board_reason;
-boardMembers: any[] = [];
-
+  hospitalDiagnoses = this.history?.diagnoses || [];
+  boardDiagnoses = this.history?.board_diagnoses || [];
+  hospitalReason = this.history?.reason;
+  boardReason = this.history?.board_reason;
+  boardMembers: any[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -69,76 +65,97 @@ boardMembers: any[] = [];
 
   ngOnInit() {
     this.referralID = this.route.snapshot.paramMap.get('id');
-   // console.log('inafika value', this.referralID);
     if (this.referralID) {
       this.getMoreData();
     }
   }
 
-  //   getMoreData() {
+  public getMoreData() {
+    if (!this.referralID) return;
 
-  //   this.referralsService.getReferralById(this.referralID)
-  //     .subscribe(response => {
+    this.referralsService.getReferralById(this.referralID).subscribe(
+      (response) => {
+        this.referral = response.data;
 
-  //       const responseData = (response as any).data;
-  //       if (responseData && responseData.length > 0) {
-  //        this.referral = responseData.data
-  //       }
-  //     }, error => {
-  //       console.error('Error fetching complaint details:', error);
-  //     });
+        // Patient histories
+        this.patientHistories = response.data.patient?.patient_histories || [];
+
+        // Take FIRST history (as per your scenario)
+        this.history = this.patientHistories.length
+          ? this.patientHistories[0]
+          : null;
+
+        // ✅ Hospital diagnoses (Doctor)
+        this.hospitalDiagnoses = this.history?.diagnoses || [];
+
+        // ✅ Board diagnoses (Medical Board)
+        this.boardDiagnoses = this.history?.board_diagnoses || [];
+
+        // ✅ Reasons
+        this.hospitalReason = this.history?.reason || null;
+        this.boardReason = this.history?.board_reason || null;
+
+        this.boardMembers =
+          response.data.patient?.patient_list?.[0]?.board_members || [];
+      },
+      (error) => {
+        console.error('Failed to load patient data', error);
+      }
+    );
+  }
+
+  // updateStatusPopup() {
+  //   const dialogRef = this.dialog.open(ReferralStatusDialogComponent, {
+  //     width: '700px',
+  //     data: { data: this.referral },
+  //   });
+
+  //   dialogRef.afterClosed().subscribe((result) => {
+  //     if (result) {
+  //       this.getMoreData();
+  //     }
+  //   });
   // }
-
- public getMoreData() {
-  if (!this.referralID) return;
-
-  this.referralsService.getReferralById(this.referralID).subscribe(
-    (response) => {
-      this.referral = response.data;
-
-      // Patient histories
-      this.patientHistories = response.data.patient?.patient_histories || [];
-
-   
-
-      // Take FIRST history (as per your scenario)
-      this.history = this.patientHistories.length
-        ? this.patientHistories[0]
-        : null;
-
-      // ✅ Hospital diagnoses (Doctor)
-      this.hospitalDiagnoses = this.history?.diagnoses || [];
-
-      // ✅ Board diagnoses (Medical Board)
-      this.boardDiagnoses = this.history?.board_diagnoses || [];
-
-      // ✅ Reasons
-      this.hospitalReason = this.history?.reason || null;
-      this.boardReason = this.history?.board_reason || null;
-
-     this.boardMembers =
-        response.data.patient?.patient_list?.[0]?.board_members || [];
-
-      // console.log('Board Members:', this.boardMembers);
-    },
-    (error) => {
-      console.error('Failed to load patient data', error);
-    }
-  );
-}
-
-
   updateStatusPopup() {
+    // ✅ Try to get from referral (normal case)
+    let historyId =
+      this.referral?.patient?.patient_histories?.[0]?.patient_histories_id;
+  
+    // ✅ Fallback (recommendation-only case)
+    if (!historyId && this.patientHistories?.length) {
+      historyId = this.patientHistories[0]?.patient_histories_id;
+    }
+  
+    // 🚨 If still missing → stop early (avoid backend error)
+    if (!historyId) {
+      console.warn('No patient_histories_id found');
+      return;
+    }
+  
     const dialogRef = this.dialog.open(ReferralStatusDialogComponent, {
       width: '700px',
-      data: { data: this.referral },
+      data: {
+        referral: this.referral, // may be null
+        patient_histories_id: historyId, // ✅ ALWAYS PASS THIS
+      },
     });
-
+  
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.getMoreData();
       }
     });
+  }
+
+  isPrintDisabled(referral: any): boolean {
+    const blockedStatuses = [
+      'Pending',
+      'Cancelled',
+      'Closed'
+    ];
+  
+    // ❗ BoardedOut is ALLOWED for printing
+    return blockedStatuses.includes(referral?.status);
   }
 
   referralsLetterPopup(data: any): void {
@@ -149,43 +166,39 @@ boardMembers: any[] = [];
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      // console.log('The dialog was closed');
     });
   }
 
-viewPatientListPDF(filePath: string) {
-  if (!filePath) {
-    console.error('No file path provided');
-    return;
-  }
+  viewPatientListPDF(filePath: string) {
+    if (!filePath) {
+      console.error('No file path provided');
+      return;
+    }
 
-  const url = this.documentUrl + filePath;
-  window.open(url, '_blank');
-}
-
-
-
-viewFile(file: any) {
-  if (file?.file_path) {
-    const url = this.documentUrl + file.file_path;
+    const url = this.documentUrl + filePath;
     window.open(url, '_blank');
   }
-}
 
-viewFiles(file: any) {
-  if (file?.history_file) {
-    const url = this.documentUrl + file.history_file;
-    window.open(url, '_blank');
+  viewFile(file: any) {
+    if (file?.file_path) {
+      const url = this.documentUrl + file.file_path;
+      window.open(url, '_blank');
+    }
   }
-}
 
-openConversationModal(referral: any) {
-  const patientHistoryId = referral.patient.patient_histories[0].patient_histories_id;
-  // console.log("naipata id husika",patientHistoryId)
+  viewFiles(file: any) {
+    if (file?.history_file) {
+      const url = this.documentUrl + file.history_file;
+      window.open(url, '_blank');
+    }
+  }
 
-  this.dialog.open(ConversationModalComponent, {
-    width: '700px',
-    data: { patientHistoryId }
-  });
-}
+  openConversationModal(referral: any) {
+    const patientHistoryId = referral.patient.patient_histories[0].patient_histories_id;
+
+    this.dialog.open(ConversationModalComponent, {
+      width: '700px',
+      data: { patientHistoryId }
+    });
+  }
 }

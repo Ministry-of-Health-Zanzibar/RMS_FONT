@@ -7,6 +7,7 @@
       <div class="font-semibold pb-2.5 border-b-2 border-b-secondary-400">
         View Referrals
       </div>
+
       <div class="mt-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div class="flex items-center gap-1.5">
           <div
@@ -26,19 +27,10 @@
             #input
           />
         </div>
-        <!-- <div class="flex space-x-2">
-          <button
-            mat-flat-button
-            (click)="addReferrals()"
-            *ngIf="permission.parmissionMatched(['Create Referral'])"
-          >
-            <mat-icon class="font-icon">add</mat-icon>Add Referrals
-          </button>
-        </div> -->
       </div>
 
       <div class="border dark:border-inverse rounded-lg overflow-x-auto mt-4">
-       <table mat-table [dataSource]="dataSource" class="not-prose min-w-[1000px] md:min-w-full">
+        <table mat-table [dataSource]="dataSource" class="not-prose min-w-[1000px] md:min-w-full">
           <!-- Position Column -->
           <ng-container matColumnDef="id">
             <th
@@ -53,116 +45,88 @@
             </td>
           </ng-container>
 
-           <!-- Patient Name -->
+          <!-- Patient Name -->
           <ng-container matColumnDef="patient_name">
-            <th
-              mat-header-cell
-              *matHeaderCellDef
-              class="text-neutral-500 dark:text-neutral-400"
-            >
+            <th mat-header-cell *matHeaderCellDef class="text-neutral-500 dark:text-neutral-400">
               Patient Full-Name
             </th>
             <td mat-cell *matCellDef="let element">
-              {{ element.patient?.name || 'N/A' | uppercase }}
+              {{ (element.patient?.name || 'N/A') | uppercase }}
             </td>
           </ng-container>
 
-      
-
-          
-
+          <!-- Case Type -->
           <ng-container matColumnDef="case_type">
-          <th mat-header-cell *matHeaderCellDef>Case Type</th>
-          <td mat-cell *matCellDef="let element">
-            {{
-              element.patient?.patient_histories?.[0]?.case_type || 'N/A'
-            }}
-          </td>
-        </ng-container>
+            <th mat-header-cell *matHeaderCellDef>Case Type</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.case_type || 'N/A' }}
+            </td>
+          </ng-container>
 
-       <ng-container matColumnDef="board_comments">
-  <th mat-header-cell *matHeaderCellDef>Board Comments</th>
-<td mat-cell *matCellDef="let element"
-    [matTooltip]="element.patient?.patient_histories?.[0]?.board_comments">
-  {{ limitWords(element.patient?.patient_histories?.[0]?.board_comments) }}
-</td>
-    </ng-container>
+          <!-- Board Comments -->
+          <ng-container matColumnDef="board_comments">
+            <th mat-header-cell *matHeaderCellDef>Board Comments</th>
+            <td mat-cell *matCellDef="let element"
+                [matTooltip]="element.board_comments">
+              {{ limitWords(element.board_comments) }}
+            </td>
+          </ng-container>
 
-      <ng-container matColumnDef="diagnoses">
-  <th mat-header-cell *matHeaderCellDef>Diagnoses</th>
-  <td
-    mat-cell
-    *matCellDef="let element"
-    [matTooltip]="element.diagnoses"
-  >
-    {{
-      element.diagnosesArray?.length > 2
-        ? (element.diagnosesArray.slice(0, 2).join(', ') + '...')
-        : (element.diagnoses || 'N/A')
-    }}
-  </td>
-</ng-container>
-
-         
+          <!-- Diagnoses -->
+          <ng-container matColumnDef="diagnoses">
+            <th mat-header-cell *matHeaderCellDef>Diagnoses</th>
+            <td mat-cell *matCellDef="let element"
+                [matTooltip]="element.diagnoses">
+              {{
+                element.diagnosesArray?.length > 2
+                  ? (element.diagnosesArray.slice(0, 2).join(', ') + '...')
+                  : (element.diagnoses || 'N/A')
+              }}
+            </td>
+          </ng-container>
 
           <!-- Status -->
           <ng-container matColumnDef="status">
-            <th
-              mat-header-cell
-              *matHeaderCellDef
-              class="text-neutral-500 dark:text-neutral-400"
-            >
+            <th mat-header-cell *matHeaderCellDef class="text-neutral-500 dark:text-neutral-400">
               Status
             </th>
               <td mat-cell *matCellDef="let p">
-        <span
-          class="px-3 py-1 rounded-full text-white"
-          [ngClass]="{
-            'bg-gray-400': !p.status,
-            'bg-yellow-500': p.status === 'Pending',
-            'bg-yellow-600': p.status === 'Reviewed',
-            'bg-blue-600': p.status === 'Requested',
-            'bg-green-600': p.status === 'Approved',
-            'bg-green-400': p.status === 'Confirmed',
-            'bg-blue-700': p.status?.includes('Transferred'),
-            'bg-red-600': p.status === 'Rejected',
-            'bg-green-800': p.status === 'Assigned',
-            'bg-red-800': p.status === 'Cancelled',
-            'bg-red-400': p.status === 'Closed'
-          }"
-        >
-          {{ p.status || 'N/A' }}
-        </span>
-      </td>
-
-            <!-- <td
-              mat-cell
-              *matCellDef="let element"
-              [ngClass]="{
-                'text-green-600': element.status === 'Confirmed',
-                'text-red-600': element.status === 'Denied',
-                'text-yellow-600': element.status === 'Pending'
-              }"
-            >
-              {{ element.status }}
-            </td> -->
+              <span
+                class="px-3 py-1 rounded-full text-white"
+                [ngClass]="{
+                  'bg-gray-400': !p.status,
+                  'bg-yellow-500': p.status === 'Pending',
+                  'bg-green-500': p.status === 'BoardedOut',
+                  'bg-yellow-600': p.status === 'Reviewed',
+                  'bg-blue-600': p.status === 'Requested',
+                  'bg-green-600': p.status === 'Approved',
+                  'bg-green-400': p.status === 'Confirmed',
+                  'bg-blue-700': p.status?.includes('Transferred'),
+                  'bg-red-600': p.status === 'Rejected',
+                  'bg-green-800': p.status === 'Assigned',
+                  'bg-red-800': p.status === 'Cancelled',
+                  'bg-red-400': p.status === 'Closed'
+                }"
+              >
+                {{ p.status || 'N/A' }}
+              </span>
+            </td>
           </ng-container>
 
           <!-- Action -->
           <ng-container matColumnDef="action">
-            <th
-              mat-header-cell
-              *matHeaderCellDef
-              class="text-neutral-500 dark:text-neutral-400"
-            >
+            <th mat-header-cell *matHeaderCellDef class="text-neutral-500 dark:text-neutral-400">
               Action
             </th>
             <td mat-cell *matCellDef="let element">
               <emr-segmented theme="simple" class="-mx-2">
                 <emr-segmented-button *ngIf="!isStaff" value="visibilityData">
                   <span
-                    class="size-9 rounded-full border bg-surface flex items-center justify-center"
-                    (click)="displayMoreData(element)"
+                    class="size-9 rounded-full border flex items-center justify-center"
+                    [ngClass]="{
+                      'bg-surface cursor-pointer': element.is_recommendation_only || element.referrals?.length
+                    }"
+                    (click)="(element.is_recommendation_only || element.referrals?.length) && displayMoreData(element)"
                     matTooltip="View"
                   >
                     <mat-icon class="font-icon visibilityData"
@@ -184,17 +148,13 @@
                 </emr-segmented-button>
 
                 <emr-segmented-button value="edit_squareData">
-                  <!-- <span class="size-9 rounded-full border bg-surface flex items-center justify-center" (click)="editReferral(element)" *ngIf="permission.parmissionMatched(['Update Patient List'])" matTooltip="Edit">
-                    <mat-icon class="font-icon edit_squareData">edit_square</mat-icon>
-                  </span> -->
 
-
-                  <span *ngIf="element.status !== 'Pending'"
+                  <span *ngIf="element.status !== 'Pending' && element.status !=='BoardedOut'"
                     class="size-9 rounded-full border bg-surface flex items-center justify-center cursor-pointer"
                     (click)="viewfollowup(element)"
                     matTooltip="View Follow-Up"
                   >
-                     <mat-icon class="font-icon">event_note</mat-icon>
+                    <mat-icon class="font-icon">event_note</mat-icon>
                   </span>
                 </emr-segmented-button>
 

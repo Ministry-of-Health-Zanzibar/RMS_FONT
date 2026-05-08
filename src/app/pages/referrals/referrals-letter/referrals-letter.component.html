@@ -1,4 +1,4 @@
-<div
+<!-- <div
   id="print-section"
   *ngIf="referral"
   class="p-10 bg-white rounded-lg text-gray-900 print:ml-40 print:w-[70%]"
@@ -100,14 +100,13 @@
     <p class="font-semibold">DKT. AMOUR S. MOHAMED,</p>
     <p class="font-semibold">MKURUGENZI MKUU,</p>
     <p class="font-semibold">WIZARA YA AFYA,</p>
-   <p class="font-semibold underline decoration-2">ZANZIBAR</p>
+    <p class="font-semibold underline decoration-2">ZANZIBAR</p>
 
   </div>
 
   <hr style="border-top: 3px solid black;" />
 
 
-  <!-- Footer Info -->
   <div class="text-xs text-gray-600 text-center">
     <p><em><strong>Kwa mawasiliano ya moja kwa moja:</strong></em></p>
     <p>
@@ -117,11 +116,198 @@
     </p>
   </div>
 
-  <!-- Print Button -->
   <div class="flex justify-end mt-8">
     <button (click)="print()" mat-raised-button color="primary" class="flex items-center gap-1">
       <mat-icon>print</mat-icon>
       Print
     </button>
   </div>
+</div> -->
+
+
+<div
+  id="print-section"
+  *ngIf="referral"
+  class="p-10 bg-white rounded-lg text-gray-900 print:ml-40 print:w-[70%]"
+>
+
+  <!-- ================= HEADER ================= -->
+  <div class="flex justify-center mb-4">
+    <img src="../../../../assets/img/smz.png" class="h-24" />
+  </div>
+
+  <div class="text-center space-y-1 mb-6">
+    <p class="text-lg font-semibold">SERIKALI YA MAPINDUZI YA ZANZIBAR</p>
+    <p class="text-lg font-semibold">WIZARA YA AFYA</p>
+
+    <div class="grid grid-cols-2 gap-4 text-sm text-left">
+      <div>
+        <p>6 Barabara ya Health Office</p>
+        <p>S.L.P 236 MNANZIMMOJA</p>
+        <p>POSTIKODI 70467 Mjini Magharibi Zanzibar</p>
+      </div>
+      <div class="text-right">
+        <p>
+          Tovuti:
+          <a href="http://www.mohz.go.tz" class="text-blue-600">
+            www.mohz.go.tz
+          </a>
+        </p>
+        <p>
+          Barua pepe:
+          <a href="mailto:{{ email }}" class="text-blue-600">
+            {{ email }}
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <hr style="border-top: 3px solid black;" />
+
+  <!-- ================= SWITCH LOGIC ================= -->
+
+  <!-- ================================================= -->
+  <!-- ✅ NORMAL REFERRAL LETTER -->
+  <!-- ================================================= -->
+  <ng-container *ngIf="!referral.is_boarded_out">
+
+    <div class="flex justify-between text-sm font-medium my-4">
+      <p><b>KUMB:</b> {{ referral.referral_number || 'N/A' }}</p>
+      <p>
+        <b>TAREHE:</b>
+        {{ referral.referral_letters?.start_date | date:'dd-MM-yyyy' }}
+      </p>
+    </div>
+
+    <div class="mb-6 uppercase">
+      <p class="font-semibold">MKURUGENZI MTENDAJI,</p>
+      <p class="font-semibold">
+        {{ referral.hospital?.hospital_name || "N/A" }},
+      </p>
+      <p class="font-semibold underline">
+        {{ referral.hospital?.hospital_address || "N/A" }}
+      </p>
+    </div>
+
+    <div class="mb-4 text-center font-semibold uppercase">
+      <p>
+        KUH: KUMPATIA MATIBABU MGONJWA
+        {{ referral.patient?.name }}
+        <br />
+        {{ formatAge(referral.patient?.age_details) }}
+      </p>
+    </div>
+
+    <div class="space-y-3 text-sm">
+      <p>Tafadhali naomba uhusike na mada ya hapo juu.</p>
+
+      <p>
+        Wizara ya Afya Zanzibar, inamleta kwenu kwa uchunguzi na matibabu zaidi.
+      </p>
+
+      <p>
+        Tunaomba mumpokee na kumpatia matibabu stahiki
+        <b>{{ referral.patient?.name }}</b>.
+      </p>
+
+      <p>
+        Gharama zitalipwa kwa mujibu wa mkataba na
+        <b>{{ referral.hospital?.hospital_name }}</b>.
+      </p>
+
+      <p>
+        Tafadhali tuma taarifa za maendeleo ya mgonjwa pamoja na diagnosis na tiba.
+      </p>
+
+      <p><strong>Ahsante,</strong></p>
+    </div>
+
+  </ng-container>
+
+  <!-- ================================================= -->
+  <!-- ✅ BOARDED OUT LETTER -->
+  <!-- ================================================= -->
+  <ng-container *ngIf="referral.is_boarded_out">
+
+    <div class="flex justify-between text-sm font-medium my-4">
+      <p>
+        <b>KUMB:</b>
+        {{ referral.boarded_out_letter?.reference_number }}
+      </p>
+      <p>
+        <b>TAREHE:</b>
+        {{ referral.boarded_out_letter?.reference_date | date:'dd/MM/yyyy' }}
+      </p>
+    </div>
+
+    <div class="mb-6 uppercase font-semibold">
+      <p>{{ referral.boarded_out_letter?.receiver }}</p>
+    </div>
+
+    <div class="text-center font-bold uppercase mb-4">
+      <p>
+        KUH: UCHUNGUZI WA AFYA WA
+        {{ referral.patient?.name }}
+      </p>
+    </div>
+
+    <div class="space-y-3 text-sm">
+
+      <p>
+        Tafadhali rejea barua yenye kumbukumbu
+        {{ referral.boarded_out_letter?.reference_number }}
+        ya tarehe
+        {{ referral.boarded_out_letter?.reference_date | date:'dd/MM/yyyy' }}.
+      </p>
+
+      <p>
+        Bodi ya Madaktari ilikaa na kujadili mgonjwa
+        <b>{{ referral.patient?.name }}</b>.
+      </p>
+
+      <p>
+        Baada ya kupitia taarifa zote, maamuzi yafuatayo yalifikiwa:
+      </p>
+
+      <!-- Recommendations -->
+      <ul class="list-disc ml-6">
+        <li *ngFor="let rec of referral.boarded_out_letter?.recommendations">
+          {{ rec }}
+        </li>
+      </ul>
+
+      <p>
+        Nakala ya ripoti imeambatanishwa kwa rejea.
+      </p>
+
+      <p><strong>Ahsante,</strong></p>
+    </div>
+
+  </ng-container>
+
+  <!-- ================= FOOTER ================= -->
+  <div class="mt-8">
+    <p class="font-semibold">DKT. AMOUR S. MOHAMED,</p>
+    <p class="font-semibold">MKURUGENZI MKUU,</p>
+    <p class="font-semibold">WIZARA YA AFYA,</p>
+    <p class="font-semibold underline">ZANZIBAR</p>
+  </div>
+
+  <hr style="border-top: 3px solid black;" />
+
+  <div class="text-xs text-center mt-4">
+    <p><strong>Mawasiliano:</strong></p>
+    <p>Katibu Mkuu: {{ katibu }}</p>
+    <p>DG: {{ dg }}</p>
+  </div>
+
+  <!-- PRINT -->
+  <div class="flex justify-end mt-8 print:hidden">
+    <button (click)="print()" mat-raised-button color="primary">
+      <mat-icon>print</mat-icon>
+      Print
+    </button>
+  </div>
+
 </div>
