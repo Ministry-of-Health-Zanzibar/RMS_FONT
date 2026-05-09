@@ -132,8 +132,8 @@
 >
 
   <!-- ================= HEADER ================= -->
-  <div class="flex justify-center mb-4">
-    <img src="../../../../assets/img/smz.png" class="h-24" />
+ <div class="flex justify-center mb-4">
+    <img src="../../../../assets/img/smz.png" alt="" class="w-auto h-24" />
   </div>
 
   <div class="text-center space-y-1 mb-6">
@@ -149,14 +149,17 @@
       <div class="text-right">
         <p>
           Tovuti:
-          <a href="http://www.mohz.go.tz" class="text-blue-600">
+          <a href="http://www.mohz.go.tz" class="text-blue-600 hover:underline">
             www.mohz.go.tz
           </a>
         </p>
         <p>
           Barua pepe:
-          <a href="mailto:{{ email }}" class="text-blue-600">
-            {{ email }}
+          <a
+            href="mailto:{{ email || 'N/A' }}"
+            class="text-blue-600 hover:underline"
+          >
+            {{ email || "N/A" }}
           </a>
         </p>
       </div>
@@ -172,56 +175,58 @@
   <!-- ================================================= -->
   <ng-container *ngIf="!referral.is_boarded_out">
 
-    <div class="flex justify-between text-sm font-medium my-4">
-      <p><b>KUMB:</b> {{ referral.referral_number || 'N/A' }}</p>
-      <p>
-        <b>TAREHE:</b>
-        {{ referral.referral_letters?.start_date | date:'dd-MM-yyyy' }}
-      </p>
-    </div>
+   <div class="flex justify-between text-sm font-medium my-4">
+    <p style="font-weight:bold ;">KUMB: CDA.25/254/01</p>
+    <p class="font-semibold uppercase">
+      TAREHE: {{ referral.referral_letters?.start_date || 'N/A' | date:'dd-MM-yyyy' }}
+    </p>
+  </div>
 
-    <div class="mb-6 uppercase">
-      <p class="font-semibold">MKURUGENZI MTENDAJI,</p>
-      <p class="font-semibold">
-        {{ referral.hospital?.hospital_name || "N/A" }},
-      </p>
-      <p class="font-semibold underline">
-        {{ referral.hospital?.hospital_address || "N/A" }}
-      </p>
-    </div>
+  <div class="mb-6 space-y-1">
+    <p class="font-semibold uppercase">MKURUGENZI MTENDAJI,</p>
+    <p class="font-semibold uppercase">
+      {{ referral.hospital?.hospital_name || "N/A" }},
+    </p>
+    <p class="font-semibold uppercase underline decoration-2">
+      {{ referral.hospital?.hospital_address || "N/A" }}
+    </p>
+    
+  </div>
 
-    <div class="mb-4 text-center font-semibold uppercase">
-      <p>
-        KUH: KUMPATIA MATIBABU MGONJWA
-        {{ referral.patient?.name }}
-        <br />
-        {{ formatAge(referral.patient?.age_details) }}
-      </p>
-    </div>
+  <div class="mb-4 text-center">
+  <p class="font-semibold uppercase">
+    Kuh: KUMPATIA MATIBABU MGONJWA
+    {{ referral.patient?.name || "N/A" }} <br>
+    {{ formatAge(referral.patient?.age_details) }}
+  </p>
+</div>
 
-    <div class="space-y-3 text-sm">
-      <p>Tafadhali naomba uhusike na mada ya hapo juu.</p>
-
-      <p>
-        Wizara ya Afya Zanzibar, inamleta kwenu kwa uchunguzi na matibabu zaidi.
-      </p>
-
-      <p>
-        Tunaomba mumpokee na kumpatia matibabu stahiki
-        <b>{{ referral.patient?.name }}</b>.
-      </p>
-
-      <p>
-        Gharama zitalipwa kwa mujibu wa mkataba na
-        <b>{{ referral.hospital?.hospital_name }}</b>.
-      </p>
-
-      <p>
-        Tafadhali tuma taarifa za maendeleo ya mgonjwa pamoja na diagnosis na tiba.
-      </p>
-
-      <p><strong>Ahsante,</strong></p>
-    </div>
+   <div class="space-y-3 text-sm">
+    <p>Tafadhali naomba uhusike na mada ya hapo juu.</p>
+    <p>
+      Wizara ya Afya Zanzibar, inamleta kwenu kwa uchunguzi na matibabu zaidi
+      mtajwa hapo juu.
+    </p>
+    <p>
+      Kwa barua hii, tunaomba mumpokee na kumpatia matibabu stahiki <b>{{ referral.patient?.name || "N/A" }}</b> kama tulivyokubaliana.
+    </p>
+    <p>
+      Gharama za matibabu zitalipwa na Wizara ya Afya kwa mujibu wa Mkataba na
+      <b>{{ referral.hospital?.hospital_name || "N/A" }}</b>
+    </p>
+    <p>
+      Wizara ya Afya inaomba taarifa fupi za maendeleo ya matibabu kwa mhusika
+      ikiwemo Diagnosis, Tiba aliyopewa, tathmini, na sababu ya kurudi mara
+      nyingine.
+    </p>
+    <p>
+      Aidha Wizara ya Afya inaomba ripoti kamili iwasilishwe mwishoni mwa
+      matibabu.
+    </p>
+    <p>Kumbukumbu zake za matibabu zimeambatanishwa kwa urahisi wa kurejea.</p>
+    <p>Naomba kuwasiliana kwa hatua.</p>
+    <p><strong>Ahsante,</strong></p>
+  </div>
 
   </ng-container>
 
@@ -256,32 +261,31 @@
 
       <p>
         Tafadhali rejea barua yenye kumbukumbu
-        {{ referral.boarded_out_letter?.reference_number }}
+      <b>{{ referral.boarded_out_letter?.reference_number }}</b>
         ya tarehe
-        {{ referral.boarded_out_letter?.reference_date | date:'dd/MM/yyyy' }}.
+    <b> {{ referral.boarded_out_letter?.reference_date | date:'dd/MM/yyyy' }}</b> yenye mada ya hapo juu .
       </p>
 
       <p>
-        Bodi ya Madaktari ilikaa na kujadili mgonjwa
+        Bodi ya Madaktari katika kikao chake cha tarehe <b>{{referral.patient.patient_list[0].board_date}}</b> ilikaa na kumjadili mgonjwa
         <b>{{ referral.patient?.name }}</b>.
       </p>
+      <p>Bodi ilijadili kwa kina report hiyo na ilifikia maamuzi kua <b> ndugu {{ referral.patient?.name }} </b></p>
 
-      <p>
-        Baada ya kupitia taarifa zote, maamuzi yafuatayo yalifikiwa:
-      </p>
+     
 
       <!-- Recommendations -->
       <ul class="list-disc ml-6">
-        <li *ngFor="let rec of referral.boarded_out_letter?.recommendations">
+       <strong> <li *ngFor="let rec of referral.boarded_out_letter?.recommendations">
           {{ rec }}
         </li>
+        </strong>
       </ul>
-
-      <p>
-        Nakala ya ripoti imeambatanishwa kwa rejea.
+       <p>
+        Pamoja na barua hii ninafunganisha kopi ya repoti halisi ya maamuzi hayo :
       </p>
 
-      <p><strong>Ahsante,</strong></p>
+      <p><strong><i>Ahsante,</i></strong></p>
     </div>
 
   </ng-container>
@@ -296,10 +300,13 @@
 
   <hr style="border-top: 3px solid black;" />
 
-  <div class="text-xs text-center mt-4">
-    <p><strong>Mawasiliano:</strong></p>
-    <p>Katibu Mkuu: {{ katibu }}</p>
-    <p>DG: {{ dg }}</p>
+ <div class="text-xs text-gray-600 text-center">
+    <p><em><strong>Kwa mawasiliano ya moja kwa moja:</strong></em></p>
+    <p>
+      Waziri ..........., Katibu Mkuu {{katibu}} , Mkurugenzi Mkuu barua pepe</p>
+      <p>
+        {{ dg || "dg@mohz.go.tz" }}
+    </p>
   </div>
 
   <!-- PRINT -->
