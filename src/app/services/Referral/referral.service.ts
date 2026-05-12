@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment.prod';
@@ -34,11 +34,24 @@ export class ReferralService {
     return this.http.get<any>(this.href);
   }
 
-  public getReferralById(id: any): Observable<any> {
-    return this.http.get<any>(`${this.href}/${id}`);
+  // public getReferralById(id: any): Observable<any> {
+  //   return this.http.get<any>(`${this.href}/${id}`);
+  // }
+  public getReferralById(
+    id: any,
+    type: 'referral' | 'history' = 'referral'
+  ): Observable<any> {
+  
+    const params = new HttpParams()
+      .set('type', type);
+  
+    return this.http.get<any>(
+      `${this.href}/${id}`,
+      { params }
+    );
   }
 
-   public getReferralsById(id: any): Observable<any> {
+  public getReferralsById(id: any): Observable<any> {
     return this.http.get<any>(`${this.href_byid}/${id}`);
   }
 
@@ -64,11 +77,11 @@ export class ReferralService {
     return this.http.get<any>(this.href_withBill);
   }
 
-   public getBillById(id: any): Observable<any> {
+  public getBillById(id: any): Observable<any> {
     return this.http.get<any>(`${this.bill}/${id}`);
   }
 
-   public getCommentById(id: any): Observable<any> {
+  public getCommentById(id: any): Observable<any> {
     return this.http.get<any>(`${this.comment}/${id}`);
   }
 

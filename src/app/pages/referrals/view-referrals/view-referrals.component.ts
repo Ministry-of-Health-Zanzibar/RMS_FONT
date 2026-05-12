@@ -368,35 +368,38 @@ export class ViewReferralsComponent implements OnInit, OnDestroy {
   }
 
   // displayMoreData(data: any) {
-  //   const id = data.referrals[0]?.referral_id; // safe access
+  //   // ✅ Recommendation-only / BO records
+  //   if (data.is_recommendation_only || data.is_boarded_out) {
+  //     this.router.navigate([
+  //       '/pages/config/referrals/more',data.history_id
+  //     ]);
+  //     return;
+  //   }
+  
+  //   // ✅ Normal referrals
+  //   const id = data.referrals?.[0]?.referral_id;
+  
+  //   if (!id) {
+  //     console.warn('Missing referral_id (non-BO case)', data);
+  //     return;
+  //   }
+  
   //   this.router.navigate(['/pages/config/referrals/more', id]);
   // }
-
-  // displayMoreData(data: any) {
-  //   if (data.is_recommendation_only) {
-  //     // ✅ handle "no referral" case
-  //     this.router.navigate(
-  //       // ['/pages/config/patient-history/view', data.history_id]
-  //       ['/pages/config/referrals/more', data.history_id]
-  //     );
-  //   } else {
-  //     const id = data.referrals?.[0]?.referral_id;
-  
-  //     if (!id) {
-  //       console.warn('Missing referral_id', data);
-  //       return;
-  //     }
-  
-  //     this.router.navigate(['/pages/config/referrals/more', id]);
-  //   }
-  // }
-
   displayMoreData(data: any) {
-    // ✅ Recommendation-only / BO records
+
+    // ✅ Recommendation-only / BoardedOut
     if (data.is_recommendation_only || data.is_boarded_out) {
-      this.router.navigate([
-        '/pages/config/referrals/more',data.history_id
-      ]);
+  
+      this.router.navigate(
+        ['/pages/config/referrals/more', data.history_id],
+        {
+          queryParams: {
+            type: 'history'
+          }
+        }
+      );
+  
       return;
     }
   
@@ -408,13 +411,16 @@ export class ViewReferralsComponent implements OnInit, OnDestroy {
       return;
     }
   
-    this.router.navigate(['/pages/config/referrals/more', id]);
+    this.router.navigate(
+      ['/pages/config/referrals/more', id],
+      {
+        queryParams: {
+          type: 'referral'
+        }
+      }
+    );
   }
 
-  // displayReport(element: any) {
-  //   const id =element.referrals[0]?.referral_id;
-  //   this.router.navigate(['/pages/config/referrals/individual-report',id ]);
-  // }
   displayReport(element: any) {
     if (element.is_recommendation_only) {
       Swal.fire(
@@ -431,10 +437,6 @@ export class ViewReferralsComponent implements OnInit, OnDestroy {
     this.router.navigate(['/pages/config/referrals/individual-report', id]);
   }
 
-  // viewfollowup(data: any) {
-  //   const id = data.referrals[0]?.referral_id;
-  //   this.router.navigate(['/pages/config/referrals/view-follow-up', id]);
-  // }
   viewfollowup(data: any) {
     if (data.is_recommendation_only) {
       Swal.fire(

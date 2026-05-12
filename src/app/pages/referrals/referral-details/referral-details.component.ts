@@ -55,6 +55,7 @@ export class ReferralDetailsComponent {
   hospitalReason = this.history?.reason;
   boardReason = this.history?.board_reason;
   boardMembers: any[] = [];
+  referralType: 'referral' | 'history' = 'referral';
 
   constructor(
     private route: ActivatedRoute,
@@ -64,16 +65,32 @@ export class ReferralDetailsComponent {
   ) {}
 
   ngOnInit() {
-    this.referralID = this.route.snapshot.paramMap.get('id');
-    if (this.referralID) {
-      this.getMoreData();
-    }
+
+    this.route.paramMap.subscribe(params => {
+      this.referralID = params.get('id');
+  
+      this.route.queryParamMap.subscribe(query => {
+  
+        const type = query.get('type');
+  
+        this.referralType =
+          type === 'history'
+            ? 'history'
+            : 'referral';
+  
+        if (this.referralID) {
+          this.getMoreData();
+        }
+  
+      });
+    });
+  
   }
 
   public getMoreData() {
     if (!this.referralID) return;
 
-    this.referralsService.getReferralById(this.referralID).subscribe(
+    this.referralsService.getReferralById(this.referralID, this.referralType).subscribe(
       (response) => {
         this.referral = response.data;
 
