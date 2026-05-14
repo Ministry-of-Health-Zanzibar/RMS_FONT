@@ -267,7 +267,7 @@
       </p>
 
       <p>
-        Bodi ya Madaktari katika kikao chake cha tarehe <b>{{referral.patient.patient_list[0].board_date}}</b> ilikaa na kumjadili mgonjwa
+        Bodi ya Madaktari katika kikao chake cha tarehe <b>{{referral.patient.patient_list[0].board_date | date:'dd/MM/yyyy'}}</b> ilikaa na kumjadili mgonjwa
         <b>{{ referral.patient?.name }}</b>.
       </p>
       <p>Bodi ilijadili kwa kina report hiyo na ilifikia maamuzi kua <b> ndugu {{ referral.patient?.name }} </b></p>
@@ -309,8 +309,12 @@
     </p>
   </div>
 
-   <div class="text-xs text-gray-600 text-center" *ngIf="referral.is_boarded_out">
-    <p style="margin-top: 15px;font-size: 14px;">Nakla ________________ </p>
+   <div class="text-xs text-gray-600 " *ngIf="referral.is_boarded_out">
+<p style="margin-top: 15px; font-size: 14px; display: flex; gap: 20px;">
+  <strong>Nakla:</strong>
+  <strong>NDG.</strong>
+  <strong>{{ referral.patient?.name }}</strong>
+</p>
     
   </div>
 
