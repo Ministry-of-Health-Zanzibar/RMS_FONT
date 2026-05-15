@@ -248,9 +248,9 @@
 
     <div class="mb-6 uppercase font-semibold">
       <p
-        *ngFor="let line of referral.boarded_out_letter?.receiver?.split(',')"
+        *ngFor="let line of referral.boarded_out_letter?.receiver?.split(','); let last = last"
       >
-        {{ line.trim() }}
+        {{ line.trim() }}{{ !last ? ',' : '' }}
       </p>
     </div>
 
@@ -274,7 +274,7 @@
         Bodi ya Madaktari katika kikao chake cha tarehe <b>{{referral.patient.patient_list[0].board_date | date:'dd/MM/yyyy'}}</b> ilikaa na kumjadili mgonjwa
         <b>{{ referral.patient?.name }}</b>.
       </p>
-      <p>Bodi ilijadili kwa kina report hiyo na ilifikia maamuzi kua <b> ndugu {{ referral.patient?.name }} </b></p>
+      <p>Bodi ilijadili kwa kina ripoti hiyo na ilifikia maamuzi kua <b> ndugu {{ referral.patient?.name }} </b></p>
 
       <!-- Recommendations -->
       <ul class="list-disc ml-6">
@@ -284,7 +284,7 @@
         </strong>
       </ul>
       <p>
-        Pamoja na barua hii ninafunganisha kopi ya repoti halisi ya maamuzi hayo :
+        Pamoja na barua hii ninafunganisha kopi ya ripoti halisi ya maamuzi hayo :
       </p>
 
       <p><strong><i>Ahsante,</i></strong></p>
