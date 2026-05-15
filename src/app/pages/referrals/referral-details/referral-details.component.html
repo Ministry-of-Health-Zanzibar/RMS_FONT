@@ -378,7 +378,9 @@
         color="primary"
         class="bg-primary-600 hover:bg-primary-700 text-white px-10 py-3 rounded-2xl shadow-lg transition transform hover:scale-105"
         (click)="updateStatusPopup()"
-        [disabled]="referral.status !== 'Pending'"
+        [disabled]="
+          referral.status !== 'Pending'
+        "
       >
         Decision
       </button>
@@ -386,6 +388,7 @@
       <!-- Print Button -->
       <!-- ================= NORMAL REFERRAL PRINT ================= -->
       <button
+        *ngIf="hasRealReferral"
         mat-raised-button
         color="accent"
         class="bg-indigo-600 hover:bg-indigo-700 text-white px-10 py-3 rounded-2xl shadow-lg transition transform hover:scale-105"
@@ -398,7 +401,7 @@
 
       <!-- ================= BOARDED OUT PRINT ================= -->
       <button
-        *ngIf="referral?.is_boarded_out"
+        *ngIf="hasBoardedOut"
         mat-raised-button
         color="primary"
         class="bg-green-600 hover:bg-green-700 text-white px-10 py-3 rounded-2xl shadow-lg transition transform hover:scale-105"

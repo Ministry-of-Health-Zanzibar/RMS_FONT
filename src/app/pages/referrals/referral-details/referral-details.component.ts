@@ -121,18 +121,6 @@ export class ReferralDetailsComponent {
     );
   }
 
-  // updateStatusPopup() {
-  //   const dialogRef = this.dialog.open(ReferralStatusDialogComponent, {
-  //     width: '700px',
-  //     data: { data: this.referral },
-  //   });
-
-  //   dialogRef.afterClosed().subscribe((result) => {
-  //     if (result) {
-  //       this.getMoreData();
-  //     }
-  //   });
-  // }
   updateStatusPopup() {
     // ✅ Try to get from referral (normal case)
     let historyId =
@@ -149,11 +137,22 @@ export class ReferralDetailsComponent {
       return;
     }
   
+    // const dialogRef = this.dialog.open(ReferralStatusDialogComponent, {
+    //   width: '700px',
+    //   data: {
+    //     referral: this.referral, // may be null
+    //     patient_histories_id: historyId, // ✅ ALWAYS PASS THIS
+    //   },
+    // });
     const dialogRef = this.dialog.open(ReferralStatusDialogComponent, {
       width: '700px',
       data: {
-        referral: this.referral, // may be null
-        patient_histories_id: historyId, // ✅ ALWAYS PASS THIS
+        referral: this.referral,
+        patient_histories_id: historyId,
+    
+        hasRealReferral: this.hasRealReferral,
+        hasBoardedOut: this.hasBoardedOut,
+        isRecommendationOnly: this.isRecommendationOnly,
       },
     });
   
@@ -232,4 +231,42 @@ export class ReferralDetailsComponent {
       data: { patientHistoryId }
     });
   }
+
+
+
+
+
+
+
+
+  get hasRealReferral(): boolean {
+    return !!this.referral?.referral_id;
+  }
+  
+  get hasBoardedOut(): boolean {
+    return !!this.referral?.is_boarded_out;
+  }
+  
+  get isRecommendationOnly(): boolean {
+    return !!this.referral?.is_recommendation_only;
+  }
+  
+  get canShowConfirmedOnly(): boolean {
+    return !this.hasBoardedOut;
+  }
+  
+  get canShowBoardedOutOnly(): boolean {
+    return this.hasBoardedOut && !this.hasRealReferral;
+  }
+  
+  get canShowConfirmedAndBoardedOut(): boolean {
+    return this.hasRealReferral;
+  }
+
+
+
+
+
+
+
 }

@@ -32,6 +32,11 @@ import { HospitalService } from '../../../services/system-configuration/hospital
 })
 
 export class ReferralStatusDialogComponent implements OnInit, OnDestroy {
+
+  hasRealReferral = false;
+hasBoardedOut = false;
+isRecommendationOnly = false;
+
   private readonly onDestroy = new Subject<void>();
   readonly data = inject<any>(MAT_DIALOG_DATA);
   public sidebarVisible: boolean = true;
@@ -49,6 +54,9 @@ export class ReferralStatusDialogComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.configForm();
+    this.hasRealReferral = !!this.data?.hasRealReferral;
+this.hasBoardedOut = !!this.data?.hasBoardedOut;
+this.isRecommendationOnly = !!this.data?.isRecommendationOnly;
   
     // ----------------------------
     // SET REFERRAL ID
@@ -91,6 +99,20 @@ export class ReferralStatusDialogComponent implements OnInit, OnDestroy {
         }
   
         if (status === 'BoardedOut') {
+          this.statusForm.get('receiver')?.setValidators([Validators.required]);
+          this.statusForm.get('reference_number')?.setValidators([Validators.required]);
+          this.statusForm.get('reference_date')?.setValidators([Validators.required]);
+        }
+
+        if (status === 'Confirmed and BoardedOut') {
+
+          // Referral validators
+          this.statusForm.get('hospital_id')?.setValidators([Validators.required]);
+          this.statusForm.get('letter_text')?.setValidators([Validators.required]);
+          this.statusForm.get('start_date')?.setValidators([Validators.required]);
+          this.statusForm.get('end_date')?.setValidators([Validators.required]);
+        
+          // Boarded out validators
           this.statusForm.get('receiver')?.setValidators([Validators.required]);
           this.statusForm.get('reference_number')?.setValidators([Validators.required]);
           this.statusForm.get('reference_date')?.setValidators([Validators.required]);
@@ -164,7 +186,11 @@ export class ReferralStatusDialogComponent implements OnInit, OnDestroy {
     // ----------------------------
     // BOARDED OUT
     // ----------------------------
-    if (status === 'BoardedOut') {
+    // if (status === 'BoardedOut') {
+    if (
+      status === 'BoardedOut' ||
+      status === 'Confirmed and BoardedOut'
+    ) {
   
       const patientId = this.patientHistoryId;
   
@@ -192,7 +218,12 @@ export class ReferralStatusDialogComponent implements OnInit, OnDestroy {
     // ----------------------------
     // NORMAL FLOW
     // ----------------------------
-    else {
+    // else {
+    if (
+      status === 'Confirmed' ||
+      status === 'Confirmed and BoardedOut' ||
+      status === 'Cancelled'
+    ) {
       formData.referral_id = this.id;
       formData.hospital_id = this.statusForm.value.hospital_id;
       formData.letter_text = this.statusForm.value.letter_text;
