@@ -164,15 +164,29 @@ export class ReferralDetailsComponent {
     });
   }
 
-  isPrintDisabled(referral: any): boolean {
+  isReferralPrintDisabled(referral: any): boolean {
+
     const blockedStatuses = [
       'Pending',
       'Cancelled',
       'Closed'
     ];
   
-    // ❗ BoardedOut is ALLOWED for printing
     return blockedStatuses.includes(referral?.status);
+  }
+
+  printBoardedOutLetter(data: any): void {
+
+    const dialogRef = this.dialog.open(ReferralsLetterComponent, {
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      data: {
+        ...data,
+        isBoardedOutLetter: true
+      },
+    });
+  
+    dialogRef.afterClosed().subscribe();
   }
 
   referralsLetterPopup(data: any): void {
