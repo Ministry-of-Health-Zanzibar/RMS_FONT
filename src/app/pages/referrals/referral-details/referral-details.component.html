@@ -384,15 +384,28 @@
       </button>
 
       <!-- Print Button -->
+      <!-- ================= NORMAL REFERRAL PRINT ================= -->
       <button
         mat-raised-button
         color="accent"
         class="bg-indigo-600 hover:bg-indigo-700 text-white px-10 py-3 rounded-2xl shadow-lg transition transform hover:scale-105"
         (click)="referralsLetterPopup(referral)"
-        [disabled]="isPrintDisabled(referral)"
+        [disabled]="isReferralPrintDisabled(referral)"
       >
         <mat-icon class="mr-2">print</mat-icon>
-        Print
+        Print Referral Letter
+      </button>
+
+      <!-- ================= BOARDED OUT PRINT ================= -->
+      <button
+        *ngIf="referral?.is_boarded_out"
+        mat-raised-button
+        color="primary"
+        class="bg-green-600 hover:bg-green-700 text-white px-10 py-3 rounded-2xl shadow-lg transition transform hover:scale-105"
+        (click)="printBoardedOutLetter(referral)"
+      >
+        <mat-icon class="mr-2">description</mat-icon>
+        Print Boarded Out Letter
       </button>
     </div>
 
