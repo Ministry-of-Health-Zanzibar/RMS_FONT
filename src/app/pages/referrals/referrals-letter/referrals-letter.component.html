@@ -132,7 +132,7 @@
 >
 
   <!-- ================= HEADER ================= -->
- <div class="flex justify-center mb-4">
+  <div class="flex justify-center mb-4">
     <img src="../../../../assets/img/smz.png" alt="" class="w-auto h-24" />
   </div>
 
@@ -175,7 +175,7 @@
   <!-- ================================================= -->
   <ng-container *ngIf="!referral.is_boarded_out">
 
-   <div class="flex justify-between text-sm font-medium my-4">
+  <div class="flex justify-between text-sm font-medium my-4">
     <p style="font-weight:bold ;">KUMB: CDA.25/254/01</p>
     <p class="font-semibold uppercase">
       TAREHE: {{ referral.referral_letters?.start_date || 'N/A' | date:'dd-MM-yyyy' }}
@@ -201,7 +201,7 @@
   </p>
 </div>
 
-   <div class="space-y-3 text-sm">
+  <div class="space-y-3 text-sm">
     <p>Tafadhali naomba uhusike na mada ya hapo juu.</p>
     <p>
       Wizara ya Afya Zanzibar, inamleta kwenu kwa uchunguzi na matibabu zaidi
@@ -247,7 +247,11 @@
     </div>
 
     <div class="mb-6 uppercase font-semibold">
-      <p>{{ referral.boarded_out_letter?.receiver }}</p>
+      <p
+        *ngFor="let line of referral.boarded_out_letter?.receiver?.split(',')"
+      >
+        {{ line.trim() }}
+      </p>
     </div>
 
     <div class="text-center font-bold uppercase mb-4">
@@ -272,8 +276,6 @@
       </p>
       <p>Bodi ilijadili kwa kina report hiyo na ilifikia maamuzi kua <b> ndugu {{ referral.patient?.name }} </b></p>
 
-     
-
       <!-- Recommendations -->
       <ul class="list-disc ml-6">
        <strong> <li *ngFor="let rec of referral.boarded_out_letter?.recommendations">
@@ -281,7 +283,7 @@
         </li>
         </strong>
       </ul>
-       <p>
+      <p>
         Pamoja na barua hii ninafunganisha kopi ya repoti halisi ya maamuzi hayo :
       </p>
 
@@ -300,7 +302,7 @@
 
   <hr style="border-top: 3px solid black;" />
 
- <div class="text-xs text-gray-600 text-center">
+  <div class="text-xs text-gray-600 text-center">
     <p><em><strong>Kwa mawasiliano ya moja kwa moja:</strong></em></p>
     <p>
       Katibu Mkuu {{katibu}} , Mkurugenzi Mkuu barua pepe</p>
