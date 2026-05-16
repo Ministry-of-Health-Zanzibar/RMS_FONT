@@ -173,7 +173,8 @@
   <!-- ================================================= -->
   <!-- ✅ NORMAL REFERRAL LETTER -->
   <!-- ================================================= -->
-  <ng-container *ngIf="!referral.is_boarded_out">
+  <!-- <ng-container *ngIf="!referral.is_boarded_out"> -->
+  <ng-container *ngIf="referral?.referral_id">
 
   <div class="flex justify-between text-sm font-medium my-4">
     <p style="font-weight:bold ;">KUMB: CDA.25/254/01</p>
@@ -230,68 +231,6 @@
 
   </ng-container>
 
-  <!-- ================================================= -->
-  <!-- ✅ BOARDED OUT LETTER -->
-  <!-- ================================================= -->
-  <ng-container *ngIf="referral.is_boarded_out">
-
-    <div class="flex justify-between text-sm font-medium my-4">
-      <p>
-        <b>KUMB:</b>
-        {{ referral.boarded_out_letter?.reference_number }}
-      </p>
-      <p>
-        <b>TAREHE:</b>
-        {{ referral.boarded_out_letter?.reference_date | date:'dd/MM/yyyy' }}
-      </p>
-    </div>
-
-    <div class="mb-6 uppercase font-semibold">
-      <p
-        *ngFor="let line of referral.boarded_out_letter?.receiver?.split(','); let last = last"
-      >
-        {{ line.trim() }}{{ !last ? ',' : '' }}
-      </p>
-    </div>
-
-    <div class="text-center font-bold uppercase mb-4">
-      <p>
-        KUH: UCHUNGUZI WA AFYA WA
-        {{ referral.patient?.name }}
-      </p>
-    </div>
-
-    <div class="space-y-3 text-sm">
-
-      <p>
-        Tafadhali rejea barua yenye kumbukumbu
-      <b>{{ referral.boarded_out_letter?.reference_number }}</b>
-        ya tarehe
-    <b> {{ referral.boarded_out_letter?.reference_date | date:'dd/MM/yyyy' }}</b> yenye mada ya hapo juu .
-      </p>
-
-      <p>
-        Bodi ya Madaktari katika kikao chake cha tarehe <b>{{referral.patient.patient_list[0].board_date | date:'dd/MM/yyyy'}}</b> ilikaa na kumjadili mgonjwa
-        <b>{{ referral.patient?.name }}</b>.
-      </p>
-      <p>Bodi ilijadili kwa kina ripoti hiyo na ilifikia maamuzi kua <b> ndugu {{ referral.patient?.name }} </b></p>
-
-      <!-- Recommendations -->
-      <ul class="list-disc ml-6">
-       <strong> <li *ngFor="let rec of referral.boarded_out_letter?.recommendations">
-          {{ rec }}
-        </li>
-        </strong>
-      </ul>
-      <p>
-        Pamoja na barua hii ninafunganisha kopi ya ripoti halisi ya maamuzi hayo :
-      </p>
-
-      <p><strong><i>Ahsante,</i></strong></p>
-    </div>
-
-  </ng-container>
-
   <!-- ================= FOOTER ================= -->
   <div class="mt-8">
     <p class="font-semibold">DKT. AMOUR S. MOHAMED,</p>
@@ -309,15 +248,6 @@
       <p>
         {{ dg || "dg@mohz.go.tz" }}
     </p>
-  </div>
-
-   <div class="text-xs text-gray-600 " *ngIf="referral.is_boarded_out">
-<p style="margin-top: 15px; font-size: 14px; display: flex; gap: 20px;">
-  <strong>Nakla:</strong>
-  <strong>NDG.</strong>
-  <strong>{{ referral.patient?.name }}</strong>
-</p>
-    
   </div>
 
   <!-- PRINT -->

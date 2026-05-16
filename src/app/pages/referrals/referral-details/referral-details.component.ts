@@ -17,6 +17,7 @@ import { environment } from '../../../../environments/environment.prod';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { ConversationModalComponent } from '../conversation-modal/conversation-modal.component';
+import { BoardedOutLetterComponent } from '../boarded-out-letter/boarded-out-letter.component';
 
 @Component({
   selector: 'app-referral-details',
@@ -136,14 +137,7 @@ export class ReferralDetailsComponent {
       console.warn('No patient_histories_id found');
       return;
     }
-  
-    // const dialogRef = this.dialog.open(ReferralStatusDialogComponent, {
-    //   width: '700px',
-    //   data: {
-    //     referral: this.referral, // may be null
-    //     patient_histories_id: historyId, // ✅ ALWAYS PASS THIS
-    //   },
-    // });
+
     const dialogRef = this.dialog.open(ReferralStatusDialogComponent, {
       width: '700px',
       data: {
@@ -176,7 +170,7 @@ export class ReferralDetailsComponent {
 
   printBoardedOutLetter(data: any): void {
 
-    const dialogRef = this.dialog.open(ReferralsLetterComponent, {
+    const dialogRef = this.dialog.open(BoardedOutLetterComponent, {
       maxWidth: '100vw',
       maxHeight: '100vh',
       data: {
@@ -232,19 +226,12 @@ export class ReferralDetailsComponent {
     });
   }
 
-
-
-
-
-
-
-
   get hasRealReferral(): boolean {
-    return !!this.referral?.referral_id;
+    return this.referral?.referral_id != null;
   }
   
   get hasBoardedOut(): boolean {
-    return !!this.referral?.is_boarded_out;
+    return this.referral?.is_boarded_out === true;
   }
   
   get isRecommendationOnly(): boolean {
@@ -263,10 +250,9 @@ export class ReferralDetailsComponent {
     return this.hasRealReferral;
   }
 
-
-
-
-
-
-
+  get referralMode(): 'referral' | 'boardedOut' | 'unknown' {
+    if (this.referral?.is_boarded_out) return 'boardedOut';
+    if (this.referral?.referral_id) return 'referral';
+    return 'unknown';
+  }
 }

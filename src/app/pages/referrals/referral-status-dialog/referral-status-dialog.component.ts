@@ -34,8 +34,8 @@ import { HospitalService } from '../../../services/system-configuration/hospital
 export class ReferralStatusDialogComponent implements OnInit, OnDestroy {
 
   hasRealReferral = false;
-hasBoardedOut = false;
-isRecommendationOnly = false;
+  hasBoardedOut = false;
+  isRecommendationOnly = false;
 
   private readonly onDestroy = new Subject<void>();
   readonly data = inject<any>(MAT_DIALOG_DATA);
@@ -55,8 +55,8 @@ isRecommendationOnly = false;
   ngOnInit(): void {
     this.configForm();
     this.hasRealReferral = !!this.data?.hasRealReferral;
-this.hasBoardedOut = !!this.data?.hasBoardedOut;
-this.isRecommendationOnly = !!this.data?.isRecommendationOnly;
+    this.hasBoardedOut = !!this.data?.hasBoardedOut;
+    this.isRecommendationOnly = !!this.data?.isRecommendationOnly;
   
     // ----------------------------
     // SET REFERRAL ID

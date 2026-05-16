@@ -8,44 +8,23 @@
       <mat-form-field appearance="outline" class="w-full">
         <mat-label>Status</mat-label>
         <mat-select formControlName="status">
-          <!-- <mat-option value="Confirmed">Confirmed</mat-option>
-          <mat-option value="Cancelled">Rejected</mat-option>
-          <mat-option value="BoardedOut">Boarded Out</mat-option>
-          <mat-option value="Confirmed and BoardedOut">Confirmed and Boarded Out</mat-option> -->
           <!-- ================= ONLY REFERRAL ================= -->
-<ng-container *ngIf="hasRealReferral && !hasBoardedOut">
+          <ng-container *ngIf="hasRealReferral && !hasBoardedOut">
+            <mat-option value="Confirmed"> Confirmed</mat-option>
+            <mat-option value="Cancelled"> Rejected</mat-option>
+            <mat-option value="Confirmed and BoardedOut"> Confirmed and Boarded Out</mat-option>
+          </ng-container>
 
-  <mat-option value="Confirmed">
-    Confirmed
-  </mat-option>
+          <!-- ================= ONLY BOARDED OUT ================= -->
+          <ng-container *ngIf="!hasRealReferral && hasBoardedOut">
+            <mat-option value="BoardedOut"> Boarded Out
+            </mat-option>
+          </ng-container>
 
-  <mat-option value="Cancelled">
-    Rejected
-  </mat-option>
-
-  <mat-option value="Confirmed and BoardedOut">
-    Confirmed and Boarded Out
-  </mat-option>
-
-</ng-container>
-
-<!-- ================= ONLY BOARDED OUT ================= -->
-<ng-container *ngIf="!hasRealReferral && hasBoardedOut">
-
-  <mat-option value="BoardedOut">
-    Boarded Out
-  </mat-option>
-
-</ng-container>
-
-<!-- ================= PURE HISTORY / PENDING ================= -->
-<ng-container *ngIf="!hasRealReferral && !hasBoardedOut">
-
-  <mat-option value="BoardedOut">
-    Boarded Out
-  </mat-option>
-
-</ng-container>
+          <!-- ================= PURE HISTORY / PENDING ================= -->
+          <ng-container *ngIf="!hasRealReferral && !hasBoardedOut">
+            <mat-option value="BoardedOut"> Boarded Out</mat-option>
+          </ng-container>
         </mat-select>
         <mat-error
           *ngIf="

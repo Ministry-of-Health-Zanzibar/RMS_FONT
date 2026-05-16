@@ -72,19 +72,6 @@ formatAge(ageDetails: any): string {
     this.referral.is_boarded_out = !!this.referral?.is_boarded_out;
   }
 
-  // getReferralData(): void {
-  //   this.referralsService.getReferralById(this.referralID!).subscribe(
-  //     (response: any) => {
-  //       this.referral = response.data ? response.data : response;
-  //     },
-  //     error => {
-  //       console.error('Failed to load referral data:', error);
-  //       Swal.fire('Error', 'Unable to fetch referral data', 'error');
-  //     }
-  //   );
-  // }
-  
-
   print(): void {
     const printContents = document.getElementById('print-section')?.innerHTML;
     if (printContents) {
