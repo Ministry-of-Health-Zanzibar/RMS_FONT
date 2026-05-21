@@ -146,7 +146,7 @@ export class PartientFormComponent implements OnInit {
         matibabu_card: [
           '',
         ],
-        zan_id: ['', [Validators.pattern(/^\d{9}$/)]],
+        zan_id: ['', [Validators.required,Validators.pattern(/^\d{9}$/)]],
         date_of_birth: ['', Validators.required],
         gender: ['', Validators.required],
         phone: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],

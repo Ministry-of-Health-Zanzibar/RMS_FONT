@@ -143,12 +143,23 @@ export class ReferralsearchreportComponent implements OnInit, OnDestroy {
       this.referralType = response.data;
     });
   }
-  getHospital(): void {
-    this.hospitalServices.getAllHospital().subscribe(response => {
-      this.hospital = response.data;
-      //console.log("hospitali hiziii",response.data)
+
+   getHospital() {
+    this.hospitalServices.getAllHospital().subscribe({
+      next: (response: any) => {
+        this.hospital = response.data;
+      },
+      error: (err) => {
+        console.error('Error fetching hospitals:', err);
+      },
     });
   }
+  // getHospital(): void {
+  //   this.hospitalServices.getAllHospital().subscribe(response => {
+  //     this.hospital = response.data;
+  //     //console.log("hospitali hiziii",response.data)
+  //   });
+  // }
 
 searchReport(): void {
   this.loading = true;
