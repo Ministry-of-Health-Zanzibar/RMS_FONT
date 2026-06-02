@@ -67,7 +67,7 @@ export class AddmedicalformComponent implements OnInit, OnDestroy {
     private reasonServices: ReasonsService,
     private medicalHistoryService: MedicalhistoryService,
     public dialogRef: MatDialogRef<AddmedicalformComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
   ) {}
 
   ngOnInit(): void {
@@ -76,7 +76,7 @@ export class AddmedicalformComponent implements OnInit, OnDestroy {
     this.buildForm(patient);
     this.loadReasons();
     this.loadDiagnoses();
-    
+
     if (this.mode === 'edit') {
       this.patchMedicalData(patient);
     }
@@ -90,7 +90,7 @@ export class AddmedicalformComponent implements OnInit, OnDestroy {
       ],
       board_comments: ['', Validators.required],
       board_reason_id: ['', Validators.required],
-      board_diagnosis_ids: [[], Validators.required], // This is the control used for validation
+      board_diagnosis_ids: [[], Validators.required], 
     });
   }
 
@@ -107,7 +107,7 @@ export class AddmedicalformComponent implements OnInit, OnDestroy {
     // 2. Populate Selected Diagnoses (the visual chips)
     if (history.board_diagnoses && Array.isArray(history.board_diagnoses)) {
       this.selectedDiagnoses = [...history.board_diagnoses];
-      
+
       // 3. Update the hidden form control with IDs so validation passes
       const ids = this.selectedDiagnoses.map((d) => d.diagnosis_id);
       this.medicalForm.get('board_diagnosis_ids')?.setValue(ids);
@@ -117,23 +117,29 @@ export class AddmedicalformComponent implements OnInit, OnDestroy {
   }
 
   loadReasons() {
-    this.reasonServices.getAllReasons().pipe(takeUntil(this.onDestroy$)).subscribe({
-      next: (res: any) => (this.reasonList = res.data || []),
-      error: (err) => console.error(err),
-    });
+    this.reasonServices
+      .getAllReasons()
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe({
+        next: (res: any) => (this.reasonList = res.data || []),
+        error: (err) => console.error(err),
+      });
   }
 
   loadDiagnoses() {
-    this.diagnosisService.getAllDiagnosis().pipe(takeUntil(this.onDestroy$)).subscribe((res) => {
-      this.diagnosesList = res.data || [];
-      this.filteredDiagnoses = [...this.diagnosesList];
-    });
+    this.diagnosisService
+      .getAllDiagnosis()
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe((res) => {
+        this.diagnosesList = res.data || [];
+        this.filteredDiagnoses = [...this.diagnosesList];
+      });
 
     this.diagnosisSearchCtrl.valueChanges
       .pipe(
         debounceTime(300),
         distinctUntilChanged(),
-        takeUntil(this.onDestroy$)
+        takeUntil(this.onDestroy$),
       )
       .subscribe((search: any) => {
         if (!search || typeof search !== 'string') {
@@ -142,14 +148,14 @@ export class AddmedicalformComponent implements OnInit, OnDestroy {
         }
         const lowerSearch = search.toLowerCase();
         this.filteredDiagnoses = this.diagnosesList.filter((diag) =>
-          diag.diagnosis_name.toLowerCase().includes(lowerSearch)
+          diag.diagnosis_name.toLowerCase().includes(lowerSearch),
         );
       });
   }
 
   addDiagnosis(diagnosis: any) {
     const exists = this.selectedDiagnoses.find(
-      (d) => d.diagnosis_id === diagnosis.diagnosis_id
+      (d) => d.diagnosis_id === diagnosis.diagnosis_id,
     );
 
     if (!exists) {
@@ -158,7 +164,7 @@ export class AddmedicalformComponent implements OnInit, OnDestroy {
       // Sync IDs to the form control
       const ids = this.selectedDiagnoses.map((d) => d.diagnosis_id);
       this.medicalForm.get('board_diagnosis_ids')?.setValue(ids);
-      
+
       // Mark as dirty to trigger validation update
       this.medicalForm.get('board_diagnosis_ids')?.markAsDirty();
     }
@@ -167,15 +173,17 @@ export class AddmedicalformComponent implements OnInit, OnDestroy {
 
   removeDiagnosis(diagnosis: any) {
     this.selectedDiagnoses = this.selectedDiagnoses.filter(
-      (d) => d.diagnosis_id !== diagnosis.diagnosis_id
+      (d) => d.diagnosis_id !== diagnosis.diagnosis_id,
     );
 
     // Sync IDs to the form control
     const ids = this.selectedDiagnoses.map((d) => d.diagnosis_id);
     this.medicalForm.get('board_diagnosis_ids')?.setValue(ids);
-    
+
     if (ids.length === 0) {
-       this.medicalForm.get('board_diagnosis_ids')?.setErrors({ required: true });
+      this.medicalForm
+        .get('board_diagnosis_ids')
+        ?.setErrors({ required: true });
     }
   }
 
@@ -204,10 +212,10 @@ export class AddmedicalformComponent implements OnInit, OnDestroy {
     this.loading = true;
     const formValue = this.medicalForm.value;
     const formData = new FormData();
-    
+
     formData.append('board_comments', formValue.board_comments);
     formData.append('board_reason_id', formValue.board_reason_id);
-    
+
     // Append diagnosis IDs correctly for PHP/Spring/Node backend arrays
     formValue.board_diagnosis_ids.forEach((id: any) => {
       formData.append('board_diagnosis_ids[]', id);
@@ -221,12 +229,22 @@ export class AddmedicalformComponent implements OnInit, OnDestroy {
 
     const request$ =
       this.mode === 'edit'
-        ? this.medicalHistoryService.updateMedicalHistory(patientHistoryId, formData)
-        : this.medicalHistoryService.addMedicalHistory(patientHistoryId, formData);
+        ? this.medicalHistoryService.updateMedicalHistory(
+            patientHistoryId,
+            formData,
+          )
+        : this.medicalHistoryService.addMedicalHistory(
+            patientHistoryId,
+            formData,
+          );
 
     request$.pipe(takeUntil(this.onDestroy$)).subscribe({
       next: () => {
-        Swal.fire('Success', `Medical history ${this.mode}ed successfully`, 'success');
+        Swal.fire(
+          'Success',
+          `Medical history ${this.mode}ed successfully`,
+          'success',
+        );
         this.loading = false;
         this.dialogRef.close(true);
       },
