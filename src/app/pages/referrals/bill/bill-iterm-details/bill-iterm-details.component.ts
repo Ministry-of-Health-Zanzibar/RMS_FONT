@@ -101,7 +101,7 @@ export class BillItermDetailsComponent implements OnInit, AfterViewInit {
         if (response?.data) {
           this.dataSource.data = response.data;
         } else {
-          console.log('No data found');
+          // console.log('No data found');
           this.dataSource.data = [];
         }
       },

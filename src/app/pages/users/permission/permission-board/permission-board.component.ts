@@ -69,10 +69,10 @@ export class PermissionBoardComponent implements OnInit,OnDestroy {
         this.dataSource.sort = this.sort;
       }
       else{
-        console.log('permission response errors')
+        // console.log('permission response errors')
       }
     },(error)=>{
-      console.log('permision getAway api fail to load')
+      // console.log('permision getAway api fail to load')
     })
   }
 

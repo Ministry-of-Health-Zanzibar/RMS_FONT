@@ -93,7 +93,7 @@ export class AddhospitalComponent {
     this.hospitalForm = new FormGroup({
       hospital_name: new FormControl(null, [
         Validators.required,
-        Validators.pattern(GlobalConstants.nameRegexOnly),
+        
       ]),
       hospital_address: new FormControl(null, Validators.required),
       hospital_email: new FormControl(null, Validators.required),

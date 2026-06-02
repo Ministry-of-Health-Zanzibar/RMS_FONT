@@ -82,7 +82,7 @@ export class AddmultiplepatientComponent implements OnInit, OnDestroy {
  loadPatients() {
   this.patientService.getAllPartientforReferral().subscribe({
     next: (res) => {
-      console.log("Patients loaded:", res);
+      // console.log("Patients loaded:", res);
 
       // If API returns data inside res.data
       this.patients = res.data;

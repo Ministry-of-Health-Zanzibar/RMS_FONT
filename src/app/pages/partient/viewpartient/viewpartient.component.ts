@@ -111,12 +111,12 @@ export class ViewpartientComponent {
             this.dataSource.paginator = this.paginator;
             this.dataSource.sort = this.sort;
           } else {
-            console.log('permission response errors');
+            // console.log('permission response errors');
           }
         },
         (error) => {
           this.loading = false;
-          console.log('permission getAway api fail to load');
+          // console.log('permission getAway api fail to load');
         }
       );
   }

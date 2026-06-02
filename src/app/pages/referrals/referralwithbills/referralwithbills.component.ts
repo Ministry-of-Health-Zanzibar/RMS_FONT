@@ -142,7 +142,7 @@ export class ReferralwithbillsComponent implements OnInit, OnDestroy {
   }
 
   getPayment(id: any) {
-    console.log('hiiii bill', id);
+    // console.log('hiiii bill', id);
     let config = new MatDialogConfig();
     config.disableClose = false;
     config.role = 'dialog';

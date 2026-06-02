@@ -154,7 +154,7 @@ export class AdddocumentsComponent {
   onSourceChange(selectedSourceName: string): void {
     this.sourceServices.getSourceTypesBySourceName(selectedSourceName)
       .subscribe((response) => {
-        console.log("data ",response.data)
+        // console.log("data ",response.data)
         if (response.data) {
           this.sourceTypes = response.data;
         } else {
@@ -256,7 +256,7 @@ export class AdddocumentsComponent {
     const file = (event.target as HTMLInputElement).files?.[0];
     if (file) {
       // Handle the file (e.g., store it, upload it, etc.)
-      console.log(file.name);
+      // console.log(file.name);
     }
   }
 

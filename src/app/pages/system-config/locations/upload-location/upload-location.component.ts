@@ -39,7 +39,7 @@ export class UploadLocationComponent {
   uploadFile(): void {
     if (this.selectedFile) {
       // Handle file upload logic here
-      console.log('Uploading file:', this.selectedFile.name);
+      // console.log('Uploading file:', this.selectedFile.name);
       // Example: using FormData to upload the file to a backend server
       const formData = new FormData();
       formData.append('upload_excel', this.selectedFile);
@@ -54,7 +54,7 @@ export class UploadLocationComponent {
             } else if (event instanceof HttpResponse) {
               this.uploading = false;
               this.uploadProgress = 0;
-              console.log('Upload complete:', event.body);
+              // console.log('Upload complete:', event.body);
               this.onClose();
               Swal.fire({
                 title: "Success",

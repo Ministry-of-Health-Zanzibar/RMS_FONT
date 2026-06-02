@@ -32,7 +32,7 @@ export class ViewpatientfromhospitalbyidComponent implements OnInit {
     private route: ActivatedRoute,
     private patientService: PartientService,
     private dialog: MatDialog,
-     private conversationService: ConversationService,
+    private conversationService: ConversationService,
 
     private http: HttpClient
   ) {}
@@ -40,7 +40,7 @@ export class ViewpatientfromhospitalbyidComponent implements OnInit {
   ngOnInit(): void {
   this.route.paramMap.subscribe((params) => {
   const id = params.get('id');
-  console.log('Route ID:', id);
+  // console.log('Route ID:', id);
   if (id) {
     this.fetchPatientHistory(+id);
   }
@@ -202,7 +202,7 @@ forwardToRequestedStatus(data: any) {
         timer: 2000
       });
 
-      console.log("Forwarded successfully", res);
+      // console.log("Forwarded successfully", res);
 
       // ✅ ✅ REFRESH HERE (CORRECT PLACE)
       this.reloadData();

@@ -23,7 +23,7 @@ import Swal from 'sweetalert2';
   selector: 'app-view-diagnosis',
   standalone: true,
   imports: [
-     CommonModule,
+    CommonModule,
     MatTableModule,
     MatPaginatorModule,
     MatDivider,
@@ -41,7 +41,7 @@ import Swal from 'sweetalert2';
 })
 export class ViewDiagnosisComponent {
 
- private readonly onDestroy = new Subject<void>()
+  private readonly onDestroy = new Subject<void>()
 
   displayedColumns: string[] = ['id','code','name','action'];
   dataSource: MatTableDataSource<any> = new MatTableDataSource();
@@ -73,11 +73,11 @@ export class ViewDiagnosisComponent {
         this.dataSource.sort = this.sort;
       }if(response.statusCode==401){
         this.route.navigateByUrl("/")
-        console.log(response.message)
+        // console.log(response.message)
       }
     },(error)=>{
       this.route.navigateByUrl("/")
-      console.log('country getAway api fail to load')
+      // console.log('country getAway api fail to load')
     })
   }
 
@@ -130,7 +130,7 @@ export class ViewDiagnosisComponent {
     });
   }
 
- confirmBlock(data:any){
+  confirmBlock(data:any){
     var message;
     if(data.deleted_at){
       message = 'Are you sure you want to unblock'
@@ -202,7 +202,4 @@ export class ViewDiagnosisComponent {
       });
     }
   }
-
-
 }
-

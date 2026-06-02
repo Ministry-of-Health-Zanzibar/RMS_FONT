@@ -78,7 +78,7 @@ export class PatientDetailsComponent implements OnInit {
     config.maxHeight = '98vh';
     config.panelClass = 'full-screen-modal';
 
-    console.log('Element sent to dialog   0:', patient);
+    // console.log('Element sent to dialog   0:', patient);
 
     config.data = patient;
 
@@ -86,7 +86,7 @@ export class PatientDetailsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result && result.success) {
-        console.log('✅ New medical history saved:', result.data);
+        // console.log('✅ New medical history saved:', result.data);
 
         Swal.fire({
           title: 'Medical History Added',
@@ -95,7 +95,7 @@ export class PatientDetailsComponent implements OnInit {
           confirmButtonColor: '#4690eb',
         });
       } else {
-        console.log('Dialog closed without saving.');
+        // console.log('Dialog closed without saving.');
       }
     });
   }

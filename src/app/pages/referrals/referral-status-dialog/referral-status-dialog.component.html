@@ -1,7 +1,6 @@
 <div class="w-full max-w-4xl mx-auto">
-  <div
-    class="relative h-full rounded-2xl group p-8 bg-white shadow-2xl border border-gray-300"
-  >
+  <div class="relative h-full rounded-2xl group p-8 bg-white shadow-2xl border border-gray-300">
+
     <h2 class="font-semibold text-lg mb-4">CONFIRM STATUS FORM</h2>
 
     <form [formGroup]="statusForm">
@@ -9,8 +8,23 @@
       <mat-form-field appearance="outline" class="w-full">
         <mat-label>Status</mat-label>
         <mat-select formControlName="status">
-          <mat-option value="Confirmed">Confirmed</mat-option>
-          <mat-option value="Cancelled">Cancelled</mat-option>
+          <!-- ================= ONLY REFERRAL ================= -->
+          <ng-container *ngIf="hasRealReferral && !hasBoardedOut">
+            <mat-option value="Confirmed"> Confirmed</mat-option>
+            <mat-option value="Cancelled"> Rejected</mat-option>
+            <mat-option value="Confirmed and BoardedOut"> Confirmed and Boarded Out</mat-option>
+          </ng-container>
+
+          <!-- ================= ONLY BOARDED OUT ================= -->
+          <ng-container *ngIf="!hasRealReferral && hasBoardedOut">
+            <mat-option value="BoardedOut"> Boarded Out
+            </mat-option>
+          </ng-container>
+
+          <!-- ================= PURE HISTORY / PENDING ================= -->
+          <ng-container *ngIf="!hasRealReferral && !hasBoardedOut">
+            <mat-option value="BoardedOut"> Boarded Out</mat-option>
+          </ng-container>
         </mat-select>
         <mat-error
           *ngIf="
@@ -54,14 +68,6 @@
               {{ hospital.hospital_name }}
             </mat-option>
           </mat-select>
-          <!-- <mat-error
-            *ngIf="
-              statusForm.controls['hospital_id'].touched &&
-              statusForm.controls['hospital_id'].invalid
-            "
-          >
-            Hospital is required
-          </mat-error> -->
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="w-full">
@@ -83,51 +89,213 @@
           </mat-error>
         </mat-form-field>
 
-      <!-- Start Date -->
-<mat-form-field appearance="outline" class="w-full">
-  <mat-label>Start Date</mat-label>
-  <input
-    matInput
-    formControlName="start_date"
-    [matDatepicker]="picker1"
-    placeholder="Choose start date"
-  />
-  <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-  <mat-datepicker #picker1></mat-datepicker>
+        <!-- Start Date -->
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Start Date</mat-label>
+          <input
+            matInput
+            formControlName="start_date"
+            [matDatepicker]="picker1"
+            placeholder="Choose start date"
+          />
+          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+          <mat-datepicker #picker1></mat-datepicker>
+        </mat-form-field>
 
-  <!-- <mat-error
-    *ngIf="
-      statusForm.controls['start_date'].touched &&
-      statusForm.controls['start_date'].invalid
-    "
-  >
-    Start Date is required
-  </mat-error> -->
-</mat-form-field>
+        <!-- End Date -->
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>End Date</mat-label>
+          <input
+            matInput
+            formControlName="end_date"
+            [matDatepicker]="picker2"
+            [matDatepickerFilter]="endDateFilter"
+            placeholder="Choose end date"
+          />
+          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-datepicker #picker2></mat-datepicker>
+        </mat-form-field>
+      </ng-container>
 
-<!-- End Date -->
-<mat-form-field appearance="outline" class="w-full">
-  <mat-label>End Date</mat-label>
-  <input
-    matInput
-    formControlName="end_date"
-    [matDatepicker]="picker2"
-    [matDatepickerFilter]="endDateFilter"
-    placeholder="Choose end date"
-  />
-  <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-  <mat-datepicker #picker2></mat-datepicker>
+      <ng-container *ngIf="statusForm.get('status')?.value === 'BoardedOut'">
+        <!-- Receiver -->
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Letter Receiver</mat-label>
+          <input
+            matInput
+            formControlName="receiver"
+            placeholder="e.g. Managing Director, ZHIC"
+          />
+        </mat-form-field>
+      
+        <!-- Reference -->
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Reference Number</mat-label>
+          <input
+            matInput
+            formControlName="reference_number"
+            placeholder="e.g. AB.221/300/01/61"
+          />
+        </mat-form-field>
+      
+        <!-- Reference Date -->
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Reference Date</mat-label>
+          <input
+            matInput
+            formControlName="reference_date"
+            [matDatepicker]="picker3"
+          />
+          <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+          <mat-datepicker #picker3></mat-datepicker>
+        </mat-form-field>
+      
+        <!-- Recommendations -->
+        <div class="w-full">
+          <label class="font-semibold mb-2 block">Recommendations</label>
+      
+          <div *ngFor="let rec of recommendations.controls; let i = index" class="flex gap-2 mb-2">
+            <input
+              matInput
+              [formControl]="rec"
+              placeholder="Enter recommendation"
+              class="w-full border p-2 rounded"
+            />
+      
+            <button mat-icon-button color="warn" (click)="removeRecommendation(i)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+      
+          <button mat-button color="primary" (click)="addRecommendation()">
+            + Add Recommendation
+          </button>
+        </div>
+      
+      </ng-container>
 
-  <!-- <mat-error
-    *ngIf="
-      statusForm.controls['end_date'].touched &&
-      statusForm.controls['end_date'].invalid
-    "
-  >
-    End Date is required
-  </mat-error> -->
-</mat-form-field>
+      <ng-container *ngIf="statusForm.get('status')?.value === 'Confirmed and BoardedOut'">
 
+        <div>
+          <h3 class="font-semibold text-lg mb-4">REFERRAL INFORMATION</h3>
+
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Select Hospital</mat-label>
+            <mat-select formControlName="hospital_id">
+              <mat-option
+                *ngFor="let hospital of hospitals"
+                [value]="hospital.hospital_id"
+              >
+                {{ hospital.hospital_name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+  
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Description</mat-label>
+            <textarea
+              formControlName="letter_text"
+              matInput
+              rows="5"
+              class="text-black"
+              placeholder="Enter confirmation letter text"
+            ></textarea>
+            <mat-error
+              *ngIf="
+                statusForm.controls['letter_text'].touched &&
+                statusForm.controls['letter_text'].invalid
+              "
+            >
+              This field is mandatory
+            </mat-error>
+          </mat-form-field>
+  
+          <!-- Start Date -->
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Start Date</mat-label>
+            <input
+              matInput
+              formControlName="start_date"
+              [matDatepicker]="picker1"
+              placeholder="Choose start date"
+            />
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+          </mat-form-field>
+  
+          <!-- End Date -->
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>End Date</mat-label>
+            <input
+              matInput
+              formControlName="end_date"
+              [matDatepicker]="picker2"
+              [matDatepickerFilter]="endDateFilter"
+              placeholder="Choose end date"
+            />
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+          </mat-form-field>
+        </div>
+
+        <div>
+          <h3 class="font-semibold text-lg mb-4">BOARDED OUT INFORMATION</h3>
+
+          <!-- Receiver -->
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Letter Receiver</mat-label>
+            <input
+              matInput
+              formControlName="receiver"
+              placeholder="e.g. Managing Director, ZHIC,P.O.Box 123, ZANZIBAR"
+            />
+          </mat-form-field>
+        
+          <!-- Reference -->
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Reference Number</mat-label>
+            <input
+              matInput
+              formControlName="reference_number"
+              placeholder="e.g. AB.221/300/01/61"
+            />
+          </mat-form-field>
+        
+          <!-- Reference Date -->
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Reference Date</mat-label>
+            <input
+              matInput
+              formControlName="reference_date"
+              [matDatepicker]="picker3"
+            />
+            <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+            <mat-datepicker #picker3></mat-datepicker>
+          </mat-form-field>
+        
+          <!-- Recommendations -->
+          <div class="w-full">
+            <label class="font-semibold mb-2 block">Recommendations</label>
+        
+            <div *ngFor="let rec of recommendations.controls; let i = index" class="flex gap-2 mb-2">
+              <input
+                matInput
+                [formControl]="rec"
+                placeholder="Enter recommendation"
+                class="w-full border p-2 rounded"
+              />
+        
+              <button mat-icon-button color="warn" (click)="removeRecommendation(i)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+        
+            <button mat-button color="primary" (click)="addRecommendation()">
+              + Add Recommendation
+            </button>
+          </div>
+        </div>
+      
       </ng-container>
 
       <div class="flex justify-end gap-6 pt-4">
@@ -141,6 +309,8 @@
           SEND CONFIRMATION
         </button>
       </div>
+
     </form>
+
   </div>
 </div>

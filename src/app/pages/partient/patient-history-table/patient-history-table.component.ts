@@ -95,7 +95,7 @@ export class PatientHistoryTableComponent implements OnInit {
   }
 
  openAddMedicalHistory(patient: any) {
-  console.log('Opening medical history dialog for:', patient);
+  // console.log('Opening medical history dialog for:', patient);
 
   const config = new MatDialogConfig();
   config.disableClose = false;
@@ -108,7 +108,7 @@ export class PatientHistoryTableComponent implements OnInit {
   const dialogRef = this.dialog.open(AddmedicalhistoryComponent, config);
 
   dialogRef.afterClosed().subscribe((result) => {
-    console.log('Dialog closed:', result);
+    // console.log('Dialog closed:', result);
 
     if (result?.success) {
       Swal.fire({

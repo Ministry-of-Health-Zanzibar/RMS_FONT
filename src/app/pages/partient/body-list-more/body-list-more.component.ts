@@ -202,13 +202,13 @@ export class BodyListMoreComponent implements OnInit, AfterViewInit {
     next: (response: any) => {
       this.loading = false;
 
-      console.log("FULL RESPONSE:", response); // ⬅️ see everything
+      // console.log("FULL RESPONSE:", response); // ⬅️ see everything
 
       if (response && response.data) {
         const bodyData = response.data;
 
         // store status code
-        console.log("Status code:", response.statusCode);
+        // console.log("Status code:", response.statusCode);
 
         this.bodyList = [bodyData];
         this.bodyListDataSource.data = this.bodyList;

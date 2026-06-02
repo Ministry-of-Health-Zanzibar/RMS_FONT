@@ -179,17 +179,9 @@ export class BillpaymentComponent implements OnInit, OnDestroy {
     window.open(url, '_blank');
   }
 
-  // addPayment(id: number) {
-  //   const config = new MatDialogConfig();
-  //   config.data = { id };
-  //   config.width = '950px';
-  //   config.height = '1000px';
-  //   this.dialog.open(ReferralpaymentComponent, config).afterClosed().subscribe(() => this.loadBillPayments());
-  // }
-
   addPayment(bill: any) {
     const config = new MatDialogConfig();
-    console.log('Element sent to dialog:', bill);
+    // console.log('Element sent to dialog:', bill);
     config.data = bill;
     config.width = '950px';
     config.height = '1000px';

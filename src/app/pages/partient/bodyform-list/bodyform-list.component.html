@@ -2,7 +2,7 @@
   class="p-4 md:p-10 space-y-6 md:space-y-8"
   *ngIf="permission.parmissionMatched(['View Patient List'])"
 >
- <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+  <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
     <h1 class="text-lg font-bold">Medical Board Form</h1>
   </div>
   <div class="w-full">
@@ -44,7 +44,7 @@
         </div>
       </div>
 
-     <div class="border dark:border-inverse rounded-lg overflow-x-auto mt-4">
+      <div class="border dark:border-inverse rounded-lg overflow-x-auto mt-4">
 
         <table mat-table [dataSource]="dataSource" class="not-prose min-w-[900px] md:min-w-full">
 

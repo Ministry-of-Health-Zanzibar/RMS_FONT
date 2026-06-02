@@ -61,14 +61,14 @@ export class FinanceComponent implements OnInit {
   referral: any = {};
 
   pieColors: string[] = [
-    '#008FFB', // Blue
-    '#00E396', // Green
-    '#FEB019', // Orange
-    '#FF4560', // Red
-    '#775DD0', // Purple
-    '#3F51B5', // Indigo
-    '#00D9E9', // Cyan
-    '#FF66C4', // Pink
+  '#1E88E5', // Strong Blue
+  '#43A047', // Green
+  '#FB8C00', // Deep Orange
+  '#E53935', // Red
+  '#8E24AA', // Purple
+  '#3949AB', // Indigo (darker)
+  '#00897B', // Teal (instead of cyan)
+  '#F4511E'
   ];
 
   barChartOptions: ApexChartOptions = {
@@ -196,7 +196,7 @@ export class FinanceComponent implements OnInit {
   fetchReferralTrends(): void {
     this.reportService.getAnalyticalReferalTrend().subscribe(
       (response) => {
-        console.log('Raw response:', response);
+        // console.log('Raw response:', response);
 
         if (!response || !response.data) return;
 
@@ -212,8 +212,8 @@ export class FinanceComponent implements OnInit {
           }),
         }));
 
-        console.log('Processed Series:', series);
-        console.log('Categories:', categories);
+        // console.log('Processed Series:', series);
+        // console.log('Categories:', categories);
 
         this.lineChartOptions = {
           ...this.lineChartOptions,
@@ -246,7 +246,7 @@ export class FinanceComponent implements OnInit {
     this.reportService.getCount().subscribe(
       (response) => {
         this.referral = response;
-        console.log('Data fetched successfully:', this.referral);
+        // console.log('Data fetched successfully:', this.referral);
       },
       (error) => console.error('Error fetching data:', error),
     );
@@ -330,7 +330,7 @@ pieResponsive: ApexResponsive[] = [
         if (!data) return;
         const hospitalMap: { [key: string]: string } = {
           totalReferralsByLumumba:
-          'totalReferrals By Lumumba',
+          'Lumumba Regional Hospital',
           totalReferralsByMuhimbiliOrthopaedicInstitute:
             'Muhimbili Orthopaedic Institute',
           totalReferralsByJakayaKikweteCardiacInstitute:
@@ -342,18 +342,10 @@ pieResponsive: ApexResponsive[] = [
           totalReferralsByKilimanjaroChristianMedicalCentre:
             'Kilimanjaro Christian Medical Centre',
           totalReferralsByMadrasInstituteOfOrthopaedicsAndTraumatology:
-            'total Referrals By MIOT',
+            'MIOT International Hospital',
 
         };
-        // const hospitalMap: { [key: string]: string } = {
-        //   totalReferralsByLumumba: 'Lumumba',
-        //   totalReferralsByMuhimbiliOrthopaedicInstitute: 'MOI',
-        //   totalReferralsByJakayaKikweteCardiacInstitute: 'JKCI',
-        //   totalReferralsByMuhimbiliNationalHospital: 'MNH',
-        //   totalReferralsByOceanRoadCancerInstitute: 'ORCI',
-        //   totalReferralsByKilimanjaroChristianMedicalCentre: 'KCMC',
-        //   totalReferralsByMadrasInstituteOfOrthopaedicsAndTraumatology: 'MIOT',
-        // };
+       
         this.pieLabels = Object.keys(hospitalMap).map(
           (key) => hospitalMap[key],
         );

@@ -39,7 +39,7 @@ export class UploadDiagnosisComponent {
 
 uploadFile(): void {
   if (this.selectedFile) {
-    console.log('file:', this.selectedFile.name);
+    // console.log('file:', this.selectedFile.name);
 
     const formData = new FormData();
     formData.append('file', this.selectedFile);

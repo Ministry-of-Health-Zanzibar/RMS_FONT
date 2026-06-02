@@ -94,12 +94,12 @@ public documentUrl = environment.fileUrl;
             this.dataSource.paginator = this.paginator;
             this.dataSource.sort = this.sort;
           } else {
-            console.log('No patient data found');
+            // console.log('No patient data found');
           }
         },
         (error) => {
           this.loading = false;
-          console.log('Failed to load patient data', error);
+          // console.log('Failed to load patient data', error);
         }
       );
   }

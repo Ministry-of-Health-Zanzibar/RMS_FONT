@@ -84,7 +84,7 @@ formatAge(ageDetails: any): string {
   ) {}
 
   ngOnInit(): void {
-   console.log("Injected dialog data:", this.data);
+  //  console.log("Injected dialog data:", this.data);
    this.referral = this.data;
    }
 
@@ -93,7 +93,7 @@ formatAge(ageDetails: any): string {
   getReferralData(): void {
   this.referralsService.getReferralById(this.referralID!).subscribe(
     (response: any) => {
-      console.log('API response:', response);
+      // console.log('API response:', response);
 
       this.referral = response.data;
 
@@ -106,7 +106,7 @@ formatAge(ageDetails: any): string {
       const dob = this.referral?.patient?.date_of_birth;
       this.referral.patient.ageDetails = this.calculateAge(dob);
 
-      console.log('Referral hospital:', this.referral.hospital);
+      // console.log('Referral hospital:', this.referral.hospital);
     },
     error => {
       console.error('Failed to load referral data:', error);

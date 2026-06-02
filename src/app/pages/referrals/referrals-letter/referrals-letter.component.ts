@@ -61,22 +61,16 @@ formatAge(ageDetails: any): string {
   katibu= 'ps@mohz.go.tz'
 
   ngOnInit(): void {
-  console.log("Injected dialog data:", this.data);
-  this.referral = this.data;
-  }
-
-  getReferralData(): void {
-    this.referralsService.getReferralById(this.referralID!).subscribe(
-      (response: any) => {
-        this.referral = response.data ? response.data : response;
-      },
-      error => {
-        console.error('Failed to load referral data:', error);
-        Swal.fire('Error', 'Unable to fetch referral data', 'error');
-      }
-    );
-  }
+    this.referral = this.data;
   
+    // ✅ Safety fallback
+    if (!this.referral) {
+      console.warn('No referral data passed');
+    }
+  
+    // ✅ Ensure boardedOut flag exists
+    this.referral.is_boarded_out = !!this.referral?.is_boarded_out;
+  }
 
   print(): void {
     const printContents = document.getElementById('print-section')?.innerHTML;

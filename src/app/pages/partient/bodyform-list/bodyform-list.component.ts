@@ -85,12 +85,12 @@ export class BodyformListComponent {
             this.dataSource.paginator = this.paginator;
             this.dataSource.sort = this.sort;
           } else {
-            console.log('permission response errors');
+            // console.log('permission response errors');
           }
         },
         (error) => {
           this.loading = false;
-          console.log('permission getAway api fail to load');
+          // console.log('permission getAway api fail to load');
         }
       );
   }
@@ -141,81 +141,6 @@ export class BodyformListComponent {
       this.userPetient();
     });
   }
-
-  // confirmBlock(data: any) {
-  //   var message;
-  //   if (data.deleted_at) {
-  //     message = 'Are you sure you want to unblock';
-  //   } else {
-  //     message = 'Are you sure you want to block';
-  //   }
-  //   Swal.fire({
-  //     title: 'Confirm',
-  //     html: message + ' <b> ' + data.name + ' </b> ',
-  //     icon: 'warning',
-  //     confirmButtonColor: '#4690eb',
-  //     confirmButtonText: 'Confirm',
-  //     cancelButtonColor: '#D5D8DC',
-  //     cancelButtonText: 'Cancel',
-  //     showCancelButton: true,
-  //   }).then((result) => {
-  //     if (result.isConfirmed) {
-  //       this.blockPatient(data, data.deleted_at);
-  //     } else {
-  //       this.userPetient();
-  //     }
-  //   });
-  // }
-
-  // blockPatient(data: any, deleted: any): void {
-  //   if (deleted) {
-  //     this.userService
-  //       .unblockPatient(data, data?.patient_list_id)
-  //       .subscribe((response) => {
-  //         if (response.statusCode == 200) {
-  //           Swal.fire({
-  //             title: 'Success',
-  //             text: response.message,
-  //             icon: 'success',
-  //             confirmButtonColor: '#4690eb',
-  //             confirmButtonText: 'Continue',
-  //           });
-  //           this.userPetient();
-  //         } else {
-  //           Swal.fire({
-  //             title: 'Error',
-  //             text: response.message,
-  //             icon: 'error',
-  //             confirmButtonColor: '#4690eb',
-  //             confirmButtonText: 'Continue',
-  //           });
-  //         }
-  //       });
-  //   } else {
-  //     this.userService
-  //       .deletePatient(data?.patient_list_id)
-  //       .subscribe((response) => {
-  //         if (response.statusCode == 200) {
-  //           Swal.fire({
-  //             title: 'Success',
-  //             text: response.message,
-  //             icon: 'success',
-  //             confirmButtonColor: '#4690eb',
-  //             confirmButtonText: 'Continue',
-  //           });
-  //           this.userPetient();
-  //         } else {
-  //           Swal.fire({
-  //             title: 'Error',
-  //             text: response.message,
-  //             icon: 'error',
-  //             confirmButtonColor: '#4690eb',
-  //             confirmButtonText: 'Continue',
-  //           });
-  //         }
-  //       });
-  //   }
-  // }
 
   // Call this from the template on toggle
   confirmBlock(patient: any) {
@@ -287,7 +212,7 @@ export class BodyformListComponent {
   }
 
   getPatient(id: any) {
-    console.log('hiiii', id);
+    // console.log('hiiii', id);
     let config = new MatDialogConfig();
     config.disableClose = false;
     config.role = 'dialog';

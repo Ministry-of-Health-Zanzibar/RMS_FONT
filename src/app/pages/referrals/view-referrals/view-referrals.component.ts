@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-// import { Router } from 'express';
 import { Subject, takeUntil } from 'rxjs';
 
 import { CommonModule } from '@angular/common';
@@ -36,17 +35,11 @@ import { DisplaycommentsComponent } from '../displaycomments/displaycomments.com
     CommonModule,
     MatTableModule,
     MatPaginatorModule,
-    MatDivider,
     MatIcon,
-    MatMiniFabButton,
-    MatIconButton,
     VDividerComponent,
     MatTooltip,
     MatSlideToggleModule,
     FormsModule,
-    MatAnchor,
-    MatButton,
-    RouterLink,
     EmrSegmentedModule,
   ],
   templateUrl: './view-referrals.component.html',
@@ -56,15 +49,15 @@ export class ViewReferralsComponent implements OnInit, OnDestroy {
   private readonly onDestroy = new Subject<void>();
   loading: boolean = false;
 
-displayedColumns: string[] = [
-  'id',
-  'patient_name',
-  'case_type',
-  'board_comments',
-  'diagnoses',
-  'status',
-  'action',
-];
+  displayedColumns: string[] = [
+    'id',
+    'patient_name',
+    'case_type',
+    'board_comments',
+    'diagnoses',
+    'status',
+    'action',
+  ];
   dataSource: MatTableDataSource<any> = new MatTableDataSource();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -88,90 +81,151 @@ displayedColumns: string[] = [
     this.getReferrals();
   }
 
-getReferrals() {
-  this.loading = true;
+  // getReferrals() {
+  //   this.loading = true;
 
-  this.referralService
-    .getAllRefferal()
-    .pipe(takeUntil(this.onDestroy))
-    .subscribe(
-      (response: any) => {
-        this.loading = false;
+  //   this.referralService
+  //     .getAllRefferal()
+  //     .pipe(takeUntil(this.onDestroy))
+  //     .subscribe(
+  //       (response: any) => {
+  //         this.loading = false;
 
-        let dataToShow: any[] = [];
+  //         let dataToShow: any[] = [];
 
-        if (response && Array.isArray(response.data)) {
-          dataToShow = [...response.data];
-        } else if (Array.isArray(response)) {
-          dataToShow = [...response];
-        } else {
-          console.warn('Unexpected response format:', response);
-          return;
+  //         if (response && Array.isArray(response.data)) {
+  //           dataToShow = [...response.data];
+  //         } else if (Array.isArray(response)) {
+  //           dataToShow = [...response];
+  //         } else {
+  //           console.warn('Unexpected response format:', response);
+  //           return;
+  //         }
+
+  //       dataToShow = dataToShow.map((item: any) => {
+  //   const histories = item.patient?.patient_histories || [];
+
+  //   const latestHistory = histories.length
+  //     ? histories.sort(
+  //         (a: any, b: any) =>
+  //           new Date(b.created_at).getTime() -
+  //           new Date(a.created_at).getTime()
+  //       )[0]
+  //     : null;
+
+  //       const diagnosesArray = item.diagnoses?.map((d: any) => d.diagnosis_name) || [];
+
+  //       return {
+  //         ...item,
+  //         case_type: latestHistory?.case_type || 'N/A',
+  //         board_comments: latestHistory?.board_comments || 'N/A',
+
+  //         // ✅ keep both formats
+  //         diagnosesArray,
+  //         diagnoses: diagnosesArray.join(', ') || 'N/A',
+  //       };
+  //     });
+
+  //         this.dataSource = new MatTableDataSource(dataToShow);
+  //         this.dataSource.paginator = this.paginator;
+
+  //         // ✅ SEARCH (still works)
+  //         this.dataSource.filterPredicate = (data: any, filter: string) => {
+  //           const patientName = data.patient?.name?.toLowerCase() || '';
+  //           return patientName.includes(filter);
+  //         };
+  //       },
+  //       (error) => {
+  //         this.loading = false;
+  //         console.error('Failed to load referrals.', error);
+  //         this.router.navigateByUrl('/');
+  //       }
+  //     );
+  // }
+
+  getReferrals() {
+    this.loading = true;
+  
+    this.referralService
+      .getAllRefferal()
+      .pipe(takeUntil(this.onDestroy))
+      .subscribe(
+        (response: any) => {
+          this.loading = false;
+  
+          let dataToShow: any[] = [];
+  
+          if (response && Array.isArray(response.data)) {
+            dataToShow = [...response.data];
+          } else if (Array.isArray(response)) {
+            dataToShow = [...response];
+          } else {
+            console.warn('Unexpected response format:', response);
+            return;
+          }
+  
+          dataToShow = dataToShow.map((item: any) => {
+  
+            // ✅ FIX: use API history object (NOT patient_histories array)
+            const history = item.history;
+  
+            // diagnoses mapping (keep as-is)
+            const diagnosesArray =
+              item.diagnoses?.map((d: any) => d.diagnosis_name) || [];
+  
+            return {
+              ...item,
+  
+              // ✅ FIXED FIELDS
+              case_type: history?.case_type || 'N/A',
+              board_comments: history?.board_comments || 'N/A',
+  
+              // keep both formats (unchanged behavior)
+              diagnosesArray,
+              diagnoses: diagnosesArray.join(', ') || 'N/A',
+            };
+          });
+  
+          this.dataSource = new MatTableDataSource(dataToShow);
+          this.dataSource.paginator = this.paginator;
+  
+          // search logic unchanged
+          this.dataSource.filterPredicate = (data: any, filter: string) => {
+            const patientName = data.patient?.name?.toLowerCase() || '';
+            return patientName.includes(filter);
+          };
+        },
+        (error) => {
+          this.loading = false;
+          console.error('Failed to load referrals.', error);
+          this.router.navigateByUrl('/');
         }
-
-       dataToShow = dataToShow.map((item: any) => {
-  const histories = item.patient?.patient_histories || [];
-
-  const latestHistory = histories.length
-    ? histories.sort(
-        (a: any, b: any) =>
-          new Date(b.created_at).getTime() -
-          new Date(a.created_at).getTime()
-      )[0]
-    : null;
-
-      const diagnosesArray = item.diagnoses?.map((d: any) => d.diagnosis_name) || [];
-
-      return {
-        ...item,
-        case_type: latestHistory?.case_type || 'N/A',
-        board_comments: latestHistory?.board_comments || 'N/A',
-
-        // ✅ keep both formats
-        diagnosesArray,
-        diagnoses: diagnosesArray.join(', ') || 'N/A',
-      };
-    });
-
-        this.dataSource = new MatTableDataSource(dataToShow);
-        this.dataSource.paginator = this.paginator;
-
-        // ✅ SEARCH (still works)
-        this.dataSource.filterPredicate = (data: any, filter: string) => {
-          const patientName = data.patient?.name?.toLowerCase() || '';
-          return patientName.includes(filter);
-        };
-      },
-      (error) => {
-        this.loading = false;
-        console.error('Failed to load referrals.', error);
-        this.router.navigateByUrl('/');
-      }
-    );
-}
-applyFilter(event: Event) {
-  const filterValue = (event.target as HTMLInputElement).value;
-
-  this.dataSource.filter = filterValue.trim().toLowerCase();
-
-  if (this.dataSource.paginator) {
-    this.dataSource.paginator.firstPage();
+      );
   }
-}
 
-limitWords(text: string, wordLimit: number = 8): string {
-  if (!text) return 'N/A';
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
 
-  const words = text.split(' ');
-  return words.length > wordLimit
-    ? words.slice(0, wordLimit).join(' ') + '...'
-    : text;
-}
+    this.dataSource.filter = filterValue.trim().toLowerCase();
 
-getDiagnoses(diagnoses: any[]): string {
-  if (!diagnoses || !diagnoses.length) return 'N/A';
-  return diagnoses.map(d => d.diagnosis_name).join(', ');
-}
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+
+  limitWords(text: string, wordLimit: number = 8): string {
+    if (!text) return 'N/A';
+
+    const words = text.split(' ');
+    return words.length > wordLimit
+      ? words.slice(0, wordLimit).join(' ') + '...'
+      : text;
+  }
+
+  getDiagnoses(diagnoses: any[]): string {
+    if (!diagnoses || !diagnoses.length) return 'N/A';
+    return diagnoses.map(d => d.diagnosis_name).join(', ');
+  }
 
   addReferrals() {
     let config = new MatDialogConfig();
@@ -299,7 +353,6 @@ getDiagnoses(diagnoses: any[]): string {
   }
 
   getBills(id: any) {
-    //  console.log("hiiii",id);
     let config = new MatDialogConfig();
     config.disableClose = false;
     config.role = 'dialog';
@@ -308,33 +361,98 @@ getDiagnoses(diagnoses: any[]): string {
     config.width = '850px';
     config.panelClass = 'full-screen-modal';
     config.data = { id: id };
-
     const dialogRef = this.dialog.open(BillComponent, config);
-
     dialogRef.afterClosed().subscribe((result) => {
       this.getReferrals();
     });
   }
 
+  // displayMoreData(data: any) {
+  //   // ✅ Recommendation-only / BO records
+  //   if (data.is_recommendation_only || data.is_boarded_out) {
+  //     this.router.navigate([
+  //       '/pages/config/referrals/more',data.history_id
+  //     ]);
+  //     return;
+  //   }
+  
+  //   // ✅ Normal referrals
+  //   const id = data.referrals?.[0]?.referral_id;
+  
+  //   if (!id) {
+  //     console.warn('Missing referral_id (non-BO case)', data);
+  //     return;
+  //   }
+  
+  //   this.router.navigate(['/pages/config/referrals/more', id]);
+  // }
   displayMoreData(data: any) {
-  const id = data.referrals[0]?.referral_id; // safe access
-  this.router.navigate(['/pages/config/referrals/more', id]);
-}
 
-displayReport(element: any) {
-  const id =element.referrals[0]?.referral_id;
-  console.log('Referral ID:', id);
-  this.router.navigate(['/pages/config/referrals/individual-report',id ]);
-}
+    // ✅ Recommendation-only / BoardedOut
+    if (data.is_recommendation_only || data.is_boarded_out) {
+  
+      this.router.navigate(
+        ['/pages/config/referrals/more', data.history_id],
+        {
+          queryParams: {
+            type: 'history'
+          }
+        }
+      );
+  
+      return;
+    }
+  
+    // ✅ Normal referrals
+    const id = data.referrals?.[0]?.referral_id;
+  
+    if (!id) {
+      console.warn('Missing referral_id (non-BO case)', data);
+      return;
+    }
+  
+    this.router.navigate(
+      ['/pages/config/referrals/more', id],
+      {
+        queryParams: {
+          type: 'referral'
+        }
+      }
+    );
+  }
 
+  displayReport(element: any) {
+    if (element.is_recommendation_only) {
+      Swal.fire(
+        'Not Available',
+        'No report available for recommendation-only cases.',
+        'info'
+      );
+      return;
+    }
+  
+    const id = element.referrals?.[0]?.referral_id;
+    if (!id) return;
+  
+    this.router.navigate(['/pages/config/referrals/individual-report', id]);
+  }
 
+  viewfollowup(data: any) {
+    if (data.is_recommendation_only) {
+      Swal.fire(
+        'Not Available',
+        'This case is a recommendation only. No follow-up exists.',
+        'info'
+      );
+      return;
+    }
+  
+    const id = data.referrals?.[0]?.referral_id;
+    if (!id) return;
+  
+    this.router.navigate(['/pages/config/referrals/view-follow-up', id]);
+  }
 
-   viewfollowup(data: any) {
-  const id = data.referrals[0]?.referral_id;
-  this.router.navigate(['/pages/config/referrals/view-follow-up', id]);
-}
-
-  // USER ROLES
   public getUserRole(): any {
     return localStorage.getItem('roles');
   }
@@ -343,7 +461,7 @@ displayReport(element: any) {
     return this.getUserRole() === 'ROLE STAFF';
   }
 
-   public get isAdmin(): boolean {
+  public get isAdmin(): boolean {
     return this.getUserRole() === 'ROLE ADMIN';
   }
 
@@ -351,29 +469,27 @@ displayReport(element: any) {
     const dialogRef = this.dialog.open(ReferralsLetterComponent, {
       maxWidth: '100vw',
       maxHeight: '100vh',
-      data: data, // pass referral data to the dialog
+      data: data,
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed');
     });
   }
 
-
   editReferral(data: any) {
-      let config = new MatDialogConfig()
-      config.disableClose = false
-      config.role = 'dialog'
-      config.maxWidth ='100vw'
-      config.maxHeight = '100vh'
-      config.height = '600px'
-      config.width = '850px'
-      config.panelClass = 'full-screen-modal'
-      config.data = {data: data}
+    let config = new MatDialogConfig()
+    config.disableClose = false
+    config.role = 'dialog'
+    config.maxWidth ='100vw'
+    config.maxHeight = '100vh'
+    config.height = '600px'
+    config.width = '850px'
+    config.panelClass = 'full-screen-modal'
+    config.data = {data: data}
 
-      const dialogRef = this.dialog.open(AddReferralsComponent, config);
-      dialogRef.afterClosed().subscribe(result => {
-        this.getReferrals();
-      });
-    }
+    const dialogRef = this.dialog.open(AddReferralsComponent, config);
+    dialogRef.afterClosed().subscribe(result => {
+      this.getReferrals();
+    });
+  }
 }

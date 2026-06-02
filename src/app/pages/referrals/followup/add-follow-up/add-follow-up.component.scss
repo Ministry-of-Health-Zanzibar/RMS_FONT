@@ -3,6 +3,10 @@
   flex-wrap: wrap;
 }
 
+.readonly-select {
+  pointer-events: none;
+}
+
 .form-row {
   display: flex;
   width: 100%;

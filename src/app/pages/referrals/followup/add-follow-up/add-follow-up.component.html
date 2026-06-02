@@ -34,32 +34,19 @@
             </mat-error>
           </mat-form-field>
 
-          <!-- <mat-form-field class="form-field">
-            <mat-label>Outcom</mat-label>
+          <mat-form-field
+            class="form-field"
+            [class.readonly-select]="!!data?.outcome"
+          >
+            <mat-label>Outcome</mat-label>
+
             <mat-select formControlName="outcome">
               <mat-option value="Follow-up">Follow-up</mat-option>
               <mat-option value="Finished">Finished</mat-option>
               <mat-option value="Transferred">Transferred</mat-option>
               <mat-option value="Death">Death</mat-option>
             </mat-select>
-            <mat-error
-              *ngIf="
-                patientForm.get('outcome')?.invalid &&
-                patientForm.get('outcome')?.touched
-              "
-            >
-              This field is mandatory
-            </mat-error>
-          </mat-form-field> -->
 
-          <mat-form-field class="form-field">
-            <mat-label>Outcome</mat-label>
-            <mat-select formControlName="outcome" [disabled]="!!data?.outcome">
-              <mat-option value="Follow-up">Follow-up</mat-option>
-              <mat-option value="Finished">Finished</mat-option>
-              <mat-option value="Transferred">Transferred</mat-option>
-              <mat-option value="Death">Death</mat-option>
-            </mat-select>
             <mat-error
               *ngIf="
                 patientForm.get('outcome')?.invalid &&
@@ -163,7 +150,6 @@
     <button mat-button mat-dialog-close>Cancel</button>
     <button
       mat-flat-button
-      [mat-dialog-close]="true"
       cdkFocusInitial
       [disabled]="patientForm.invalid"
       (click)="saveClient()"

@@ -109,7 +109,7 @@ export class RangereportComponent implements OnInit, OnDestroy {
     this.reportService.generateDateReport(start_date, end_date).subscribe({
       next: (response) => {
         this.documents = response.data;
-        console.log("data hzii",this.documents);
+        // console.log("data hzii",this.documents);
         this.dataSource.data = this.documents; // Fix: Assign data to dataSource
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort; // Fix: Enable sorting

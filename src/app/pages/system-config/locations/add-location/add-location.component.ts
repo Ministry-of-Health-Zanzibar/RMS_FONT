@@ -84,7 +84,7 @@ export class AddLocationComponent implements OnInit,OnDestroy {
             } else if (event instanceof HttpResponse) {
               this.uploading = false;
               this.uploadProgress = 0;
-              console.log('Upload complete:', event.body);
+              // console.log('Upload complete:', event.body);
               // Handle successful response here
             }
           },

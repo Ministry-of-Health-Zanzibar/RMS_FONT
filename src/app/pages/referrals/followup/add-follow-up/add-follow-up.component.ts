@@ -74,19 +74,6 @@ export class AddFollowUpComponent {
     private dialogRef: MatDialogRef<AddFollowUpComponent>
   ) {}
 
-  // ngOnInit(): void {
-  //   this.configForm();
-
-  //   if (this.data && this.data.referral_id) {
-  //     this.id = this.data.referral_id;
-  //     console.log("Referral ID here:", this.id);
-
-  //     if (this.patientForm) {
-  //       this.patientForm.patchValue({ referral_id: this.id });
-  //     }
-  //   }
-  //   this.getHospital();
-  // }
   ngOnInit(): void {
     this.configForm();
 
@@ -132,6 +119,12 @@ export class AddFollowUpComponent {
     });
   }
 
+  getSelectedHospitalName(): string {
+    const id = this.patientForm.get('hospital_id')?.value;
+    const found = this.hospital?.find((h: any) => h.hospital_id === id);
+    return found?.hospital_name || '';
+  }
+
   onAttachmentSelected(event: any): void {
     const file = event.target.files?.[0] ?? null;
     if (file) {
@@ -164,7 +157,7 @@ export class AddFollowUpComponent {
       formData.set('referral_id', String(this.id));
 
       this.followServices.addFollowform(formData).subscribe((response) => {
-        if (response.statusCode === 201) {
+        if (response.statusCode === 200) {
           Swal.fire({
             title: 'Success',
             text: response.message,

@@ -73,7 +73,7 @@ export class AddMonthbillComponent  {
            this.configForm();
            if (this.data?.data) {
       this.patientData = this.data.data;
-      console.log("hiziii ",this.patientData)
+      // console.log("hiziii ",this.patientData)
       this.referralsForm.patchValue(this.patientData);
     }
 
@@ -162,7 +162,7 @@ saveReferrals() {
          getHospital() {
            this.hostpitalService.getAllHospitalByRefferal().subscribe(response => {
              this.hospital = response.data;
-             console.log("data ",this.hospital)
+            //  console.log("data ",this.hospital)
            });
          }
 

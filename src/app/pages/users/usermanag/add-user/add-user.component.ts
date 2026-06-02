@@ -133,7 +133,7 @@ export class AddUserComponent {
   getRoles() {
     this.roleService.getAllRoles().subscribe(response => {
       this.roles = response.data;
-      console.log("role",this.roles)
+      // console.log("role",this.roles)
     });
   }
 
