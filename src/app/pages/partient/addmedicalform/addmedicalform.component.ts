@@ -96,12 +96,7 @@ export class AddmedicalformComponent implements OnInit, OnDestroy {
       ],
       board_comments: ['', Validators.required],
       board_reason_id: ['', Validators.required],
-<<<<<<< HEAD
       board_diagnosis_ids: [[], Validators.required], 
-=======
-      board_diagnosis_ids: [[], Validators.required], // This is the control used for validation
-      create_referral_record: [true],
->>>>>>> 670bc67aa65c339af6fe17b658a0b24764c78845
     });
   }
 
@@ -144,7 +139,6 @@ export class AddmedicalformComponent implements OnInit, OnDestroy {
   }
 
   loadDiagnoses() {
-<<<<<<< HEAD
     this.diagnosisService
       .getAllDiagnosis()
       .pipe(takeUntil(this.onDestroy$))
@@ -153,8 +147,6 @@ export class AddmedicalformComponent implements OnInit, OnDestroy {
         this.filteredDiagnoses = [...this.diagnosesList];
       });
 
-=======
->>>>>>> 670bc67aa65c339af6fe17b658a0b24764c78845
     this.diagnosisSearchCtrl.valueChanges
       .pipe(
         debounceTime(300),
@@ -169,23 +161,10 @@ export class AddmedicalformComponent implements OnInit, OnDestroy {
           this.filteredDiagnoses = [];
           return;
         }
-<<<<<<< HEAD
         const lowerSearch = search.toLowerCase();
         this.filteredDiagnoses = this.diagnosesList.filter((diag) =>
           diag.diagnosis_name.toLowerCase().includes(lowerSearch),
         );
-=======
-  
-        this.diagnosisService.searchDiagnosis(query).subscribe({
-          next: (res) => {
-            this.filteredDiagnoses = res.data || [];
-          },
-          error: () => {
-            this.filteredDiagnoses = [];
-          }
-        });
-  
->>>>>>> 670bc67aa65c339af6fe17b658a0b24764c78845
       });
   }
   
@@ -196,7 +175,6 @@ export class AddmedicalformComponent implements OnInit, OnDestroy {
   
     if (!exists) {
       this.selectedDiagnoses.push(diagnosis);
-<<<<<<< HEAD
 
       // Sync IDs to the form control
       const ids = this.selectedDiagnoses.map((d) => d.diagnosis_id);
@@ -204,15 +182,6 @@ export class AddmedicalformComponent implements OnInit, OnDestroy {
 
       // Mark as dirty to trigger validation update
       this.medicalForm.get('board_diagnosis_ids')?.markAsDirty();
-=======
-  
-      const ids = this.selectedDiagnoses.map(d => d.diagnosis_id);
-  
-      const control = this.medicalForm.get('board_diagnosis_ids');
-      control?.setValue(ids);
-      control?.markAsDirty();
-      control?.updateValueAndValidity();
->>>>>>> 670bc67aa65c339af6fe17b658a0b24764c78845
     }
   
     // ✅ 1. clear input text
@@ -243,13 +212,9 @@ export class AddmedicalformComponent implements OnInit, OnDestroy {
     this.medicalForm.get('board_diagnosis_ids')?.setValue(ids);
 
     if (ids.length === 0) {
-<<<<<<< HEAD
       this.medicalForm
         .get('board_diagnosis_ids')
         ?.setErrors({ required: true });
-=======
-      this.medicalForm.get('board_diagnosis_ids')?.setErrors({ required: true });
->>>>>>> 670bc67aa65c339af6fe17b658a0b24764c78845
     }
   }
 
@@ -282,12 +247,6 @@ export class AddmedicalformComponent implements OnInit, OnDestroy {
 
     formData.append('board_comments', formValue.board_comments);
     formData.append('board_reason_id', formValue.board_reason_id);
-<<<<<<< HEAD
-
-=======
-    formData.append('create_referral_record',formValue.create_referral_record ? '1' : '0');
-    
->>>>>>> 670bc67aa65c339af6fe17b658a0b24764c78845
     // Append diagnosis IDs correctly for PHP/Spring/Node backend arrays
     formValue.board_diagnosis_ids.forEach((id: any) => {
       formData.append('board_diagnosis_ids[]', id);
