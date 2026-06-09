@@ -15,6 +15,14 @@ const routes: Routes = [
       ),
   },
   {
+    path:'viewbillbyhospital/:id',
+    loadComponent: () =>
+      import('./bill/viewbillbyhospital/viewbillbyhospital.component').then(
+        (c)=> c.ViewbillbyhospitalComponent
+      )
+
+  },
+  {
     path: 'bill',
     loadComponent: () =>
       import('./referralwithbills/referralwithbills.component').then(

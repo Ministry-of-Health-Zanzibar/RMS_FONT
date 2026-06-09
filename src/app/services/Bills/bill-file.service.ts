@@ -8,6 +8,11 @@ import { environment } from '../../../environments/environment.prod';
 })
 export class BillFileService {
   private baseUrl: string = `${environment.baseUrl}bill-files`;
+
+  private monthbillUrl: string = `${environment.baseUrl}bill-files/summary-by-hospital`;
+  private hospitalbyid: string = `${environment.baseUrl}bill-files/hospital`;
+
+
   private baseUrls: string = `${environment.baseUrl}hospitals/reffered-hospitals`;
   private baseUrlss: string = `${environment.baseUrl}bills-by-bill-file`;
   private baseUrlForPayment: string = `${environment.baseUrl}bill-files/bill-files-for-payment/payment`;
@@ -28,12 +33,20 @@ export class BillFileService {
     return this.http.get<any>(this.baseUrl);
   }
 
+  public viewMonthBills(): Observable<any> {
+    return this.http.get<any>(this.monthbillUrl);
+  }
   public getAllBillFilesForPayment(): Observable<any> {
     return this.http.get<any>(this.baseUrlForPayment);
   }
 
   public getAllBillFilesForPaymentById(hospitalId: number): Observable<any> {
     const url = `${this.baseUrlForPayments}/${hospitalId}`;
+    return this.http.get<any>(url);
+  }
+
+   public getBillsByHospitalId(hospitalId: number): Observable<any> {
+    const url = `${this.hospitalbyid}/${hospitalId}`;
     return this.http.get<any>(url);
   }
 

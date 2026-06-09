@@ -1,0 +1,255 @@
+<div
+  class="p-10 space-y-8"
+  *ngIf="permission.parmissionMatched(['View BillFile'])"
+>
+  <div class="flex items-center justify-between">
+    <h1 class="text-lg font-bold">
+      Bills By Hospital
+    </h1>
+  </div>
+
+  <div class="relative h-full rounded-lg border group dark:border-inverse p-4">
+
+  <div class="mb-6">
+  <div
+    class="flex items-center gap-2 pb-3 border-b-2 border-b-secondary-400"
+  >
+    <mat-icon color="primary">local_hospital</mat-icon>
+    <span class="font-semibold text-lg">Hospital Information</span>
+  </div>
+
+  <div
+    *ngIf="hospitalData"
+    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4"
+  >
+    <!-- Hospital Name -->
+    <div class="p-4 rounded-lg border bg-surface shadow-sm">
+      <div class="flex items-center gap-3">
+        <mat-icon color="primary">local_hospital</mat-icon>
+        <div>
+          <p class="text-xs text-neutral-500">Hospital Name</p>
+          <p class="font-semibold">
+            {{ hospitalData.hospital_name }}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hospital Code -->
+    <div class="p-4 rounded-lg border bg-surface shadow-sm">
+      <div class="flex items-center gap-3">
+        <mat-icon color="accent">badge</mat-icon>
+        <div>
+          <p class="text-xs text-neutral-500">Hospital Code</p>
+          <p class="font-semibold">
+            {{ hospitalData.hospital_code }}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Email -->
+    <div class="p-4 rounded-lg border bg-surface shadow-sm">
+      <div class="flex items-center gap-3">
+        <mat-icon color="primary">email</mat-icon>
+        <div>
+          <p class="text-xs text-neutral-500">Email Address</p>
+          <p class="font-semibold">
+            {{ hospitalData.hospital_email }}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact -->
+    <div class="p-4 rounded-lg border bg-surface shadow-sm">
+      <div class="flex items-center gap-3">
+        <mat-icon color="primary">phone</mat-icon>
+        <div>
+          <p class="text-xs text-neutral-500">Contact Number</p>
+          <p class="font-semibold">
+            {{ hospitalData.contact_number }}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Address -->
+    <div
+      class="p-4 rounded-lg border bg-surface shadow-sm md:col-span-2"
+    >
+      <div class="flex items-center gap-3">
+        <mat-icon color="warn">location_on</mat-icon>
+        <div>
+          <p class="text-xs text-neutral-500">Hospital Address</p>
+          <p class="font-semibold">
+            {{ hospitalData.hospital_address }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bill Files Header -->
+<div
+  class="flex items-center justify-between pb-3 border-b-2 border-b-secondary-400"
+>
+  <div class="flex items-center gap-2">
+    <mat-icon color="primary">receipt_long</mat-icon>
+    <span class="font-semibold text-lg">Bill Files</span>
+  </div>
+
+  <div class="relative">
+    <mat-icon class="absolute left-3 top-2.5 text-neutral-400">
+      search
+    </mat-icon>
+
+    <input
+      type="text"
+      placeholder="Search bill files..."
+      class="pl-10 border rounded-lg h-10 w-80 text-sm bg-transparent outline-none"
+      matInput
+      (keyup)="applyFilter($event)"
+    />
+  </div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6 mb-6">
+
+  <!-- Total Bills -->
+  <div class="rounded-lg border p-4 bg-surface shadow-sm">
+    <div class="flex items-center gap-3">
+      <mat-icon class="text-primary">receipt_long</mat-icon>
+      <div>
+        <p class="text-sm text-neutral-500">Total Bills</p>
+        <p class="text-2xl font-bold">
+          {{ dataSource.data.length }}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Total Amount -->
+  <div class="rounded-lg border p-4 bg-surface shadow-sm md:col-span-2">
+    <div class="flex items-center gap-3">
+      <mat-icon class="text-green-600">payments</mat-icon>
+      <div>
+        <p class="text-sm text-neutral-500">Total Bill Amount</p>
+        <p class="text-2xl font-bold">
+          {{ totalBillAmount | currency:'TZS ':'symbol':'1.0-0' }}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hospital -->
+  <!-- <div
+    class="rounded-lg border p-4 bg-surface shadow-sm"
+    *ngIf="hospitalData"
+  >
+    <div class="flex items-center gap-3">
+      <mat-icon class="text-blue-600">local_hospital</mat-icon>
+      <div>
+        <p class="text-sm text-neutral-500">Hospital</p>
+        <p class="font-bold">
+          {{ hospitalData.hospital_name }}
+        </p>
+      </div>
+    </div>
+  </div> -->
+
+</div>
+
+    <div class="border dark:border-inverse rounded-lg overflow-hidden mt-4">
+
+      <table mat-table [dataSource]="dataSource">
+
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef>No.</th>
+          <td mat-cell *matCellDef="let row; let i = index">
+            {{ i + 1 }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="pdf">
+          <th mat-header-cell *matHeaderCellDef>View PDF</th>
+          <td mat-cell *matCellDef="let row">
+            <a
+              *ngIf="row.bill_file"
+              (click)="viewPDF(row)"
+              class="inline-flex items-center gap-1 text-indigo-600 hover:text-indigo-800 cursor-pointer"
+            >
+              <mat-icon>picture_as_pdf</mat-icon>
+              View PDF
+            </a>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="amount">
+          <th mat-header-cell *matHeaderCellDef>Amount</th>
+          <td mat-cell *matCellDef="let row">
+            {{ row.bill_file_amount | currency:'TZS ' }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="details">
+          <th mat-header-cell *matHeaderCellDef>Bill Period</th>
+          <td mat-cell *matCellDef="let row">
+            <div>
+              <strong>Start:</strong>
+              {{ row.bill_start | date:'dd/MM/yyyy' }}
+            </div>
+
+            <div>
+              <strong>End:</strong>
+              {{ row.bill_end | date:'dd/MM/yyyy' }}
+            </div>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="actions">
+  <th
+    mat-header-cell
+    *matHeaderCellDef
+    class="text-neutral-500 dark:text-neutral-400"
+  >
+    Action
+  </th>
+
+  <td mat-cell *matCellDef="let element">
+    <div class="flex items-center gap-2">
+
+      <span
+        class="size-9 rounded-full border bg-surface flex items-center justify-center cursor-pointer"
+        (click)="displayMoreData(element)"
+        matTooltip="View"
+      >
+        <mat-icon>visibility</mat-icon>
+      </span>
+
+      <span
+        class="size-9 rounded-full border bg-surface flex items-center justify-center cursor-pointer"
+        (click)="updateBill(element)"
+        matTooltip="Edit"
+      >
+        <mat-icon>edit_square</mat-icon>
+      </span>
+
+    </div>
+  </td>
+</ng-container>
+
+
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+      </table>
+
+      <mat-paginator
+        [pageSizeOptions]="[10,20,50]"
+        showFirstLastButtons>
+      </mat-paginator>
+
+    </div>
+  </div>
+</div>

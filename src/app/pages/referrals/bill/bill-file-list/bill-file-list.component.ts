@@ -64,9 +64,7 @@ export class BillFileListComponent {
   displayedColumns: string[] = [
     'id',
     'hospital_name',
-    'pdf',
     'amount',
-    'details',
     'action',
   ];
   dataSource: MatTableDataSource<any> = new MatTableDataSource();
@@ -91,7 +89,7 @@ export class BillFileListComponent {
   loadBills() {
     this.loading = true;
     this.billService
-      .getAllBillFiles()
+      .viewMonthBills()
       .pipe(takeUntil(this.onDestroy))
       .subscribe(
         (response: any) => {
@@ -135,7 +133,6 @@ export class BillFileListComponent {
     config.height = '600px';
     config.width = '850px';
     config.panelClass = 'full-screen-modal';
-
     const dialogRef = this.dialog.open(BillFileFormComponent, config);
     dialogRef.afterClosed().subscribe((result) => {
       this.loadBills();
@@ -171,8 +168,9 @@ export class BillFileListComponent {
   }
 
   displayMoreData(data: any) {
-    const id = data.bill_file_id;
-    this.router.navigate(['/pages/config/referrals/more-bill-file', id]);
+    const id = data.hospital_id;
+    console.log("tunaipata id hapa",id)
+    this.router.navigate(['/pages/config/referrals/viewbillbyhospital', id]);
   }
 
   updateBill(data: any) {
