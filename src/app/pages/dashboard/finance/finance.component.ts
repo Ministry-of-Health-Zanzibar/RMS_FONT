@@ -1,5 +1,3 @@
-
-
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
@@ -11,37 +9,6 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { StatisticalService } from '../../../services/report/statistical.service';
 import { GraphreportService } from './../../../services/accountants/graphreport.service';
-
-import {
-  ApexAxisChartSeries,
-  ApexChart,
-  ApexDataLabels,
-  ApexPlotOptions,
-  ApexXAxis,
-  ApexYAxis,
-  ApexLegend,
-  ApexFill,
-  ApexTooltip,
-  ApexTitleSubtitle,
-  ApexResponsive,
-  ApexMarkers,
-} from 'ng-apexcharts';
-
-export type ApexChartOptions = {
-  series: ApexAxisChartSeries;
-  chart: ApexChart;
-  dataLabels: ApexDataLabels;
-  plotOptions: ApexPlotOptions;
-  xaxis: ApexXAxis;
-  yaxis: ApexYAxis;
-  fill: ApexFill;
-  tooltip: ApexTooltip;
-  legend: ApexLegend;
-  title: ApexTitleSubtitle;
-  stroke?: any;
-  markers?: ApexMarkers;
-  colors: string[];
-};
 
 @Component({
   standalone: true,
@@ -59,7 +26,14 @@ export type ApexChartOptions = {
   styleUrls: ['./finance.component.scss'],
 })
 export class FinanceComponent implements OnInit {
+
   referral: any = {};
+
+  // =====================
+  // POPUP STATE (OTHERS)
+  // =====================
+  showOthersModal = false;
+  othersData: any[] = [];
 
   constructor(
     private dashboardService: StatisticalService,
@@ -75,22 +49,42 @@ export class FinanceComponent implements OnInit {
   }
 
   // =========================
-  // REFERRAL TREND (12 MONTH FIXED)
+  // OPEN OTHERS POPUP
+  // =========================
+  openOthersDiagnoses(): void {
+    this.reportService.getOtherDiagnosesList().subscribe(
+      (res:any) => {
+        this.othersData = res?.data || [];
+        this.showOthersModal = true;
+      },
+      (err) => console.error(err)
+    );
+  }
+
+  closeModal(): void {
+    this.showOthersModal = false;
+  }
+
+  // =========================
+  // REFERRAL TREND (NO OTHERS HERE)
   // =========================
   fetchReferralTrends(): void {
     this.reportService.getAnalyticalReferalTrend().subscribe(
       (response) => {
+
         if (!response?.data) return;
 
         const categories: string[] = response.dates || [];
         const dataObj = response.data;
 
-        const series = Object.keys(dataObj).map((key) => ({
+        const series = Object.keys(dataObj).map((key, index) => ({
           name: key,
           data: categories.map((month: string) => {
             const entry = dataObj[key].find((i: any) => i.date === month);
             return entry ? entry.total : 0;
           }),
+          // ensure unique color per series
+          color: this.getUniqueColor(index)
         }));
 
         this.lineChartOptions = {
@@ -106,6 +100,18 @@ export class FinanceComponent implements OnInit {
     );
   }
 
+  // =========================
+  // UNIQUE COLORS (NO REPEAT)
+  // =========================
+  private colors: string[] = [
+    '#00E396', '#FEB019', '#FF4560', '#775DD0', '#008FFB',
+    '#00B8D9', '#FF6D00', '#2E7D32', '#D500F9', '#FF1744'
+  ];
+
+  private getUniqueColor(index: number): string {
+    return this.colors[index % this.colors.length];
+  }
+
   private formatMonth(month: string): string {
     const [year, m] = month.split('-');
 
@@ -118,18 +124,19 @@ export class FinanceComponent implements OnInit {
   }
 
   // =========================
-  // OTHER FUNCTIONS (UNCHANGED LOGIC)
+  // DATA
   // =========================
   fetchData(): void {
     this.reportService.getCount().subscribe(
-      (response) => this.referral = response,
-      (error) => console.error(error),
+      (res) => this.referral = res,
+      (err) => console.error(err),
     );
   }
 
   fetchReferralByMonth(): void {
     this.reportService.getMonthRefferalByGender().subscribe(
       (response) => {
+
         const chartData = response?.data || [];
 
         const monthNames = [
@@ -153,13 +160,12 @@ export class FinanceComponent implements OnInit {
             categories: labels,
           },
         };
-      },
-      (error) => console.error(error),
+      }
     );
   }
 
   // =========================
-  // PIE / SUMMARY (UNCHANGED)
+  // PIE CHARTS
   // =========================
   pieSeries: any[] = [];
   pieLabels: string[] = [];
@@ -167,7 +173,6 @@ export class FinanceComponent implements OnInit {
   getReferralSummary(): void {
     this.reportService.getReportreferralByHospital().subscribe(
       (data) => {
-        if (!data) return;
 
         const hospitalMap: any = {
           totalReferralsByLumumba: 'Lumumba Regional Hospital',
@@ -195,69 +200,19 @@ export class FinanceComponent implements OnInit {
   }
 
   // =========================
-  // CHART OPTIONS (UNCHANGED STRUCTURE)
+  // CHART OPTIONS
   // =========================
   lineChartOptions: any = {
     series: [],
-    chart: { type: 'line', height: 400, zoom: { enabled: true } },
+    chart: {
+      type: 'line',
+      height: 400,
+      zoom: { enabled: true }
+    },
     xaxis: { categories: [] },
     stroke: { curve: 'smooth', width: 3 },
-    colors: ['#00E396', '#FEB019', '#FF4560'],
-    tooltip: {
-      shared: true,
-      intersect: false,
-      custom: ({ series, seriesIndex, dataPointIndex, w }: any) => {
-    
-        const category = w.globals.labels[dataPointIndex];
-    
-        let html = `<div style="
-          padding:10px;
-          background:white;
-          border:1px solid #ddd;
-          border-radius:8px;
-          font-size:13px;
-        ">`;
-    
-        html += `<strong>${category}</strong><br/><br/>`;
-    
-        w.config.series.forEach((s: any, i: number) => {
-          const value = series[i][dataPointIndex];
-    
-          html += `
-            <div style="margin-bottom:4px;">
-              <span style="color:${w.globals.colors[i]};">●</span>
-              ${s.name}: <b>${value}</b>
-            </div>
-          `;
-        });
-    
-        // 🔥 SPECIAL HANDLING FOR "Others"
-        const othersSeries = w.config.series.find((s: any) => s.name === 'Others');
-    
-        if (othersSeries) {
-          const othersIndex = w.config.series.findIndex((s: any) => s.name === 'Others');
-          const othersValue = series[othersIndex][dataPointIndex];
-    
-          const breakdown = w.config.series[othersIndex]?.breakdown?.[dataPointIndex];
-    
-          if (breakdown?.length) {
-            html += `<hr style="margin:8px 0"/>`;
-            html += `<strong>Other Diagnoses</strong><br/>`;
-    
-            breakdown.forEach((b: any) => {
-              html += `
-                <div style="margin-left:10px;">
-                  - ${b.name}: <b>${b.count}</b>
-                </div>
-              `;
-            });
-          }
-        }
-    
-        html += `</div>`;
-        return html;
-      }
-    }
+    colors: this.colors,
+    tooltip: { shared: true, intersect: false }
   };
 
   barChartOptions: any = {

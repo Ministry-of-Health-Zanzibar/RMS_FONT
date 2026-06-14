@@ -59,4 +59,8 @@ export class GraphreportService {
   public getCount(): Observable<any> {
     return this.http.get<any>(this.href);
   }
+
+  getOtherDiagnosesList(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/other-diagnoses-list`);
+  }
 }
