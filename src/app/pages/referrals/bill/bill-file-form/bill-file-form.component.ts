@@ -52,9 +52,11 @@ export class BillFileFormComponent {
   selectedAttachment: File | null = null;
   billData: any;
 
+
+
   hospitals: any[] = [];
-  filteredHospitals: any[] = [];
-  hospitalSearch: string = '';
+filteredHospitals: any[] = [];
+hospitalSearch: string = '';
   referrals: any[] = [];
 
   constructor(
@@ -88,16 +90,17 @@ export class BillFileFormComponent {
     this.onDestroy.complete();
   }
 
-  fetchAllHospitals() {
-    this.billService.getAllHospital().subscribe(
-      (response) => {
-        this.hospitals = response.data;
-      },
-      (error) => {
-        console.error('Failed to fetch hospitals', error);
-      }
-    );
-  }
+ fetchAllHospitals() {
+  this.billService.getAllHospital().subscribe(
+    (response) => {
+      this.hospitals = response.data;
+      this.filteredHospitals = [...response.data];
+    },
+    (error) => {
+      console.error('Failed to fetch hospitals', error);
+    }
+  );
+}
 
   onClose() {
     this.dialogRef.close(false);
