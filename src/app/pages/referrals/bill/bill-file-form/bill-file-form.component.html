@@ -23,46 +23,56 @@
         class="horizontal-form"
         enctype="multipart/form-data"
       >
-        <!-- Hospital Dropdown -->
-        <div class="form-row">
-          <mat-form-field class="form-field w-full">
-            <mat-label>Select Hospital</mat-label>
-            <mat-select formControlName="hospital_id">
-              <!-- Search box inside dropdown -->
-              <mat-option>
-                <input
-                  matInput
-                  [(ngModel)]="hospitalSearch"
-                  placeholder="Search hospital..."
-                  (ngModelChange)="onHospitalSearchChange()"
-                  (click)="$event.stopPropagation()"
-                  (keydown)="$event.stopPropagation()"
-                />
-              </mat-option>
+      <!-- Create Mode -->
+<div class="form-row" *ngIf="!billData">
+  <mat-form-field class="form-field w-full">
+    <mat-label>Select Hospital</mat-label>
 
-              <!-- Filtered hospitals -->
-              <mat-option
-                *ngFor="let hospital of hospitals"
-                [value]="hospital.hospital_id"
-              >
-                {{ hospital.hospital_name }}
-              </mat-option>
+    <mat-select formControlName="hospital_id">
+      <mat-option>
+        <input
+          matInput
+          [(ngModel)]="hospitalSearch"
+          placeholder="Search hospital..."
+          (ngModelChange)="onHospitalSearchChange()"
+          (click)="$event.stopPropagation()"
+          (keydown)="$event.stopPropagation()"
+        />
+      </mat-option>
 
-              <!-- No hospitals found -->
-              <mat-option *ngIf="filteredHospitals.length === 0" disabled>
-                No hospitals found
-              </mat-option>
-            </mat-select>
-            <mat-error
-              *ngIf="
-                billForm.get('hospital_id')?.invalid &&
-                billForm.get('hospital_id')?.touched
-              "
-            >
-              Hospital is required
-            </mat-error>
-          </mat-form-field>
-        </div>
+      <mat-option
+        *ngFor="let hospital of filteredHospitals"
+        [value]="hospital.hospital_id"
+      >
+        {{ hospital.hospital_name }}
+      </mat-option>
+    </mat-select>
+
+    <mat-error
+      *ngIf="
+        billForm.get('hospital_id')?.invalid &&
+        billForm.get('hospital_id')?.touched
+      "
+    >
+      Hospital is required
+    </mat-error>
+  </mat-form-field>
+</div>
+
+<!-- Update Mode -->
+<div class="form-row" *ngIf="billData">
+  <mat-form-field class="form-field w-full">
+    <mat-label>Hospital</mat-label>
+
+    <input
+      matInput
+      [value]="billData.hospital?.hospital_name"
+      readonly
+    />
+
+    <mat-icon matSuffix>local_hospital</mat-icon>
+  </mat-form-field>
+</div>
 
         <!-- Bill Title -->
 

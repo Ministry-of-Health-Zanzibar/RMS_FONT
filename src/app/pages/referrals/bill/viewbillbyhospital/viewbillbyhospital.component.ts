@@ -55,7 +55,8 @@ export class ViewbillbyhospitalComponent implements OnInit, AfterViewInit {
     'id',
     'pdf',
     'amount',
-    'details',
+    'bill_start',
+    'bill_end',
     'actions'
   ];
 

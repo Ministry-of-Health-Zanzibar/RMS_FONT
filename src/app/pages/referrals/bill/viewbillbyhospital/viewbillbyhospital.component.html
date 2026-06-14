@@ -10,110 +10,49 @@
 
   <div class="relative h-full rounded-lg border group dark:border-inverse p-4">
 
-  <div class="mb-6">
-  <div
-    class="flex items-center gap-2 pb-3 border-b-2 border-b-secondary-400"
-  >
-    <mat-icon color="primary">local_hospital</mat-icon>
-    <span class="font-semibold text-lg">Hospital Information</span>
-  </div>
+ <div
+  *ngIf="hospitalData"
+  class="mb-4 p-4 border rounded-lg bg-surface shadow-sm"
+>
+  <div class="flex items-center justify-between flex-wrap gap-4">
 
-  <div
-    *ngIf="hospitalData"
-    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4"
-  >
-    <!-- Hospital Name -->
-    <div class="p-4 rounded-lg border bg-surface shadow-sm">
-      <div class="flex items-center gap-3">
-        <mat-icon color="primary">local_hospital</mat-icon>
-        <div>
-          <p class="text-xs text-neutral-500">Hospital Name</p>
-          <p class="font-semibold">
-            {{ hospitalData.hospital_name }}
-          </p>
+    <!-- Hospital -->
+    <div class="flex items-center gap-2">
+      <mat-icon color="primary">local_hospital</mat-icon>
+      <div>
+        <div class="font-semibold text-base">
+          {{ hospitalData.hospital_name }}
         </div>
-      </div>
-    </div>
-
-    <!-- Hospital Code -->
-    <div class="p-4 rounded-lg border bg-surface shadow-sm">
-      <div class="flex items-center gap-3">
-        <mat-icon color="accent">badge</mat-icon>
-        <div>
-          <p class="text-xs text-neutral-500">Hospital Code</p>
-          <p class="font-semibold">
-            {{ hospitalData.hospital_code }}
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Email -->
-    <div class="p-4 rounded-lg border bg-surface shadow-sm">
-      <div class="flex items-center gap-3">
-        <mat-icon color="primary">email</mat-icon>
-        <div>
-          <p class="text-xs text-neutral-500">Email Address</p>
-          <p class="font-semibold">
-            {{ hospitalData.hospital_email }}
-          </p>
+        <div class="text-xs text-neutral-500">
+          {{ hospitalData.hospital_code }}
         </div>
       </div>
     </div>
 
     <!-- Contact -->
-    <div class="p-4 rounded-lg border bg-surface shadow-sm">
-      <div class="flex items-center gap-3">
-        <mat-icon color="primary">phone</mat-icon>
-        <div>
-          <p class="text-xs text-neutral-500">Contact Number</p>
-          <p class="font-semibold">
-            {{ hospitalData.contact_number }}
-          </p>
-        </div>
-      </div>
+    <div class="flex items-center gap-2 text-sm">
+      <mat-icon class="text-neutral-500">phone</mat-icon>
+      <span>{{ hospitalData.contact_number }}</span>
+    </div>
+
+    <!-- Email -->
+    <div class="flex items-center gap-2 text-sm">
+      <mat-icon class="text-neutral-500">email</mat-icon>
+      <span>{{ hospitalData.hospital_email }}</span>
     </div>
 
     <!-- Address -->
-    <div
-      class="p-4 rounded-lg border bg-surface shadow-sm md:col-span-2"
-    >
-      <div class="flex items-center gap-3">
-        <mat-icon color="warn">location_on</mat-icon>
-        <div>
-          <p class="text-xs text-neutral-500">Hospital Address</p>
-          <p class="font-semibold">
-            {{ hospitalData.hospital_address }}
-          </p>
-        </div>
-      </div>
+    <div class="flex items-center gap-2 text-sm">
+      <mat-icon class="text-neutral-500">location_on</mat-icon>
+      <span>{{ hospitalData.hospital_address }}</span>
     </div>
+
+ 
+
   </div>
 </div>
 
-<!-- Bill Files Header -->
-<div
-  class="flex items-center justify-between pb-3 border-b-2 border-b-secondary-400"
->
-  <div class="flex items-center gap-2">
-    <mat-icon color="primary">receipt_long</mat-icon>
-    <span class="font-semibold text-lg">Bill Files</span>
-  </div>
 
-  <div class="relative">
-    <mat-icon class="absolute left-3 top-2.5 text-neutral-400">
-      search
-    </mat-icon>
-
-    <input
-      type="text"
-      placeholder="Search bill files..."
-      class="pl-10 border rounded-lg h-10 w-80 text-sm bg-transparent outline-none"
-      matInput
-      (keyup)="applyFilter($event)"
-    />
-  </div>
-</div>
 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6 mb-6">
 
   <!-- Total Bills -->
@@ -160,6 +99,30 @@
 
 </div>
 
+<!-- Bill Files Header -->
+<div
+  class="flex items-center justify-between pb-3 border-b-2 border-b-secondary-400"
+>
+  <div class="flex items-center gap-2">
+    <mat-icon color="primary">receipt_long</mat-icon>
+    <span class="font-semibold text-lg">Bill Files</span>
+  </div>
+
+  <div class="relative">
+    <mat-icon class="absolute left-3 top-2.5 text-neutral-400">
+      search
+    </mat-icon>
+
+    <input
+      type="text"
+      placeholder="Search bill files..."
+      class="pl-10 border rounded-lg h-10 w-80 text-sm bg-transparent outline-none"
+      matInput
+      (keyup)="applyFilter($event)"
+    />
+  </div>
+</div>
+
     <div class="border dark:border-inverse rounded-lg overflow-hidden mt-4">
 
       <table mat-table [dataSource]="dataSource">
@@ -192,16 +155,22 @@
           </td>
         </ng-container>
 
-        <ng-container matColumnDef="details">
-          <th mat-header-cell *matHeaderCellDef>Bill Period</th>
+        <ng-container matColumnDef="bill_start">
+          <th mat-header-cell *matHeaderCellDef>Start Date</th>
           <td mat-cell *matCellDef="let row">
             <div>
-              <strong>Start:</strong>
+             
               {{ row.bill_start | date:'dd/MM/yyyy' }}
             </div>
 
+          </td>
+        </ng-container>
+         <ng-container matColumnDef="bill_end">
+          <th mat-header-cell *matHeaderCellDef>End Date</th>
+          <td mat-cell *matCellDef="let row">
+        
             <div>
-              <strong>End:</strong>
+              
               {{ row.bill_end | date:'dd/MM/yyyy' }}
             </div>
           </td>
