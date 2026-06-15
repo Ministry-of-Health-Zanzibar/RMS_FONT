@@ -96,7 +96,9 @@ export class AddmedicalformComponent implements OnInit, OnDestroy {
       ],
       board_comments: ['', Validators.required],
       board_reason_id: ['', Validators.required],
-      board_diagnosis_ids: [[], Validators.required], 
+      board_diagnosis_ids: [[], Validators.required],
+    
+      create_referral_record: [true] // default value
     });
   }
 
@@ -255,6 +257,11 @@ export class AddmedicalformComponent implements OnInit, OnDestroy {
     if (this.selectedFile) {
       formData.append('patient_file', this.selectedFile);
     }
+
+    formData.append(
+      'create_referral_record',
+      formValue.create_referral_record ? '1' : '0'
+    );
 
     const patientHistoryId = this.data.patientHistoryId;
 
