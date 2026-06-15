@@ -8,6 +8,9 @@ export const environment = {
   baseUrl: 'http://localhost:8000/api/',
   fileUrl: 'http://localhost:8000/',
 
+  //   fileUrl: 'https://eris.mohz.go.tz/api/',
+  // baseUrl: 'https://eris.mohz.go.tz/api/',
+
   production: true,
 
   googleAnalyticsId: '',
