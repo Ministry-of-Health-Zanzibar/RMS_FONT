@@ -61,6 +61,6 @@ export class GraphreportService {
   }
 
   getOtherDiagnosesList(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/other-diagnoses-list`);
+    return this.http.get<any>(`${this.baseUrl}other-diagnoses-list`);
   }
 }
