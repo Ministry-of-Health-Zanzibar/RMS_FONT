@@ -30,13 +30,10 @@ export class PartientService {
     return this.http.get<any>(`${this.href_bodylist}?page=${page}&per_page=${perPage}`);
   }
   
-  public getAllBodyList(page: number, perPage: number = 10): Observable<any> {
-    return this.http.get<any>(`${this.href_bodylist}?page=${page}&per_page=${perPage}`);
-  }
-
-  // public getAllPartients(): Observable<any> {
-  //   return this.http.get<any>(`${this.href}?page=1&per_page=10`);
+  // public getAllBodyList(page: number, perPage: number = 10): Observable<any> {
+  //   return this.http.get<any>(`${this.href_bodylist}?page=${page}&per_page=${perPage}`);
   // }
+
 
   public addBodyList(formData: any): Observable<any> {
     return this.http.post(this.href_bodylist, formData);
