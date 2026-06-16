@@ -65,22 +65,50 @@ export class ViewDiagnosisComponent {
     this.getDiagnosis();
   }
 
-  getDiagnosis() {
-    this.diagnosisService.getAllDiagnosis().pipe(takeUntil(this.onDestroy)).subscribe((response: any)=>{
-      if(response.statusCode==200){
-        this.dataSource = new MatTableDataSource(response.data);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-      }if(response.statusCode==401){
-        this.route.navigateByUrl("/")
-        // console.log(response.message)
-      }
-    },(error)=>{
-      this.route.navigateByUrl("/")
-      // console.log('country getAway api fail to load')
-    })
-  }
+  // getDiagnosis() {
+  //   this.diagnosisService.getAllDiagnosis().pipe(takeUntil(this.onDestroy)).subscribe((response: any)=>{
+  //     if(response.statusCode==200){
+  //       this.dataSource = new MatTableDataSource(response.data);
+  //       this.dataSource.paginator = this.paginator;
+  //       this.dataSource.sort = this.sort;
+  //     }if(response.statusCode==401){
+  //       this.route.navigateByUrl("/")
+     
+  //     }
+  //   },(error)=>{
+  //     this.route.navigateByUrl("/")
+      
+  //   })
+  // }
 
+
+  getDiagnosis() {
+  this.diagnosisService
+    .getAllDiagnosis()
+    .pipe(takeUntil(this.onDestroy))
+    .subscribe(
+      (response: any) => {
+        console.log(response);
+
+        if (response.statusCode === 200) {
+          this.dataSource = new MatTableDataSource(
+            response.data.data
+          );
+
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        }
+
+        if (response.statusCode === 401) {
+          this.route.navigateByUrl('/');
+        }
+      },
+      (error) => {
+        console.error(error);
+        this.route.navigateByUrl('/');
+      }
+    );
+}
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
