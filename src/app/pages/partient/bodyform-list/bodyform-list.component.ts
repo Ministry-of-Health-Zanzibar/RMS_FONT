@@ -53,10 +53,18 @@ export class BodyformListComponent {
     private userService: PartientService,
     private dialog: MatDialog,
 
-    private router: Router
+    private router: Router,
   ) {}
 
-  displayedColumns: string[] = ['id', 'reference_number', 'board_type','no_of_patients', 'pdf', 'action', 'action2'];
+  displayedColumns: string[] = [
+    'id',
+    'reference_number',
+    'board_type',
+    'no_of_patients',
+    'pdf',
+    'action',
+    'action2',
+  ];
   dataSource: MatTableDataSource<any> = new MatTableDataSource();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -72,27 +80,51 @@ export class BodyformListComponent {
     this.userPetient();
   }
 
+  // userPetient() {
+  //   this.loading = true;
+  //   this.userService
+  //     .getAllBodyList()
+  //     .pipe(takeUntil(this.onDestroy))
+  //     .subscribe(
+  //       (response: any) => {
+  //         this.loading = false;
+  //         if (response.data) {
+  //           this.dataSource = new MatTableDataSource(response.data);
+  //           this.dataSource.paginator = this.paginator;
+  //           this.dataSource.sort = this.sort;
+  //         } else {
+
+  //         }
+  //       },
+  //       (error) => {
+  //         this.loading = false;
+
+  //       }
+  //     );
+  // }
+
   userPetient() {
     this.loading = true;
+
     this.userService
       .getAllBodyList()
       .pipe(takeUntil(this.onDestroy))
-      .subscribe(
-        (response: any) => {
+      .subscribe({
+        next: (response: any) => {
           this.loading = false;
-          if (response.data) {
-            this.dataSource = new MatTableDataSource(response.data);
+
+          if (response?.data?.data) {
+            this.dataSource = new MatTableDataSource(response.data.data);
+
             this.dataSource.paginator = this.paginator;
             this.dataSource.sort = this.sort;
-          } else {
-            // console.log('permission response errors');
           }
         },
-        (error) => {
+        error: (error) => {
           this.loading = false;
-          // console.log('permission getAway api fail to load');
-        }
-      );
+          console.error(error);
+        },
+      });
   }
 
   applyFilter(event: Event) {

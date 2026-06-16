@@ -13,7 +13,7 @@ export class PatienthistoryService {
   constructor(private http: HttpClient) {}
   //body list
   public getAllBodyList(): Observable<any> {
-    return this.http.get<any>(this.href);
+    return this.http.get<any>(`${this.href}?page=1&per_page=10`);
   }
 
   public addBodyList(formData: any): Observable<any> {

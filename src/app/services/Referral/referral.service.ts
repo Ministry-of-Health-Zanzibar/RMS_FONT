@@ -34,6 +34,10 @@ export class ReferralService {
     return this.http.get<any>(this.href);
   }
 
+  // public getAllPartients(): Observable<any> {
+  //   return this.http.get<any>(`${this.href}?page=1&per_page=10`);
+  // }
+
   // public getReferralById(id: any): Observable<any> {
   //   return this.http.get<any>(`${this.href}/${id}`);
   // }
