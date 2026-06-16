@@ -77,30 +77,6 @@ export class BillpaymentComponent implements OnInit, OnDestroy {
     }
   }
 
-  // public getAllPaymentByHospital(hospital_id: number) {
-  //   this.loading = true;
-  //   this.billFileService.getAllBillFilesForPaymentById(hospital_id).subscribe({
-  //     next: (response: any) => {
-  //       this.loading = false;
-  //       if (response?.data) {
-  //         this.hospital_id = response.data.hospital_id;
-  //         this.hospital_name = response.data.hospital_name;
-
-  //         this.dataSource.data = response.data.bill_files || [];
-
-  //         this.totals = response.data.totals || {};
-  //       } else {
-  //         this.dataSource.data = [];
-  //         this.totals = {};
-  //       }
-  //     },
-  //     error: (error) => {
-  //       this.loading = false;
-  //       console.error('Error fetching bill files:', error);
-  //       Swal.fire('Error', 'Failed to fetch bill files', 'error');
-  //     },
-  //   });
-  // }
 
   public getAllPaymentByHospital(hospital_id: number) {
     this.loading = true;
@@ -147,26 +123,6 @@ export class BillpaymentComponent implements OnInit, OnDestroy {
     this.onDestroy.complete();
   }
 
-  // loadBillPayments() {
-  //   this.loading = true;
-  //   this.billFileService
-  //     .getAllBillFilesForPayment()
-  //     .pipe(takeUntil(this.onDestroy))
-  //     .subscribe({
-  //       next: (res: any) => {
-  //         this.loading = false;
-  //         if (res.statusCode === 200) {
-  //           this.dataSource = new MatTableDataSource(res.data);
-  //           this.dataSource.paginator = this.paginator;
-  //           this.dataSource.sort = this.sort;
-  //         }
-  //       },
-  //       error: (err) => {
-  //         this.loading = false;
-  //         console.error(err);
-  //       },
-  //     });
-  // }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -179,16 +135,22 @@ export class BillpaymentComponent implements OnInit, OnDestroy {
     window.open(url, '_blank');
   }
 
-  addPayment(bill: any) {
-    const config = new MatDialogConfig();
-    // console.log('Element sent to dialog:', bill);
-    config.data = bill;
-    config.width = '950px';
-    config.height = '1000px';
+ addPayment(bill: any) {
+  const config = new MatDialogConfig();
 
-    this.dialog.open(ReferralpaymentComponent, config).afterClosed();
-    // .subscribe(() => this.getAllPaymentByHospital());
-  }
+  config.data = bill;
+  config.width = '950px';
+  config.height = '1000px';
+
+  this.dialog
+    .open(ReferralpaymentComponent, config)
+    .afterClosed()
+    .subscribe((result) => {
+      if (result) {
+        this.getAllPaymentByHospital(this.hospital_id!);
+      }
+    });
+}
 
   displayMoreData(element: any) {
     const id = element.bill_file_id;
