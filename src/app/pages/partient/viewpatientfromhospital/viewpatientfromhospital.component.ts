@@ -5,7 +5,11 @@ import { PartientService } from '../../../services/partient/partient.service';
 import { PermissionService } from '../../../services/authentication/permission.service';
 import { CommonModule } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import {
+  MatPaginator,
+  MatPaginatorModule,
+  PageEvent,
+} from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import {
   MatDialog,
@@ -45,6 +49,9 @@ export class ViewpatientfromhospitalComponent {
   public documentUrl = environment.fileUrl;
   private readonly onDestroy = new Subject<void>();
   loading: boolean = false;
+  totalItems = 0;
+  pageSize = 10;
+  currentPage = 1;
 
   displayedColumns: string[] = [
     'id',
@@ -103,11 +110,11 @@ export class ViewpatientfromhospitalComponent {
   //     );
   // }
 
-  loadPatients() {
+  loadPatients(page: number = 1, perPage: number = 10) {
     this.loading = true;
 
     this.patientHistory
-      .getAllBodyList()
+      .getBodyList(page, perPage)
       .pipe(takeUntil(this.onDestroy))
       .subscribe({
         next: (response: any) => {
@@ -118,14 +125,25 @@ export class ViewpatientfromhospitalComponent {
 
           this.dataSource = new MatTableDataSource(response?.data?.data || []);
 
-          this.dataSource.paginator = this.paginator;
-          this.dataSource.sort = this.sort;
+          // backend pagination information
+          this.totalItems = response.data.total;
+      
+
+          this.currentPage = response.data.current_page;
+          this.pageSize = response.data.per_page;
         },
         error: (error) => {
           console.error(error);
           this.loading = false;
         },
       });
+  }
+
+  pageChanged(event: PageEvent) {
+    const page = event.pageIndex + 1;
+    const perPage = event.pageSize;
+
+    this.loadPatients(page, perPage);
   }
 
   applyFilter(event: Event) {

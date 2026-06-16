@@ -12,6 +12,13 @@ export class PatienthistoryService {
 
   constructor(private http: HttpClient) {}
   //body list
+  
+ public getBodyList(page: number, perPage: number = 10): Observable<any> {
+    return this.http.get<any>(
+      `${this.href}?page=${page}&per_page=${perPage}`,
+    );
+  }
+
   public getAllBodyList(): Observable<any> {
     return this.http.get<any>(`${this.href}?page=1&per_page=10`);
   }
