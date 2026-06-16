@@ -24,8 +24,14 @@ export class PartientService {
 
   constructor(private http: HttpClient) {}
   //body list
-  public getAllBodyList(): Observable<any> {
-    return this.http.get<any>(`${this.href_bodylist}?page=1&per_page=10`);
+
+
+    public getBodyList(page: number, perPage: number = 10): Observable<any> {
+    return this.http.get<any>(`${this.href_bodylist}?page=${page}&per_page=${perPage}`);
+  }
+  
+  public getAllBodyList(page: number, perPage: number = 10): Observable<any> {
+    return this.http.get<any>(`${this.href_bodylist}?page=${page}&per_page=${perPage}`);
   }
 
   // public getAllPartients(): Observable<any> {
@@ -57,6 +63,10 @@ export class PartientService {
   }
 
   //end board list services
+
+  public getPartients(page: number, perPage: number): Observable<any> {
+    return this.http.get<any>(`${this.href}?page=${page}&per_page=${perPage}`);
+  }
 
   public getAllPartients(): Observable<any> {
     return this.http.get<any>(`${this.href}?page=1&per_page=10`);

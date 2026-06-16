@@ -192,12 +192,13 @@
           </tr>
         </table>
         <mat-paginator
-          [pageSizeOptions]="[10, 20]"
-          showFirstLastButtons
-          aria-label="Select page of permission"
-          class="pt-3"
-        >
-        </mat-paginator>
+        [length]="totalItems"
+        [pageSize]="pageSize"
+        [pageIndex]="currentPage - 1"
+        showFirstLastButtons
+        (page)="pageChanged($event)"
+      >
+      </mat-paginator>
       </div>
     </div>
   </div>

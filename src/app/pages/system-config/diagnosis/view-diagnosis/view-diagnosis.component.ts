@@ -18,6 +18,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { AddDiagnosisComponent } from '../add-diagnosis/add-diagnosis.component';
 import { UploadDiagnosisComponent } from '../upload-diagnosis/upload-diagnosis.component';
 import Swal from 'sweetalert2';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-view-diagnosis',
@@ -65,49 +66,60 @@ export class ViewDiagnosisComponent {
     this.getDiagnosis();
   }
 
-  // getDiagnosis() {
-  //   this.diagnosisService.getAllDiagnosis().pipe(takeUntil(this.onDestroy)).subscribe((response: any)=>{
-  //     if(response.statusCode==200){
-  //       this.dataSource = new MatTableDataSource(response.data);
-  //       this.dataSource.paginator = this.paginator;
-  //       this.dataSource.sort = this.sort;
-  //     }if(response.statusCode==401){
-  //       this.route.navigateByUrl("/")
-     
-  //     }
-  //   },(error)=>{
-  //     this.route.navigateByUrl("/")
-      
-  //   })
-  // }
 
 
-  getDiagnosis() {
+totalItems = 0;
+pageSize = 10;
+currentPage = 1;
+
+getDiagnosis(page: number = 1, perPage: number = 10) {
+
   this.diagnosisService
-    .getAllDiagnosis()
+    .getDiagnosises(page, perPage)
     .pipe(takeUntil(this.onDestroy))
     .subscribe(
       (response: any) => {
+
         console.log(response);
 
-        if (response.statusCode === 200) {
+        if(response.statusCode === 200){
+
           this.dataSource = new MatTableDataSource(
-            response.data.data
+             response.data.data
           );
 
-          this.dataSource.paginator = this.paginator;
+
+          // backend pagination information
+          this.totalItems = response.data.total;
+          this.currentPage = response.data.current_page;
+          this.pageSize = response.data.per_page;
+
+
           this.dataSource.sort = this.sort;
         }
 
-        if (response.statusCode === 401) {
+
+        if(response.statusCode === 401){
           this.route.navigateByUrl('/');
         }
+
       },
-      (error) => {
+      error => {
         console.error(error);
         this.route.navigateByUrl('/');
       }
     );
+}
+
+pageChanged(event: PageEvent){
+
+  const page = event.pageIndex + 1; 
+  const perPage = event.pageSize;
+  
+
+
+  this.getDiagnosis(page, perPage);
+
 }
 
   applyFilter(event: Event) {

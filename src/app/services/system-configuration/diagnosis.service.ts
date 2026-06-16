@@ -23,6 +23,12 @@ export class DiagnosisService {
     return this.http.get<any>(`${this.href}?page=1&per_page=10`);
   }
 
+  public getDiagnosises(page: number, perPage: number): Observable<any> {
+    return this.http.get<any>(
+      `${this.href}?page=${page}&per_page=${perPage}`
+    );
+}
+
   public addDiagnoses(diagnosis: any): Observable<any> {
     return this.http.post(this.href, diagnosis);
   }

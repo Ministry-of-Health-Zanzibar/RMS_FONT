@@ -9,7 +9,11 @@ import {
 } from '@angular/material/button';
 import { MatDivider } from '@angular/material/divider';
 import { MatIcon } from '@angular/material/icon';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import {
+  MatPaginator,
+  MatPaginatorModule,
+  PageEvent,
+} from '@angular/material/paginator';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltip } from '@angular/material/tooltip';
@@ -47,6 +51,9 @@ export class BodyformListComponent {
   public documentUrl = environment.fileUrl;
   private readonly onDestroy = new Subject<void>();
   loading: boolean = false;
+  totalItems = 0;
+  pageSize = 10;
+  currentPage = 1;
 
   constructor(
     public permission: PermissionService,
@@ -103,11 +110,11 @@ export class BodyformListComponent {
   //     );
   // }
 
-  userPetient() {
+  userPetient(page: number = 1, perPage: number = 10) {
     this.loading = true;
 
     this.userService
-      .getAllBodyList()
+      .getBodyList(page, perPage)
       .pipe(takeUntil(this.onDestroy))
       .subscribe({
         next: (response: any) => {
@@ -116,8 +123,9 @@ export class BodyformListComponent {
           if (response?.data?.data) {
             this.dataSource = new MatTableDataSource(response.data.data);
 
-            this.dataSource.paginator = this.paginator;
-            this.dataSource.sort = this.sort;
+            this.totalItems = response.data.total;
+            this.currentPage = response.data.current_page;
+            this.pageSize = response.data.per_page;
           }
         },
         error: (error) => {
@@ -125,6 +133,13 @@ export class BodyformListComponent {
           console.error(error);
         },
       });
+  }
+
+  pageChanged(event: PageEvent) {
+    const page = event.pageIndex + 1;
+    const perPage = event.pageSize;
+
+    this.userPetient(page, perPage);
   }
 
   applyFilter(event: Event) {

@@ -1,4 +1,3 @@
-
 import { Component, ViewChild } from '@angular/core';
 import { environment } from '../../../../environments/environment.prod';
 import { Subject, takeUntil } from 'rxjs';
@@ -6,7 +5,11 @@ import { PartientService } from '../../../services/partient/partient.service';
 import { PermissionService } from '../../../services/authentication/permission.service';
 import { CommonModule } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import {
+  MatPaginator,
+  MatPaginatorModule,
+  PageEvent,
+} from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import {
   MatDialog,
@@ -47,6 +50,10 @@ export class PatiantComponent {
   private readonly onDestroy = new Subject<void>();
   loading: boolean = false;
 
+  totalItems = 0;
+  pageSize = 10;
+  currentPage = 1;
+
   displayedColumns: string[] = [
     'id',
     'name',
@@ -70,7 +77,8 @@ export class PatiantComponent {
   ) {}
 
   ngOnInit(): void {
-    this.loadPatients();
+    // this.getPartients();
+    this.loadPartients();
   }
 
   ngOnDestroy(): void {
@@ -78,32 +86,46 @@ export class PatiantComponent {
   }
 
   renew() {
-    this.loadPatients();
+    this.loadPartients();
   }
 
-  loadPatients() {
+
+
+  loadPartients(page: number = 1, perPage: number = 10) {
     this.loading = true;
+
     this.userService
-      .getAllPartients()
+      .getPartients(page, perPage)
       .pipe(takeUntil(this.onDestroy))
       .subscribe(
         (response: any) => {
           this.loading = false;
+
+          console.log(response);
+
           if (response.data) {
             this.dataSource = new MatTableDataSource(response.data);
-            this.dataSource.paginator = this.paginator;
+
+            this.totalItems = response.pagination.total;
+            this.currentPage = response.pagination.current_page;
+            this.pageSize = response.pagination.per_page;
+
             this.dataSource.sort = this.sort;
-          } else {
-            // console.log('No patient data found');
           }
         },
         (error) => {
           this.loading = false;
-          // console.log('Failed to load patient data', error);
+          console.error(error);
         },
       );
   }
 
+  pageChanged(event: PageEvent) {
+    const page = event.pageIndex + 1;
+    const perPage = event.pageSize;
+
+    this.loadPartients(page, perPage);
+  }
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -133,11 +155,9 @@ export class PatiantComponent {
 
     const dialogRef = this.dialog.open(PartientFormComponent, config);
     dialogRef.afterClosed().subscribe(() => {
-      this.loadPatients();
+      this.loadPartients();
     });
   }
-
- 
 
   updatePatient(patientData: any) {
     const config = new MatDialogConfig();
@@ -155,7 +175,7 @@ export class PatiantComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.loadPatients();
+        this.loadPartients();
       }
     });
   }
@@ -185,7 +205,7 @@ export class PatiantComponent {
       this.userService.unblockPatients(data, data?.patient_id).subscribe(
         (res: any) => {
           Swal.fire('Success', res.message, 'success');
-          this.loadPatients();
+          this.loadPartients();
         },
         (err) => {
           Swal.fire('Error', 'Failed to unblock patient', 'error');
@@ -195,7 +215,7 @@ export class PatiantComponent {
       this.userService.deletePatients(data?.patient_id).subscribe(
         (res: any) => {
           Swal.fire('Success', res.message, 'success');
-          this.loadPatients();
+          this.loadPartients();
         },
         (err) => {
           Swal.fire('Error', 'Failed to delete patient', 'error');
