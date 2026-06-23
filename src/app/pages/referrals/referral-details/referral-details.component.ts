@@ -139,7 +139,10 @@ export class ReferralDetailsComponent {
     }
 
     const dialogRef = this.dialog.open(ReferralStatusDialogComponent, {
-      width: '700px',
+      width: '95vw',
+  maxWidth: '900px',
+  maxHeight: '100vh',
+
       data: {
         referral: this.referral,
         patient_histories_id: historyId,
