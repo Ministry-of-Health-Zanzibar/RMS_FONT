@@ -33,15 +33,11 @@ import { Router } from '@angular/router';
     CommonModule,
     MatTableModule,
     MatPaginatorModule,
-    MatDivider,
     MatIcon,
-    MatMiniFabButton,
-    MatIconButton,
     VDividerComponent,
     MatTooltip,
     MatSlideToggleModule,
     FormsModule,
-    MatAnchor,
     MatButton,
     EmrSegmentedModule,
   ],
@@ -83,42 +79,20 @@ export class ViewpartientComponent {
     this.userPetient();
   }
 
-  // userPetient() {
-  //   this.userService.getAllPartients().pipe(takeUntil(this.onDestroy)).subscribe((response: any)=>{
-  //     if(response.data){
-  //       console.log(response)
-  //       this.dataSource = new MatTableDataSource(response.data);
-  //       this.dataSource.paginator = this.paginator;
-  //       this.dataSource.sort = this.sort;
-  //     }
-  //     else{
-  //       console.log('permission response errors')
-  //     }
-  //   },(error)=>{
-  //     console.log('permision getAway api fail to load')
-  //   })
-  // }
   userPetient() {
-    this.loading = true;
-    this.userService
-      .getAllPartients()
-      .pipe(takeUntil(this.onDestroy))
-      .subscribe(
-        (response: any) => {
-          this.loading = false;
-          if (response.data) {
-            this.dataSource = new MatTableDataSource(response.data);
-            this.dataSource.paginator = this.paginator;
-            this.dataSource.sort = this.sort;
-          } else {
-            // console.log('permission response errors');
-          }
-        },
-        (error) => {
-          this.loading = false;
-          // console.log('permission getAway api fail to load');
-        }
-      );
+    this.userService.getAllPatients().pipe(takeUntil(this.onDestroy)).subscribe((response: any)=>{
+      if(response.data){
+        console.log(response)
+        this.dataSource = new MatTableDataSource(response.data);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      }
+      else{
+        console.log('permission response errors')
+      }
+    },(error)=>{
+      console.log('permision getAway api fail to load')
+    })
   }
 
   applyFilter(event: Event) {
@@ -257,23 +231,4 @@ export class ViewpartientComponent {
     const id = data.patient_id;
     this.router.navigate(['/pages/patient/more', id]); // Navigate to the new page with complain_id
   }
-  // displayMoreData(key:any){
-  //   console.log('Select data from here: ', key);
-
-  //        let config = new MatDialogConfig();
-  //        config.data = {
-  //          data:key
-  //        }
-  //        config.role = 'dialog'
-  //        config.maxWidth ='100vw'
-  //        config.maxHeight = '100vh'
-  //        config.height = '600px'
-  //        config.width = '850px'
-  //        config.panelClass = 'full-screen-modal'
-
-  //        const dialogRef = this.dialog.open(DisplaymoredataComponent, config);
-  //        dialogRef.afterClosed().subscribe(result => {
-  //          dialogRef.close();
-  //        });
-  //      }
 }

@@ -39,7 +39,6 @@ import { PatienthistoryService } from '../../../services/partient/patienthistory
     MatDialogModule,
     MatTooltipModule,
     FormsModule,
-    MatSlideToggle,
     EmrSegmentedModule,
   ],
   templateUrl: './viewpatientfromhospital.component.html',
@@ -88,62 +87,26 @@ export class ViewpatientfromhospitalComponent {
     this.loadPatients();
   }
 
-  // loadPatients() {
-  //   this.loading = true;
-  //   this.patientHistory.getAllBodyList()
-  //     .pipe(takeUntil(this.onDestroy))
-  //     .subscribe(
-  //       (response: any) => {
-  //         this.loading = false;
-  //         if (response.data) {
-  //           this.dataSource = new MatTableDataSource(response.data);
-  //           this.dataSource.paginator = this.paginator;
-  //           this.dataSource.sort = this.sort;
-  //         } else {
-
-  //         }
-  //       },
-  //       (error) => {
-  //         this.loading = false;
-
-  //       }
-  //     );
-  // }
-
-  loadPatients(page: number = 1, perPage: number = 10) {
+  loadPatients() {
     this.loading = true;
-
-    this.patientHistory
-      .getBodyList(page, perPage)
+    this.patientHistory.getAllBodyList()
       .pipe(takeUntil(this.onDestroy))
-      .subscribe({
-        next: (response: any) => {
-          console.log('FULL RESPONSE', response);
-          console.log('PATIENTS', response?.data?.data);
+      .subscribe(
+        (response: any) => {
+          this.loading = false;
+          if (response.data) {
+            this.dataSource = new MatTableDataSource(response.data);
+            this.dataSource.paginator = this.paginator;
+            this.dataSource.sort = this.sort;
+          } else {
 
+          }
+        },
+        (error) => {
           this.loading = false;
 
-          this.dataSource = new MatTableDataSource(response?.data?.data || []);
-
-          // backend pagination information
-          this.totalItems = response.data.total;
-      
-
-          this.currentPage = response.data.current_page;
-          this.pageSize = response.data.per_page;
-        },
-        error: (error) => {
-          console.error(error);
-          this.loading = false;
-        },
-      });
-  }
-
-  pageChanged(event: PageEvent) {
-    const page = event.pageIndex + 1;
-    const perPage = event.pageSize;
-
-    this.loadPatients(page, perPage);
+        }
+      );
   }
 
   applyFilter(event: Event) {
@@ -204,10 +167,7 @@ export class ViewpatientfromhospitalComponent {
       );
     }
   }
-  //  displayMoreData(data: any) {
-  //     const id = data.patient_histories_id;
-  //     this.router.navigate(['/pages/patient/patient', id]);
-  //   }
+  
   displayMoreData(data: any) {
     const id = data?.latest_history?.patient_histories_id;
 

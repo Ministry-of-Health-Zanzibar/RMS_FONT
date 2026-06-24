@@ -1,26 +1,25 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpEventType, HttpRequest } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment.prod';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PatienthistoryService {
-   private baseUrl: string = `${environment.baseUrl}`;
+  private baseUrl: string = `${environment.baseUrl}`;
   private href = `${this.baseUrl}patientsHistories`;
 
   constructor(private http: HttpClient) {}
-  //body list
   
- public getBodyList(page: number, perPage: number = 10): Observable<any> {
-    return this.http.get<any>(
-      `${this.href}?page=${page}&per_page=${perPage}`,
-    );
+  // Haina haja ya page wala perPage tena, inaleta orodha nzima
+  public getBodyList(): Observable<any> {
+    return this.http.get<any>(this.href);
   }
 
+  // Unaweza kuacha hii kwa usalama kama bado inaitwa sehemu nyingine
   public getAllBodyList(): Observable<any> {
-    return this.http.get<any>(`${this.href}?page=1&per_page=10`);
+    return this.http.get<any>(this.href);
   }
 
   public addBodyList(formData: any): Observable<any> {

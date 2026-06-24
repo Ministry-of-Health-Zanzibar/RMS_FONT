@@ -87,59 +87,27 @@ export class BodyformListComponent {
     this.userPetient();
   }
 
-  // userPetient() {
-  //   this.loading = true;
-  //   this.userService
-  //     .getAllBodyList()
-  //     .pipe(takeUntil(this.onDestroy))
-  //     .subscribe(
-  //       (response: any) => {
-  //         this.loading = false;
-  //         if (response.data) {
-  //           this.dataSource = new MatTableDataSource(response.data);
-  //           this.dataSource.paginator = this.paginator;
-  //           this.dataSource.sort = this.sort;
-  //         } else {
-
-  //         }
-  //       },
-  //       (error) => {
-  //         this.loading = false;
-
-  //       }
-  //     );
-  // }
-
-  userPetient(page: number = 1, perPage: number = 10) {
+  userPetient() {
     this.loading = true;
-
     this.userService
-      .getBodyList(page, perPage)
+      .getBodyList()
       .pipe(takeUntil(this.onDestroy))
-      .subscribe({
-        next: (response: any) => {
+      .subscribe(
+        (response: any) => {
           this.loading = false;
+          if (response.data) {
+            this.dataSource = new MatTableDataSource(response.data);
+            this.dataSource.paginator = this.paginator;
+            this.dataSource.sort = this.sort;
+          } else {
 
-          if (response?.data?.data) {
-            this.dataSource = new MatTableDataSource(response.data.data);
-
-            this.totalItems = response.data.total;
-            this.currentPage = response.data.current_page;
-            this.pageSize = response.data.per_page;
           }
         },
-        error: (error) => {
+        (error) => {
           this.loading = false;
-          console.error(error);
-        },
-      });
-  }
 
-  pageChanged(event: PageEvent) {
-    const page = event.pageIndex + 1;
-    const perPage = event.pageSize;
-
-    this.userPetient(page, perPage);
+        }
+      );
   }
 
   applyFilter(event: Event) {
@@ -161,10 +129,6 @@ export class BodyformListComponent {
     let config = new MatDialogConfig();
     config.disableClose = false;
     config.role = 'dialog';
-    // config.width = '95vw';
-    // config.maxWidth = '100vw';
-    // config.maxHeight = '100vh';
-    // config.panelClass = 'wide-modal';
 
     const dialogRef = this.dialog.open(AddbodylistComponent, config);
     dialogRef.afterClosed().subscribe((result) => {
@@ -176,11 +140,6 @@ export class BodyformListComponent {
     let config = new MatDialogConfig();
     config.disableClose = false;
     config.role = 'dialog';
-    // config.maxWidth = '100vw';
-    // config.maxHeight = '100vh';
-    // config.height = '600px';
-    // config.width = '850px';
-    // config.panelClass = 'full-screen-modal';
     config.data = { data: data };
 
     const dialogRef = this.dialog.open(AddbodylistComponent, config);
@@ -259,7 +218,6 @@ export class BodyformListComponent {
   }
 
   getPatient(id: any) {
-    // console.log('hiiii', id);
     let config = new MatDialogConfig();
     config.disableClose = false;
     config.role = 'dialog';

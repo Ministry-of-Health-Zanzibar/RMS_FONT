@@ -89,43 +89,36 @@ export class PatiantComponent {
     this.loadPartients();
   }
 
-
-
-  loadPartients(page: number = 1, perPage: number = 10) {
+  loadPartients() { // Zimeondolewa parameters za page na perPage hapa
     this.loading = true;
-
+  
     this.userService
-      .getPartients(page, perPage)
+      .getPartients() // Imeondolewa page na perPage hapa pia
       .pipe(takeUntil(this.onDestroy))
-      .subscribe(
-        (response: any) => {
+      .subscribe({
+        next: (response: any) => {
           this.loading = false;
-
+  
           console.log(response);
-
-          if (response.data) {
+  
+          if (response && response.data) {
             this.dataSource = new MatTableDataSource(response.data);
-
-            this.totalItems = response.pagination.total;
-            this.currentPage = response.pagination.current_page;
-            this.pageSize = response.pagination.per_page;
-
+  
+            // Kama bado unatumia Client-side pagination (Pagination ya Angular Material kwenye Frontend):
+            this.dataSource.paginator = this.paginator;
             this.dataSource.sort = this.sort;
+            
+            // Kama una vigezo vya kuonyesha jumla ya data kwenye template, unaweza kutumia urefu wa array:
+            this.totalItems = response.data.length; 
           }
         },
-        (error) => {
+        error: (error: any) => { // Imeongezwa ': any' kuzuia kosa la TypeScript
           this.loading = false;
           console.error(error);
-        },
-      );
+        }
+      });
   }
 
-  pageChanged(event: PageEvent) {
-    const page = event.pageIndex + 1;
-    const perPage = event.pageSize;
-
-    this.loadPartients(page, perPage);
-  }
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();

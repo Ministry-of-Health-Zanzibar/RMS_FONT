@@ -23,17 +23,6 @@ export class PartientService {
   private addMultiple = `${this.baseUrl}patient-lists/assign-patients`;
 
   constructor(private http: HttpClient) {}
-  //body list
-
-
-    public getBodyList(page: number, perPage: number = 10): Observable<any> {
-    return this.http.get<any>(`${this.href_bodylist}?page=${page}&per_page=${perPage}`);
-  }
-  
-  // public getAllBodyList(page: number, perPage: number = 10): Observable<any> {
-  //   return this.http.get<any>(`${this.href_bodylist}?page=${page}&per_page=${perPage}`);
-  // }
-
 
   public addBodyList(formData: any): Observable<any> {
     return this.http.post(this.href_bodylist, formData);
@@ -59,14 +48,16 @@ export class PartientService {
     return this.http.get<any>(`${this.href_bodylist}/body-form/${id}`);
   }
 
-  //end board list services
-
-  public getPartients(page: number, perPage: number): Observable<any> {
-    return this.http.get<any>(`${this.href}?page=${page}&per_page=${perPage}`);
+  public getPartients(): Observable<any> {
+    return this.http.get<any>(this.href);
   }
 
-  public getAllPartients(): Observable<any> {
-    return this.http.get<any>(`${this.href}?page=1&per_page=10`);
+  public getAllPatients(): Observable<any> {
+    return this.http.get<any>(this.href);
+  }
+
+  public getBodyList(): Observable<any> {
+    return this.http.get<any>(this.href_bodylist);
   }
 
 
@@ -78,16 +69,9 @@ export class PartientService {
     return this.http.get<any>(this.hrefee);
   }
 
-  // public addPartient(Partient: any): Observable<any> {
-  //   return this.http.post(this.href, Partient);
-  // }
   public addPartient(Partient: any): Observable<any> {
     return this.http.post(`${this.href}/storePatientAndHistory`, Partient);
   }
-
-  //  public addPartient(Partient: any): Observable<any> {
-  //   return this.http.post(this.href, Partient);
-  // }
 
   public getPartientById(id: any) {
     return this.http.get<any>(`${this.hrefe}patient-histories/${id}`);
@@ -115,24 +99,9 @@ export class PartientService {
     return this.http.get(`${this.hrefe}patients/showForUpdate/${patientId}`);
   }
 
-
   updatePatient(patient_id: number, data: FormData) {
-  return this.http.post(`${this.hrefe}patients/updatePatientAndHistory/${patient_id}`,data);
-}
-
-  //   public forwardToDG( id: number,comment: any): Observable<any> {
-  //   return this.http.put(`${this.baseUrl}patient-histories/${id}/mkurugenzi-tiba`, comment);
-  // }
-
-  //   public forwardToDG(patientHistoryId: number, comments: string) {
-  //   const formData = new FormData();
-  //   formData.append('mkurugenzi_tiba_comments', comments);
-
-  //   return this.http.put(
-  //     `${this.baseUrl}patient-histories/${patientHistoryId}/mkurugenzi-tiba`,
-  //     formData
-  //   );
-  // }
+    return this.http.post(`${this.hrefe}patients/updatePatientAndHistory/${patient_id}`,data);
+  }
 
   public deletePatients(id: any): Observable<any> {
     return this.http.delete(`${this.href}/${id}`);
@@ -149,17 +118,9 @@ export class PartientService {
     return this.http.patch(`${this.baseUrl}patient-lists/unblock/${id}`, {});
   }
 
-  // public updatePartient(patient: any, id: any): Observable<any> {
-  //   return this.http.post(`${this.href}/update/${id}`, patient);
-  // }
-
   public updatePartient(patient: any, id: number): Observable<any> {
     return this.http.post(`${this.href}/update/${id}`, patient);
   }
-  //   public addMultiplePartient(patient: any, id: number): Observable<any> {
-  //   return this.http.post(`${this.baseUrl}patient-lists/assign-patients/${id}`, patient);
-
-  // }
 
   public addMultiplePartient(patient: any, id: number): Observable<any> {
     return this.http.post(`${this.addMultiple}/${id}`, patient);
@@ -196,9 +157,7 @@ export class PartientService {
       }),
     );
   }
-  // public getPatientInsurances(): Observable<any> {
-  //   return this.http.get<any>(this.href_patientInsurance);
-  // }
+
   public getPatientInsurances(id: any) {
     return this.http.get<any>(`${this.href_patientInsurance}/${id}`); // adjust endpoint as needed
   }
@@ -212,12 +171,4 @@ export class PartientService {
       payload,
     );
   }
-
-  //  For get method
-  // public searchPatientEligibility(params: any) {
-  //   return this.http.get(
-  //     `${environment.baseUrl}patients/search-eligibility`,
-  //     { params }
-  //   );
-  // }
 }
