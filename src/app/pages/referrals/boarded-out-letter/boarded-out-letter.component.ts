@@ -16,7 +16,7 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrls: ['./boarded-out-letter.component.scss']
 })
 export class BoardedOutLetterComponent {
-
+email = 'info@mohz.go.tz'
   constructor(
     @Inject(MAT_DIALOG_DATA) public referral: any
   ) {}
