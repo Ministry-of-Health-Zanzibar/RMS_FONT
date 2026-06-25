@@ -20,14 +20,12 @@ export class DiagnosisService {
   }
 
   public getAllDiagnosis(): Observable<any> {
-    return this.http.get<any>(`${this.href}?page=1&per_page=10`);
+    return this.http.get<any>(`${this.href}`);
   }
 
-  public getDiagnosises(page: number, perPage: number): Observable<any> {
-    return this.http.get<any>(
-      `${this.href}?page=${page}&per_page=${perPage}`
-    );
-}
+  public getDiagnosises(): Observable<any> {
+    return this.http.get<any>(`${this.href}`);
+  }
 
   public addDiagnoses(diagnosis: any): Observable<any> {
     return this.http.post(this.href, diagnosis);
@@ -55,13 +53,9 @@ export class DiagnosisService {
     return this.http.delete(`${this.href}/${id}`);
   }
 
-  // public unblockDiagnosis(id:any): Observable<any>{
-  //   return this.http.get(`${this.baseUrl}unBlockDiagnosis/${id}`);
-  // }
   public unblockDiagnosis(id: any): Observable<any> {
   return this.http.post(`${this.href}/restore/${id}`, {});
 }
-
 
   public updateDiagnosis(user:any, id:any): Observable<any>{
     return this.http.patch(`${this.href}/${id}`,user)

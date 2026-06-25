@@ -148,13 +148,25 @@
                 </emr-segmented-button>
 
                 <emr-segmented-button value="edit_squareData">
-
-                  <span *ngIf="element.status !== 'Pending' && element.status !=='BoardedOut'"
-                    class="size-9 rounded-full border bg-surface flex items-center justify-center cursor-pointer"
+                  <span
+                    *ngIf="canViewFollowup(element)"
+                    class="size-9 rounded-full border flex items-center justify-center cursor-pointer"
+                    [ngClass]="{
+                      'bg-green-600 text-white animate-pulse': element.has_followup,
+                      'bg-surface': !element.has_followup
+                    }"
                     (click)="viewfollowup(element)"
-                    matTooltip="View Follow-Up"
+                    [matTooltip]="element.has_followup ? 'View Follow-Up' : 'Add Follow-Up'"
                   >
-                    <mat-icon class="font-icon">event_note</mat-icon>
+                    <mat-icon
+                      class="font-icon"
+                      [ngClass]="{
+                        'text-white': element.has_followup,
+                        'text-blue-600': !element.has_followup
+                      }"
+                    >
+                      {{ element.has_followup ? 'event_note' : 'add' }}
+                    </mat-icon>
                   </span>
                 </emr-segmented-button>
 

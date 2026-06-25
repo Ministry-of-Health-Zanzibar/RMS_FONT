@@ -492,4 +492,16 @@ export class ViewReferralsComponent implements OnInit, OnDestroy {
       this.getReferrals();
     });
   }
+
+  canViewFollowup(element: any): boolean {
+    if (element.status === 'Pending') {
+      return false;
+    }
+  
+    if (element.status === 'BoardedOut') {
+      return element.hospitals?.some((h: any) => h?.hospital_id) ?? false;
+    }
+  
+    return true;
+  }
 }

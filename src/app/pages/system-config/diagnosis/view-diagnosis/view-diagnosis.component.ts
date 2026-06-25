@@ -27,15 +27,10 @@ import { PageEvent } from '@angular/material/paginator';
     CommonModule,
     MatTableModule,
     MatPaginatorModule,
-    MatDivider,
-    MatIcon,
-    MatMiniFabButton,
     MatIconButton,
-    VDividerComponent,
     MatTooltip,
     MatSlideToggleModule,
     FormsModule,
-
   ],
   templateUrl: './view-diagnosis.component.html',
   styleUrl: './view-diagnosis.component.scss'
@@ -66,61 +61,32 @@ export class ViewDiagnosisComponent {
     this.getDiagnosis();
   }
 
+  getDiagnosis() {
+    this.diagnosisService
+      .getDiagnosises()
+      .pipe(takeUntil(this.onDestroy))
+      .subscribe(
+        (response: any) => {
+          console.log(response);
 
+          if(response.statusCode === 200){
+            // FIXED: Gracefully extracts the diagnosis list if response.data.data doesn't exist anymore
+            const extractedData = response.data?.data || response.data || (Array.isArray(response) ? response : []);
+            
+            this.dataSource = new MatTableDataSource(extractedData);
+            this.dataSource.sort = this.sort;
+          }
 
-totalItems = 0;
-pageSize = 10;
-currentPage = 1;
-
-getDiagnosis(page: number = 1, perPage: number = 10) {
-
-  this.diagnosisService
-    .getDiagnosises(page, perPage)
-    .pipe(takeUntil(this.onDestroy))
-    .subscribe(
-      (response: any) => {
-
-        console.log(response);
-
-        if(response.statusCode === 200){
-
-          this.dataSource = new MatTableDataSource(
-             response.data.data
-          );
-
-
-          // backend pagination information
-          this.totalItems = response.data.total;
-          this.currentPage = response.data.current_page;
-          this.pageSize = response.data.per_page;
-
-
-          this.dataSource.sort = this.sort;
-        }
-
-
-        if(response.statusCode === 401){
+          if(response.statusCode === 401){
+            this.route.navigateByUrl('/');
+          }
+        },
+        error => {
+          console.error(error);
           this.route.navigateByUrl('/');
         }
-
-      },
-      error => {
-        console.error(error);
-        this.route.navigateByUrl('/');
-      }
-    );
-}
-
-pageChanged(event: PageEvent){
-
-  const page = event.pageIndex + 1; 
-  const perPage = event.pageSize;
-  
-
-
-  this.getDiagnosis(page, perPage);
-
-}
+      );
+  }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;

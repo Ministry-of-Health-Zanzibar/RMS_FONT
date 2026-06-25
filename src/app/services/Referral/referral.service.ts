@@ -18,8 +18,6 @@ export class ReferralService {
   private href_withBill = `${this.baseUrl}referralwithbills`;
   private href_letter = `${this.baseUrl}referralLetters`;
 
-
-
   constructor(private http: HttpClient) {}
 
   public addReferralLetter(referral: any): Observable<any> {
@@ -34,13 +32,6 @@ export class ReferralService {
     return this.http.get<any>(this.href);
   }
 
-  // public getAllPartients(): Observable<any> {
-  //   return this.http.get<any>(`${this.href}?page=1&per_page=10`);
-  // }
-
-  // public getReferralById(id: any): Observable<any> {
-  //   return this.http.get<any>(`${this.href}/${id}`);
-  // }
   public getReferralById(
     id: any,
     type: 'referral' | 'history' = 'referral'
@@ -75,8 +66,6 @@ export class ReferralService {
     return this.http.patch(`${this.href}/unBlock/${id}`, {});
   }
 
-  //referral with bills
-
   public getReferralwithBills(): Observable<any> {
     return this.http.get<any>(this.href_withBill);
   }
@@ -88,9 +77,5 @@ export class ReferralService {
   public getCommentById(id: any): Observable<any> {
     return this.http.get<any>(`${this.comment}/${id}`);
   }
-
-
-
-
 
 }
