@@ -86,7 +86,9 @@ export class ViewbillbyhospitalComponent implements OnInit, AfterViewInit {
     this.dataSource.sort = this.sort;
   }
 
- loadBillsByHospital(): void {
+isDollarCurrency = false;
+
+loadBillsByHospital(): void {
   this.loading = true;
 
   this.billFileService.getBillsByHospitalId(this.hospitalId).subscribe({
@@ -95,6 +97,10 @@ export class ViewbillbyhospitalComponent implements OnInit, AfterViewInit {
 
       if (response.data?.length) {
         this.hospitalData = response.data[0].hospital;
+
+        this.isDollarCurrency =
+          this.hospitalData?.hospital_name ===
+          'Madras Institute of Orthopaedics and Traumatology (MIOT)';
       }
 
       this.totalBillAmount = this.dataSource.data.reduce(

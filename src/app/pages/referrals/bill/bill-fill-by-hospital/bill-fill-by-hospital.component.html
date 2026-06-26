@@ -2,47 +2,41 @@
   <h1 class="text-lg font-bold">Bills by Hospital</h1>
   <mat-divider [vertical]="true"></mat-divider>
 
-  <mat-card class="mb-4 shadow-lg">
-    <mat-card-content>
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div class="p-4 rounded-lg bg-blue-50 text-center">
-          <h3 class="text-sm font-medium text-gray-600">Total Bill</h3>
-          <p class="text-lg font-bold text-blue-700">
-            {{ totals.total_bill_file_amount | number : "1.2-2" }}
-          </p>
-        </div>
+ <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
 
-        <div class="p-4 rounded-lg bg-green-50 text-center">
-          <h3 class="text-sm font-medium text-gray-600">Total Allocated</h3>
-          <p class="text-lg font-bold text-green-700">
-            {{ totals.total_allocated_amount | number : "1.2-2" }}
-          </p>
-        </div>
+  <!-- Total Bill -->
+  <div class="p-4 rounded-lg bg-blue-50 text-center shadow">
+    <h3 class="text-sm font-medium text-gray-600">Total Bill (TZS)</h3>
+    <p class="text-lg font-bold text-blue-700">
+      {{ totals.total_bill_file_amount | currency:'TZS':'symbol':'1.0-0' }}
+    </p>
+  </div>
 
-        <div class="p-4 rounded-lg bg-red-50 text-center">
-          <h3 class="text-sm font-medium text-gray-600">Total Balance</h3>
-          <p class="text-lg font-bold text-red-700">
-            {{ totals.total_balance | number : "1.2-2" }}
-          </p>
-        </div>
+  <!-- Total Allocated -->
+  <div class="p-4 rounded-lg bg-green-50 text-center shadow">
+    <h3 class="text-sm font-medium text-gray-600">Total Allocated (TZS)</h3>
+    <p class="text-lg font-bold text-green-700">
+      {{ totals.total_allocated_amount | currency:'TZS':'symbol':'1.0-0' }}
+    </p>
+  </div>
 
-        <div class="p-4 rounded-lg bg-gray-50 text-center">
-          <h3 class="text-sm font-medium text-gray-600">Status</h3>
-          <p
-            class="text-lg font-bold"
-            [ngClass]="{
-              'text-green-600': totals.status === 'Paid',
-              'text-yellow-600': totals.status === 'Partially Paid',
-              'text-red-600': totals.status === 'Pending',
-              'text-gray-600': totals.status === 'Summary'
-            }"
-          >
-            {{ totals.status }}
-          </p>
-        </div>
-      </div>
-    </mat-card-content>
-  </mat-card>
+  <!-- Total Balance -->
+  <div class="p-4 rounded-lg bg-red-50 text-center shadow">
+    <h3 class="text-sm font-medium text-gray-600">Total Balance (TZS)</h3>
+    <p class="text-lg font-bold text-red-700">
+      {{ totals.total_balance | currency:'TZS':'symbol':'1.0-0' }}
+    </p>
+  </div>
+
+  <!-- MIOT Balance -->
+  <div class="p-4 rounded-lg bg-yellow-50 text-center shadow">
+    <h3 class="text-sm font-medium text-gray-600">MIOT Total Bills (USD)</h3>
+    <p class="text-lg font-bold text-yellow-700">
+      {{ miotTotals.total_bill_file_amount | currency:'USD':'symbol':'1.0-0' }}
+    </p>
+  </div>
+
+</div>
 
   <div class="flex items-center gap-2">
     <mat-icon>search</mat-icon>
@@ -168,7 +162,7 @@
     </table>
 
     <!-- Pagination -->
-    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons>
+    <mat-paginator [pageSizeOptions]="[10, 20 , 100]" showFirstLastButtons>
     </mat-paginator>
   </div>
 </div>

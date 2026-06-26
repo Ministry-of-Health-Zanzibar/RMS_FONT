@@ -49,7 +49,13 @@ export class BillFillByHospitalComponent {
   ];
   dataSource: MatTableDataSource<any> = new MatTableDataSource();
 
-  totals: any = null;
+  // totals: any = null;
+  totals: any = {};
+miotTotals = {
+  total_bill_file_amount: 0,
+  total_allocated_amount: 0,
+  total_balance: 0,
+};
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -69,31 +75,60 @@ export class BillFillByHospitalComponent {
     this.onDestroy.next();
     this.onDestroy.complete();
   }
-  loadBillsByHospital() {
-    this.loading = true;
-    this.billService
-      .getAllBillFilesByHospital()
-      .pipe(takeUntil(this.onDestroy))
-      .subscribe(
-        (response: any) => {
-          this.loading = false;
-          if (response.data) {
-            this.dataSource = new MatTableDataSource(
-              response.data.hospitals || []
-            );
+loadBillsByHospital() {
+  this.loading = true;
 
-            this.dataSource.paginator = this.paginator;
-            this.dataSource.sort = this.sort;
+  this.billService
+    .getAllBillFilesByHospital()
+    .pipe(takeUntil(this.onDestroy))
+    .subscribe(
+      (response: any) => {
+        this.loading = false;
 
-            this.totals = response.data.totals;
-          }
-        },
-        (error) => {
-          this.loading = false;
-          console.error('Failed to load bill files', error);
+        if (response.data) {
+          const hospitals = response.data.hospitals || [];
+
+          this.dataSource = new MatTableDataSource(hospitals);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+
+          // Reset totals
+          this.totals = {
+            total_bill_file_amount: 0,
+            total_allocated_amount: 0,
+            total_balance: 0,
+          };
+
+          this.miotTotals = {
+            total_bill_file_amount: 0,
+            total_allocated_amount: 0,
+            total_balance: 0,
+          };
+
+          hospitals.forEach((hospital: any) => {
+            if (
+              hospital.hospital_name ===
+              'Madras Institute of Orthopaedics and Traumatology (MIOT)'
+            ) {
+              // USD totals
+              this.miotTotals.total_bill_file_amount += Number(hospital.total_bill_file_amount);
+              this.miotTotals.total_allocated_amount += Number(hospital.total_allocated_amount);
+              this.miotTotals.total_balance += Number(hospital.total_balance);
+            } else {
+              // TZS totals
+              this.totals.total_bill_file_amount += Number(hospital.total_bill_file_amount);
+              this.totals.total_allocated_amount += Number(hospital.total_allocated_amount);
+              this.totals.total_balance += Number(hospital.total_balance);
+            }
+          });
         }
-      );
-  }
+      },
+      (error) => {
+        this.loading = false;
+        console.error('Failed to load bill files', error);
+      }
+    );
+}
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
