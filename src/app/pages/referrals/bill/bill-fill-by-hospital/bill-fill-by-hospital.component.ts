@@ -85,43 +85,49 @@ loadBillsByHospital() {
       (response: any) => {
         this.loading = false;
 
-        if (response.data) {
-          const hospitals = response.data.hospitals || [];
+        if (!response?.data) return;
 
-          this.dataSource = new MatTableDataSource(hospitals);
-          this.dataSource.paginator = this.paginator;
-          this.dataSource.sort = this.sort;
+        const hospitals = response.data.hospitals || [];
 
-          // Reset totals
-          this.totals = {
-            total_bill_file_amount: 0,
-            total_allocated_amount: 0,
-            total_balance: 0,
-          };
+        this.dataSource = new MatTableDataSource(hospitals);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
 
-          this.miotTotals = {
-            total_bill_file_amount: 0,
-            total_allocated_amount: 0,
-            total_balance: 0,
-          };
+        // reset totals
+        this.totals = {
+          total_bill_file_amount: 0,
+          total_allocated_amount: 0,
+          total_balance: 0,
+        };
 
-          hospitals.forEach((hospital: any) => {
-            if (
-              hospital.hospital_name ===
-              'Madras Institute of Orthopaedics and Traumatology (MIOT)'
-            ) {
-              // USD totals
-              this.miotTotals.total_bill_file_amount += Number(hospital.total_bill_file_amount);
-              this.miotTotals.total_allocated_amount += Number(hospital.total_allocated_amount);
-              this.miotTotals.total_balance += Number(hospital.total_balance);
-            } else {
-              // TZS totals
-              this.totals.total_bill_file_amount += Number(hospital.total_bill_file_amount);
-              this.totals.total_allocated_amount += Number(hospital.total_allocated_amount);
-              this.totals.total_balance += Number(hospital.total_balance);
-            }
-          });
-        }
+        this.miotTotals = {
+          total_bill_file_amount: 0,
+          total_allocated_amount: 0,
+          total_balance: 0,
+        };
+
+        const MIOT_NAME =
+          'Madras Institute of Orthopaedics and Traumatology (MIOT)';
+
+        hospitals.forEach((hospital: any) => {
+          const isMIOT = hospital?.hospital_name === MIOT_NAME;
+
+          const bill = Number(hospital?.total_bill_file_amount || 0);
+          const allocated = Number(hospital?.total_allocated_amount || 0);
+          const balance = Number(hospital?.total_balance || 0);
+
+          if (isMIOT) {
+            // USD totals (MIOT)
+            this.miotTotals.total_bill_file_amount += bill;
+            this.miotTotals.total_allocated_amount += allocated;
+            this.miotTotals.total_balance += balance;
+          } else {
+            // TZS totals (others)
+            this.totals.total_bill_file_amount += bill;
+            this.totals.total_allocated_amount += allocated;
+            this.totals.total_balance += balance;
+          }
+        });
       },
       (error) => {
         this.loading = false;

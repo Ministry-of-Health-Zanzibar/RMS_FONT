@@ -7,7 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatButtonModule } from '@angular/material/button';
+import { MatButtonModule, MatIconButton } from '@angular/material/button';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import {
@@ -29,6 +29,9 @@ import { FollowsService } from '../../../../services/Referral/follows.service';
 import { HospitalService } from '../../../../services/system-configuration/hospital.service';
 import { subscribe } from 'diagnostics_channel';
 import { response } from 'express';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-add-follow-up',
@@ -41,7 +44,8 @@ import { response } from 'express';
     MatFormFieldModule,
     MatLabel,
     MatDialogModule,
-
+    MatTooltipModule,
+   MatIconModule,
     MatError,
     ReactiveFormsModule,
 
@@ -66,10 +70,12 @@ export class AddFollowUpComponent {
   myControl = new FormControl('');
   filteredOptions: Observable<any[]>;
   selectedAttachement: File | null = null;
+  fileSizeError = '';
 
   constructor(
     private followServices: FollowsService,
     private hospitalServices: HospitalService,
+    private snackBar: MatSnackBar,
 
     private dialogRef: MatDialogRef<AddFollowUpComponent>
   ) {}
@@ -125,13 +131,38 @@ export class AddFollowUpComponent {
     return found?.hospital_name || '';
   }
 
-  onAttachmentSelected(event: any): void {
-    const file = event.target.files?.[0] ?? null;
-    if (file) {
-      this.patientForm.patchValue({ letter_file: file.name });
-      this.selectedAttachement = file;
-    }
+
+
+onAttachmentSelected(event: any): void {
+  const file = event.target.files?.[0];
+
+  if (!file) return;
+
+  const maxSize = 1024 * 1024; // 1MB
+
+  if (file.size > maxSize) {
+    this.patientForm.patchValue({ letter_file: '' });
+    this.selectedAttachement = null;
+    event.target.value = '';
+
+    this.snackBar.open(
+      'File size must not exceed 1 MB. Please compress your file using tools like iLovePDF before uploading.',
+      'Close',
+      {
+        duration: 6000,
+        panelClass: ['error-snackbar']
+      }
+    );
+
+    return;
   }
+
+  this.selectedAttachement = file;
+
+  this.patientForm.patchValue({
+    letter_file: file.name
+  });
+}
 
   saveClient() {
     if (this.patientForm.valid) {

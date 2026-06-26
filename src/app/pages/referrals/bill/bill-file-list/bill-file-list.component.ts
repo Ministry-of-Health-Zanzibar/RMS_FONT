@@ -130,8 +130,8 @@ export class BillFileListComponent {
     config.role = 'dialog';
     config.maxWidth = '100vw';
     config.maxHeight = '100vh';
-    config.height = '600px';
-    config.width = '850px';
+    config.height = '700px';
+    config.width = '890px';
     config.panelClass = 'full-screen-modal';
     const dialogRef = this.dialog.open(BillFileFormComponent, config);
     dialogRef.afterClosed().subscribe((result) => {
