@@ -2,37 +2,67 @@
   <h1 class="text-lg font-bold">Bills by Hospital</h1>
   <mat-divider [vertical]="true"></mat-divider>
 
- <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 
-  <!-- Total Bill -->
-  <div class="p-4 rounded-lg bg-blue-50 text-center shadow">
-    <h3 class="text-sm font-medium text-gray-600">Total Bill (TZS)</h3>
-    <p class="text-lg font-bold text-blue-700">
+  <!-- 🇹🇿 TZS SECTION -->
+  <div class="col-span-1 md:col-span-2 lg:col-span-3">
+    <h2 class="text-sm font-bold text-gray-500 mb-2">
+      🇹🇿 Tanzania Shillings (TZS)
+    </h2>
+  </div>
+
+  <!-- Total Bill TZS -->
+  <div class="p-4 rounded-lg bg-blue-50 shadow">
+    <p class="text-sm text-gray-600">Total Bill</p>
+    <p class="text-xl font-bold text-blue-700">
       {{ totals.total_bill_file_amount | currency:'TZS':'symbol':'1.0-0' }}
     </p>
   </div>
 
-  <!-- Total Allocated -->
-  <div class="p-4 rounded-lg bg-green-50 text-center shadow">
-    <h3 class="text-sm font-medium text-gray-600">Total Allocated (TZS)</h3>
-    <p class="text-lg font-bold text-green-700">
+  <!-- Total Allocated TZS -->
+  <div class="p-4 rounded-lg bg-green-50 shadow">
+    <p class="text-sm text-gray-600">Total Allocated</p>
+    <p class="text-xl font-bold text-green-700">
       {{ totals.total_allocated_amount | currency:'TZS':'symbol':'1.0-0' }}
     </p>
   </div>
 
-  <!-- Total Balance -->
-  <div class="p-4 rounded-lg bg-red-50 text-center shadow">
-    <h3 class="text-sm font-medium text-gray-600">Total Balance (TZS)</h3>
-    <p class="text-lg font-bold text-red-700">
+  <!-- Total Balance TZS -->
+  <div class="p-4 rounded-lg bg-red-50 shadow">
+    <p class="text-sm text-gray-600">Total Balance</p>
+    <p class="text-xl font-bold text-red-700">
       {{ totals.total_balance | currency:'TZS':'symbol':'1.0-0' }}
     </p>
   </div>
 
-  <!-- MIOT Balance -->
-  <div class="p-4 rounded-lg bg-yellow-50 text-center shadow">
-    <h3 class="text-sm font-medium text-gray-600">MIOT Total Bills (USD)</h3>
-    <p class="text-lg font-bold text-yellow-700">
+  <!-- divider -->
+  <div class="col-span-1 md:col-span-2 lg:col-span-3 mt-4">
+    <h2 class="text-sm font-bold text-gray-500 mb-2">
+      💵 United States Dollar (USD) - MIOT Only
+    </h2>
+  </div>
+
+  <!-- MIOT Bill USD -->
+  <div class="p-4 rounded-lg bg-yellow-50 shadow">
+    <p class="text-sm text-gray-600">Total Bill (MIOT)</p>
+    <p class="text-xl font-bold text-yellow-700">
       {{ miotTotals.total_bill_file_amount | currency:'USD':'symbol':'1.0-0' }}
+    </p>
+  </div>
+
+  <!-- MIOT Allocated USD -->
+  <div class="p-4 rounded-lg bg-yellow-100 shadow">
+    <p class="text-sm text-gray-600">Total Allocated (MIOT)</p>
+    <p class="text-xl font-bold text-yellow-800">
+      {{ miotTotals.total_allocated_amount | currency:'USD':'symbol':'1.0-0' }}
+    </p>
+  </div>
+
+  <!-- MIOT Balance USD -->
+  <div class="p-4 rounded-lg bg-yellow-200 shadow">
+    <p class="text-sm text-gray-600">Total Balance (MIOT)</p>
+    <p class="text-xl font-bold text-yellow-900">
+      {{ miotTotals.total_balance | currency:'USD':'symbol':'1.0-0' }}
     </p>
   </div>
 
