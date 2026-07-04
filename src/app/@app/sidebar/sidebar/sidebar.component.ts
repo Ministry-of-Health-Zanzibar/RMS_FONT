@@ -181,6 +181,14 @@ export class SidebarComponent {
       permission: 'View Referral',
     },
     {
+      id: 'referral',
+      type: 'Single',
+      name: 'Follow-up',
+      icon: 'followup',
+      link: '/pages/config/referrals/searchfollow-up',
+      permission: 'View Referral',
+    },
+    {
       id: 'bills',
       type: 'Single',
       name: 'Month Bill',
