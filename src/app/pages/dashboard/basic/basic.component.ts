@@ -60,16 +60,7 @@ export class BasicComponent implements OnInit {
 
   ngOnInit(): void {
 
-    // this.dashboardService.getClientReport().subscribe((data) => {
-
-    //   this.createChart(
-    //     'referralPerMonthChart',
-    //     data.referral_per_month,
-    //     'Referral Per Month'
-    //   );
-
-
-    // });
+  
    this.getDocumentPerWeekReport();
    this.getDocumentPerMonthReport();
    this.getSourceSummaryReport();
