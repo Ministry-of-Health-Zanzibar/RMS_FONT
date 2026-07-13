@@ -173,15 +173,24 @@
                 <span class="text-gray-400">No File</span>
               </ng-template>
             </td>
-            <td class="border border-gray-300 p-2 text-center">
-              <mat-icon
-                class="cursor-pointer text-indigo-600 hover:text-indigo-800 transition"
-                (click)="printFollowUp(follow)"
-                matTooltip="Print Follow-up"
-              >
-                print
-              </mat-icon>
-            </td>
+          <td class="border border-gray-300 p-2 text-center">
+        <mat-icon
+          [class.cursor-pointer]="letter.outcome === 'Follow-up'"
+          [class.cursor-not-allowed]="letter.outcome !== 'Follow-up'"
+          [class.text-indigo-600]="letter.outcome === 'Follow-up'"
+          [class.hover\:text-indigo-800]="letter.outcome === 'Follow-up'"
+          [class.text-gray-400]="letter.outcome !== 'Follow-up'"
+          [class.opacity-50]="letter.outcome !== 'Follow-up'"
+          [matTooltip]="
+            letter.outcome === 'Follow-up'
+              ? 'Print Follow-up'
+              : 'Printing is available only for Follow-up'
+          "
+          (click)="letter.outcome === 'Follow-up' && printFollowUp(follow)"
+        >
+          print
+        </mat-icon>
+      </td>
           </tr>
         </tbody>
       </table>
