@@ -177,21 +177,33 @@
     <!-- Left Section -->
     <div class="flex items-center gap-2">
 
-      <div class="w-9 h-9 rounded-full bg-green-100 flex items-center justify-center">
-
-        <mat-icon class="text-green-600 text-[20px]">
-          {{
-            item.stage === 'Confirmed' ? 'check_circle' :
-            item.stage === 'Cancelled' ? 'cancel' :
-            item.stage === 'Closed' ? 'lock' :
-            item.stage === 'Transferred' ? 'swap_horiz' :
-            item.stage === 'Death' ? 'dangerous' :
-            item.stage === 'Expired' ? 'event_busy' :
-            'flight_takeoff'
-          }}
-        </mat-icon>
-
-      </div>
+     <div
+  class="w-9 h-9 rounded-full flex items-center justify-center"
+  [ngClass]="
+    ['Cancelled', 'Closed', 'Death', 'Expired'].includes(item.stage)
+      ? 'bg-gray-200'
+      : 'bg-green-100'
+  "
+>
+  <mat-icon
+    class="text-[20px]"
+    [ngClass]="
+      ['Cancelled', 'Closed', 'Death'].includes(item.stage)
+        ? 'text-black'
+        : 'text-green-600'
+    "
+  >
+    {{
+      item.stage === 'Confirmed' ? 'check_circle' :
+      item.stage === 'Cancelled' ? 'cancel' :
+      item.stage === 'Closed' ? 'lock' :
+      item.stage === 'Transferred' ? 'swap_horiz' :
+      item.stage === 'Death' ? 'dangerous' :
+      item.stage === 'Expired' ? 'event_busy' :
+      'flight_takeoff' 
+    }}
+  </mat-icon>
+</div>
 
       <span class="text-sm font-medium text-gray-700 whitespace-nowrap">
         {{ item.stage }}

@@ -148,7 +148,7 @@ export class PartientFormComponent implements OnInit {
       basicInfo: this.fb.group({
         name: ['', Validators.required],
         matibabu_card: [''],
-        zan_id: ['', [Validators.required, Validators.pattern(/^\d{9}$/)]],
+        zan_id: ['', [Validators.required]],
         date_of_birth: ['', Validators.required],
         gender: ['', Validators.required],
         phone: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
