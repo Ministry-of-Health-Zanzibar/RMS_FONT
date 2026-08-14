@@ -249,299 +249,175 @@
 
   <ng-template #swahiliLetter>
 
-    <!-- ================= SWAHILI HEADER ================= -->
-
     <div class="flex justify-center mb-4">
       <img
         src="../../../../assets/img/smz.png"
-        alt="Serikali ya Mapinduzi ya Zanzibar"
+        alt=""
         class="w-auto h-24"
       />
     </div>
-
-
+  
     <div class="text-center space-y-1 mb-6">
-
       <p class="text-lg font-semibold">
         SERIKALI YA MAPINDUZI YA ZANZIBAR
       </p>
-
+  
       <p class="text-lg font-semibold">
         WIZARA YA AFYA
       </p>
-
-
-      <div class="grid grid-cols-2 gap-4 text-sm text-left mt-4">
-
-        <!-- LEFT -->
-
+  
+      <div class="grid grid-cols-2 gap-4 text-sm text-left">
         <div>
-
-          <p>
-            6 Barabara ya Health Office
-          </p>
-
-          <p>
-            S.L.P 236 MNAZIMMOJA
-          </p>
-
-          <p>
-            POSTIKODI 70467 Mjini Magharibi Zanzibar
-          </p>
-
+          <p>6 Barabara ya Health Office</p>
+          <p>S.L.P 236 MNANZIMMOJA</p>
+          <p>POSTIKODI 70467 Mjini Magharibi Zanzibar</p>
         </div>
-
-
-        <!-- RIGHT -->
-
+  
         <div class="text-right">
-
           <p>
-
             Tovuti:
-
             <a
               href="http://www.mohz.go.tz"
-              target="_blank"
               class="text-blue-600 hover:underline"
             >
               www.mohz.go.tz
             </a>
-
           </p>
-
-
+  
           <p>
-
             Barua pepe:
-
             <a
-              [href]="'mailto:' + (email || 'info@mohz.go.tz')"
+              [href]="'mailto:' + (email || 'N/A')"
               class="text-blue-600 hover:underline"
             >
-              {{ email || 'info@mohz.go.tz' }}
+              {{ email || "N/A" }}
             </a>
-
           </p>
-
         </div>
-
       </div>
-
     </div>
-
-
+  
     <hr style="border-top: 3px solid black;" />
-
-
-    <!-- ================= REFERENCE + DATE ================= -->
-
+  
     <div class="flex justify-between text-sm font-medium my-4">
-
-      <p style="font-weight: bold;">
-
-        KUMB:
-
-        {{
-          referral.referral_letters?.reference_no ||
-          'CDA.25/254/01'
-        }}
-
-      </p>
-
-
+      <p>KUMB: CDA.25/254/01</p>
+  
       <p class="font-semibold uppercase">
-
         TAREHE:
-
         {{
           referral.referral_letters?.start_date
-            ? (referral.referral_letters.start_date | date:'dd-MM-yyyy')
+            ? (referral.referral_letters.start_date | date:'d MMMM, yyyy')
             : 'N/A'
         }}
-
       </p>
-
     </div>
-
-
-    <!-- ================= RECIPIENT ================= -->
-
+  
     <div class="mb-6 space-y-1">
-
       <p class="font-semibold uppercase">
         MKURUGENZI MTENDAJI,
       </p>
-
-
+  
       <p class="font-semibold uppercase">
-
-        {{ referral.hospital?.hospital_name || 'N/A' }},
-
+        {{ referral.hospital?.hospital_name || 'N/A' }}
       </p>
-
-
-      <p class="font-semibold uppercase underline decoration-2">
-
+  
+      <p class="font-semibold uppercase">
         {{ referral.hospital?.hospital_address || 'N/A' }}
-
       </p>
-
     </div>
-
-
-    <!-- ================= SUBJECT ================= -->
-
-    <div class="mb-6 text-center">
-
+  
+    <div class="mb-4 text-center">
       <p class="font-semibold uppercase">
-
         Kuh: KUMPATIA MATIBABU MGONJWA
-
-        {{ referral.patient?.name || 'N/A' }}
-
-        <br />
-
+        {{ referral.patient?.name || "N/A" }}
+        <br>
         {{ formatAge(referral.patient?.age_details) }}
-
       </p>
-
     </div>
-
-
-    <!-- ================= SWAHILI BODY ================= -->
-
-    <div class="space-y-3 text-sm leading-7">
-
+  
+    <div class="space-y-3 text-sm leading-relaxed">
+  
       <p>
         Tafadhali naomba uhusike na mada ya hapo juu.
       </p>
-
-
+  
       <p>
-
-        Wizara ya Afya Zanzibar, inamleta kwenu kwa uchunguzi na matibabu
-        zaidi mtajwa hapo juu.
-
+        Wizara ya Afya Zanzibar, inamleta kwa ajili ya kuendelea na matibabu zaidi
+        mtajwa hapo juu.
       </p>
-
-
+  
       <p>
-
-        Kwa barua hii, tunaomba mumpokee na kumpatia matibabu stahiki
-
-        <b>
-          {{ referral.patient?.name || 'N/A' }}
-        </b>
-
+        Kwa barua hii, tunaomba mumpokee na kumpatia matibabu stahiki mgonjwa
+        <b>{{ referral.patient?.name || "N/A" }}</b>
         kama tulivyokubaliana.
-
+      </p>
+  
+      <p>
+        Gharama za matibabu zitalipwa na Wizara ya Afya kwa mujibu wa Mkataba na
+        <b>{{ referral.hospital?.hospital_name || "N/A" }}</b>.
+      </p>
+  
+      <p>
+        Wizara ya Afya inaomba taarifa fupi za maendeleo ya matibabu kwa mhusika
+        ikiwemo Diagnosis, Tiba aliyopewa, tathmini, na sababu ya kurudi mara
+        nyingine.
+      </p>
+  
+      <p>
+        Aidha Wizara ya Afya inaomba ripoti kamili iwasilishwe mwishoni mwa
+        matibabu.
       </p>
 
-
       <p>
-
-        Gharama za matibabu zitalipwa na Wizara ya Afya kwa mujibu wa
-        Mkataba na
-
-        <b>
-          {{ referral.hospital?.hospital_name || 'N/A' }}
-        </b>
-
-      </p>
-
-
-      <p>
-
-        Wizara ya Afya inaomba taarifa fupi za maendeleo ya matibabu kwa
-        mhusika ikiwemo Diagnosis, Tiba aliyopewa, tathmini, na sababu ya
-        kurudi mara nyingine.
-
-      </p>
-
-
-      <p>
-
-        Aidha Wizara ya Afya inaomba ripoti kamili iwasilishwe mwishoni
-        mwa matibabu.
-
-      </p>
-
-
-      <p>
-
         Kumbukumbu zake za matibabu zimeambatanishwa kwa urahisi wa kurejea.
-
       </p>
-
-
+  
       <p>
         Naomba kuwasiliana kwa hatua.
       </p>
-
-
+      
       <p>
         <strong>Ahsante,</strong>
       </p>
-
+  
     </div>
-
-
-    <!-- ================= SWAHILI SIGNATURE ================= -->
-
+  
     <div class="mt-8">
-
       <p class="font-semibold">
         DKT. MARYAM SEIF HEMED,
       </p>
-
+  
       <p class="font-semibold">
         MKURUGENZI MKUU,
       </p>
-
+  
       <p class="font-semibold">
         WIZARA YA AFYA,
       </p>
-
-      <p class="font-semibold underline">
+  
+      <p class="font-semibold underline decoration-2">
         ZANZIBAR
       </p>
-
     </div>
-
-
-    <!-- ================= SWAHILI FOOTER ================= -->
-
-    <hr
-      class="mt-8"
-      style="border-top: 3px solid black;"
-    />
-
-
+  
+    <hr style="border-top: 3px solid black;" />
+  
     <div class="text-xs text-gray-600 text-center">
-
       <p>
-
         <em>
-
-          <strong>
-            Kwa mawasiliano ya moja kwa moja:
-          </strong>
-
+          <strong>Kwa mawasiliano ya moja kwa moja:</strong>
         </em>
-
       </p>
-
-
+  
       <p>
-
-        Katibu Mkuu {{ katibu }},
-        Mkurugenzi Mkuu barua pepe {{ dg || 'dg@mohz.go.tz' }}
-
+        Katibu Mkuu {{ katibu }}, Mkurugenzi Mkuu barua pepe
       </p>
-
+  
+      <p>
+        {{ dg || "dg@mohz.go.tz" }}
+      </p>
     </div>
-
+  
   </ng-template>
 
 
