@@ -166,7 +166,10 @@
                   mat-raised-button
                   color="accent"
                   class="ml-2 flex items-center gap-1"
-                  *ngIf="element.role_name === 'ROLE HOSPITAL USER'"
+                  *ngIf="
+                    element.role_name === 'ROLE HOSPITAL USER' ||
+                    element.role_name === 'ROLE MEDICAL BOARD MEMBER'
+                  "
                   (click)="addPatient(element.id)"
                   matTooltip="Assign Hospital"
                 >
@@ -174,7 +177,6 @@
                 </button>
               </ng-container>
 
-   
               <ng-template #assignedHospital>
                 <span class="font-medium text-primary-700">
                   {{ element.hospital }}

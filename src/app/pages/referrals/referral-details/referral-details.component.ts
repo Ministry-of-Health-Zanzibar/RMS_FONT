@@ -18,6 +18,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { ConversationModalComponent } from '../conversation-modal/conversation-modal.component';
 import { BoardedOutLetterComponent } from '../boarded-out-letter/boarded-out-letter.component';
+import { FlightInformationDialogComponent } from '../flight-information-dialog/flight-information-dialog.component';
 
 @Component({
   selector: 'app-referral-details',
@@ -36,6 +37,7 @@ import { BoardedOutLetterComponent } from '../boarded-out-letter/boarded-out-let
     MatExpansionModule,
     MatIconModule,
     MatTooltipModule,
+    FlightInformationDialogComponent,
   ],
   templateUrl: './referral-details.component.html',
   styleUrl: './referral-details.component.scss',
@@ -57,6 +59,7 @@ export class ReferralDetailsComponent {
   boardReason = this.history?.board_reason;
   boardMembers: any[] = [];
   referralType: 'referral' | 'history' = 'referral';
+  showFlightInformation = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -137,11 +140,11 @@ export class ReferralDetailsComponent {
       console.warn('No patient_histories_id found');
       return;
     }
-
+    
     const dialogRef = this.dialog.open(ReferralStatusDialogComponent, {
       width: '95vw',
-  maxWidth: '900px',
-  maxHeight: '100vh',
+      maxWidth: '900px',
+      maxHeight: '100vh',
 
       data: {
         referral: this.referral,
@@ -156,6 +159,69 @@ export class ReferralDetailsComponent {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.getMoreData();
+      }
+    });
+  }
+
+  openFlightInformationPopup(referral: any): void {
+
+    this.showFlightInformation = true;
+  
+  }
+
+  closeFlightInformation(): void {
+
+    this.showFlightInformation = false;
+  
+  }
+
+  saveFlightInformation(data: any): void {
+
+    console.log('Sending flight data:', data);
+  
+    this.referralsService.addReferralFlight(data).subscribe({
+      next: (response) => {
+  
+        console.log('Flight saved successfully:', response);
+  
+        this.showFlightInformation = false;
+  
+        Swal.fire({
+          icon: 'success',
+          title: 'Saved',
+          text: 'Flight information saved successfully.',
+          timer: 2000,
+          showConfirmButton: false
+        });
+      },
+  
+      error: (error) => {
+  
+        console.error('FULL ERROR:', error);
+        console.error('Status:', error.status);
+        console.error('Error body:', error.error);
+  
+        let message = 'Failed to save flight information.';
+  
+        if (error.error?.message) {
+          message = error.error.message;
+        }
+  
+        if (error.error?.errors) {
+          console.error('Validation errors:', error.error.errors);
+  
+          const validationMessages = Object.values(
+            error.error.errors
+          ).flat();
+  
+          message = validationMessages.join('\n');
+        }
+  
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: message
+        });
       }
     });
   }

@@ -17,6 +17,7 @@ export class ReferralService {
   private comment = `${this.baseUrl}referralLetters/comment/referral`;
   private href_withBill = `${this.baseUrl}referralwithbills`;
   private href_letter = `${this.baseUrl}referralLetters`;
+  private referralFlights = `${this.baseUrl}referral-flights`;
 
   constructor(private http: HttpClient) {}
 
@@ -25,7 +26,45 @@ export class ReferralService {
   }
 
   getReportById(id: number) {
-  return this.http.get(`${this.baseUrl}reports/showEverythingByReferralId/${id}`);
+    return this.http.get(`${this.baseUrl}reports/showEverythingByReferralId/${id}`);
+  }
+
+  public addReferralFlight(data: any): Observable<any> {
+    return this.http.post(
+      this.referralFlights,
+      data
+    );
+  }
+
+  /**
+ * Get flight information for a referral
+ */
+public getReferralFlights(referralId: number): Observable<any> {
+  return this.http.get(
+    `${this.referralFlights}/referral/${referralId}`
+  );
+}
+
+public getReferralFlight(id: number): Observable<any> {
+  return this.http.get(
+    `${this.referralFlights}/${id}`
+  );
+}
+
+public updateReferralFlight(
+  id: number,
+  data: any
+): Observable<any> {
+  return this.http.put(
+    `${this.referralFlights}/${id}`,
+    data
+  );
+}
+
+public deleteReferralFlight(id: number): Observable<any> {
+  return this.http.delete(
+    `${this.referralFlights}/${id}`
+  );
 }
 
   public getAllRefferal(): Observable<any> {
