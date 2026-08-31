@@ -56,6 +56,11 @@ export class PartientService {
     return this.http.get<any>(this.href);
   }
 
+  /** Lightweight data for the patient table; detail screens keep the full API. */
+  public getPatientList(): Observable<any> {
+    return this.http.get<any>(this.href, { params: { summary: '1' } });
+  }
+
   public getBodyList(): Observable<any> {
     return this.http.get<any>(this.href_bodylist);
   }

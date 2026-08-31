@@ -80,7 +80,9 @@ export class ViewpartientComponent {
   }
 
   userPetient() {
-    this.userService.getAllPatients().pipe(takeUntil(this.onDestroy)).subscribe((response: any)=>{
+    this.loading = true;
+    this.userService.getPatientList().pipe(takeUntil(this.onDestroy)).subscribe((response: any)=>{
+      this.loading = false;
       if(response.data){
         console.log(response)
         this.dataSource = new MatTableDataSource(response.data);
@@ -91,6 +93,7 @@ export class ViewpartientComponent {
         console.log('permission response errors')
       }
     },(error)=>{
+      this.loading = false;
       console.log('permision getAway api fail to load')
     })
   }
