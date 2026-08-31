@@ -72,6 +72,12 @@ export class ViewpartientComponent {
   ngOnInit(): void {
     this.userPetient();
   }
+
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+
   ngOnDestroy(): void {
     this.onDestroy.next();
   }

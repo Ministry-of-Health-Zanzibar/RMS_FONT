@@ -73,6 +73,11 @@ export class SearchfollowUpComponent implements OnInit, OnDestroy {
     this.getReferrals();
   }
 
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+
    ngOnDestroy(): void {
     this.onDestroy.next();
   }

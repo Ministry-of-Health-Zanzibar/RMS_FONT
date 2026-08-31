@@ -79,6 +79,11 @@ export class ViewpatientfromhospitalComponent {
     this.loadPatients();
   }
 
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+
   ngOnDestroy(): void {
     this.onDestroy.next();
   }

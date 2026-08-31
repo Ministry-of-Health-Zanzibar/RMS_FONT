@@ -192,11 +192,8 @@
           </tr>
         </table>
         <mat-paginator
-        [length]="totalItems"
-        [pageSize]="pageSize"
-        [pageIndex]="currentPage - 1"
+        [pageSizeOptions]="[10, 20, 50]"
         showFirstLastButtons
-        (page)="pageChanged($event)"
       >
       </mat-paginator>
       </div>

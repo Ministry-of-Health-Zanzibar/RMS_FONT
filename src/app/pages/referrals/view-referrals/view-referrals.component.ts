@@ -74,6 +74,12 @@ export class ViewReferralsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.getReferrals();
   }
+
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+
   ngOnDestroy(): void {
     this.onDestroy.next();
   }
