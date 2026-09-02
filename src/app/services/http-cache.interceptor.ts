@@ -17,6 +17,12 @@ export const httpCacheInterceptor: HttpInterceptorFn = (
   request: HttpRequest<unknown>,
   next: HttpHandlerFn,
 ) => {
+  if (request.headers.has('X-Skip-Cache')) {
+    return next(request.clone({
+      headers: request.headers.delete('X-Skip-Cache'),
+    }));
+  }
+
   if (request.method !== 'GET') {
     getCache.clear();
     return next(request);

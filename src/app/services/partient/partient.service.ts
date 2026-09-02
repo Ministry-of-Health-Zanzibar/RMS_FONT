@@ -67,7 +67,11 @@ export class PartientService {
 
 
   public getAllPartientforReferral(): Observable<any> {
-    return this.http.get<any>(this.href_for_addreferral);
+    // This queue is changed by hospital users in other sessions, so it must be
+    // fresh whenever the Medical Board opens the assignment dialog.
+    return this.http.get<any>(this.href_for_addreferral, {
+      headers: { 'X-Skip-Cache': 'true' },
+    });
   }
 
   public getAllPartientsForReferal(): Observable<any> {
